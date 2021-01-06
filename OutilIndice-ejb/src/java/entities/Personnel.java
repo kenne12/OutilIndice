@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Personnel.findByMatricule", query = "SELECT p FROM Personnel p WHERE p.matricule = :matricule"),
     @NamedQuery(name = "Personnel.findByEtat", query = "SELECT p FROM Personnel p WHERE p.etat = :etat")})
 public class Personnel implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -61,6 +62,9 @@ public class Personnel implements Serializable {
     @JoinColumn(name = "idservice", referencedColumnName = "idservice")
     @ManyToOne(fetch = FetchType.LAZY)
     private Service idservice;
+    @JoinColumn(name = "idresponsabilite", referencedColumnName = "idresponsabilite")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Responsabilite idresponsabilite;
 
     public Personnel() {
     }
@@ -166,5 +170,5 @@ public class Personnel implements Serializable {
     public String toString() {
         return "entities.Personnel[ idpersonnel=" + idpersonnel + " ]";
     }
-    
+
 }
