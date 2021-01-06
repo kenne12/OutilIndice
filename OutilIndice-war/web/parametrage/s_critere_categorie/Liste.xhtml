@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <h:form id="CategorieStrListerForm">
+
+        <p:messages id="growl" closable="true">
+            <p:effect type="pulsate" event="load" delay="50" />
+        </p:messages>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-success">
+                    <div style="color: white" class="panel-heading bg-success">
+                        #{langue['categorie_structure.list']}
+
+                        <p:commandButton update=":CategorieStrCreateForm"
+                                         icon="ui-icon-plus"
+                                         value="#{langue['common.ajouter']}"
+                                         style="float: right"
+                                         actionListener="#{sousCritereCategorieController.prepareCreate()}"/>      
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div class="table-responsive">
+
+                            <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 20%">#{langue.institution}</th>
+                                        <th style="width: 30%">#{langue['common.nom']}</th>
+                                        <th style="width: 43%">#{langue.detail}</th>
+                                        <th style="width: 7%">#{langue['common.actions']}</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <ui:repeat value="#{sousCritereCategorieController.structures}" var="item">
+                                        <tr>
+                                            <td>#{item.idinstitution.nom}</td>
+                                            <td>#{item.nom}</td>
+                                            <td>#{sousCritereCategorieController.returnCategorie(item)}</td>                                   
+                                            <td>                                        
+                                                <p:commandButton icon="ui-icon-pencil" update=":CategorieStrCreateForm"
+                                                                 class="btn btn-success btn-sm"
+                                                                 actionListener="#{sousCritereCategorieController.prepareEdit(item)}"/>
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:form>
+
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+    <p:dialog id="notify1" widgetVar="NotifyDialog1" height="400" width="700" resizable="true" responsive="true" modal="true" style="text-align: center; font-size: 14px; font-family: Cambria;">
+        <f:facet name="header">
+            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{sousCritereCategorieController.routine.titleNotify}" />
+        </f:facet>
+        <h:form id="NotifyForm1">
+            <h:graphicImage id="nt_img" url="#{sousCritereCategorieController.routine.iconMessage}" style="cursor:pointer" />
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+
+            <h:outputText id="nt_msg" value="#{sousCritereCategorieController.routine.message}"/>
+
+            <hr size="3" style="background-color: cornflowerblue; margin-top: 5%;"/>
+
+            <p:commandButton style="font-family: Cambria; font-size: 14px;" value="#{langue['common.fermer']}" onclick="PF('NotifyDialog1').hide()" type="button" immediate="true"/>
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+        </h:form>
+    </p:dialog>
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+</ui:composition>

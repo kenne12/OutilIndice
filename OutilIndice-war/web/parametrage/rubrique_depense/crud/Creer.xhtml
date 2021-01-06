@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="RubriqueDepenseCreerDlg" 
+                  widgetVar="RubriqueDepenseCreerDialog" 
+                  modal="true" resizable="false" 
+                  appendTo="@(body)" 
+                  width="50%"
+                  header="#{langue['rubrique_depense.formulaire_creation']}" 
+                  closeOnEscape="true">
+
+            <h:form id="RubriqueDepenseCreerForm">
+                <h:panelGroup id="display">
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+
+
+                            <div class="form-group">
+                                <label>#{langue['common.nom']}</label>
+                                <h:inputTextarea id="nom" value="#{rubriqueDepenseController.rubriquedepense.nom}" required="true" 
+                                                 requiredMessage="#{langue['common.valeur_obligatoire']}" 
+                                                 rows="3"
+                                                 class="form-control"/>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>#{langue['common.code']}</label>
+                                        <h:inputText id="code" value="#{rubriqueDepenseController.rubriquedepense.code}" required="true" 
+                                                     requiredMessage="#{langue['common.valeur_obligatoire']}" 
+                                                     class="form-control"/>
+                                    </div>                                            
+                                </div>                                
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-10">
+                            <p:commandButton value="#{langue['common.annuler']}" oncomplete="PF('RubriqueDepenseCreerDialog').hide()" icon="ui-icon-close"/>
+                            <p:commandButton actionListener="#{rubriqueDepenseController.create()}" value="#{langue['crud.enregistrer']}" 
+                                             update="display,:RubriqueDepenseListerForm,:notify1" 
+                                             onclick="PF('AjaxNotifyDialog').show()" icon="ui-icon-check"/>
+                        </div>
+
+                    </div>
+                </h:panelGroup>  
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <h:form id="SousCritereListerForm">
+
+        <p:messages id="growl" closable="true">
+            <p:effect type="pulsate" event="load" delay="50" />
+        </p:messages>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-success">
+
+                    <div style="color: white" class="panel-heading bg-success">
+                        #{langue['sous_critere.list']}
+                        <p:commandButton update=":SousCritereCreateForm,:notify1"
+                                         icon="ui-icon-plus"
+                                         style="float: right"
+                                         value="#{langue['common.ajouter']}"
+                                         actionListener="#{reponseController.prepareCreate()}"/>  
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div class="table-responsive">
+
+                            <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>     
+                                        <th style="width: 30%">#{langue.sous_critere}</th>
+                                        <th style="width: 50%">#{langue['common.nom']}</th>
+                                        <th style="width: 10%">#{langue['common.valeur']}</th>
+                                        <th style="width: 10%">#{langue['common.actions']}</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <ui:repeat value="#{reponseController.elementReponses}" var="item">
+                                        <tr>
+                                            <td>#{item.idsouscritere.code} - #{item.idsouscritere.nom}</td>
+                                            <td>#{item.nom}</td>
+                                            <td style="text-align: center">#{item.valeur}</td>                                    
+                                            <td>                                        
+                                                <p:commandButton class="btn btn-danger btn-sm" icon="ui-icon-trash" 
+                                                                 actionListener="#{reponseController.delete(item)}"
+                                                                 update="SousCritereListerForm:datalist,SousCritereListerForm:growl,:notify1">
+                                                    <p:confirm header="#{langue['notification.confirm_delete_dialog_header']}"
+                                                               message="#{langue['notification.confirm_delete_message']} ?"
+                                                               icon="ui-icon-alert"/>
+                                                </p:commandButton>
+
+                                                <p:commandButton icon="ui-icon-pencil" update=":SousCritereCreateForm,:notify1"
+                                                                 class="btn btn-success btn-sm"
+                                                                 actionListener="#{reponseController.prepareEdit(item)}"/>
+
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:form>
+
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+    <p:dialog id="notify1" widgetVar="NotifyDialog1" height="400" width="700" resizable="true" responsive="true" modal="true" style="text-align: center; font-size: 14px; font-family: Cambria;">
+        <f:facet name="header">
+            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{reponseController.routine.titleNotify}" />
+        </f:facet>
+        <h:form id="NotifyForm1">
+            <h:graphicImage id="nt_img" url="#{reponseController.routine.iconMessage}" style="cursor:pointer" />
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+
+            <h:outputText id="nt_msg" value="#{reponseController.routine.message}"/>
+
+            <hr size="3" style="background-color: cornflowerblue; margin-top: 5%;"/>
+
+            <p:commandButton style="font-family: Cambria; font-size: 14px;" value="#{langue['common.fermer']}" onclick="PF('NotifyDialog1').hide()" type="button" immediate="true"/>
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+        </h:form>
+    </p:dialog>
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+</ui:composition>

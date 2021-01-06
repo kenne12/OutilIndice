@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <h:form id="NotifZone">
+        <p:growl id="grow_msg" />
+    </h:form>
+
+    <h:form id="EvaluationListerForm">
+
+        <p:messages id="growl" closable="true">
+            <p:effect type="pulsate" event="load" delay="50" />
+        </p:messages>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-success">
+                    <div style="color: white" class="panel-heading">
+                        #{langue.donnee_evaluation}
+
+                        <p:commandButton update=":EvaluationCreateForm,:notify1"                                         
+                                         icon="ui-icon-plus"
+                                         style="float: right"
+                                         value="#{langue['common.ajouter']}"
+                                         actionListener="#{evaluationPersonnelController.prepareCreate()}"/> 
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Sous - Periode</label>                               
+                                    <h:selectOneMenu class="form-control" value="#{evaluationPersonnelController.sousperiode.idsousperiode}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                        <f:selectItems value="#{evaluationPersonnelController.sousperiodes}" var="item" itemLabel="#{item.nom}" itemValue="#{item.idsousperiode}" />
+                                        <p:ajax update="EvaluationListerForm,:NotifZone" listener="#{evaluationPersonnelController.filterData()}" />
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+
+                            <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>                                        
+                                        <th style="width: 30%">#{langue.personnel}</th>
+                                        <th style="width: 10%">#{langue.note}</th>
+                                        <th style="width: 10%">#{langue.note} IN </th>
+                                        <th style="width: 10%">#{langue.note} IP </th>
+                                        <th style="width: 10%">#{langue.note} Finale </th>
+                                        <th style="width: 10%">#{langue['common.action']}</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <ui:repeat value="#{evaluationPersonnelController.notes}" var="item">
+                                        <tr>
+                                            <td>#{item.idpersonnel.nom} #{item.idpersonnel.prenom}</td>
+                                            <td>#{item.notepersonnelle}</td>
+                                            <td>#{item.notein}</td>
+                                            <td>#{item.noteip}</td>
+                                            <td>#{item.notefinale}</td>
+                                            <td>                                        
+                                                <p:commandButton icon="ui-icon-pencil" update=":EvaluationCreateForm"
+                                                                 class="btn btn-success btn-sm"
+                                                                 actionListener="#{evaluationPersonnelController.prepareEdit(item)}"/>
+
+                                                <p:commandButton icon="ui-icon-search" update=":EvaluationDetailForm"
+                                                                 class="btn btn-success btn-sm"
+                                                                 actionListener="#{evaluationPersonnelController.prepareView(item)}"/>
+                                                
+                                                <p:commandButton class="btn btn-danger btn-sm" icon="ui-icon-trash">
+                                                    <p:ajax event="click" listener="#{evaluationPersonnelController.delete(item)}" update=":EvaluationListerForm,:notify1,:NotifZone"/>
+                                                    <p:confirm header="#{langue['dialog.confirmation']}"
+                                                               message="#{langue['dialog.confirmation_suppression']}"
+                                                               icon="ui-icon-alert"/>
+                                                </p:commandButton>
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:form>
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+    <p:dialog id="notify1" widgetVar="NotifyDialog1" height="400" width="700" resizable="true" responsive="true" modal="true" style="text-align: center; font-size: 14px; font-family: Cambria;">
+        <f:facet name="header">
+            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{evaluationPersonnelController.routine.titleNotify}" />
+        </f:facet>
+        <h:form id="NotifyForm1">
+            <h:graphicImage id="nt_img" url="#{evaluationPersonnelController.routine.iconMessage}" style="cursor:pointer" />
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+
+            <h:outputText id="nt_msg" value="#{evaluationPersonnelController.routine.message}"/>
+
+            <hr size="3" style="background-color: cornflowerblue; margin-top: 5%;"/>
+
+            <p:commandButton style="font-family: Cambria; font-size: 14px;" value="#{langue['common.fermer']}" onclick="PF('NotifyDialog1').hide()" type="button" immediate="true"/>
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+        </h:form>
+    </p:dialog>
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+</ui:composition>

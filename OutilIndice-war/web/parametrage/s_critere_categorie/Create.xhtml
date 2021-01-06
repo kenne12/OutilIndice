@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="CategorieStrCreateDlg" 
+                  widgetVar="CategorieStrCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['categorie_structure.formulaire_creation']}"
+                  closeOnEscape="true"
+                  width="70%"
+                  height="600">
+
+            <h:form id="CategorieStrCreateForm">
+
+                <div class="col-md-12">
+
+                    <h:panelGroup id="display">
+
+                        <div class="row col-md-12">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue.structure}" for="structure" />
+                                <h:selectOneMenu disabled="true" converter="structureConverter" class="form-control" id="structure" value="#{sousCritereCategorieController.structure}">
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                    <f:selectItems value="#{sousCritereCategorieController.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
+                                </h:selectOneMenu>                                                
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.categorie}" for="categorie" />
+                                    <h:selectOneMenu converter="categorieConverter" class="form-control" id="categorie" value="#{sousCritereCategorieController.categorie}">
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                    <f:selectItems value="#{sousCritereCategorieController.categories}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
+                                    <p:ajax update="grid_critere,datalist" listener="#{sousCritereCategorieController.updateFiltre()}"/>
+                                </h:selectOneMenu> 
+                                </div>
+                            </div>
+                        </div>
+
+                        <p:separator/>
+
+                        <p:selectManyCheckbox id="grid_critere" value="#{sousCritereCategorieController.selectedCategories}" layout="grid" columns="1" converter="categorieConverter">
+                            <f:selectItems value="#{sousCritereCategorieController.categories}" var="t" itemLabel="#{t.nom}" itemValue="#{t}" />
+                            <p:ajax />
+                        </p:selectManyCheckbox>
+
+                        <p:separator />
+
+                        <p:commandButton value="#{langue['common.ajouter']}"
+                                         actionListener="#{sousCritereCategorieController.addCategorieToTable()}"
+                                         update="datalist" icon="ui-icon-plus" />
+                        <p:separator />
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue['common.denominateur']}" for="denominateur" />
+                                    <h:inputText  class="form-control" id="denominateur" value="#{sousCritereCategorieController.denominateur}" >
+                                        <p:ajax listener="#{sousCritereCategorieController.updateData()}" event="keyup" update="datalist"/>
+                                    </h:inputText>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p:dataTable id="datalist" value="#{sousCritereCategorieController.categoriestructures}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="15"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                            <p:column class="hardBreak" style="width: 15%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue['common.code']}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.categorie.code}"/> 
+                            </p:column>
+
+                            <p:column class="hardBreak" style="width: 40%;">
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue['common.nom']}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.categorie.nom}"/> 
+                            </p:column>
+
+                            <p:column style="width: 10% ; text-align:center" headerText="#{langue['common.indice']}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.indice}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.indice}">                                             
+                                            <p:ajax event="keyup" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 10% ; text-align:center" headerText="#{langue['common.denominateur']}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.denominateur}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.denominateur}">                                             
+                                            <p:ajax event="keyup" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 10% ; text-align:center" headerText="#{langue['sous_criteres.point_max']}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.pointmax}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.pointmax}">                                             
+                                            <p:ajax event="keyup" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 10%" >
+                                <f:facet name="header">
+                                    <h:outputText value="Action"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-trash">
+                                    <p:ajax update="datalist" event="click" listener="#{sousCritereCategorieController.removeCategorie(item)}" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+
+                        <p:separator/>
+
+                        <center>
+
+                            <p:commandButton value="#{langue['common.fermer']}" 
+                                             onclick="PF('CategorieStrCreateDialog').hide()"
+                                             icon="ui-icon-close"/>
+
+                            <p:commandButton icon="ui-icon-save" actionListener="#{sousCritereCategorieController.save()}" value="#{langue['common.enregistrer']}" update="display,:CategorieStrListerForm:datalist,:CategorieStrListerForm:growl">
+                                <p:confirm header="#{langue['notification.confirmation']}" 
+                                           message="#{langue['notification.confirmation_enregistrement']}" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+
+                        </center>
+
+                    </h:panelGroup>
+
+                </div>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

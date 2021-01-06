@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="StructureCreerDlg" 
+                  widgetVar="StructureCreerDialog" 
+                  modal="true" resizable="false" 
+                  appendTo="@(body)" 
+                  width="50%"
+                  height="550px"
+                  header="#{langue['unite_organisation.formulaire_creation']}" 
+                  closeOnEscape="true">
+
+            <h:form id="StructureCreerForm">
+                <h:panelGroup id="display">
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue.institution}</label>
+                                        <h:selectOneMenu id="institution" class="form-control" 
+                                                         value="#{structureController.structure.idinstitution.idinstitution}"
+                                                         required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{structureController.institutions}" var="item" itemLabel="#{item.nom}" itemValue="#{item.idinstitution}" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue.type_structure}</label>
+                                        <h:selectOneMenu id="type_structure" class="form-control" 
+                                                         value="#{structureController.structure.idtypestructure.idtypestructure}"
+                                                         required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{structureController.typestructures}" var="ts" itemLabel="#{ts.nom}" itemValue="#{ts.idtypestructure}" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue.statut_structure}</label>
+                                        <h:selectOneMenu id="statut_structure" class="form-control" 
+                                                         value="#{structureController.structure.idstatutstructure.idstatutstructure}"
+                                                         required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{structureController.statutstructures}" var="sst" itemLabel="#{sst.nom}" itemValue="#{sst.idstatutstructure}" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label>#{langue['common.nom']}</label>
+                                <h:inputTextarea id="nom" value="#{structureController.structure.nom}" required="true" 
+                                                 requiredMessage="#{langue['common.valeur_obligatoire']}" 
+                                                 rows="2"
+                                                 class="form-control"/>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <label>#{langue['common.code']}</label>
+                                        <h:inputText id="code" value="#{structureController.structure.code}" required="true" 
+                                                     requiredMessage="#{langue['common.valeur_obligatoire']}" 
+                                                     class="form-control"/>
+                                    </div>                                            
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue['common.responsable']}</label>
+                                        <h:inputText id="responsable" value="#{structureController.structure.nomrespo}" 
+                                                     class="form-control"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" jsf:rendered="#{structureController.mode.equals('Edit')}">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue['common.etat']}</label>
+                                        <h:selectOneMenu id="etat" class="form-control" value="#{structureController.structure.etat}">
+                                            <f:selectItem itemLabel="#{langue['common.actif']}" itemValue="Actif" />
+                                            <f:selectItem itemLabel="#{langue['common.inactif']}" itemValue="Inactif" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>#{langue['common.presentation']}</label>
+                                <h:inputTextarea id="presentation" value="#{structureController.structure.presentation}"
+                                                 rows="4"
+                                                 requiredMessage="#{langue['common.valeur_obligatoire']}" 
+                                                 class="form-control"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label>#{langue['common.vision']}</label>
+                                <h:inputTextarea id="vision" value="#{structureController.structure.vision}"
+                                                 rows="3"
+                                                 requiredMessage="#{langue['common.valeur_obligatoire']}" 
+                                                 class="form-control"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label>#{langue['common.objecif_general']}</label>
+                                <h:inputTextarea id="objecif_general" value="#{structureController.structure.objectifgeneral}"
+                                                 rows="3"
+                                                 requiredMessage="#{langue['common.valeur_obligatoire']}" 
+                                                 class="form-control"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label>#{langue['common.objecif_specifique']}</label>
+                                <h:inputTextarea id="objecif_specifique" value="#{structureController.structure.objectifspecifique}"
+                                                 rows="4"
+                                                 requiredMessage="#{langue['common.valeur_obligatoire']}" 
+                                                 class="form-control"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label>#{langue['common.arrete_creation']}</label>
+                                <h:inputTextarea id="arrete_creation" value="#{structureController.structure.arretecreation}"
+                                                 rows="2"
+                                                 requiredMessage="#{langue['common.valeur_obligatoire']}" 
+                                                 class="form-control"/>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-10">
+                            <p:commandButton value="#{langue['common.annuler']}" oncomplete="PF('StructureCreerDialog').hide()" icon="ui-icon-close"/>
+                            <p:commandButton actionListener="#{structureController.create()}" value="#{langue['crud.enregistrer']}" 
+                                             update="display,:StructureListerForm,:notify1" 
+                                             onclick="PF('AjaxNotifyDialog').show()" icon="ui-icon-check"/>
+                        </div>
+
+                    </div>
+                </h:panelGroup>  
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+
+</html>

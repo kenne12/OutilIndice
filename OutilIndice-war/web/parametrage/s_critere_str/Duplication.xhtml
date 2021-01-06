@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+
+        <p:dialog id="DuplicationCritereCreateDlg" 
+                  widgetVar="DuplicationCritereCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['critere_structure.formulaire_creation']}"
+                  closeOnEscape="true"
+                  width="85%"
+                  height="600">
+
+            <h:form id="DuplicationCritereCreateForm">
+
+                <p:outputLabel style="color: red ; font-size: 17px" id="error_msg" value="#{sousCritereStrController.message}" />
+
+                <div class="col-md-12">
+
+                    <h:panelGroup id="display">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.structure_source}" for="structure" />
+                                    <h:selectOneMenu 
+                                        class="form-control" 
+                                        id="structure" value="#{sousCritereStrController.idStructureSource}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                        <f:selectItems value="#{sousCritereStrController.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item.idstructure}" />
+                                        <p:ajax update="detail,datalist,:NotifZone:grow_msg" listener="#{sousCritereStrController.updateFiltreDuplication()}"/>
+                                    </h:selectOneMenu>                                                
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.structure_destination}" for="structure_1" />
+                                    <h:selectOneMenu
+                                        class="form-control" 
+                                        id="structure_1" value="#{sousCritereStrController.idStructureDestination}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                        <f:selectItems value="#{sousCritereStrController.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item.idstructure}" />
+                                        <p:ajax update="detail,datalist,:NotifZone:grow_msg" listener="#{sousCritereStrController.updateFiltreDuplication()}"/>
+                                    </h:selectOneMenu>                                                
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.categorie}" for="categorie" />
+                                    <h:selectOneMenu disabled="#{sousCritereStrController.mode.equals('Edit')}" 
+                                                     class="form-control" 
+                                                     id="categorie" value="#{sousCritereStrController.categorie.idcategorie}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                        <f:selectItems value="#{sousCritereStrController.categories}" var="c" itemLabel="#{c.nom}" itemValue="#{c.idcategorie}" />
+                                        <p:ajax update="detail,datalist,:NotifZone:grow_msg" listener="#{sousCritereStrController.updateFiltreDuplication()}"/>
+                                    </h:selectOneMenu>                                                
+                                </div>
+                            </div>
+                        </div>
+
+                        <div jsf:id="detail" class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Nombre de criteres</label>
+                                    <h:inputText disabled="true" class="form-control" value="#{sousCritereStrController.listDetail.get(0)}" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Nombre de sous - criteres</label>
+                                    <h:inputText disabled="true" class="form-control" value="#{sousCritereStrController.listDetail.get(1)}" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Nombre de criteres</label>
+                                    <h:inputText disabled="true" class="form-control" value="#{sousCritereStrController.listDetail.get(2)}" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Nombre de sous - criteres</label>
+                                    <h:inputText disabled="true" class="form-control" value="#{sousCritereStrController.listDetail.get(3)}" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <p:separator />
+
+                        <p:dataTable id="datalist" value="#{sousCritereStrController.listDetailsc}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="#{sousCritereStrController.listDetailsc.size()}"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                            <p:column class="hardBreak" style="width: 35%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.sous_critere}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.idsouscritere.nom}"/> 
+                            </p:column>
+
+                            <p:column style="width: 8%; text-align:center" headerText="#{langue['sous_criteres.point_max']}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.pointMax}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.pointMax}">                                             
+                                            <p:ajax event="keyup" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column> 
+
+                            <p:column style="width: 40%; text-align:left" headerText="#{langue['common.details']}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText class="hardBreak" value="#{item.detail}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputTextarea rows="5" style="width: 100%" required="true" value="#{item.detail}">                                             
+                                            <p:ajax event="keyup" />
+                                        </p:inputTextarea>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 10%" >
+                                <f:facet name="header">
+                                    <h:outputText value="Action"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-trash">
+                                    <p:ajax update="datalist" event="click" listener="#{sousCritereStrController.removeCritere(item)}" />
+                                </p:commandButton>
+
+                                <p:commandButton icon="ui-icon-pencil">
+                                    <p:ajax update=":DetailEditForm" event="click" listener="#{sousCritereStrController.prepareEditDetail(item)}" />
+                                </p:commandButton>                                
+                            </p:column>
+
+                            <p:columnGroup type="footer" id="footer_tab">
+                                <p:row>
+                                    <p:column style="text-align:right" footerText="Totaux" />                                                                          
+                                    <p:column style="text-align:center" footerText="#{sousCritereStrController.score}"/>  
+                                    <p:column colspan="2" style="text-align:center" footerText=" / " /> 
+                                </p:row>
+                            </p:columnGroup>
+
+                        </p:dataTable>
+
+                        <p:separator/>
+
+                        <center>
+                            <p:commandButton value="#{langue['common.fermer']}" 
+                                             onclick="PF('DuplicationCritereCreateDialog').hide()"
+                                             icon="ui-icon-close"/>
+
+                            <p:commandButton icon="ui-icon-save" actionListener="#{sousCritereStrController.duplicate()}" value="#{langue['common.enregistrer']}" 
+                                             update="display,:CritereListerForm:datalist,:CritereListerForm:growl,error_msg">
+                                <p:confirm header="#{langue['notification.confirmation']}" 
+                                           message="#{langue['notification.confirmation_enregistrement']}" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+                        </center>
+
+                    </h:panelGroup>
+
+                </div>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

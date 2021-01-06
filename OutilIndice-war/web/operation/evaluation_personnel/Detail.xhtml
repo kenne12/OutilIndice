@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="EvaluationDetailDlg" 
+                  widgetVar="EvaluationDetailDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['evaluation.formulaire_creation_personnel']}"
+                  closeOnEscape="true"
+                  width="85%"
+                  height="600">
+
+            <h:form id="EvaluationDetailForm">
+
+                <p:outputLabel style="color: red ; font-size: 17px" id="error_msg" value="#{evaluationPersonnelController.message}" />
+
+                <div class="col-md-12">
+
+                    <h:panelGroup id="display">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.personnel}" for="personnel" />
+                                    <h:selectOneMenu class="form-control"                                         
+                                                     id="personnel" value="#{evaluationPersonnelController.personnel.idpersonnel}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                        <f:selectItems value="#{evaluationPersonnelController.personnels}" var="p" itemLabel="#{p.nom} #{p.prenom}" itemValue="#{p.idpersonnel}" />                                        
+                                    </h:selectOneMenu>                                                
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.periode}" for="periode" />
+                                    <h:selectOneMenu class="form-control"                                         
+                                                     id="periode" value="#{evaluationPersonnelController.sousperiode.idsousperiode}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                        <f:selectItems value="#{evaluationPersonnelController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />                                       
+                                    </h:selectOneMenu>                                                
+                                </div>
+                            </div>
+                        </div>
+
+                        <p:separator/>
+
+                        <h:outputText value="I. CRITERES D'EVALUATON PERSONNELS" style="font-size: 20px" />
+                        <p:separator />
+
+                        <p:dataTable id="datalist" value="#{evaluationPersonnelController.evaluationpersonnels}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="#{evaluationPersonnelController.evaluationpersonnels.size()}"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                            <p:column class="hardBreak" style="width: 40%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.sous_critere}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.iddetailsc.idsouscritere.nom} / [#{item.iddetailsc.pointMax}]"/> 
+                            </p:column>
+
+                            <p:column class="hardBreak" style="width: 5%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.note}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.note}"/> 
+                            </p:column>
+
+                            <p:column class="hardBreak" style="width: 5%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.note}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.pointmaxindice}"/> 
+                            </p:column>
+
+                            <p:column class="hardBreak" style="width: 35%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.reponse}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.idelementreponse.nom}"/> 
+                            </p:column>
+
+                            <p:columnGroup type="footer" id="footer_tab">
+                                <p:row>
+                                    <p:column style="text-align:right" footerText="Totaux" />                                                                          
+                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.score}"/>
+                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.scoreIndice}"/>
+                                    <p:column style="text-align:center" footerText=" / " /> 
+                                </p:row>
+                            </p:columnGroup>
+
+                        </p:dataTable>
+
+                        <p:separator/>
+                        <h:outputText value="II. CRITERES D'INCITATIONS POSITIVES" style="font-size: 20px" />
+                        <p:separator />
+
+                        <p:dataTable id="datalist_2" value="#{evaluationPersonnelController.evaluationpersonnelIps}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="#{evaluationPersonnelController.evaluationpersonnelIps.size()}"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                            <p:column class="hardBreak" style="width: 40%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.sous_critere}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.iddetailsc.idsouscritere.nom}"/> 
+                            </p:column>
+
+                            <p:column class="hardBreak" style="width: 5%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.note}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.note}"/> 
+                            </p:column>
+
+                            <p:column class="hardBreak" style="width: 40%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.reponse}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.idelementreponse.nom}"/> 
+                            </p:column>
+
+                            <p:columnGroup type="footer" id="footer_tab_2">
+                                <p:row>
+                                    <p:column style="text-align:right" footerText="Totaux" />                                                                          
+                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.score_1}"/>  
+                                    <p:column style="text-align:center" footerText=" / " /> 
+                                </p:row>
+                            </p:columnGroup>
+
+                        </p:dataTable>
+
+                        <p:separator/>
+                        <h:outputText value="III. CRITERES D'INCITATIONS NEGATIVES" style="font-size: 20px" />
+                        <p:separator />
+
+                        <p:dataTable id="datalist_3" value="#{evaluationPersonnelController.evaluationpersonnelIns}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="#{evaluationPersonnelController.evaluationpersonnelIns.size()}"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                            <p:column class="hardBreak" style="width: 40%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.sous_critere}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.iddetailsc.idsouscritere.nom}"/> 
+                            </p:column>
+
+                            <p:column class="hardBreak" style="width: 5%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.note}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.note}"/> 
+                            </p:column>
+
+                            <p:column class="hardBreak" style="width: 40%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.reponse}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.idelementreponse.nom}"/> 
+                            </p:column>
+
+                            <p:columnGroup type="footer" id="footer_tab_2">
+                                <p:row>
+                                    <p:column style="text-align:right" footerText="Totaux" />                                                                          
+                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.score_2}"/>  
+                                    <p:column style="text-align:center" footerText=" / " /> 
+                                </p:row>
+                            </p:columnGroup>
+
+                        </p:dataTable>
+
+                        <p:separator />
+                        <h:outputText id="somme" value="Note = I + II - III = #{evaluationPersonnelController.score} + #{evaluationPersonnelController.score_1} - #{evaluationPersonnelController.score_2} = #{evaluationPersonnelController.score + evaluationPersonnelController.score_1 - evaluationPersonnelController.score_2}"  style="font-size: 20px"/>
+                        <p:separator />
+
+                        <center>
+                            <p:commandButton value="#{langue['common.fermer']}" 
+                                             onclick="PF('EvaluationDetailDialog').hide()"
+                                             icon="ui-icon-close"/>
+                        </center>
+                    </h:panelGroup>
+                </div>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

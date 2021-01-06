@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <h:form id="search_form">
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>#{langue.structure}</label>
+                    <h:selectOneMenu id="institution" class="form-control" 
+                                     value="#{recetteController.structure.idstructure}"
+                                     required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                        <f:selectItems value="#{recetteController.structures}" var="st" itemLabel="#{st.nom}" itemValue="#{st.idstructure}" />
+                        <p:ajax update=":RecetteListerForm:datalist" listener="#{recetteController.updateData()}" />
+                    </h:selectOneMenu>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>#{langue.periode}</label>
+                    <h:selectOneMenu id="type_structure" class="form-control" 
+                                     value="#{recetteController.periode.idperiode}"
+                                     required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                        <f:selectItems value="#{recetteController.periodes}" var="p" itemLabel="#{p.nom}" itemValue="#{p.idperiode}" />
+                        <p:ajax update=":RecetteListerForm:datalist" listener="#{recetteController.updateData()}" />
+                    </h:selectOneMenu>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>#{langue.sous_periode}</label>
+                    <h:selectOneMenu id="type_sousperiode" class="form-control" 
+                                     value="#{recetteController.sousperiode.idsousperiode}"
+                                     required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                        <f:selectItems value="#{recetteController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
+                        <p:ajax update=":RecetteListerForm:datalist" listener="#{recetteController.updateData()}" />
+                    </h:selectOneMenu>
+                </div>
+            </div>
+
+            <div class="col-md-2">               
+                <p:commandButton value="#{langue['common.chercher']}" update=":RecetteListerForm"  actionListener="#{recetteController.recherche()}" />                
+            </div>
+        </div>
+
+    </h:form>
+
+    <h:form id="RecetteListerForm">
+
+        <p:messages id="growl" closable="true">
+            <p:effect type="pulsate" event="load" delay="50" />
+        </p:messages>
+
+        <br/>
+
+
+        <div class="row">
+            <div class="col-md-10">
+
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        #{langue['recette.list']}
+                        <p:commandButton disabled="true" style="float: right" value="#{langue['crud.imprimer']}" icon="ui-icon-print" />
+                        <p:commandButton style="float: right" value="#{langue['crud.ajouter']}" icon="ui-icon-plus" update=":RecetteCreerForm,:notify1" actionListener="#{recetteController.prepareCreate()}" />                                                                
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover" id="datalist" jsf:id="datalist">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 70%">#{langue.rubrique}</th>
+                                        <th style="width: 15%">#{langue['common.montant']}</th>
+                                        <th style="width: 15%">#{langue['common.pourcentage']}</th>                                                                
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ui:repeat value="#{recetteController.recettes}" var="item">
+                                        <tr class="odd gradeX">
+                                            <td>#{item.idsousrubriquerecette.nom}</td>
+                                            <td> <h:outputLabel value="#{item.montant}">
+                                                    <f:convertNumber />
+                                                </h:outputLabel>  
+                                            </td>
+                                            <td>
+                                                <h:outputLabel value="#{item.pourcentage}">
+                                                    <f:convertNumber />
+                                                </h:outputLabel> 
+                                            </td>                                                                                                         
+                                        </tr>
+                                    </ui:repeat>
+                                </tbody>
+
+                                <tfoot>
+                                    <tr>
+                                        <th >Totaux </th>                               
+                                        <th><h:outputLabel value="#{recetteController.convertMoney()}"> <f:convertNumber />  </h:outputLabel>  </th>
+                                        <th><h:outputLabel value=" #{recetteController.arrondi(recetteController.pourcentage)}"> <f:convertNumber />  </h:outputLabel>  </th>
+                                    </tr>
+                                </tfoot>
+
+                            </table>
+                        </div>
+                    </div>                
+                </div>   
+            </div>
+        </div>
+    </h:form>
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+    <p:dialog id="notify1" widgetVar="NotifyDialog1" height="400" width="700" resizable="true" responsive="true" modal="true" style="text-align: center; font-size: 14px; font-family: Cambria;">
+        <f:facet name="header">
+            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{recetteController.routine.titleNotify}" />
+        </f:facet>
+        <h:form id="NotifyForm1">
+            <h:graphicImage id="nt_img" url="#{recetteController.routine.iconMessage}" style="cursor:pointer" />
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+
+            <h:outputText id="nt_msg" value="#{recetteController.routine.message}"/>
+
+            <hr size="3" style="background-color: cornflowerblue; margin-top: 5%;"/>
+
+            <p:commandButton style="font-family: Cambria; font-size: 14px;" value="#{langue.valider}" onclick="PF('NotifyDialog1').hide()" type="button" immediate="true"/>
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+        </h:form>
+    </p:dialog>
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+</ui:composition>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+
+        <p:dialog id="SousCritereCreateDlg" 
+                  widgetVar="SousCritereCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['sous_critere.formulaire_creation']}"
+                  closeOnEscape="true"
+                  width="60%"
+                  height="600px">
+
+            <h:form id="SousCritereCreateForm">
+
+                <h:panelGroup id="display">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue.critere}" for="critere" />
+                                <h:selectOneMenu class="form-control" id="critere" value="#{sousCritereController.critere.idcritere}">
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="-1" /> 
+                                    <f:selectItems value="#{sousCritereController.criteres}" var="item" itemLabel="#{item.code} - #{item.nom}" itemValue="#{item.idcritere}" />
+                                    <p:ajax />
+                                </h:selectOneMenu>                                                
+                            </div>
+                        </div>                        
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue.rubrique}" for="rubrique" />
+                                <h:selectOneMenu class="form-control" id="rubrique" value="#{sousCritereController.rubriquesc.idrubriquesc}">
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="-1" /> 
+                                    <f:selectItems value="#{sousCritereController.listRubriquesc}" var="itemR" itemLabel="#{itemR.nom}" itemValue="#{itemR.idrubriquesc}" />
+                                    <p:ajax />
+                                </h:selectOneMenu>                                                
+                            </div>
+                        </div>                        
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue['common.code']}" for="code" />
+                                <h:inputText class="form-control" id="code" value="#{sousCritereController.souscritere.code}" required="true" requiredMessage="#{langue['common.valeur_requise']}" >
+                                    <p:ajax />
+                                </h:inputText>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue['common.point_max']}" for="pt_max" />
+                                <h:inputText class="form-control" id="pt_max" value="#{sousCritereController.souscritere.pointmax}" required="true" requiredMessage="#{langue['common.valeur_requise']}" >
+                                    <p:ajax />
+                                </h:inputText>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <p:outputLabel value="#{langue['common.nom']}" for="nom" />
+                        <h:inputTextarea rows="3" class="form-control" id="nom" value="#{sousCritereController.souscritere.nom}" required="true" requiredMessage="#{langue['common.valeur_requise']}" >
+                            <p:ajax />
+                        </h:inputTextarea>
+                    </div>
+
+                    <div class="form-group">
+                        <p:outputLabel value="#{langue['common.details']}" for="detail" />
+                        <h:inputTextarea rows="6" class="form-control" id="detail" value="#{sousCritereController.souscritere.detail}" >
+                            <p:ajax />
+                        </h:inputTextarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-check">                                
+                                    <h:selectBooleanCheckbox id="critere_personnel" class="form-check-input" value="#{sousCritereController.souscritere.personnel}" >
+                                        <p:ajax listener="#{sousCritereController.action('personnel')}" update="critere_service,display"/>
+                                    </h:selectBooleanCheckbox>  
+                                    <label for="critere_personnel" class="form-check-label">#{langue['sous_critere.sous_critere_evaluation_personnel']}</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-check">                                
+                                    <h:selectBooleanCheckbox id="critere_service" class="form-check-input" value="#{sousCritereController.souscritere.service}" >
+                                        <p:ajax listener="#{sousCritereController.action('service')}" update="critere_personnel,display" />
+                                    </h:selectBooleanCheckbox>
+                                    <label for="critere_service" class="form-check-label">#{langue['sous_critere.sous_critere_evaluation_service']}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-check">                                
+                                    <h:selectBooleanCheckbox id="critere_incitatif" class="form-check-input" value="#{sousCritereController.souscritere.incitatif}" >
+                                        <p:ajax listener="#{sousCritereController.updateMultiplicateur()}" update="multiplicateur_div,display"  />
+                                    </h:selectBooleanCheckbox>
+                                    <label for="critere_incitatif" class="form-check-label">#{langue['sous_critere.sous_critere_incitatif']}</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div jsf:id="multiplicateur_div" jsf:rendered="#{sousCritereController.souscritere.incitatif}" class="col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel rendered="#{sousCritereController.souscritere.incitatif}" value="#{langue['common.multiplicateur']}" for="signe" />
+                                <h:selectOneMenu rendered="#{sousCritereController.souscritere.incitatif}" class="form-control" id="signe" value="#{sousCritereController.souscritere.signe}">
+                                    <f:selectItem itemLabel="Positif" itemValue="+" />
+                                    <f:selectItem itemLabel="Négatif" itemValue="-" />
+                                    <p:ajax />
+                                </h:selectOneMenu>
+                            </div>
+                        </div>                        
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue['common.numerateur']}" for="numerateur" />
+                                <h:inputText  class="form-control" id="numerateur" value="#{sousCritereController.souscritere.numerateur}" >
+                                    <p:ajax />
+                                </h:inputText>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue['common.denominateur']}" for="denominateur" />
+                                <h:inputText  class="form-control" id="denominateur" value="#{sousCritereController.souscritere.denominateur}" >
+                                    <p:ajax />
+                                </h:inputText>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p:separator/>
+
+                    <center>
+
+                        <p:commandButton value="#{langue['common.fermer']}" 
+                                         onclick="PF('SousCritereCreateDialog').hide()"
+                                         icon="ui-icon-close"/>
+
+                        <p:commandButton icon="ui-icon-save" actionListener="#{sousCritereController.save()}" value="#{langue['common.enregistrer']}" update="display,:SousCritereListerForm:datalist,:SousCritereListerForm:growl">
+                            <p:confirm header="#{langue['notification.confirmation']}" 
+                                       message="#{langue['notification.confirmation_enregistrement']}" 
+                                       icon="ui-icon-alert"/>
+                        </p:commandButton>
+
+                    </center>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

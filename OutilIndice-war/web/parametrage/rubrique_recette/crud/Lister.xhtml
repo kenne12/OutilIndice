@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <h:form id="RubriqueRecetteListerForm">
+
+        <p:messages id="growl" closable="true">
+            <p:effect type="pulsate" event="load" delay="50" />
+        </p:messages>
+
+        <br/>
+
+        <div class="row">
+
+            <div class="col-md-9">
+
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        #{langue['rubrique_recette.list']}
+                        <p:commandButton disabled="true" style="float: right" value="#{langue['crud.imprimer']}" icon="ui-icon-print" />
+                        <p:commandButton style="float: right" value="#{langue['crud.ajouter']}" icon="ui-icon-plus" update=":RubriqueRecetteCreerForm,:notify1" actionListener="#{rubriqueRecetteController.prepareCreate()}" />                                                                
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover" id="datalist" jsf:id="datalist">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 25%">#{langue['common.code']}</th>
+                                        <th style="width: 60%">#{langue['common.nom']}</th>                                                                                                     
+                                        <th style="width: 15%">#{langue['common.action']}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <ui:repeat value="#{rubriqueRecetteController.rubriquerecettes}" var="item">
+                                        <tr class="odd gradeX">
+                                            <td>#{item.code}</td>
+                                            <td>#{item.nom}</td>                                                                                                                 
+                                            <th> 
+                                                <p:commandButton class="btn btn-success btn-sm" icon="ui-icon-pencil">
+                                                    <p:ajax event="click" listener="#{rubriqueRecetteController.prepareEdit(item)}" update=":RubriqueRecetteCreerForm,:notify1"/>
+                                                </p:commandButton>
+
+                                                <p:commandButton class="btn btn-danger btn-sm" icon="ui-icon-trash">
+                                                    <p:ajax event="click" listener="#{rubriqueRecetteController.delete(item)}" update=":RubriqueRecetteListerForm,:notify1"/>
+                                                    <p:confirm header="#{langue['dialog.confirmation']}"
+                                                               message="#{langue['dialog.confirmation_suppression']}"
+                                                               icon="ui-icon-alert"/>
+                                                </p:commandButton>
+                                            </th>
+                                        </tr>
+                                    </ui:repeat>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>                
+                </div>  
+
+            </div>
+
+        </div>
+
+    </h:form>
+
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+    <p:dialog id="notify1" widgetVar="NotifyDialog1" height="400" width="700" resizable="true" responsive="true" modal="true" style="text-align: center; font-size: 14px; font-family: Cambria;">
+        <f:facet name="header">
+            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{rubriqueRecetteController.routine.titleNotify}" />
+        </f:facet>
+        <h:form id="NotifyForm1">
+            <h:graphicImage id="nt_img" url="#{rubriqueRecetteController.routine.iconMessage}" style="cursor:pointer" />
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+
+            <h:outputText id="nt_msg" value="#{rubriqueRecetteController.routine.message}"/>
+
+            <hr size="3" style="background-color: cornflowerblue; margin-top: 5%;"/>
+
+            <p:commandButton style="font-family: Cambria; font-size: 14px;" value="#{langue.valider}" onclick="PF('NotifyDialog1').hide()" type="button" immediate="true"/>
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+        </h:form>
+    </p:dialog>
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+</ui:composition>

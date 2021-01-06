@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="EvaluationCreateDlg" 
+                  widgetVar="EvaluationCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['evaluation.formulaire_evaluation_service']}"
+                  closeOnEscape="true"
+                  width="85%"
+                  height="600">
+
+            <h:form id="EvaluationCreateForm">
+
+                <p:outputLabel style="color: red ; font-size: 17px" id="error_msg" value="#{evaluationServiceController.message}" />
+
+                <div class="col-md-12">
+
+                    <h:panelGroup id="display">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.service}" for="service" />
+                                    <h:selectOneMenu class="form-control"                                         
+                                                     id="service" value="#{evaluationServiceController.service.idservice}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                        <f:selectItems value="#{evaluationServiceController.services}" var="s" itemLabel="#{s.nom}" itemValue="#{s.idservice}" />
+                                        <p:ajax update="grid_critere,datalist,:NotifZone" listener="#{evaluationServiceController.updateEvaluationData()}"/>
+                                    </h:selectOneMenu>                                                
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.periode}" for="periode" />
+                                    <h:selectOneMenu class="form-control"                                         
+                                                     id="periode" value="#{evaluationServiceController.sousperiode.idsousperiode}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                        <f:selectItems value="#{evaluationServiceController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
+                                        <p:ajax update="grid_critere,datalist,:NotifZone" listener="#{evaluationServiceController.updateEvaluationData()}"/>
+                                    </h:selectOneMenu>                                                
+                                </div>
+                            </div>
+                        </div>
+
+                        <p:separator/>
+
+                        <p:selectManyCheckbox id="grid_critere" value="#{evaluationServiceController.selectedSouscritereservice}" layout="grid" columns="1" converter="sousCritereServiceConverter">
+                            <f:selectItems value="#{evaluationServiceController.listSouscritereservice}" var="l" itemLabel="#{l.idsouscritere.nom}" itemValue="#{l}" />
+                            <p:ajax />
+                        </p:selectManyCheckbox>
+
+                        <p:separator />
+
+                        <p:commandButton                            
+                            value="#{langue['common.ajouter']}"
+                            actionListener="#{evaluationServiceController.addCritereToTable()}"
+                            update="datalist" icon="ui-icon-plus" />
+
+                        <p:separator />
+
+                        <p:dataTable id="datalist" value="#{evaluationServiceController.evaluationservices}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="15"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                            <p:column class="hardBreak" style="width: 34%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.sous_critere}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.idsouscritereservice.idsouscritere.nom} / [#{item.idsouscritereservice.pointmax}]"/> 
+                            </p:column>
+
+                            <p:column style="width: 8%; text-align:center" headerText="#{langue.note}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.note}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.note}">                                             
+                                            <p:ajax event="keyup" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column> 
+
+                            <p:column class="hardBreak" style="width: 8%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.coef}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.multiplicateur}"/> 
+                            </p:column>
+
+                            <p:column style="width: 30%; text-align:left" headerText="#{langue['common.observaiton']}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText class="hardBreak" value="#{item.observation}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputTextarea rows="2" style="width: 100%" required="true" value="#{item.observation}">                                             
+                                            <p:ajax event="keyup" />
+                                        </p:inputTextarea>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column class="hardBreak" style="width: 7%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.incitatif}"/>
+                                </f:facet>
+                                <h:selectBooleanCheckbox value="#{item.idsouscritereservice.idsouscritere.incitatif}" disabled="true" /> 
+                            </p:column>
+
+                            <p:column style="width: 10%" >
+                                <f:facet name="header">
+                                    <h:outputText value="Action"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-trash">
+                                    <p:ajax update="datalist" event="click" listener="#{evaluationServiceController.removeCritere(item)}" />
+                                </p:commandButton>
+
+                                <p:commandButton icon="ui-icon-pencil">
+                                    <p:ajax update=":DetailEditForm" event="click" listener="#{evaluationServiceController.prepareEditDetail(item)}" />
+                                </p:commandButton>                                
+                            </p:column>
+
+                            <p:columnGroup type="footer" id="footer_tab">
+                                <p:row>
+                                    <p:column style="text-align:right" footerText="Totaux" />                                                                          
+                                    <p:column style="text-align:center" footerText="#{evaluationServiceController.score}"/>  
+                                    <p:column colspan="4" style="text-align:center" footerText=" / " /> 
+                                </p:row>
+                            </p:columnGroup>
+
+                        </p:dataTable>
+
+                        <p:separator/>
+
+                        <center>
+                            <p:commandButton value="#{langue['common.fermer']}" 
+                                             onclick="PF('EvaluationCreateDialog').hide()"
+                                             icon="ui-icon-close"/>
+
+                            <p:commandButton icon="ui-icon-save" actionListener="#{evaluationServiceController.save()}" value="#{langue['common.enregistrer']}" 
+                                             update="display,:EvaluationListerForm:datalist,:EvaluationListerForm:growl,error_msg">
+                                <p:confirm header="#{langue['notification.confirmation']}" 
+                                           message="#{langue['notification.confirmation_enregistrement']}" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+                        </center>
+                    </h:panelGroup>
+                </div>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+
+        <p:dialog id="UtilisateurCreerDlg" 
+                  widgetVar="UtilisateurCreerDialog" 
+                  modal="true" resizable="false" 
+                  appendTo="@(body)" 
+                  width="60%"
+                  height="525px"
+                  header="#{langue['utilisateur.formulaire_creation']}" 
+                  closeOnEscape="true">
+
+            <h:form id="UtilisateurCreerForm">
+                <h:panelGroup id="display">
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="panel-default">
+                                <div class="panel-heading">
+                                    #{langue['common.informations_generales']} 
+                                </div>
+
+                                <div class="panel-body">
+
+                                    <div class="form-group">
+                                        <label>#{langue['common.nom']}</label>
+                                        <h:inputText id="nom" value="#{utilisateurController.utilisateur.nom}" required="true" 
+                                                     requiredMessage="#{langue['common.valeur_obligatoire']}" 
+                                                     class="form-control"/>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>#{langue['common.prenom']}</label>
+                                        <h:inputText id="prenom" value="#{utilisateurController.utilisateur.prenom}" required="true" 
+                                                     requiredMessage="#{langue['common.valeur_obligatoire']}" 
+                                                     class="form-control"/>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>#{langue.login}</label>
+                                        <h:inputText id="login" value="#{utilisateurController.utilisateur.login}" required="true" 
+                                                     requiredMessage="#{langue['common.valeur_obligatoire']}" 
+                                                     class="form-control"/>
+                                    </div>
+
+                                    <div jsf:rendered="#{utilisateurController.mode.equals('Create')}" class="form-group">
+                                        <label>#{langue.password}</label>
+                                        <h:inputSecret id="password" value="#{utilisateurController.utilisateur.password}" required="true" 
+                                                       requiredMessage="#{langue['common.valeur_obligatoire']}" 
+                                                       class="form-control"/>
+                                    </div>
+
+                                    <div jsf:rendered="#{utilisateurController.mode.equals('Create')}" class="form-group">
+                                        <label>#{langue.confirmer_mot_passe}</label>
+                                        <h:inputSecret id="repeat_password" value="#{utilisateurController.repeatPassword}" required="true" 
+                                                       requiredMessage="#{langue['common.valeur_obligatoire']}" 
+                                                       class="form-control"/>
+                                    </div>
+
+                                    <div class="panel-footer">
+
+                                        <center>
+                                            <p:commandButton value="#{langue['common.annuler']}" oncomplete="PF('UtilisateurCreerDialog').hide()" icon="ui-icon-close"/>
+                                            <p:commandButton actionListener="#{utilisateurController.create()}" value="#{langue['crud.enregistrer']}" 
+                                                             update="display,:UtilisateurListerForm,:notify1" 
+                                                             onclick="PF('AjaxNotifyDialog').show()" icon="ui-icon-check"/>
+                                        </center>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="panel-default">
+                                <div class="panel-heading">
+                                    #{langue['common.structure_visibilite']}
+                                </div>
+
+                                <div class="panel-body">
+                                    <p:selectManyCheckbox id="grid" value="#{utilisateurController.selectedStructures}" layout="grid" columns="1" converter="structureConverter" >
+                                        <f:selectItems value="#{utilisateurController.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
+                                    </p:selectManyCheckbox>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </h:panelGroup>  
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,237 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <div class="navbar-default sidebar" role="navigation">
+        <div class="sidebar-nav navbar-collapse">
+            <ul class="nav" id="side-menu">
+                <li class="sidebar-search">
+                    <div class="input-group custom-search-form">
+                        <input type="text" class="form-control" placeholder="Search..."/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                    <!-- /input-group -->
+                </li>
+
+                <!-- sécurité -->
+
+                <li>
+                    <a href="#{request.contextPath}/index.html"><i class="fa fa-home fa-fw"></i>#{langue.accueil}</a>
+                </li>
+                <li id="securite">
+                    <a href="#"><i class="fa fa-key"></i> #{langue.securite} <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="#{request.contextPath}/securite/utilisateur/utilisateur.html"><i class="fa fa-user fa-fw"></i>#{langue.utilisateur}</a>
+                        </li>
+                        <li>
+                            <a href="#{request.contextPath}/securite/privilege/privilege.html"><i class="fa fa-legal fa-fw"></i>#{langue.privilege}</a>
+                        </li>
+                        <li>
+                            <a href="#{request.contextPath}/securite/activercompte/activercompte.html"><i class="fa fa-unlock fa-fw"></i>#{langue['utilisateur.activation_compte']}</a>
+                        </li>
+                        <li>
+                            <a href="#{request.contextPath}/securite/desactivercompte/desactivercompte.html"><i class="fa fa-lock fa-fw"></i>#{langue['utilisateur.desactivation_compte']}</a>
+                        </li>
+                        <li>
+                            <a href="#{request.contextPath}/securite/reset-compte/reset-compte.html"><i class="fa fa-refresh fa-fw"></i>#{langue['utilisateur.reset']}</a>
+                        </li>
+                        <li>
+                            <a href="#{request.contextPath}/securite/mouchard/mouchard.html">
+                                <i class="fa fa-eye fa-fw"></i>
+                                #{langue.mouchard}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li id="parametrage">
+                    <a href="#"><i class="fa fa-wrench"></i> #{langue.parametrage} <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+
+                        <li id="parametrage_ps">
+                            <a href="#">#{langue.pyramide_sanitaire}<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">                               
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/typestructure/typestructure.html">#{langue.type_structure}</a>
+                                </li>
+
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/statutstructure/statutstructure.html">#{langue.statut_structure}</a>
+                                </li>
+
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/institution/institution.html">#{langue.institution}</a>
+                                </li>
+
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/structure/structure.html">#{langue.structure}</a>
+                                </li>
+
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/service/service.html">#{langue.service}</a>
+                                </li>                         
+                            </ul>
+                        </li>
+
+                        <li id="parametrage_eval">
+                            <a href="#">#{langue.evaluation}<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/critere/critere.html">#{langue.critere}</a>
+                                </li>
+
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/sous_critere/sous_critere.html">#{langue.sous_critere}</a>
+                                </li>
+                                
+                                <li>
+                                    <a class="nav-link" href="#{request.contextPath}/parametrage/reponse/reponse.html">Elements de reponse</a>
+                                </li>
+
+                                <li>
+                                    <a class="nav-link" href="#{request.contextPath}/parametrage/critere_str/critere_str.html">Critere / Structure</a>
+                                </li>
+
+                                <li>
+                                    <a class="nav-link" href="#{request.contextPath}/parametrage/s_critere_str/s_critere_str.html">Sous - Critere / Structure</a>
+                                </li>  
+
+                                <li>
+                                    <a class="nav-link" href="#{request.contextPath}/parametrage/critere_service/critere_service.html"> Critere / Service</a>
+                                </li> 
+                                
+                                
+                                <li>
+                                    <a class="nav-link" href="#{request.contextPath}/parametrage/s_critere_service/s_critere_service.html"> Sous - Critere / Service</a>
+                                </li>
+
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/periode/periode.html">#{langue.periode}</a>
+                                </li>
+
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/categorie_str/categorie_str.html">Barème / Catégorie</a>
+                                </li>
+                                
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/s_critere_categorie/s_critere_categorie.html">Sous - critère / Catégorie</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li id="parametrage_budget">
+                            <a href="#">#{langue.budget}<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/rubrique_recette/rubrique_recette.html">#{langue.rubrique_recette}</a>
+                                </li>
+
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/sous_rubrique_recette/sous_rubrique_recette.html">#{langue.sous_rubrique_recette}</a>
+                                </li>
+
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/rubrique_depense/rubrique_depense.html">#{langue.rubrique_depense}</a>
+                                </li>  
+
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/sous_rubrique_depense/sous_rubrique_depense.html">#{langue.sous_rubrique_depense}</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#{request.contextPath}/parametrage/categorie/categorie.html">#{langue.categorie}</a>
+                        </li>
+
+                        <li>
+                            <a href="#{request.contextPath}/parametrage/personnel/personnel.html">#{langue.personnel}</a>
+                        </li>                        
+                    </ul>
+                </li>
+
+                <li id="traitement">
+                    <a href="#"><i class="fa fa-cogs"></i> #{langue.traitement} <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+
+                        <li id="traitement_budget">
+                            <a href="#">
+                                <i class="fa fa-exchange fa-fw"></i>
+                                #{langue.budget}<span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-third-level">
+                                <li>
+                                    <a href="#{request.contextPath}/operation/recette/recette.html">#{langue.recettes}</a>
+                                </li>
+
+                                <li>
+                                    <a href="#{request.contextPath}/operation/depense/depense.html">#{langue.depenses}</a>
+                                </li>
+                            </ul>
+                        </li>    
+
+                        <li id="traitement_evaluation">
+                            <a href="#">
+                                <i class="fa fa-exchange fa-fw"></i>
+                                #{langue.evaluation}<span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-third-level">
+                                <li>
+                                    <a href="#{request.contextPath}/operation/evaluation_personnel/evaluation_personnel.html">#{langue.personnel}</a>
+                                </li>
+
+                                <li>
+                                    <a href="#{request.contextPath}/operation/evaluation_service/evaluation_service.html">#{langue.service}</a>
+                                </li>
+                                
+                                <li>
+                                    <a href="#{request.contextPath}/operation/partage/partage.html">Partage des primes</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <li id="analyse">
+                    <a href="#">
+                        <i class="fa fa-bar-chart-o fa-fw"></i>#{langue.analyse} <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+
+                        <li>
+                            <a href="#{request.contextPath}/analyse/stock_par_magasin/stock_par_magasin.html">
+                                <i class="fa fa-file-pdf-o fa-fw"></i>
+                                Analyse de R &amp; D
+                            </a>
+                        </li> 
+
+                        <li>
+                            <a href="#{request.contextPath}/analyse/stock_par_magasin/stock_par_magasin.html">
+                                <i class="fa fa-file-pdf-o fa-fw"></i>
+                                Tableau de notation
+                            </a>
+                        </li> 
+
+                        <li>
+                            <a href="#{request.contextPath}/analyse/stock_par_magasin/stock_par_magasin.html">
+                                <i class="fa fa-file-pdf-o fa-fw"></i>
+                                Tabeau de calcul de prime
+                            </a>
+                        </li>                     
+
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- /.sidebar-collapse -->
+    </div>
+
+</ui:composition>
+
+
+
+

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+
+        <p:dialog id="PersonnelCreateDlg" 
+                  widgetVar="PersonnelCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['personnel.formulaire_creation']}"
+                  closeOnEscape="true" >
+
+            <h:form id="PersonnelCreateForm">
+
+                <h:panelGroup id="display">
+
+                    <div class="form-group">
+                        <p:outputLabel value="#{langue.service}" for="service" />
+                        <h:selectOneMenu class="form-control" id="service" value="#{personnelController.personnel.idservice.idservice}">
+                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="-1" /> 
+                            <f:selectItems value="#{personnelController.services}" var="item" itemLabel="#{item.nom}" itemValue="#{item.idservice}" />
+                        </h:selectOneMenu>                                                
+                    </div>
+
+                    <div class="form-group">
+                        <p:outputLabel value="#{langue.categorie}" for="categorie" />
+                        <h:selectOneMenu class="form-control" id="categorie" value="#{personnelController.personnel.idcategorie.idcategorie}">
+                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="-1" /> 
+                            <f:selectItems value="#{personnelController.categories}" var="c" itemLabel="#{c.nom}" itemValue="#{c.idcategorie}" />
+                        </h:selectOneMenu>                                                
+                    </div>
+
+                    <div class="form-group">
+                        <p:outputLabel value="#{langue['common.matricule']}" for="matricule" />
+                        <h:inputText style="width:150px" class="form-control" id="matricule" value="#{personnelController.personnel.matricule}" required="true" requiredMessage="#{langue['common.valeur_requise']}" />
+                    </div>
+
+                    <div class="form-group">
+                        <p:outputLabel value="#{langue['common.nom']}" for="nom" />
+                        <h:inputText style="width: 500px" class="form-control" id="nom" value="#{personnelController.personnel.nom}" required="true" requiredMessage="#{langue['common.valeur_requise']}" />
+                    </div>
+
+                    <div class="form-group">
+                        <p:outputLabel value="#{langue['common.prenom']}" for="prenom" />
+                        <h:inputText style="width: 500px" class="form-control" id="prenom" value="#{personnelController.personnel.prenom}" required="true" requiredMessage="#{langue['common.valeur_requise']}" />
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-check">                                
+                                    <input id="etat" type="checkbox" class="form-check-input" jsf:value="#{personnelController.personnel.etat}" />
+                                    <label for="etat" class="form-check-label">#{langue['common.etat']}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p:separator/>
+
+                    <center>
+
+                        <p:commandButton value="#{langue['common.fermer']}" 
+                                         onclick="PF('PersonnelCreateDialog').hide()"
+                                         icon="ui-icon-close"/>
+
+                        <p:commandButton icon="ui-icon-save" actionListener="#{personnelController.save()}" value="#{langue['common.enregistrer']}" update="display,:PersonnelListerForm:datalist,:PersonnelListerForm:growl">
+                            <p:confirm header="#{langue['notification.confirmation']}" 
+                                       message="#{langue['notification.confirmation_enregistrement']}" 
+                                       icon="ui-icon-alert"/>
+                        </p:commandButton>
+
+                    </center>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

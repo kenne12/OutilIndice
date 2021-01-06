@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="CritereCreateDlg" 
+                  widgetVar="CritereCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['sous_critere_structure.formulaire_creation']}"
+                  closeOnEscape="true"
+                  width="85%"
+                  height="600">
+
+            <h:form id="CritereCreateForm">
+
+                <p:outputLabel style="color: red ; font-size: 17px" id="error_msg" value="#{sousCritereServiceController.message}" />
+
+                <div class="col-md-12">
+
+                    <h:panelGroup id="display">
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.service}" for="service" />
+                                    <h:selectOneMenu disabled="#{sousCritereServiceController.mode.equals('Edit')}" class="form-control"
+                                                     id="service" value="#{sousCritereServiceController.service.idservice}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                        <f:selectItems value="#{sousCritereServiceController.services}" var="s" itemLabel="#{s.nom}" itemValue="#{s.idservice}" />
+                                        <p:ajax update="grid_critere,critere,datalist" listener="#{sousCritereServiceController.updateFiltre()}"/>
+                                    </h:selectOneMenu>                                                
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.critere}" for="critere" />
+                                    <h:selectOneMenu class="form-control" id="critere"
+                                                     value="#{sousCritereServiceController.critereservice.critere.idcritere}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                        <f:selectItems value="#{sousCritereServiceController.critereservices}" var="cs" itemLabel="#{cs.critere.nom} (#{cs.poids})" itemValue="#{cs.critere.idcritere}" />
+                                        <p:ajax update="grid_critere,datalist" listener="#{sousCritereServiceController.updateFiltreSc()}"/>
+                                    </h:selectOneMenu>                                                
+                                </div>
+                            </div>
+                        </div>
+
+                        <p:separator/>
+
+                        <p:selectManyCheckbox id="grid_critere" value="#{sousCritereServiceController.selectedSouscriteres}" layout="grid" columns="1" converter="sousCritereConverter">
+                            <f:selectItems value="#{sousCritereServiceController.souscriteres}" var="t" itemLabel="#{t.code} - #{t.nom}" itemValue="#{t}" />
+                            <p:ajax />
+                        </p:selectManyCheckbox>
+
+                        <p:separator />
+
+                        <p:commandButton                            
+                            value="#{langue['common.ajouter']}"
+                            actionListener="#{sousCritereServiceController.addSousCritereToTable()}"
+                            update="datalist" icon="ui-icon-plus" />
+
+                        <p:separator />
+
+                        <p:dataTable id="datalist" value="#{sousCritereServiceController.souscritereservices}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="15"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                            <p:column class="hardBreak" style="width: 35%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.sous_critere}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.idsouscritere.code} - #{item.idsouscritere.nom}"/> 
+                            </p:column>
+
+                            <p:column style="width: 8%; text-align:center" headerText="#{langue['sous_criteres.point_max']}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.pointmax}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.pointmax}">                                             
+                                            <p:ajax event="keyup" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column> 
+
+                            <p:column style="width: 40%; text-align:left" headerText="#{langue['common.details']}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText class="hardBreak" value="#{item.detail}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputTextarea rows="5" style="width: 100%" required="true" value="#{item.detail}">                                             
+                                            <p:ajax event="keyup" />
+                                        </p:inputTextarea>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 10%" >
+                                <f:facet name="header">
+                                    <h:outputText value="Action"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-trash">
+                                    <p:ajax update="datalist" event="click" listener="#{sousCritereServiceController.removeCritere(item)}" />
+                                </p:commandButton>
+
+                                <p:commandButton icon="ui-icon-pencil">
+                                    <p:ajax update=":DetailEditForm" event="click" listener="#{sousCritereServiceController.prepareEditDetail(item)}" />
+                                </p:commandButton>                                
+                            </p:column>
+
+                            <p:columnGroup type="footer" id="footer_tab">
+                                <p:row>
+                                    <p:column style="text-align:right" footerText="Totaux" />                                                                          
+                                    <p:column style="text-align:center" footerText="#{sousCritereServiceController.score}"/>  
+                                    <p:column colspan="2" style="text-align:center" footerText=" / " /> 
+                                </p:row>
+                            </p:columnGroup>
+
+                        </p:dataTable>
+
+                        <p:separator/>
+
+                        <center>
+
+                            <p:commandButton value="#{langue['common.fermer']}" 
+                                             onclick="PF('CritereCreateDialog').hide()"
+                                             icon="ui-icon-close"/>
+
+                            <p:commandButton icon="ui-icon-save" actionListener="#{sousCritereServiceController.save()}" value="#{langue['common.enregistrer']}" 
+                                             update="display,:CritereListerForm:datalist,:CritereListerForm:growl,error_msg">
+                                <p:confirm header="#{langue['notification.confirmation']}" 
+                                           message="#{langue['notification.confirmation_enregistrement']}" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+
+                        </center>
+
+                    </h:panelGroup>
+
+                </div>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+
+</html>

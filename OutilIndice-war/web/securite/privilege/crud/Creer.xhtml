@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="AccesCreerDlg" 
+                  widgetVar="AccesCreerDialog" 
+                  modal="true" resizable="false" 
+                  appendTo="@(body)"
+                  header="#{langue['privilege.formulaire_creation']}" 
+                  closeOnEscape="true">
+
+            <h:form id="AccesCreerForm">
+
+                <h:panelGroup id="display" >
+
+                    <div class="form-group">
+                        <label>#{langue.utilisateur}</label>
+
+                        <h:selectOneMenu value="#{privilegeController.utilisateur.idutilisateur}" id="user" required="true" requiredMessage="#{langue['common.valeur_obligatoire']}" class="form-control">
+                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue=""/>
+                            <f:selectItems value="#{privilegeController.utilisateurs}" var="item" itemLabel="#{item.login}" itemValue="#{item.idutilisateur}"/> 
+                            <p:ajax update="access,:AccesListerForm:growl" listener="#{privilegeController.handleUserChange()}"/>
+                        </h:selectOneMenu> 
+                    </div>
+
+                    <p:pickList id="access" value="#{privilegeController.dualMenu}" var="menu" effect="bounce" converter="menuConverter"
+                                itemValue="#{menu}" itemLabel="#{menu.nom}" showSourceControls="true" showTargetControls="true" showCheckbox="false"
+                                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+
+                        <f:facet name="sourceCaption">#{langue.items_disponibles}</f:facet>
+                        <f:facet name="targetCaption">#{langue.items_selectionnes}</f:facet>                            
+                    </p:pickList>
+
+                    <p:separator/>
+
+                    <center>
+                        <p:commandButton value="#{langue['common.annuler']}" oncomplete="PF('AccesCreerDialog').hide()" icon="ui-icon-close"/>
+
+                        <p:commandButton actionListener="#{privilegeController.save()}" value="#{langue['crud.enregistrer']}" 
+                                         update="display,:AccesListerForm:datalist,:AccesListerForm:growl,:notify1" 
+                                         oncomplete="PF('AccesCreerDialog').hide()" icon="ui-icon-check"/>
+                    </center>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+</html>

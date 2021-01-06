@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+
+        <p:dialog id="DepenseCreerDlg" 
+                  widgetVar="DepenseCreerDialog" 
+                  modal="true" resizable="false" 
+                  appendTo="@(body)" 
+                  width="75%"
+                  height="680px"
+                  header="#{langue['depense.formulaire_creation']}" 
+                  closeOnEscape="true">
+
+            <h:form id="DepenseCreerForm">
+                <h:panelGroup id="display">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue.structure}</label>
+                                        <h:selectOneMenu id="institution" class="form-control" 
+                                                         value="#{depenseController.structure.idstructure}"
+                                                         required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{depenseController.structures}" var="st" itemLabel="#{st.nom}" itemValue="#{st.idstructure}" />
+                                            <p:ajax update="datalist_1,grid_,add_btn,montant" listener="#{depenseController.updateData()}" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>#{langue.periode}</label>
+                                <h:selectOneMenu id="type_structure" class="form-control" 
+                                                 value="#{depenseController.periode.idperiode}"
+                                                 required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                    <f:selectItems value="#{depenseController.periodes}" var="p" itemLabel="#{p.nom}" itemValue="#{p.idperiode}" />
+                                    <p:ajax update="datalist_1,grid_,add_btn,montant" listener="#{depenseController.updateData()}" />
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>#{langue.sous_periode}</label>
+                                <h:selectOneMenu id="type_sousperiode" class="form-control" 
+                                                 value="#{depenseController.sousperiode.idsousperiode}"
+                                                 required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                    <f:selectItems value="#{depenseController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
+                                    <p:ajax update="datalist_1,grid_,add_btn,montant" listener="#{depenseController.updateData()}" />
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div jsf:id="montant" class="col-md-3">
+                            <div class="form-group">
+                                <label>Total recette</label>
+                                <h:inputText disabled="true" class="form-control" value="#{depenseController.montant}" >
+                                    <p:ajax event="keyup" update="datalist_1" listener="#{depenseController.updateAmount()}" />
+                                    <f:convertNumber />
+                                </h:inputText>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p:separator/>
+
+                    <p:selectManyCheckbox id="grid_" value="#{depenseController.selectedSousrubriquedepenses}" layout="grid" columns="3" converter="sousRubriqueDepenseConverter" >
+                        <f:selectItems value="#{depenseController.sousrubriquedepenses}" var="sr" itemLabel="#{sr.nom}" itemValue="#{sr}" />
+                        <p:ajax />
+                    </p:selectManyCheckbox>
+
+                    <p:separator/>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p:commandButton id="add_btn" value="#{langue['crud.ajouter']}" 
+                                             actionListener="#{depenseController.addSubRubricToList()}" 
+                                             update="datalist_1" />
+                        </div>                      
+                    </div>
+
+                    <p:separator/>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Calcul automatique ?</label>
+                                <h:selectBooleanCheckbox class="form-check" value="#{depenseController.calculAuto}" >
+                                    <p:ajax update="DepenseCreerForm,montant,display,datalist_1" listener="#{depenseController.updateMode()}"/>
+                                </h:selectBooleanCheckbox>
+                            </div>
+                        </div>   
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <p:dataTable id="datalist_1" value="#{depenseController.depenses}" var="item"                             
+                                         paginator="true"
+                                         editable="true"
+                                         editMode="cell"
+                                         rows="15"
+                                         rowsPerPageTemplate="10,20,30,40,50"
+                                         style="width: 98%;margin-left: 1%;margin-top: 1%;font-size: 15px"
+                                         rowIndexVar="index"
+                                         emptyMessage="#{langue['common.tableau_vide']}">
+
+                                <p:column class="hardBreak" style="width: 70%;" >
+                                    <f:facet name="header">
+                                        <h:outputText value="#{langue.rubrique}"/>
+                                    </f:facet>
+                                    <h:outputText class="hardBreak" value="#{item.idsousrubriquedepense.nom}"/> 
+                                </p:column>
+
+                                <p:column style="width: 20% ; text-align:center" headerText="#{langue['common.montant']}">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{item.montant}" >
+                                                <f:convertNumber />
+                                            </h:outputText>    
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText disabled="#{depenseController.activeControle('montant' , item)}" required="true" value="#{item.montant}">
+                                                <f:convertNumber />
+                                                <p:ajax update="datalist_1" listener="#{depenseController.updateAmount()}" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column style="width: 20% ; text-align:center" headerText="#{langue['common.pourcentage']}">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{item.pourcentage}" >
+                                                <f:convertNumber />
+                                            </h:outputText>    
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText disabled="#{depenseController.activeControle('pourcentage' , item)}" required="true" value="#{item.pourcentage}">
+                                                <f:convertNumber />
+                                                <p:ajax update="datalist_1" listener="#{depenseController.updateAmount()}" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column style="width: 10%" >
+                                    <f:facet name="header">
+                                        <h:outputText value="Action"/>
+                                    </f:facet>
+                                    <p:commandButton icon="ui-icon-trash">
+                                        <p:ajax update="datalist_1" event="click" listener="#{costingContratController.removeUnite(item)}" />
+                                    </p:commandButton>  
+                                </p:column>
+
+                                <p:columnGroup type="footer" id="footer_tab">
+                                    <p:row>
+                                        <p:column style="text-align:right" footerText="Totaux" />                                                                          
+                                        <p:column style="text-align:center" footerText="#{depenseController.convertMoney()}"/>
+
+                                        <p:column  style="text-align:center" footerText="#{depenseController.arrondi(depenseController.pourcentage)}"/> 
+                                        <p:column  style="text-align:center" footerText="/" /> 
+                                    </p:row>
+                                </p:columnGroup>
+
+                            </p:dataTable>
+
+                        </div>
+                    </div>
+
+                    <p:separator />
+
+                    <div class="row">
+                        <div class="col-md-10">
+                            <p:commandButton value="#{langue['common.annuler']}" oncomplete="PF('DepenseCreerDialog').hide()" icon="ui-icon-close"/>
+                            <p:commandButton actionListener="#{depenseController.create()}" value="#{langue['crud.enregistrer']}" 
+                                             update="display,:DepenseListerForm,:notify1,:search_form" 
+                                             onclick="PF('AjaxNotifyDialog').show()" icon="ui-icon-check"/>
+                        </div>
+                    </div>
+
+                </h:panelGroup>  
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

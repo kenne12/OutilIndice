@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="EvaluationCreateDlg" 
+                  widgetVar="EvaluationCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['evaluation.formulaire_creation_personnel']}"
+                  closeOnEscape="true"
+                  width="85%"
+                  height="600">
+
+            <h:form id="EvaluationCreateForm">
+
+                <p:outputLabel style="color: red ; font-size: 17px" id="error_msg" value="#{evaluationPersonnelController.message}" />
+
+                <div class="col-md-12">
+
+                    <h:panelGroup id="display">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.personnel}" for="personnel" />
+                                    <h:selectOneMenu class="form-control"                                         
+                                                     id="personnel" value="#{evaluationPersonnelController.personnel.idpersonnel}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                        <f:selectItems value="#{evaluationPersonnelController.personnels}" var="p" itemLabel="#{p.nom} #{p.prenom}" itemValue="#{p.idpersonnel}" />
+                                        <p:ajax update="grid_critere,datalist,:NotifZone,datalist_2,datalist_3,somme" listener="#{evaluationPersonnelController.updateEvaluationData()}"/>
+                                    </h:selectOneMenu>                                                
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.periode}" for="periode" />
+                                    <h:selectOneMenu class="form-control"                                         
+                                                     id="periode" value="#{evaluationPersonnelController.sousperiode.idsousperiode}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                        <f:selectItems value="#{evaluationPersonnelController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
+                                        <p:ajax update="grid_critere,datalist,:NotifZone,datalist_2,datalist_3,somme" listener="#{evaluationPersonnelController.updateEvaluationData()}"/>
+                                    </h:selectOneMenu>                                                
+                                </div>
+                            </div>
+                        </div>
+
+                        <p:separator/>
+
+                        <p:selectManyCheckbox id="grid_critere" value="#{evaluationPersonnelController.selectedDetailsc}" layout="grid" columns="1" converter="detailScConverter">
+                            <f:selectItems value="#{evaluationPersonnelController.listDetailsc}" var="d" itemLabel="#{d.idsouscritere.nom}" itemValue="#{d}" />
+                            <p:ajax />
+                        </p:selectManyCheckbox>
+
+                        <p:separator />
+
+                        <p:commandButton                            
+                            value="#{langue['common.ajouter']}"
+                            actionListener="#{evaluationPersonnelController.addCritereToTable()}"
+                            update="datalist,datalist_2,datalist_3,grid_critere,somme" icon="ui-icon-plus" />
+
+                        <p:separator />
+                        <h:outputText value="I. CRITERES D'EVALUATON PERSONNELS" style="font-size: 20px" />
+                        <p:separator />
+
+                        <p:dataTable id="datalist" value="#{evaluationPersonnelController.evaluationpersonnels}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="#{evaluationPersonnelController.evaluationpersonnels.size()}"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                            <p:column class="hardBreak" style="width: 40%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.sous_critere}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.iddetailsc.idsouscritere.nom} / [#{item.iddetailsc.pointMax}]"/> 
+                            </p:column>
+                            
+                            <p:column class="hardBreak" style="width: 5%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.note}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.note}"/> 
+                            </p:column>
+
+                            <p:column style="width: 5%; text-align:center" headerText="#{langue.note}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.pointmaxindice}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.pointmaxindice}">                                             
+                                            <p:ajax update="datalist" listener="#{evaluationPersonnelController.updateIndice()}" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column> 
+
+                            <p:column style="width: 35%; text-align:left" headerText="#{langue.reponse}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText class="hardBreak" value="#{item.idelementreponse.nom}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectOneMenu value="#{item.idelementreponse}" converter="elementreponseConverter">
+                                            <f:selectItems value="#{item.iddetailsc.idsouscritere.elementreponseCollection}" var="obj" itemLabel="#{obj.nom}" itemValue="#{obj}" />
+                                            <p:ajax update="datalist,:EvaluationCreateForm:somme" listener="#{evaluationPersonnelController.setResponse('1' , index , evaluationPersonnelController.evaluationpersonnels)}" />
+                                        </p:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="Action"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-trash">
+                                    <p:ajax update="datalist,:EvaluationCreateForm:somme,:EvaluationCreateForm:grid_critere" event="click" listener="#{evaluationPersonnelController.removeCritere('1', item, evaluationPersonnelController.evaluationpersonnels)}" />
+                                </p:commandButton>                            
+                            </p:column>
+
+                            <p:columnGroup type="footer" id="footer_tab">
+                                <p:row>
+                                    <p:column style="text-align:right" footerText="Totaux" />                                                                          
+                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.score}"/>
+                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.scoreIndice}"/>
+                                    <p:column colspan="2" style="text-align:center" footerText=" / " /> 
+                                </p:row>
+                            </p:columnGroup>
+
+                        </p:dataTable>
+
+                        <p:separator/>
+                        <h:outputText value="II. CRITERES D'INCITATIONS POSITIVES" style="font-size: 20px" />
+                        <p:separator />
+
+                        <p:dataTable id="datalist_2" value="#{evaluationPersonnelController.evaluationpersonnelIps}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="#{evaluationPersonnelController.evaluationpersonnelIps.size()}"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                            <p:column class="hardBreak" style="width: 40%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.sous_critere}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.iddetailsc.idsouscritere.nom}"/> 
+                            </p:column>
+
+                            <p:column style="width: 10%; text-align:center" headerText="#{langue.note}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.note}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.note}">                                             
+                                            <p:ajax event="keyup" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column> 
+
+                            <p:column style="width: 40%; text-align:left" headerText="#{langue.reponse}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText class="hardBreak" value="#{item.idelementreponse.nom}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectOneMenu value="#{item.idelementreponse}" converter="elementreponseConverter">
+                                            <f:selectItems value="#{item.iddetailsc.idsouscritere.elementreponseCollection}" var="obj" itemLabel="#{obj.nom}" itemValue="#{obj}" />
+                                            <p:ajax update="datalist_2,:EvaluationCreateForm:somme" listener="#{evaluationPersonnelController.setResponse('2', index , evaluationPersonnelController.evaluationpersonnelIps)}" />
+                                        </p:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="Action"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-trash">
+                                    <p:ajax update="datalist_2,:EvaluationCreateForm:somme,:EvaluationCreateForm:grid_critere" event="click" listener="#{evaluationPersonnelController.removeCritere('2' , item , evaluationPersonnelController.evaluationpersonnelIps)}" />
+                                </p:commandButton>                                  
+                            </p:column>
+
+                            <p:columnGroup type="footer" id="footer_tab_2">
+                                <p:row>
+                                    <p:column style="text-align:right" footerText="Totaux" />                                                                          
+                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.score_1}"/>  
+                                    <p:column colspan="2" style="text-align:center" footerText=" / " /> 
+                                </p:row>
+                            </p:columnGroup>
+
+                        </p:dataTable>
+
+                        <p:separator/>
+                        <h:outputText value="III. CRITERES D'INCITATIONS NEGATIVES" style="font-size: 20px" />
+                        <p:separator />
+
+                        <p:dataTable id="datalist_3" value="#{evaluationPersonnelController.evaluationpersonnelIns}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="#{evaluationPersonnelController.evaluationpersonnelIns.size()}"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                            <p:column class="hardBreak" style="width: 40%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.sous_critere}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.iddetailsc.idsouscritere.nom}"/> 
+                            </p:column>
+
+                            <p:column style="width: 10%; text-align:center" headerText="#{langue.note}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.note}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.note}">                                             
+                                            <p:ajax event="keyup" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column> 
+                
+                            <p:column style="width: 40%; text-align:left" headerText="#{langue.reponse}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText class="hardBreak" value="#{item.idelementreponse.nom}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectOneMenu value="#{item.idelementreponse}" converter="elementreponseConverter">
+                                            <f:selectItems value="#{item.iddetailsc.idsouscritere.elementreponseCollection}" var="obj" itemLabel="#{obj.nom}" itemValue="#{obj}" />
+                                            <p:ajax update="datalist_3,:EvaluationCreateForm:somme" listener="#{evaluationPersonnelController.setResponse('3' , index , evaluationPersonnelController.evaluationpersonnelIns)}" />
+                                        </p:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="Action"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-trash">
+                                    <p:ajax update="datalist_3,:EvaluationCreateForm:somme,:EvaluationCreateForm:grid_critere" event="click" listener="#{evaluationPersonnelController.removeCritere('3' , item , evaluationPersonnelController.evaluationpersonnelIns)}" />
+                                </p:commandButton>
+                               
+                            </p:column>
+
+                            <p:columnGroup type="footer" id="footer_tab_2">
+                                <p:row>
+                                    <p:column style="text-align:right" footerText="Totaux" />                                                                          
+                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.score_2}"/>  
+                                    <p:column colspan="2" style="text-align:center" footerText=" / " /> 
+                                </p:row>
+                            </p:columnGroup>
+
+                        </p:dataTable>
+
+                        <p:separator />
+                        <h:outputText id="somme" value="Note = I + II - III = #{evaluationPersonnelController.score} + #{evaluationPersonnelController.score_1} - #{evaluationPersonnelController.score_2} = #{evaluationPersonnelController.score + evaluationPersonnelController.score_1 - evaluationPersonnelController.score_2}"  style="font-size: 20px"/>
+                        <p:separator />
+
+                        <center>
+                            <p:commandButton value="#{langue['common.fermer']}" 
+                                             onclick="PF('EvaluationCreateDialog').hide()"
+                                             icon="ui-icon-close"/>
+
+                            <p:commandButton icon="ui-icon-save" actionListener="#{evaluationPersonnelController.save()}" value="#{langue['common.enregistrer']}" 
+                                             update="display,:EvaluationListerForm:datalist,:EvaluationListerForm:growl,error_msg">
+                                <p:confirm header="#{langue['notification.confirmation']}" 
+                                           message="#{langue['notification.confirmation_enregistrement']}" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+                        </center>
+                    </h:panelGroup>
+                </div>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>
