@@ -7,6 +7,8 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -18,8 +20,11 @@ import javax.persistence.Id;
 public class Indicateur implements Serializable {
 
     @Id
+    @Basic(optional = false)
     private Integer idindicateur;
+    @Column(length = 150)
     private String nom;
+    @Column(length = 20)
     private String code;
 
     public Indicateur() {

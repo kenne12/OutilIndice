@@ -2,6 +2,23 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-ejb/src/java/sessions/ResponsabiliteFacadeLocal.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-ejb/src/java/sessions/CritereresponsabiliteFacade.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-ejb/src/java/entities/Parametragecritere.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-ejb/src/java/entities/Responsabilite.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-ejb/src/java/entities/Personnel.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-ejb/src/java/sessions/IndicateurFacadeLocal.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-ejb/src/java/entities/Cible.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-ejb/src/java/sessions/ResponsabiliteFacade.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-ejb/src/java/sessions/ParametragecritereFacade.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-ejb/src/java/entities/Critereresponsabilite.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-ejb/src/java/sessions/IndicateurFacade.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-ejb/src/java/entities/Indicateur.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-ejb/src/java/sessions/CibleFacadeLocal.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-ejb/src/java/sessions/CritereresponsabiliteFacadeLocal.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-ejb/src/java/sessions/ParametragecritereFacadeLocal.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-ejb/src/java/sessions/CibleFacade.java</file>
+        </group>
     </open-files>
 </project-private>

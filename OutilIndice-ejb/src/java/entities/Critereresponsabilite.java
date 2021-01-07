@@ -7,6 +7,7 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -21,6 +22,7 @@ import javax.persistence.ManyToOne;
 public class Critereresponsabilite implements Serializable {
 
     @Id
+    @Basic(optional = false)
     private Long idcritereresponsabilite;
     private double point;
     private boolean responsabilite;
