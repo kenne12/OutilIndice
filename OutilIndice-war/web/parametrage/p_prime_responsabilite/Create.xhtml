@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="ResponsabiliteCreateDlg" 
+                  widgetVar="ResponsabiliteCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['critere_structure.formulaire_creation']}"
+                  closeOnEscape="true"
+                  width="70%"
+                  height="600">
+
+            <h:form id="ResponsabiliteCreateForm">
+
+                <div class="col-md-12">
+
+                    <h:panelGroup id="display">
+
+                        <div class="form-group">
+                            <p:outputLabel value="#{langue.structure}" for="structure" />
+                            <h:selectOneMenu disabled="true" converter="structureConverter" 
+                                             class="form-control" 
+                                             id="structure" value="#{primeResponsabiliteCtrl.structure}">
+                                <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                <f:selectItems value="#{primeResponsabiliteCtrl.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
+                                <p:ajax update="grid_critere,datalist" listener="#{primeResponsabiliteCtrl.updateFiltre()}"/>
+                            </h:selectOneMenu>                                                
+                        </div>
+
+                        <p:separator/>
+
+                        <p:selectManyCheckbox id="grid_critere" value="#{primeResponsabiliteCtrl.selectedResponsabilites}" layout="grid" columns="1" converter="responsabiliteConverter">
+                            <f:selectItems value="#{primeResponsabiliteCtrl.responsabilites}" var="r" itemLabel="#{r.nom}" itemValue="#{r}" />
+                            <p:ajax />
+                        </p:selectManyCheckbox>
+
+                        <p:separator />
+
+                        <p:commandButton value="#{langue['common.ajouter']}"
+                                         actionListener="#{primeResponsabiliteCtrl.addResponsabilityToTable()}"
+                                         update="datalist,grid_critere" icon="ui-icon-plus" />
+                        <p:separator />
+
+                        <p:dataTable id="datalist" value="#{primeResponsabiliteCtrl.critereresponsabilites}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="15"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                            <p:column class="hardBreak" style="width: 80%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.reponsabilite}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.idresponsabilite.nom}"/> 
+                            </p:column>
+
+                            <p:column style="width: 10% ; text-align:center" headerText="#{langue.points}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.point}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.point}">                                             
+                                            <p:ajax event="keyup" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 10%" >
+                                <f:facet name="header">
+                                    <h:outputText value="Action"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-trash">
+                                    <p:ajax update="datalist,:ResponsabiliteCreateForm:grid_critere" event="click" listener="#{primeResponsabiliteCtrl.removeResponsability(item)}" />
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:separator/>
+
+                        <center>
+
+                            <p:commandButton value="#{langue['common.fermer']}" 
+                                             onclick="PF('ResponsabiliteCreateDialog').hide()"
+                                             icon="ui-icon-close"/>
+
+                            <p:commandButton icon="ui-icon-save" actionListener="#{primeResponsabiliteCtrl.save()}" value="#{langue['common.enregistrer']}" update="display,:ResponsabiliteListerForm:datalist,:ResponsabiliteListerForm:growl,:ResponsabiliteListerForm">
+                                <p:confirm header="#{langue['notification.confirmation']}" 
+                                           message="#{langue['notification.confirmation_enregistrement']}" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+
+                        </center>
+
+                    </h:panelGroup>
+
+                </div>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

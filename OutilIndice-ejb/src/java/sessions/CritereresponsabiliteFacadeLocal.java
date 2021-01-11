@@ -29,5 +29,9 @@ public interface CritereresponsabiliteFacadeLocal {
     List<Critereresponsabilite> findRange(int[] range);
 
     int count();
-    
+
+    Long nextId();
+
+    List<Critereresponsabilite> findByIdStructure(long idStructure);
+
 }

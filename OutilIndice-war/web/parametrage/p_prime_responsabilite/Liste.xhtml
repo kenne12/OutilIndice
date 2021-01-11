@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <h:form id="ResponsabiliteListerForm">
+
+        <p:messages id="growl" closable="true">
+            <p:effect type="pulsate" event="load" delay="50" />
+        </p:messages>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-success">
+                    <div style="color: white" class="panel-heading bg-success">
+                        #{langue['responsabilite.liste_poste_responsabilite']}
+                        <p:commandButton update=":ResponsabiliteCreateForm"
+                                         icon="ui-icon-plus"
+                                         value="#{langue['common.ajouter']}"
+                                         style="float: right"
+                                         actionListener="#{primeResponsabiliteCtrl.prepareCreate()}"/>      
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div class="table-responsive">
+
+                            <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 80%">#{langue.responsabilite}</th>
+                                        <th style="width: 10%">#{langue.points}</th>
+                                        <th style="width: 10%;text-align: center">#{langue['common.actions']}</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <ui:repeat value="#{primeResponsabiliteCtrl.listCriteres}" var="item">
+                                        <tr>
+                                            <td>#{item.idresponsabilite.nom}</td>
+                                            <td>#{item.point}</td>                                                                            
+                                            <td>                                        
+                                                <p:commandButton icon="ui-icon-pencil" update=":ResponsabiliteCreateForm"
+                                                                 class="btn btn-success btn-sm"
+                                                                 actionListener="#{primeResponsabiliteCtrl.prepareEdit(item)}"/>
+                                                
+                                                <p:commandButton icon="ui-icon-trash" update="ResponsabiliteListerForm"
+                                                                 class="btn btn-danger btn-sm"
+                                                                 actionListener="#{primeResponsabiliteCtrl.delete(item)}"/>
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:form>
+
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+    <p:dialog id="notify1" widgetVar="NotifyDialog1" height="400" width="700" resizable="true" responsive="true" modal="true" style="text-align: center; font-size: 14px; font-family: Cambria;">
+        <f:facet name="header">
+            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{primeResponsabiliteCtrl.routine.titleNotify}" />
+        </f:facet>
+        <h:form id="NotifyForm1">
+            <h:graphicImage id="nt_img" url="#{primeResponsabiliteCtrl.routine.iconMessage}" style="cursor:pointer" />
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+
+            <h:outputText id="nt_msg" value="#{primeResponsabiliteCtrl.routine.message}"/>
+
+            <hr size="3" style="background-color: cornflowerblue; margin-top: 5%;"/>
+
+            <p:commandButton style="font-family: Cambria; font-size: 14px;" value="#{langue['common.fermer']}" onclick="PF('NotifyDialog1').hide()" type="button" immediate="true"/>
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+        </h:form>
+    </p:dialog>
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+</ui:composition>
