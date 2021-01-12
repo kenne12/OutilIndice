@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="HeureSuppEditDlg" 
+                  widgetVar="HeureSuppEditDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['bonus_pratique_privee.formulaire_edition']}"
+                  closeOnEscape="true"
+                  width="40%">
+
+            <h:form id="HeureSuppEditForm">
+
+                <h:panelGroup id="display" rendered="true">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue.categorie}" for="categorie" />
+                                <h:inputText class="form-control" id="categorie" value="#{bonusPratiquePriveeCtrl.parametragecritere.idcategorie.nom}" readonly="true" />                                              
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue.points}" for="point" />
+                                <h:inputText class="form-control" id="point" value="#{bonusPratiquePriveeCtrl.parametragecritere.point}" />                                                                             
+                            </div>
+                        </div>
+                    </div>
+
+                    <p:separator/>
+
+                    <center>
+                        <p:commandButton value="#{langue['common.fermer']}" 
+                                         onclick="PF('HeureSuppEditDialog').hide()"
+                                         icon="ui-icon-close"/>
+
+                        <p:commandButton icon="ui-icon-save" actionListener="#{bonusPratiquePriveeCtrl.edit()}" value="#{langue['common.enregistrer']}" update="display,:HeureSuppListerForm:growl,:HeureSuppListerForm">
+                            <p:confirm header="#{langue['notification.confirmation']}" 
+                                       message="#{langue['notification.confirmation_enregistrement']}" 
+                                       icon="ui-icon-alert"/>
+                        </p:commandButton>
+                    </center>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

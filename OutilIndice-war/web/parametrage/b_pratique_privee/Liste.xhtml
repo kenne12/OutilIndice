@@ -17,12 +17,12 @@
             <div class="col-md-12">
                 <div class="panel panel-success">
                     <div style="color: white" class="panel-heading bg-success">
-                        #{langue['heure_supp_p.liste_point_par_heure_sup']}
+                        #{langue['bonus_pratique_privee.liste_point_categorie']}
                         <p:commandButton update=":HeureSuppCreateForm"
                                          icon="ui-icon-plus"
                                          value="#{langue['common.ajouter']}"
                                          style="float: right"
-                                         actionListener="#{primeHeureSupplementaireCtrl.prepareCreate()}"/>      
+                                         actionListener="#{bonusPratiquePriveeCtrl.prepareCreate()}"/>      
                     </div>
 
                     <div class="panel-body">
@@ -32,33 +32,25 @@
                             <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th style="width: 40%">#{langue.categorie}</th>
-                                        <th style="width: 10%">#{langue.indice}</th>
-                                        <th style="width: 10%">#{langue.denominateur_jour}</th>
-                                        <th style="width: 10%">#{langue.denominateur_nuit}</th>
-                                        <th style="width: 10%">#{langue.point_journee}</th>
-                                        <th style="width: 10%">#{langue.point_nuit}</th>
+                                        <th style="width: 80%">#{langue.categorie}</th>
+                                        <th style="width: 10%">#{langue.points}</th>
                                         <th style="width: 10%;text-align: center">#{langue['common.actions']}</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    <ui:repeat value="#{primeHeureSupplementaireCtrl.listParametres}" var="item">
+                                    <ui:repeat value="#{bonusPratiquePriveeCtrl.listParametres}" var="item">
                                         <tr>
                                             <td>#{item.idcategorie.nom}</td>
-                                            <td>#{item.indice}</td>
-                                            <td>#{item.denominateurjournee}</td>
-                                            <td>#{item.denominateurnuit}</td>
-                                            <td>#{item.valeurjournee}</td>
-                                            <td>#{item.valeurnuit}</td>
+                                            <td>#{item.point}</td>
                                             <td style="text-align: center">                                        
                                                 <p:commandButton icon="ui-icon-pencil" update=":HeureSuppEditForm"
                                                                  class="btn btn-success btn-sm"
-                                                                 actionListener="#{primeHeureSupplementaireCtrl.prepareEdit(item)}"/>
+                                                                 actionListener="#{bonusPratiquePriveeCtrl.prepareEdit(item)}"/>
 
                                                 <p:commandButton icon="ui-icon-trash" update=":HeureSuppListerForm"
                                                                  class="btn btn-danger btn-sm"
-                                                                 actionListener="#{primeHeureSupplementaireCtrl.delete(item)}">
+                                                                 actionListener="#{bonusPratiquePriveeCtrl.delete(item)}">
                                                     <p:confirm header="#{langue['notification.confirm_delete_dialog_header']}"
                                                                message="#{langue['notification.confirm_delete_message']} ?"
                                                                icon="ui-icon-alert"/>
@@ -80,14 +72,14 @@
 
     <p:dialog id="notify1" widgetVar="NotifyDialog1" height="400" width="700" resizable="true" responsive="true" modal="true" style="text-align: center; font-size: 14px; font-family: Cambria;">
         <f:facet name="header">
-            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{primeHeureSupplementaireCtrl.routine.titleNotify}" />
+            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{bonusPratiquePriveeCtrl.routine.titleNotify}" />
         </f:facet>
         <h:form id="NotifyForm1">
-            <h:graphicImage id="nt_img" url="#{primeHeureSupplementaireCtrl.routine.iconMessage}" style="cursor:pointer" />
+            <h:graphicImage id="nt_img" url="#{bonusPratiquePriveeCtrl.routine.iconMessage}" style="cursor:pointer" />
 
             <hr size="3" style="background-color: cornflowerblue;"/>
 
-            <h:outputText id="nt_msg" value="#{primeHeureSupplementaireCtrl.routine.message}"/>
+            <h:outputText id="nt_msg" value="#{bonusPratiquePriveeCtrl.routine.message}"/>
 
             <hr size="3" style="background-color: cornflowerblue; margin-top: 5%;"/>
 

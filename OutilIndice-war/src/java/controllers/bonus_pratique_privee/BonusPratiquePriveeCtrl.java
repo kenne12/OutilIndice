@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controllers.prime_heure_supplementaire;
+package controllers.bonus_pratique_privee;
 
 import controllers.util.JsfUtil;
 import entities.Categorie;
@@ -22,12 +22,12 @@ import utils.SessionMBean;
  */
 @ManagedBean
 @SessionScoped
-public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementaireCtrl {
+public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl {
 
     /**
-     * Creates a new instance of PrimeHeureSupplementaireCtrl
+     * Creates a new instance of BonusPratiquePriveeCtrl
      */
-    public PrimeHeureSupplementaireCtrl() {
+    public BonusPratiquePriveeCtrl() {
     }
 
     @PostConstruct
@@ -35,7 +35,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
         structure = SessionMBean.getStructure();
         structures.clear();
         structures.add(SessionMBean.getStructure());
-        listParametres = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
+        listParametres = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
         parametragecritere = new Parametragecritere();
         parametragecritere.setIdcategorie(new Categorie());
     }
@@ -43,8 +43,6 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
     public void prepareCreate() {
         this.updateFiltre();
         mode = "Create";
-        denominateurNuit = 500;
-        denominateurJour = 1000;
         RequestContext.getCurrentInstance().execute("PF('HeureSuppCreateDialog').show()");
     }
 
@@ -61,7 +59,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
         selectedCategories.clear();
         parametragecriteres.clear();
         if (structure.getIdstructure() != null && structure.getIdstructure() > 0) {
-            List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
+            List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
             if (list.isEmpty() || list == null) {
                 categories.addAll(categorieFacadeLocal.findAllRangeByCode());
             } else {
@@ -82,17 +80,17 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
                 Parametragecritere pc = new Parametragecritere();
                 pc.setIdparametragecritere(0l);
                 pc.setIdstructure(structure);
-                pc.setIdcritere(new Critere(2));
+                pc.setIdcritere(new Critere(3));
                 pc.setIndice(c.getIndice());
-                pc.setDenominateurjournee(denominateurJour);
-                pc.setDenominateurnuit(denominateurNuit);
-                pc.setValeurjournee(pc.getIndice() / denominateurJour);
-                pc.setValeurnuit(pc.getIndice() / denominateurNuit);
+                pc.setDenominateurjournee(0);
+                pc.setDenominateurnuit(0);
+                pc.setValeurjournee(0);
+                pc.setValeurnuit(0);
                 pc.setPoint(0d);
                 pc.setIdcategorie(c);
-                pc.setHeuresupp(true);
+                pc.setHeuresupp(false);
                 pc.setHeuresupn(false);
-                pc.setPratiqueprivee(false);
+                pc.setPratiqueprivee(true);
                 pc.setPerformanceindividuelle(false);
                 pc.setResultatqualitatifdept(false);
                 parametragecriteres.add(pc);
@@ -105,7 +103,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
         if (p.getIdparametragecritere() != 0l) {
             parametragecritereFacadeLocal.remove(p);
             parametragecriteres.remove(p);
-            listParametres = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
+            listParametres = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
         } else {
             int conteur = 0;
             for (Parametragecritere pc : parametragecriteres) {
@@ -117,37 +115,6 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
             parametragecriteres.remove(conteur);
         }
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
-    }
-
-    public void updateData(String mode) {
-        int i = 0;
-        for (Parametragecritere pc : parametragecriteres) {
-            if (mode.equals("jour")) {
-                pc.setDenominateurjournee(denominateurJour);
-                pc.setValeurjournee(pc.getIndice() / denominateurJour);
-                parametragecriteres.set(i, pc);
-            } else if (mode.equals("nuit")) {
-                pc.setDenominateurnuit(denominateurNuit);
-                pc.setValeurnuit(pc.getIndice() / denominateurNuit);
-                parametragecriteres.set(i, pc);
-            } else {
-                pc.setValeurjournee(pc.getIndice() / pc.getDenominateurjournee());
-                pc.setValeurnuit(pc.getIndice() / pc.getDenominateurnuit());
-                parametragecriteres.set(i, pc);
-            }
-            i++;
-        }
-    }
-
-    public void updateDataLine(String mode) {
-        if (mode.equals("indice")) {
-            parametragecritere.setValeurjournee(parametragecritere.getIndice() / parametragecritere.getDenominateurjournee());
-            parametragecritere.setValeurnuit(parametragecritere.getIndice() / parametragecritere.getDenominateurnuit());
-        } else if (mode.equals("jour")) {
-            parametragecritere.setValeurjournee(parametragecritere.getIndice() / parametragecritere.getDenominateurjournee());
-        } else if (mode.equals("nuit")) {
-            parametragecritere.setValeurnuit(parametragecritere.getIndice() / parametragecritere.getDenominateurnuit());
-        }
     }
 
     public void save() {
@@ -165,10 +132,10 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
                     parametragecritereFacadeLocal.edit(pc);
                 }
             }
-            listParametres = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
+            listParametres = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
             this.parametragecriteres.clear();
 
-            RequestContext.getCurrentInstance().execute("PF('ResponsabiliteCreateDialog').hide()");
+            RequestContext.getCurrentInstance().execute("PF('HeureSuppCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -181,8 +148,8 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
             parametragecritereFacadeLocal.edit(parametragecritere);
             parametragecritere = new Parametragecritere();
             parametragecritere.setIdcategorie(new Categorie());
-            listParametres = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
-            RequestContext.getCurrentInstance().execute("PF('ResponsabiliteEditDialog').hide()");
+            listParametres = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
+            RequestContext.getCurrentInstance().execute("PF('HeureSuppEditDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -193,7 +160,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
     public void delete(Parametragecritere p) {
         try {
             parametragecritereFacadeLocal.remove(p);
-            listParametres = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
+            listParametres = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();

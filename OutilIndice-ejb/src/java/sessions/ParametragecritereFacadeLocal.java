@@ -34,4 +34,6 @@ public interface ParametragecritereFacadeLocal {
 
     List<Parametragecritere> findByIdStructureHs(long idStructure, int idCritere, boolean hs);
 
+    List<Parametragecritere> findByIdStructurePp(long idStructure, int idCritere, boolean pratiquePrivee);
+
 }
