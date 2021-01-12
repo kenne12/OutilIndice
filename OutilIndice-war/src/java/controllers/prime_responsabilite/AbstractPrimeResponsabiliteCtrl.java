@@ -66,10 +66,6 @@ public class AbstractPrimeResponsabiliteCtrl {
         return structures;
     }
 
-    public void setStructures(List<Structure> structures) {
-        this.structures = structures;
-    }
-
     public List<Responsabilite> getResponsabilites() {
         return responsabilites;
     }
@@ -88,6 +84,14 @@ public class AbstractPrimeResponsabiliteCtrl {
 
     public List<Critereresponsabilite> getListCriteres() {
         return listCriteres;
+    }
+
+    public Critereresponsabilite getCritereresponsabilite() {
+        return critereresponsabilite;
+    }
+
+    public void setCritereresponsabilite(Critereresponsabilite critereresponsabilite) {
+        this.critereresponsabilite = critereresponsabilite;
     }
 
 }

@@ -9,7 +9,6 @@ import controllers.util.JsfUtil;
 import entities.Critere;
 import entities.Critereresponsabilite;
 import entities.Responsabilite;
-import entities.Structure;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -36,6 +35,7 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl {
         structures.clear();
         structures.add(SessionMBean.getStructure());
         listCriteres = critereresponsabiliteFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
+        critereresponsabilite.setIdresponsabilite(new Responsabilite());
     }
 
     public void prepareCreate() {
@@ -49,7 +49,7 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl {
         this.critereresponsabilite = cr;
         if (structure != null) {
             mode = "Edit";
-            RequestContext.getCurrentInstance().execute("PF('ResponsabiliteCreateDialog').show()");
+            RequestContext.getCurrentInstance().execute("PF('ResponsabiliteEditDialog').show()");
         }
     }
 
@@ -139,6 +139,20 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl {
             this.critereresponsabilites.clear();
 
             RequestContext.getCurrentInstance().execute("PF('ResponsabiliteCreateDialog').hide()");
+            JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            JsfUtil.addFatalErrorMessage("Exception");
+        }
+    }
+
+    public void edit() {
+        try {
+            critereresponsabiliteFacadeLocal.edit(critereresponsabilite);
+            critereresponsabilite = new Critereresponsabilite();
+            critereresponsabilite.setIdresponsabilite(new Responsabilite());
+            listCriteres = critereresponsabiliteFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
+            RequestContext.getCurrentInstance().execute("PF('ResponsabiliteEditDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();

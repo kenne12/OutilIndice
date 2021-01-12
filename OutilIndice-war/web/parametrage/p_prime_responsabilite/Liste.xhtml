@@ -43,14 +43,18 @@
                                         <tr>
                                             <td>#{item.idresponsabilite.nom}</td>
                                             <td>#{item.point}</td>                                                                            
-                                            <td>                                        
-                                                <p:commandButton icon="ui-icon-pencil" update=":ResponsabiliteCreateForm"
+                                            <td style="text-align: center">                                        
+                                                <p:commandButton icon="ui-icon-pencil" update=":ResponsabiliteEditForm"
                                                                  class="btn btn-success btn-sm"
                                                                  actionListener="#{primeResponsabiliteCtrl.prepareEdit(item)}"/>
-                                                
-                                                <p:commandButton icon="ui-icon-trash" update="ResponsabiliteListerForm"
+
+                                                <p:commandButton icon="ui-icon-trash" update=":ResponsabiliteListerForm"
                                                                  class="btn btn-danger btn-sm"
-                                                                 actionListener="#{primeResponsabiliteCtrl.delete(item)}"/>
+                                                                 actionListener="#{primeResponsabiliteCtrl.delete(item)}">
+                                                    <p:confirm header="#{langue['notification.confirm_delete_dialog_header']}"
+                                                               message="#{langue['notification.confirm_delete_message']} ?"
+                                                               icon="ui-icon-alert"/>
+                                                </p:commandButton>
                                             </td>
                                         </tr>
                                     </ui:repeat>
