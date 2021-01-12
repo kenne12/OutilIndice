@@ -11,7 +11,6 @@ import entities.Structure;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.faces.context.FacesContext;
 import sessions.CritereresponsabiliteFacadeLocal;
 import sessions.ResponsabiliteFacadeLocal;
 import sessions.StructureFacadeLocal;
@@ -40,9 +39,6 @@ public class AbstractPrimeResponsabiliteCtrl {
     protected List<Structure> structures = new ArrayList<>();
 
     protected Routine routine = new Routine();
-
-    String sc = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-
     protected String mode = "";
 
     public Routine getRoutine() {
@@ -62,7 +58,6 @@ public class AbstractPrimeResponsabiliteCtrl {
     }
 
     public List<Structure> getStructures() {
-
         return structures;
     }
 

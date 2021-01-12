@@ -32,6 +32,7 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl {
 
     @PostConstruct
     private void init() {
+        structure = SessionMBean.getStructure();
         structures.clear();
         structures.add(SessionMBean.getStructure());
         listCriteres = critereresponsabiliteFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
@@ -39,7 +40,6 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl {
     }
 
     public void prepareCreate() {
-        structure = SessionMBean.getStructure();
         this.updateFiltre();
         mode = "Create";
         RequestContext.getCurrentInstance().execute("PF('ResponsabiliteCreateDialog').show()");
@@ -47,10 +47,8 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl {
 
     public void prepareEdit(Critereresponsabilite cr) {
         this.critereresponsabilite = cr;
-        if (structure != null) {
-            mode = "Edit";
-            RequestContext.getCurrentInstance().execute("PF('ResponsabiliteEditDialog').show()");
-        }
+        mode = "Edit";
+        RequestContext.getCurrentInstance().execute("PF('ResponsabiliteEditDialog').show()");
     }
 
     public void updateFiltre() {
@@ -162,13 +160,9 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl {
 
     public void delete(Critereresponsabilite cr) {
         try {
-            if (sc != null) {
-                critereresponsabiliteFacadeLocal.remove(cr);
-                listCriteres = critereresponsabiliteFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
-                JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
-            } else {
-                JsfUtil.addErrorMessage("Aucune ligne seletionnée");
-            }
+            critereresponsabiliteFacadeLocal.remove(cr);
+            listCriteres = critereresponsabiliteFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
+            JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();
             JsfUtil.addFatalErrorMessage("Exception");

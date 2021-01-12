@@ -29,5 +29,9 @@ public interface ParametragecritereFacadeLocal {
     List<Parametragecritere> findRange(int[] range);
 
     int count();
-    
+
+    Long nextId();
+
+    List<Parametragecritere> findByIdStructureHs(long idStructure, int idCritere, boolean hs);
+
 }
