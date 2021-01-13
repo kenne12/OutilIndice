@@ -55,8 +55,15 @@ public class ParametragecritereFacade extends AbstractFacade<Parametragecritere>
 
     @Override
     public List<Parametragecritere> findByIdStructurePp(long idStructure, int idCritere, boolean pratiquePrivee) {
-        Query query = em.createQuery("SELECT p FROM Parametragecritere p WHERE p.idstructure.idstructure=:idStructure AND p.pratiqueprivee=:pratiquePrivee ORDER BY p.idcategorie.nom");
-        query.setParameter("idStructure", idStructure).setParameter("pratiquePrivee", pratiquePrivee);
+        Query query = em.createQuery("SELECT p FROM Parametragecritere p WHERE p.idstructure.idstructure=:idStructure AND p.idcritere.idcritere=:idCritere AND p.pratiqueprivee=:pratiquePrivee ORDER BY p.idcategorie.nom");
+        query.setParameter("idStructure", idStructure).setParameter("pratiquePrivee", pratiquePrivee).setParameter("idCritere", idCritere);
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<Parametragecritere> findByIdStructurePrqd(long idStructure, int idCritere, boolean prqd) {
+        Query query = em.createQuery("SELECT p FROM Parametragecritere p WHERE p.idstructure.idstructure=:idStructure AND p.idcritere.idcritere=:idCritere AND p.resultatqualitatifdept=:prqp ORDER BY p.idcategorie.nom");
+        query.setParameter("idStructure", idStructure).setParameter("prqp", prqd).setParameter("idCritere", idCritere);
         return query.getResultList();
     }
 

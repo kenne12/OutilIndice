@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="PrimeRQltifCreateDlg" 
+                  widgetVar="PrimeRQltifCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['prime_resultat_qualitatif_dept.formulaire_creation']}"
+                  closeOnEscape="true"
+                  width="70%"
+                  height="600">
+
+            <h:form id="PrimeRQltifCreateForm">
+
+                <div class="col-md-12">
+
+                    <h:panelGroup id="display">
+
+                        <div class="form-group">
+                            <p:outputLabel value="#{langue.structure}" for="structure" />
+                            <h:selectOneMenu disabled="true" converter="structureConverter" 
+                                             class="form-control" 
+                                             id="structure" value="#{primeRQltifDeptCtrl.structure}">
+                                <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                <f:selectItems value="#{primeRQltifDeptCtrl.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
+                                <p:ajax update="grid_critere,datalist" listener="#{primeRQltifDeptCtrl.updateFiltre()}"/>
+                            </h:selectOneMenu>                                                
+                        </div>
+
+                        <p:separator/>
+
+                        <p:selectManyCheckbox id="grid_critere" value="#{primeRQltifDeptCtrl.selectedCategories}" layout="grid" columns="1" converter="categorieConverter">
+                            <f:selectItems value="#{primeRQltifDeptCtrl.categories}" var="c" itemLabel="#{c.nom}" itemValue="#{c}" />
+                            <p:ajax />
+                        </p:selectManyCheckbox>
+
+                        <p:separator />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>#{langue.denominateur}</label>
+                                    <h:inputText class="form-control" value="#{primeRQltifDeptCtrl.denominateur}" >
+                                        <p:ajax event="keyup" update="datalist" listener="#{primeRQltifDeptCtrl.updateData('')}" />
+                                    </h:inputText>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p:separator />
+
+                        <p:commandButton value="#{langue['common.ajouter']}"
+                                         actionListener="#{primeRQltifDeptCtrl.addCategoriesToTable()}"
+                                         update="datalist,grid_critere" icon="ui-icon-plus" />
+                        <p:separator />
+
+                        <p:dataTable id="datalist" value="#{primeRQltifDeptCtrl.parametragecriteres}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="15"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                            <p:column class="hardBreak" style="width: 50%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.categorie}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.idcategorie.nom}"/> 
+                            </p:column>
+
+                            <p:column style="width: 10% ; text-align:center" headerText="#{langue.indice}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.indice}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.indice}">                                             
+                                            <p:ajax update="datalist" listener="#{primeHeureSupplementaireCtrl.updateData('')}" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 10% ; text-align:center" headerText="#{langue.denominateur}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.denominateur}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.denominateur}">                                             
+                                            <p:ajax update="datalist" listener="#{primeHeureSupplementaireCtrl.updateData('')}" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 10% ; text-align:center" headerText="#{langue.point_max}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.point}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.point}">                                             
+                                            <p:ajax  />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 10%" >
+                                <f:facet name="header">
+                                    <h:outputText value="Action"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-trash">
+                                    <p:ajax update="datalist,:PrimeRQltifCreateForm:grid_critere" event="click" listener="#{primeRQltifDeptCtrl.removeCategory(item)}" />
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:separator/>
+
+                        <center>
+                            <p:commandButton value="#{langue['common.fermer']}" 
+                                             onclick="PF('PrimeRQltifCreateDialog').hide()"
+                                             icon="ui-icon-close"/>
+
+                            <p:commandButton icon="ui-icon-save" actionListener="#{primeRQltifDeptCtrl.save()}" value="#{langue['common.enregistrer']}" update="display,:PrimeRQltifListerForm:datalist,:PrimeRQltifListerForm:growl,:PrimeRQltifListerForm">
+                                <p:confirm header="#{langue['notification.confirmation']}" 
+                                           message="#{langue['notification.confirmation_enregistrement']}" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+                        </center>
+
+                    </h:panelGroup>
+
+                </div>
+
+            </h:form>
+
+        </p:dialog>
+    </ui:composition>
+</html>
