@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="PrimeRQntifCreateDlg" 
+                  widgetVar="PrimeRQntifCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['prime_resultat_quantitatif_dept.formulaire_creation']}"
+                  closeOnEscape="true"
+                  width="70%"
+                  height="600">
+
+            <h:form id="PrimeRQntifCreateForm">
+
+                <div class="col-md-12">
+
+                    <h:panelGroup id="display">
+
+                        <div class="form-group">
+                            <p:outputLabel value="#{langue.structure}" for="structure" />
+                            <h:selectOneMenu disabled="true" converter="structureConverter" class="form-control"                                              
+                                             id="structure" value="#{primeQntifDeptCtrl.structure}">
+                                <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                <f:selectItems value="#{primeQntifDeptCtrl.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
+                            </h:selectOneMenu>                                                
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.service}" for="service" />
+                                    <h:selectOneMenu converter="serviceConverter" class="form-control"                                                      
+                                                     id="service" value="#{primeQntifDeptCtrl.service}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                        <f:selectItems value="#{primeQntifDeptCtrl.services}" var="svc" itemLabel="#{svc.nom}" itemValue="#{svc}" />
+                                        <p:ajax update="grid_critere,datalist" listener="#{primeQntifDeptCtrl.updateFiltre()}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.periode}" for="periode" />
+                                    <h:selectOneMenu disabled="true" converter="periodeConverter" class="form-control"                                                      
+                                                     id="periode" value="#{primeQntifDeptCtrl.periode}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                        <f:selectItems value="#{primeQntifDeptCtrl.periodes}" var="prd" itemLabel="#{prd.nom}" itemValue="#{prd}" />
+                                        <p:ajax update="grid_critere,datalist" listener="#{primeQntifDeptCtrl.updateFiltre()}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.sous_periode}" for="sous_periode" />
+                                    <h:selectOneMenu converter="sousperiodeConverter" class="form-control"                                                      
+                                                     id="sous_periode" value="#{primeQntifDeptCtrl.sousperiode}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                        <f:selectItems value="#{primeQntifDeptCtrl.sousperiodes}" var="sprd" itemLabel="#{sprd.nom}" itemValue="#{sprd}" />
+                                        <p:ajax update="grid_critere,datalist" listener="#{primeQntifDeptCtrl.updateFiltre()}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p:separator/>
+
+                        <p:selectManyCheckbox id="grid_critere" value="#{primeQntifDeptCtrl.selectedIndicateurs}" layout="grid" columns="1" converter="indicateurConverter">
+                            <f:selectItems value="#{primeQntifDeptCtrl.indicateurs}" var="i" itemLabel="#{i.nom}" itemValue="#{i}" />
+                            <p:ajax />
+                        </p:selectManyCheckbox>
+
+                        <p:separator />
+
+                        <p:commandButton value="#{langue['common.ajouter']}"
+                                         actionListener="#{primeQntifDeptCtrl.addIndicatorToTable()}"
+                                         update="datalist,grid_critere" icon="ui-icon-plus" />
+                        <p:separator />
+
+                        <p:dataTable id="datalist" value="#{primeQntifDeptCtrl.cibles}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="15"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                            <p:column class="hardBreak" style="width: 70%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.indicateur}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.idindicateur.nom}"/> 
+                            </p:column>
+
+                            <p:column style="width: 20% ; text-align:center" headerText="#{langue.points}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.valeurcible}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.valeurcible}">                                             
+                                            <p:ajax  />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 10%" >
+                                <f:facet name="header">
+                                    <h:outputText value="Action"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-trash">
+                                    <p:ajax update="datalist,:PrimeRQntifCreateForm:grid_critere" event="click" listener="#{primeQntifDeptCtrl.removeIndicator(item)}" />
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:separator/>
+
+                        <center>
+                            <p:commandButton value="#{langue['common.fermer']}" 
+                                             onclick="PF('PrimeRQntifCreateDialog').hide()"
+                                             icon="ui-icon-close"/>
+
+                            <p:commandButton icon="ui-icon-save" actionListener="#{primeQntifDeptCtrl.save()}" value="#{langue['common.enregistrer']}" update="display,:PrimeRQntifListerForm:datalist,:PrimeRQntifListerForm:growl,:PrimeRQntifListerForm">
+                                <p:confirm header="#{langue['notification.confirmation']}" 
+                                           message="#{langue['notification.confirmation_enregistrement']}" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+                        </center>
+
+                    </h:panelGroup>
+
+                </div>
+
+            </h:form>
+
+        </p:dialog>
+    </ui:composition>
+</html>

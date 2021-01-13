@@ -30,18 +30,24 @@ public class Cible implements Serializable {
     private boolean primeresultatquant;
     private boolean bonusrevenudept;
 
-    @JoinColumn(name = "idindicateur" , referencedColumnName = "idindicateur")
+    @JoinColumn(name = "idindicateur", referencedColumnName = "idindicateur")
     @ManyToOne(fetch = FetchType.LAZY)
     private Indicateur idindicateur;
-    @JoinColumn(name = "idstructure" , referencedColumnName = "idstructure")
+    @JoinColumn(name = "idstructure", referencedColumnName = "idstructure")
     @ManyToOne(fetch = FetchType.LAZY)
     private Structure idstructure;
-    @JoinColumn(name = "idperiode" , referencedColumnName = "idperiode")
+    @JoinColumn(name = "idperiode", referencedColumnName = "idperiode")
     @ManyToOne(fetch = FetchType.LAZY)
     private Periode idperiode;
-    @JoinColumn(name = "idservice" , referencedColumnName = "idservice")
+    @JoinColumn(name = "idservice", referencedColumnName = "idservice")
     @ManyToOne(fetch = FetchType.LAZY)
     private Service idservice;
+    @JoinColumn(name = "idsousperiode", referencedColumnName = "idsousperiode")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Sousperiode idsousperiode;
+    @JoinColumn(name = "idcritere", referencedColumnName = "idcritere")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Critere idcritere;
 
     public Cible() {
     }
@@ -128,6 +134,22 @@ public class Cible implements Serializable {
 
     public void setIdindicateur(Indicateur idindicateur) {
         this.idindicateur = idindicateur;
+    }
+
+    public Sousperiode getIdsousperiode() {
+        return idsousperiode;
+    }
+
+    public void setIdsousperiode(Sousperiode idsousperiode) {
+        this.idsousperiode = idsousperiode;
+    }
+
+    public Critere getIdcritere() {
+        return idcritere;
+    }
+
+    public void setIdcritere(Critere idcritere) {
+        this.idcritere = idcritere;
     }
 
     @Override

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="PrimeRQntifEditDlg" 
+                  widgetVar="PrimeRQntifEditDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['prime_resultat_quantitatif_dept.formulaire_edition']}"
+                  closeOnEscape="true"
+                  width="40%">
+
+            <h:form id="PrimeRQntifEditForm">
+
+                <h:panelGroup id="display" rendered="true">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue.indicateur}" for="indicateur" />
+                                <h:inputText class="form-control" id="indicateur" value="#{primeQntifDeptCtrl.cible.idindicateur.nom}" readonly="true" />                                              
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue.valeur_cible}" for="val_cible" />
+                                <h:inputText class="form-control" id="val_cible" value="#{primeQntifDeptCtrl.cible.valeurcible}" />                                                                             
+                            </div>
+                        </div>
+                    </div>
+
+                    <p:separator/>
+
+                    <center>
+                        <p:commandButton value="#{langue['common.fermer']}" 
+                                         onclick="PF('PrimeRQntifEditDialog').hide()"
+                                         icon="ui-icon-close"/>
+
+                        <p:commandButton icon="ui-icon-save" actionListener="#{primeQntifDeptCtrl.edit()}" value="#{langue['common.enregistrer']}" update="display,:PrimeRQntifListerForm:growl,:PrimeRQntifListerForm">
+                            <p:confirm header="#{langue['notification.confirmation']}" 
+                                       message="#{langue['notification.confirmation_enregistrement']}" 
+                                       icon="ui-icon-alert"/>
+                        </p:commandButton>
+                    </center>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

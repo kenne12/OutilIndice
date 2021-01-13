@@ -29,5 +29,9 @@ public interface CibleFacadeLocal {
     List<Cible> findRange(int[] range);
 
     int count();
-    
+
+    Long nextId();
+
+    List<Cible> findByIdSousPeriode(long idStructure, int idPeriode, int idSousPeriode, int idCritere);
+
 }
