@@ -9,6 +9,7 @@ import controllers.util.JsfUtil;
 import entities.Categorie;
 import entities.Critere;
 import entities.Parametragecritere;
+import entities.Service;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -29,7 +30,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
      */
     public PrimeHeureSupplementaireCtrl() {
     }
-
+    
     @PostConstruct
     private void init() {
         structure = SessionMBean.getStructure();
@@ -37,9 +38,9 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
         structures.add(SessionMBean.getStructure());
         listParametres = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
         parametragecritere = new Parametragecritere();
-        parametragecritere.setIdcategorie(new Categorie());
+        parametragecritere.setIdservice(new Service());
     }
-
+    
     public void prepareCreate() {
         this.updateFiltre();
         mode = "Create";
@@ -47,7 +48,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
         denominateurJour = 1000;
         RequestContext.getCurrentInstance().execute("PF('HeureSuppCreateDialog').show()");
     }
-
+    
     public void prepareEdit(Parametragecritere p) {
         this.parametragecritere = p;
         if (structure != null) {
@@ -55,7 +56,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
             RequestContext.getCurrentInstance().execute("PF('HeureSuppEditDialog').show()");
         }
     }
-
+    
     public void updateFiltre() {
         categories.clear();
         selectedCategories.clear();
@@ -75,7 +76,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
             }
         }
     }
-
+    
     public void addCategoriesToTable() {
         if (!selectedCategories.isEmpty()) {
             for (Categorie c : selectedCategories) {
@@ -95,12 +96,13 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
                 pc.setPratiqueprivee(false);
                 pc.setPerformanceindividuelle(false);
                 pc.setResultatqualitatifdept(false);
+                pc.setBonusrevenudept(false);
                 parametragecriteres.add(pc);
             }
             categories.removeAll(selectedCategories);
         }
     }
-
+    
     public void removeCategory(Parametragecritere p) {
         if (p.getIdparametragecritere() != 0l) {
             parametragecritereFacadeLocal.remove(p);
@@ -118,7 +120,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
         }
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }
-
+    
     public void updateData(String mode) {
         int i = 0;
         for (Parametragecritere pc : parametragecriteres) {
@@ -138,7 +140,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
             i++;
         }
     }
-
+    
     public void updateDataLine(String mode) {
         if (mode.equals("indice")) {
             parametragecritere.setValeurjournee(parametragecritere.getIndice() / parametragecritere.getDenominateurjournee());
@@ -149,14 +151,14 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
             parametragecritere.setValeurnuit(parametragecritere.getIndice() / parametragecritere.getDenominateurnuit());
         }
     }
-
+    
     public void save() {
         try {
             if (parametragecriteres.isEmpty()) {
                 JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
                 return;
             }
-
+            
             for (Parametragecritere pc : parametragecriteres) {
                 if (pc.getIdparametragecritere() == 0l) {
                     pc.setIdparametragecritere(parametragecritereFacadeLocal.nextId());
@@ -167,7 +169,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
             }
             listParametres = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
             this.parametragecriteres.clear();
-
+            
             RequestContext.getCurrentInstance().execute("PF('HeureSuppCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
@@ -175,12 +177,12 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-
+    
     public void edit() {
         try {
             parametragecritereFacadeLocal.edit(parametragecritere);
             parametragecritere = new Parametragecritere();
-            parametragecritere.setIdcategorie(new Categorie());
+            parametragecritere.setIdservice(new Service());
             listParametres = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
             RequestContext.getCurrentInstance().execute("PF('HeureSuppEditDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
@@ -189,7 +191,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-
+    
     public void delete(Parametragecritere p) {
         try {
             parametragecritereFacadeLocal.remove(p);
@@ -200,5 +202,5 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-
+    
 }

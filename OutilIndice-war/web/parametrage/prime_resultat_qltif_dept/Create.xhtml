@@ -107,19 +107,11 @@
                                 </p:cellEditor>
                             </p:column>
 
-                            <p:column style="width: 10% ; text-align:center" headerText="#{langue.point_max}">
-                                <p:cellEditor>
-                                    <f:facet name="output">
-                                        <h:outputText value="#{item.point}" >
-                                            <f:convertNumber />
-                                        </h:outputText>
-                                    </f:facet>
-                                    <f:facet name="input">
-                                        <p:inputText required="true" value="#{item.point}">                                             
-                                            <p:ajax  />
-                                        </p:inputText>
-                                    </f:facet>
-                                </p:cellEditor>
+                            <p:column class="hardBreak" style="width: 10%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.point_max}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.point}"/> 
                             </p:column>
 
                             <p:column style="width: 10%" >

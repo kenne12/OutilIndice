@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controllers.prime_r_qltif_dept;
+package controllers.bonus_revenu_dept;
 
 import controllers.util.JsfUtil;
 import entities.Categorie;
 import entities.Critere;
 import entities.Parametragecritere;
+import entities.Service;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -22,65 +23,65 @@ import utils.SessionMBean;
  */
 @ManagedBean
 @SessionScoped
-public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl {
+public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl {
 
     /**
-     * Creates a new instance of PrimeRQltifDeptCtrl
+     * Creates a new instance of BonusRevenuDeptCtrl
      */
-    public PrimeRQltifDeptCtrl() {
+    public BonusRevenuDeptCtrl() {
     }
-    
+
     @PostConstruct
     private void init() {
         structure = SessionMBean.getStructure();
         structures.clear();
         structures.add(SessionMBean.getStructure());
-        listParametres = parametragecritereFacadeLocal.findByIdStructurePrqd(SessionMBean.getStructure().getIdstructure(), 5, true);
+        listParametres = parametragecritereFacadeLocal.findByIdStructureBrd(SessionMBean.getStructure().getIdstructure(), 6, true);
         parametragecritere = new Parametragecritere();
-        parametragecritere.setIdcategorie(new Categorie());
+        parametragecritere.setIdservice(new Service());
     }
-    
+
     public void prepareCreate() {
         this.denominateur = 5;
         this.updateFiltre();
         mode = "Create";
-        RequestContext.getCurrentInstance().execute("PF('PrimeRQltifCreateDialog').show()");
+        RequestContext.getCurrentInstance().execute("PF('BonusRevenuDeptCreateDialog').show()");
     }
-    
+
     public void prepareEdit(Parametragecritere p) {
         this.parametragecritere = p;
         mode = "Edit";
-        RequestContext.getCurrentInstance().execute("PF('PrimeRQltifEditDialog').show()");
+        RequestContext.getCurrentInstance().execute("PF('BonusRevenuDeptEditDialog').show()");
     }
-    
+
     public void updateFiltre() {
-        categories.clear();
-        selectedCategories.clear();
+        services.clear();
+        selectedServices.clear();
         parametragecriteres.clear();
         if (structure.getIdstructure() != null && structure.getIdstructure() > 0) {
-            List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructurePrqd(SessionMBean.getStructure().getIdstructure(), 5, true);
+            List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructureBrd(SessionMBean.getStructure().getIdstructure(), 6, true);
             if (list.isEmpty() || list == null) {
-                categories.addAll(categorieFacadeLocal.findAllRangeByCode());
+                services.addAll(serviceFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure()));
             } else {
                 parametragecriteres.addAll(list);
-                categories.addAll(categorieFacadeLocal.findAllRangeByCode());
+                services.addAll(serviceFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure()));
                 for (Parametragecritere pc : list) {
-                    selectedCategories.add(pc.getIdcategorie());
+                    selectedServices.add(pc.getIdservice());
                 }
-                categories.removeAll(selectedCategories);
-                selectedCategories.clear();
+                services.removeAll(selectedServices);
+                selectedServices.clear();
             }
         }
     }
-    
-    public void addCategoriesToTable() {
-        if (!selectedCategories.isEmpty()) {
-            for (Categorie c : selectedCategories) {
+
+    public void addServicesToTable() {
+        if (!selectedServices.isEmpty()) {
+            for (Service s : selectedServices) {
                 Parametragecritere pc = new Parametragecritere();
                 pc.setIdparametragecritere(0l);
                 pc.setIdstructure(structure);
-                pc.setIdcritere(new Critere(5));
-                pc.setIndice(c.getIndice());
+                pc.setIdcritere(new Critere(6));
+                pc.setIndice(0);
                 pc.setDenominateurjournee(0);
                 pc.setDenominateurnuit(0);
                 pc.setValeurjournee(0);
@@ -88,30 +89,29 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl {
                 pc.setPoint(0d);
                 if (denominateur > 0) {
                     pc.setDenominateur((int) denominateur);
-                    pc.setPoint(pc.getIndice() / denominateur);
                 }
-                pc.setIdcategorie(c);
+                pc.setIdservice(s);
                 pc.setHeuresupp(false);
                 pc.setHeuresupn(false);
                 pc.setPratiqueprivee(false);
                 pc.setPerformanceindividuelle(false);
-                pc.setResultatqualitatifdept(true);
-                pc.setBonusrevenudept(false);
+                pc.setResultatqualitatifdept(false);
+                pc.setBonusrevenudept(true);
                 parametragecriteres.add(pc);
             }
-            categories.removeAll(selectedCategories);
+            services.removeAll(selectedServices);
         }
     }
-    
+
     public void removeCategory(Parametragecritere p) {
         if (p.getIdparametragecritere() != 0l) {
             parametragecritereFacadeLocal.remove(p);
             parametragecriteres.remove(p);
-            listParametres = parametragecritereFacadeLocal.findByIdStructurePrqd(SessionMBean.getStructure().getIdstructure(), 5, true);
+            listParametres = parametragecritereFacadeLocal.findByIdStructureBrd(SessionMBean.getStructure().getIdstructure(), 6, true);
         } else {
             int conteur = 0;
             for (Parametragecritere pc : parametragecriteres) {
-                if (pc.getIdcategorie().getIdcategorie().equals(p.getIdcategorie().getIdcategorie())) {
+                if (pc.getIdservice().getIdservice().equals(p.getIdservice().getIdservice())) {
                     break;
                 }
                 conteur++;
@@ -120,7 +120,7 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl {
         }
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }
-    
+
     public void updateData(String mode) {
         int i = 0;
         for (Parametragecritere pc : parametragecriteres) {
@@ -130,7 +130,16 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl {
             i++;
         }
     }
-    
+
+    public void updateData2(String mode) {
+        int i = 0;
+        for (Parametragecritere pc : parametragecriteres) {
+            pc.setPoint(pc.getIndice() / pc.getDenominateur());
+            parametragecriteres.set(i, pc);
+            i++;
+        }
+    }
+
     public void updateDataLine(String mode) {
         try {
             parametragecritere.setPoint(parametragecritere.getIndice() / parametragecritere.getDenominateur());
@@ -138,14 +147,14 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl {
             parametragecritere.setPoint(0);
         }
     }
-    
+
     public void save() {
         try {
             if (parametragecriteres.isEmpty()) {
                 JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
                 return;
             }
-            
+
             for (Parametragecritere pc : parametragecriteres) {
                 if (pc.getIdparametragecritere() == 0l) {
                     pc.setIdparametragecritere(parametragecritereFacadeLocal.nextId());
@@ -154,39 +163,40 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl {
                     parametragecritereFacadeLocal.edit(pc);
                 }
             }
-            listParametres = parametragecritereFacadeLocal.findByIdStructurePrqd(SessionMBean.getStructure().getIdstructure(), 5, true);
+            listParametres = parametragecritereFacadeLocal.findByIdStructureBrd(SessionMBean.getStructure().getIdstructure(), 6, true);
             this.parametragecriteres.clear();
-            
-            RequestContext.getCurrentInstance().execute("PF('PrimeRQltifCreateDialog').hide()");
+
+            RequestContext.getCurrentInstance().execute("PF('BonusRevenuDeptCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-    
+
     public void edit() {
         try {
             parametragecritereFacadeLocal.edit(parametragecritere);
             parametragecritere = new Parametragecritere();
             parametragecritere.setIdcategorie(new Categorie());
-            listParametres = parametragecritereFacadeLocal.findByIdStructurePrqd(SessionMBean.getStructure().getIdstructure(), 5, true);
-            RequestContext.getCurrentInstance().execute("PF('PrimeRQltifEditDialog').hide()");
+            listParametres = parametragecritereFacadeLocal.findByIdStructureBrd(SessionMBean.getStructure().getIdstructure(), 6, true);
+            RequestContext.getCurrentInstance().execute("PF('BonusRevenuDeptEditDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-    
+
     public void delete(Parametragecritere p) {
         try {
             parametragecritereFacadeLocal.remove(p);
-            listParametres = parametragecritereFacadeLocal.findByIdStructurePrqd(SessionMBean.getStructure().getIdstructure(), 5, true);
+            listParametres = parametragecritereFacadeLocal.findByIdStructureBrd(SessionMBean.getStructure().getIdstructure(), 6, true);
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
+
 }

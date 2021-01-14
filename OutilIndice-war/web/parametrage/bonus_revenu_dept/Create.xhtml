@@ -8,15 +8,15 @@
 
     <ui:composition>
 
-        <p:dialog id="PerformanceIndividuelleCreateDlg" 
-                  widgetVar="PerformanceIndividuelleCreateDialog" 
+        <p:dialog id="BonusRevenuDeptCreateDlg" 
+                  widgetVar="BonusRevenuDeptCreateDialog" 
                   modal="true" resizable="false" appendTo="@(body)" 
-                  header="#{langue['prime_performance_individuelle.formulaire_creation']}"
+                  header="#{langue['bonus_revenu_dept.formulaire_creation']}"
                   closeOnEscape="true"
                   width="70%"
                   height="600">
 
-            <h:form id="PerformanceIndividuelleCreateForm">
+            <h:form id="BonusRevenuDeptCreateForm">
 
                 <div class="col-md-12">
 
@@ -26,17 +26,17 @@
                             <p:outputLabel value="#{langue.structure}" for="structure" />
                             <h:selectOneMenu disabled="true" converter="structureConverter" 
                                              class="form-control" 
-                                             id="structure" value="#{primePerfIndividuelCtrl.structure}">
+                                             id="structure" value="#{bonusRevenuDeptCtrl.structure}">
                                 <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                                <f:selectItems value="#{primePerfIndividuelCtrl.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
-                                <p:ajax update="grid_critere,datalist" listener="#{primePerfIndividuelCtrl.updateFiltre()}"/>
+                                <f:selectItems value="#{bonusRevenuDeptCtrl.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
+                                <p:ajax update="grid_critere,datalist" listener="#{bonusRevenuDeptCtrl.updateFiltre()}"/>
                             </h:selectOneMenu>                                                
                         </div>
 
                         <p:separator/>
 
-                        <p:selectManyCheckbox id="grid_critere" value="#{primePerfIndividuelCtrl.selectedCategories}" layout="grid" columns="1" converter="categorieConverter">
-                            <f:selectItems value="#{primePerfIndividuelCtrl.categories}" var="c" itemLabel="#{c.nom}" itemValue="#{c}" />
+                        <p:selectManyCheckbox id="grid_critere" value="#{bonusRevenuDeptCtrl.selectedServices}" layout="grid" columns="1" converter="serviceConverter">
+                            <f:selectItems value="#{bonusRevenuDeptCtrl.services}" var="s" itemLabel="#{s.nom}" itemValue="#{s}" />
                             <p:ajax />
                         </p:selectManyCheckbox>
 
@@ -46,8 +46,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>#{langue.denominateur}</label>
-                                    <h:inputText class="form-control" value="#{primePerfIndividuelCtrl.denominateur}" >
-                                        <p:ajax event="keyup" update="datalist" listener="#{primePerfIndividuelCtrl.updateData('')}" />
+                                    <h:inputText class="form-control" value="#{bonusRevenuDeptCtrl.denominateur}" >
+                                        <p:ajax event="keyup" update="datalist" listener="#{bonusRevenuDeptCtrl.updateData('')}" />
                                     </h:inputText>
                                 </div>
                             </div>
@@ -56,11 +56,11 @@
                         <p:separator />
 
                         <p:commandButton value="#{langue['common.ajouter']}"
-                                         actionListener="#{primePerfIndividuelCtrl.addCategoriesToTable()}"
+                                         actionListener="#{bonusRevenuDeptCtrl.addServicesToTable()}"
                                          update="datalist,grid_critere" icon="ui-icon-plus" />
                         <p:separator />
 
-                        <p:dataTable id="datalist" value="#{primePerfIndividuelCtrl.parametragecriteres}" var="item"                             
+                        <p:dataTable id="datalist" value="#{bonusRevenuDeptCtrl.parametragecriteres}" var="item"                             
                                      paginator="true"
                                      editable="true"
                                      editMode="cell"
@@ -72,9 +72,9 @@
 
                             <p:column class="hardBreak" style="width: 50%;" >
                                 <f:facet name="header">
-                                    <h:outputText value="#{langue.categorie}"/>
+                                    <h:outputText value="#{langue.service}"/>
                                 </f:facet>
-                                <h:outputText class="hardBreak" value="#{item.idcategorie.nom}"/> 
+                                <h:outputText class="hardBreak" value="#{item.idservice.nom}"/> 
                             </p:column>
 
                             <p:column style="width: 10% ; text-align:center" headerText="#{langue.indice}">
@@ -86,7 +86,7 @@
                                     </f:facet>
                                     <f:facet name="input">
                                         <p:inputText required="true" value="#{item.indice}">                                             
-                                            <p:ajax update="datalist" listener="#{primeHeureSupplementaireCtrl.updateData('')}" />
+                                            <p:ajax update="datalist" listener="#{bonusRevenuDeptCtrl.updateData2('')}" />
                                         </p:inputText>
                                     </f:facet>
                                 </p:cellEditor>
@@ -101,7 +101,7 @@
                                     </f:facet>
                                     <f:facet name="input">
                                         <p:inputText required="true" value="#{item.denominateur}">                                             
-                                            <p:ajax update="datalist" listener="#{primeHeureSupplementaireCtrl.updateData('')}" />
+                                            <p:ajax update="datalist" listener="#{bonusRevenuDeptCtrl.updateData2('')}" />
                                         </p:inputText>
                                     </f:facet>
                                 </p:cellEditor>
@@ -119,7 +119,7 @@
                                     <h:outputText value="Action"/>
                                 </f:facet>
                                 <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist,:PerformanceIndividuelleCreateForm:grid_critere" event="click" listener="#{primePerfIndividuelCtrl.removeCategory(item)}" />
+                                    <p:ajax update="datalist,:BonusRevenuDeptCreateForm:grid_critere" event="click" listener="#{bonusRevenuDeptCtrl.removeCategory(item)}" />
                                 </p:commandButton>
                             </p:column>
 
@@ -129,10 +129,10 @@
 
                         <center>
                             <p:commandButton value="#{langue['common.fermer']}" 
-                                             onclick="PF('PerformanceIndividuelleCreateDialog').hide()"
+                                             onclick="PF('BonusRevenuDeptCreateDialog').hide()"
                                              icon="ui-icon-close"/>
 
-                            <p:commandButton icon="ui-icon-save" actionListener="#{primePerfIndividuelCtrl.save()}" value="#{langue['common.enregistrer']}" update="display,:PerformanceIndividuelleListerForm:datalist,:PerformanceIndividuelleListerForm:growl,:PerformanceIndividuelleListerForm">
+                            <p:commandButton icon="ui-icon-save" actionListener="#{bonusRevenuDeptCtrl.save()}" value="#{langue['common.enregistrer']}" update="display,:BonusRevenuDeptListerForm:datalist,:BonusRevenuDeptListerForm:growl,:BonusRevenuDeptListerForm">
                                 <p:confirm header="#{langue['notification.confirmation']}" 
                                            message="#{langue['notification.confirmation_enregistrement']}" 
                                            icon="ui-icon-alert"/>

@@ -96,6 +96,7 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl {
                 pc.setPratiqueprivee(false);
                 pc.setPerformanceindividuelle(true);
                 pc.setResultatqualitatifdept(false);
+                pc.setBonusrevenudept(false);
                 parametragecriteres.add(pc);
             }
             categories.removeAll(selectedCategories);

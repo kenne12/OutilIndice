@@ -93,6 +93,7 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl {
                 pc.setPratiqueprivee(true);
                 pc.setPerformanceindividuelle(false);
                 pc.setResultatqualitatifdept(false);
+                pc.setBonusrevenudept(false);
                 parametragecriteres.add(pc);
             }
             categories.removeAll(selectedCategories);

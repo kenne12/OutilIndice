@@ -37,16 +37,19 @@ public class Parametragecritere implements Serializable {
     private boolean pratiqueprivee;
     private boolean resultatqualitatifdept;
     private boolean performanceindividuelle;
-
-    @JoinColumn(name = "idcategorie" , referencedColumnName = "idcategorie")
+    private boolean bonusrevenudept;
+    @JoinColumn(name = "idcategorie", referencedColumnName = "idcategorie")
     @ManyToOne(fetch = FetchType.LAZY)
     private Categorie idcategorie;
-    @JoinColumn(name = "idcritere" , referencedColumnName = "idcritere")
+    @JoinColumn(name = "idcritere", referencedColumnName = "idcritere")
     @ManyToOne(fetch = FetchType.LAZY)
     private Critere idcritere;
-    @JoinColumn(name = "idstructure" , referencedColumnName = "idstructure")
+    @JoinColumn(name = "idstructure", referencedColumnName = "idstructure")
     @ManyToOne(fetch = FetchType.LAZY)
     private Structure idstructure;
+    @JoinColumn(name = "idservice", referencedColumnName = "idservice")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Service idservice;
 
     public Parametragecritere() {
     }
@@ -167,6 +170,14 @@ public class Parametragecritere implements Serializable {
         this.performanceindividuelle = performanceindividuelle;
     }
 
+    public boolean isBonusrevenudept() {
+        return bonusrevenudept;
+    }
+
+    public void setBonusrevenudept(boolean bonusrevenudept) {
+        this.bonusrevenudept = bonusrevenudept;
+    }
+
     public Categorie getIdcategorie() {
         return idcategorie;
     }
@@ -189,6 +200,14 @@ public class Parametragecritere implements Serializable {
 
     public void setIdstructure(Structure idstructure) {
         this.idstructure = idstructure;
+    }
+
+    public Service getIdservice() {
+        return idservice;
+    }
+
+    public void setIdservice(Service idservice) {
+        this.idservice = idservice;
     }
 
     @Override

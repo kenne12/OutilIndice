@@ -95,6 +95,7 @@ public class CritereNIHPerdueCtrl extends AbstratCritereNIHPerdueCtrl {
                 pc.setPratiqueprivee(false);
                 pc.setPerformanceindividuelle(false);
                 pc.setResultatqualitatifdept(false);
+                pc.setBonusrevenudept(false);
                 parametragecriteres.add(pc);
             }
             categories.removeAll(selectedCategories);
