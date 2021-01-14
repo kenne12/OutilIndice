@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controllers.prime_heure_supplementaire;
+package controllers.cn_incitation_heure_perdue;
 
 import controllers.util.JsfUtil;
 import entities.Categorie;
@@ -22,12 +22,12 @@ import utils.SessionMBean;
  */
 @ManagedBean
 @SessionScoped
-public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementaireCtrl {
+public class CritereNIHPerdueCtrl extends AbstratCritereNIHPerdueCtrl {
 
     /**
-     * Creates a new instance of PrimeHeureSupplementaireCtrl
+     * Creates a new instance of CritereNIHPerdueCtrl
      */
-    public PrimeHeureSupplementaireCtrl() {
+    public CritereNIHPerdueCtrl() {
     }
 
     @PostConstruct
@@ -35,7 +35,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
         structure = SessionMBean.getStructure();
         structures.clear();
         structures.add(SessionMBean.getStructure());
-        listParametres = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
+        listParametres = parametragecritereFacadeLocal.findByIdStructureHp(SessionMBean.getStructure().getIdstructure(), 8, true);
         parametragecritere = new Parametragecritere();
         parametragecritere.setIdcategorie(new Categorie());
     }
@@ -45,14 +45,14 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
         mode = "Create";
         denominateurNuit = 500;
         denominateurJour = 1000;
-        RequestContext.getCurrentInstance().execute("PF('HeureSuppCreateDialog').show()");
+        RequestContext.getCurrentInstance().execute("PF('HeurePerdueCreateDialog').show()");
     }
 
     public void prepareEdit(Parametragecritere p) {
         this.parametragecritere = p;
         if (structure != null) {
             mode = "Edit";
-            RequestContext.getCurrentInstance().execute("PF('HeureSuppEditDialog').show()");
+            RequestContext.getCurrentInstance().execute("PF('HeurePerdueEditDialog').show()");
         }
     }
 
@@ -61,7 +61,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
         selectedCategories.clear();
         parametragecriteres.clear();
         if (structure.getIdstructure() != null && structure.getIdstructure() > 0) {
-            List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
+            List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructureHp(SessionMBean.getStructure().getIdstructure(), 8, true);
             if (list.isEmpty() || list == null) {
                 categories.addAll(categorieFacadeLocal.findAllRangeByCode());
             } else {
@@ -90,8 +90,8 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
                 pc.setValeurnuit(pc.getIndice() / denominateurNuit);
                 pc.setPoint(0d);
                 pc.setIdcategorie(c);
-                pc.setHeuresupp(true);
-                pc.setHeuresupn(false);
+                pc.setHeuresupp(false);
+                pc.setHeuresupn(true);
                 pc.setPratiqueprivee(false);
                 pc.setPerformanceindividuelle(false);
                 pc.setResultatqualitatifdept(false);
@@ -105,7 +105,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
         if (p.getIdparametragecritere() != 0l) {
             parametragecritereFacadeLocal.remove(p);
             parametragecriteres.remove(p);
-            listParametres = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
+            listParametres = parametragecritereFacadeLocal.findByIdStructureHp(SessionMBean.getStructure().getIdstructure(), 8, true);
         } else {
             int conteur = 0;
             for (Parametragecritere pc : parametragecriteres) {
@@ -165,10 +165,10 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
                     parametragecritereFacadeLocal.edit(pc);
                 }
             }
-            listParametres = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
+            listParametres = parametragecritereFacadeLocal.findByIdStructureHp(SessionMBean.getStructure().getIdstructure(), 8, true);
             this.parametragecriteres.clear();
 
-            RequestContext.getCurrentInstance().execute("PF('HeureSuppCreateDialog').hide()");
+            RequestContext.getCurrentInstance().execute("PF('HeurePerdueCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -181,8 +181,8 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
             parametragecritereFacadeLocal.edit(parametragecritere);
             parametragecritere = new Parametragecritere();
             parametragecritere.setIdcategorie(new Categorie());
-            listParametres = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
-            RequestContext.getCurrentInstance().execute("PF('HeureSuppEditDialog').hide()");
+            listParametres = parametragecritereFacadeLocal.findByIdStructureHp(SessionMBean.getStructure().getIdstructure(), 8, true);
+            RequestContext.getCurrentInstance().execute("PF('HeurePerdueEditDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -193,7 +193,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
     public void delete(Parametragecritere p) {
         try {
             parametragecritereFacadeLocal.remove(p);
-            listParametres = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
+            listParametres = parametragecritereFacadeLocal.findByIdStructureHp(SessionMBean.getStructure().getIdstructure(), 8, true);
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();
