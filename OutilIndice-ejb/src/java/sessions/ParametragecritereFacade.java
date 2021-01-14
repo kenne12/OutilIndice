@@ -48,15 +48,15 @@ public class ParametragecritereFacade extends AbstractFacade<Parametragecritere>
 
     @Override
     public List<Parametragecritere> findByIdStructureHs(long idStructure, int idCritere, boolean hs) {
-        Query query = em.createQuery("SELECT p FROM Parametragecritere p WHERE p.idstructure.idstructure=:idStructure AND p.heuresupp=:hs ORDER BY p.idcategorie.nom");
-        query.setParameter("idStructure", idStructure).setParameter("hs", hs);
+        Query query = em.createQuery("SELECT p FROM Parametragecritere p WHERE p.idstructure.idstructure=:idStructure AND p.idcritere.idcritere=:idCritere AND p.heuresupp=:hs ORDER BY p.idcategorie.nom");
+        query.setParameter("idStructure", idStructure).setParameter("hs", hs).setParameter("idCritere", idCritere);
         return query.getResultList();
     }
-    
+
     @Override
     public List<Parametragecritere> findByIdStructureHp(long idStructure, int idCritere, boolean hp) {
-        Query query = em.createQuery("SELECT p FROM Parametragecritere p WHERE p.idstructure.idstructure=:idStructure AND p.heuresupn=:hp ORDER BY p.idcategorie.nom");
-        query.setParameter("idStructure", idStructure).setParameter("hp", hp);
+        Query query = em.createQuery("SELECT p FROM Parametragecritere p WHERE p.idstructure.idstructure=:idStructure AND p.idcritere.idcritere=:idCritere AND p.heuresupn=:hp ORDER BY p.idcategorie.nom");
+        query.setParameter("idStructure", idStructure).setParameter("hp", hp).setParameter("idCritere", idCritere);
         return query.getResultList();
     }
 
@@ -66,11 +66,18 @@ public class ParametragecritereFacade extends AbstractFacade<Parametragecritere>
         query.setParameter("idStructure", idStructure).setParameter("pratiquePrivee", pratiquePrivee).setParameter("idCritere", idCritere);
         return query.getResultList();
     }
-    
+
     @Override
     public List<Parametragecritere> findByIdStructurePrqd(long idStructure, int idCritere, boolean prqd) {
         Query query = em.createQuery("SELECT p FROM Parametragecritere p WHERE p.idstructure.idstructure=:idStructure AND p.idcritere.idcritere=:idCritere AND p.resultatqualitatifdept=:prqp ORDER BY p.idcategorie.nom");
         query.setParameter("idStructure", idStructure).setParameter("prqp", prqd).setParameter("idCritere", idCritere);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Parametragecritere> findByIdStructurePpi(long idStructure, int idCritere, boolean ppi) {
+        Query query = em.createQuery("SELECT p FROM Parametragecritere p WHERE p.idstructure.idstructure=:idStructure AND p.idcritere.idcritere=:idCritere AND p.performanceindividuelle=:ppi ORDER BY p.idcategorie.nom");
+        query.setParameter("idStructure", idStructure).setParameter("ppi", ppi).setParameter("idCritere", idCritere);
         return query.getResultList();
     }
 

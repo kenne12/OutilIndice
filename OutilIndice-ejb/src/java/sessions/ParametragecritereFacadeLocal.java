@@ -40,4 +40,6 @@ public interface ParametragecritereFacadeLocal {
 
     List<Parametragecritere> findByIdStructurePrqd(long idStructure, int idCritere, boolean prqd);
 
+    List<Parametragecritere> findByIdStructurePpi(long idStructure, int idCritere, boolean ppi);
+
 }

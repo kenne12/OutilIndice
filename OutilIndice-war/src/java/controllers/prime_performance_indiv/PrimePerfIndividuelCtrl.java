@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controllers.cn_incitation_heure_perdue;
+package controllers.prime_performance_indiv;
 
 import controllers.util.JsfUtil;
 import entities.Categorie;
@@ -22,12 +22,12 @@ import utils.SessionMBean;
  */
 @ManagedBean
 @SessionScoped
-public class CritereNIHPerdueCtrl extends AbstratCritereNIHPerdueCtrl {
+public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl {
 
     /**
-     * Creates a new instance of CritereNIHPerdueCtrl
+     * Creates a new instance of PrimePerfIndividuelCtrl
      */
-    public CritereNIHPerdueCtrl() {
+    public PrimePerfIndividuelCtrl() {
     }
 
     @PostConstruct
@@ -35,25 +35,22 @@ public class CritereNIHPerdueCtrl extends AbstratCritereNIHPerdueCtrl {
         structure = SessionMBean.getStructure();
         structures.clear();
         structures.add(SessionMBean.getStructure());
-        listParametres = parametragecritereFacadeLocal.findByIdStructureHp(SessionMBean.getStructure().getIdstructure(), 8, true);
+        listParametres = parametragecritereFacadeLocal.findByIdStructurePpi(SessionMBean.getStructure().getIdstructure(), 7, true);
         parametragecritere = new Parametragecritere();
         parametragecritere.setIdcategorie(new Categorie());
     }
 
     public void prepareCreate() {
+        this.denominateur = 5;
         this.updateFiltre();
         mode = "Create";
-        denominateurNuit = 500;
-        denominateurJour = 1000;
-        RequestContext.getCurrentInstance().execute("PF('HeurePerdueCreateDialog').show()");
+        RequestContext.getCurrentInstance().execute("PF('PerformanceIndividuelleCreateDialog').show()");
     }
 
     public void prepareEdit(Parametragecritere p) {
         this.parametragecritere = p;
-        if (structure != null) {
-            mode = "Edit";
-            RequestContext.getCurrentInstance().execute("PF('HeurePerdueEditDialog').show()");
-        }
+        mode = "Edit";
+        RequestContext.getCurrentInstance().execute("PF('PerformanceIndividuelleEditDialog').show()");
     }
 
     public void updateFiltre() {
@@ -61,7 +58,7 @@ public class CritereNIHPerdueCtrl extends AbstratCritereNIHPerdueCtrl {
         selectedCategories.clear();
         parametragecriteres.clear();
         if (structure.getIdstructure() != null && structure.getIdstructure() > 0) {
-            List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructureHp(SessionMBean.getStructure().getIdstructure(), 8, true);
+            List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructurePpi(SessionMBean.getStructure().getIdstructure(), 7, true);
             if (list.isEmpty() || list == null) {
                 categories.addAll(categorieFacadeLocal.findAllRangeByCode());
             } else {
@@ -82,18 +79,22 @@ public class CritereNIHPerdueCtrl extends AbstratCritereNIHPerdueCtrl {
                 Parametragecritere pc = new Parametragecritere();
                 pc.setIdparametragecritere(0l);
                 pc.setIdstructure(structure);
-                pc.setIdcritere(new Critere(8));
+                pc.setIdcritere(new Critere(7));
                 pc.setIndice(c.getIndice());
-                pc.setDenominateurjournee(denominateurJour);
-                pc.setDenominateurnuit(denominateurNuit);
-                pc.setValeurjournee(pc.getIndice() / denominateurJour);
-                pc.setValeurnuit(pc.getIndice() / denominateurNuit);
+                pc.setDenominateurjournee(0);
+                pc.setDenominateurnuit(0);
+                pc.setValeurjournee(0);
+                pc.setValeurnuit(0);
                 pc.setPoint(0d);
+                if (denominateur > 0) {
+                    pc.setDenominateur((int) denominateur);
+                    pc.setPoint(pc.getIndice() / denominateur);
+                }
                 pc.setIdcategorie(c);
                 pc.setHeuresupp(false);
-                pc.setHeuresupn(true);
+                pc.setHeuresupn(false);
                 pc.setPratiqueprivee(false);
-                pc.setPerformanceindividuelle(false);
+                pc.setPerformanceindividuelle(true);
                 pc.setResultatqualitatifdept(false);
                 parametragecriteres.add(pc);
             }
@@ -105,7 +106,7 @@ public class CritereNIHPerdueCtrl extends AbstratCritereNIHPerdueCtrl {
         if (p.getIdparametragecritere() != 0l) {
             parametragecritereFacadeLocal.remove(p);
             parametragecriteres.remove(p);
-            listParametres = parametragecritereFacadeLocal.findByIdStructureHp(SessionMBean.getStructure().getIdstructure(), 8, true);
+            listParametres = parametragecritereFacadeLocal.findByIdStructurePpi(SessionMBean.getStructure().getIdstructure(), 7, true);
         } else {
             int conteur = 0;
             for (Parametragecritere pc : parametragecriteres) {
@@ -122,31 +123,18 @@ public class CritereNIHPerdueCtrl extends AbstratCritereNIHPerdueCtrl {
     public void updateData(String mode) {
         int i = 0;
         for (Parametragecritere pc : parametragecriteres) {
-            if (mode.equals("jour")) {
-                pc.setDenominateurjournee(denominateurJour);
-                pc.setValeurjournee(pc.getIndice() / denominateurJour);
-                parametragecriteres.set(i, pc);
-            } else if (mode.equals("nuit")) {
-                pc.setDenominateurnuit(denominateurNuit);
-                pc.setValeurnuit(pc.getIndice() / denominateurNuit);
-                parametragecriteres.set(i, pc);
-            } else {
-                pc.setValeurjournee(pc.getIndice() / pc.getDenominateurjournee());
-                pc.setValeurnuit(pc.getIndice() / pc.getDenominateurnuit());
-                parametragecriteres.set(i, pc);
-            }
+            pc.setDenominateur((int) denominateur);
+            pc.setPoint(pc.getIndice() / denominateur);
+            parametragecriteres.set(i, pc);
             i++;
         }
     }
 
     public void updateDataLine(String mode) {
-        if (mode.equals("indice")) {
-            parametragecritere.setValeurjournee(parametragecritere.getIndice() / parametragecritere.getDenominateurjournee());
-            parametragecritere.setValeurnuit(parametragecritere.getIndice() / parametragecritere.getDenominateurnuit());
-        } else if (mode.equals("jour")) {
-            parametragecritere.setValeurjournee(parametragecritere.getIndice() / parametragecritere.getDenominateurjournee());
-        } else if (mode.equals("nuit")) {
-            parametragecritere.setValeurnuit(parametragecritere.getIndice() / parametragecritere.getDenominateurnuit());
+        try {
+            parametragecritere.setPoint(parametragecritere.getIndice() / parametragecritere.getDenominateur());
+        } catch (Exception e) {
+            parametragecritere.setPoint(0);
         }
     }
 
@@ -165,10 +153,10 @@ public class CritereNIHPerdueCtrl extends AbstratCritereNIHPerdueCtrl {
                     parametragecritereFacadeLocal.edit(pc);
                 }
             }
-            listParametres = parametragecritereFacadeLocal.findByIdStructureHp(SessionMBean.getStructure().getIdstructure(), 8, true);
+            listParametres = parametragecritereFacadeLocal.findByIdStructurePpi(SessionMBean.getStructure().getIdstructure(), 7, true);
             this.parametragecriteres.clear();
 
-            RequestContext.getCurrentInstance().execute("PF('HeurePerdueCreateDialog').hide()");
+            RequestContext.getCurrentInstance().execute("PF('PerformanceIndividuelleCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -181,8 +169,8 @@ public class CritereNIHPerdueCtrl extends AbstratCritereNIHPerdueCtrl {
             parametragecritereFacadeLocal.edit(parametragecritere);
             parametragecritere = new Parametragecritere();
             parametragecritere.setIdcategorie(new Categorie());
-            listParametres = parametragecritereFacadeLocal.findByIdStructureHp(SessionMBean.getStructure().getIdstructure(), 8, true);
-            RequestContext.getCurrentInstance().execute("PF('HeurePerdueEditDialog').hide()");
+            listParametres = parametragecritereFacadeLocal.findByIdStructurePpi(SessionMBean.getStructure().getIdstructure(), 7, true);
+            RequestContext.getCurrentInstance().execute("PF('PerformanceIndividuelleEditDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -193,7 +181,7 @@ public class CritereNIHPerdueCtrl extends AbstratCritereNIHPerdueCtrl {
     public void delete(Parametragecritere p) {
         try {
             parametragecritereFacadeLocal.remove(p);
-            listParametres = parametragecritereFacadeLocal.findByIdStructureHp(SessionMBean.getStructure().getIdstructure(), 8, true);
+            listParametres = parametragecritereFacadeLocal.findByIdStructurePpi(SessionMBean.getStructure().getIdstructure(), 7, true);
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();
