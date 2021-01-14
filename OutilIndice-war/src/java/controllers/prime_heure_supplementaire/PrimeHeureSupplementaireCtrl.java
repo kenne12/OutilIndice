@@ -9,7 +9,6 @@ import controllers.util.JsfUtil;
 import entities.Categorie;
 import entities.Critere;
 import entities.Parametragecritere;
-import entities.Service;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -38,7 +37,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
         structures.add(SessionMBean.getStructure());
         listParametres = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
         parametragecritere = new Parametragecritere();
-        parametragecritere.setIdservice(new Service());
+        parametragecritere.setIdcategorie(new Categorie());
     }
     
     public void prepareCreate() {
@@ -182,7 +181,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
         try {
             parametragecritereFacadeLocal.edit(parametragecritere);
             parametragecritere = new Parametragecritere();
-            parametragecritere.setIdservice(new Service());
+            parametragecritere.setIdcategorie(new Categorie());
             listParametres = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
             RequestContext.getCurrentInstance().execute("PF('HeureSuppEditDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
