@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="PrimeRQntifCreateDlg" 
+                  widgetVar="PrimeRQntifCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['cible_bonus_revenu_dept.formulaire_creation']}"
+                  closeOnEscape="true"
+                  width="70%"
+                  height="600">
+
+            <h:form id="PrimeRQntifCreateForm">
+
+                <div class="col-md-12">
+
+                    <h:panelGroup id="display">
+
+                        <div class="form-group">
+                            <p:outputLabel value="#{langue.structure}" for="structure" />
+                            <h:selectOneMenu disabled="true" converter="structureConverter" class="form-control"                                              
+                                             id="structure" value="#{cibleBonusRDeptCtrl.structure}">
+                                <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                <f:selectItems value="#{cibleBonusRDeptCtrl.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
+                            </h:selectOneMenu>                                                
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.indicateur}" for="indicateur" />
+                                    <h:selectOneMenu converter="indicateurConverter" class="form-control"                                                      
+                                                     id="indicateur" value="#{cibleBonusRDeptCtrl.indicateur}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                        <f:selectItems value="#{cibleBonusRDeptCtrl.indicateurs}" var="ind" itemLabel="#{ind.nom}" itemValue="#{ind}" />
+                                        <p:ajax  />
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.periode}" for="periode" />
+                                    <h:selectOneMenu disabled="true" converter="periodeConverter" class="form-control"                                                      
+                                                     id="periode" value="#{cibleBonusRDeptCtrl.periode}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                        <f:selectItems value="#{cibleBonusRDeptCtrl.periodes}" var="prd" itemLabel="#{prd.nom}" itemValue="#{prd}" />
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.sous_periode}" for="sous_periode" />
+                                    <h:selectOneMenu converter="sousperiodeConverter" class="form-control"                                                      
+                                                     id="sous_periode" value="#{cibleBonusRDeptCtrl.sousperiode}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                        <f:selectItems value="#{cibleBonusRDeptCtrl.sousperiodes}" var="sprd" itemLabel="#{sprd.nom}" itemValue="#{sprd}" />
+                                        <p:ajax update="grid_critere,datalist" listener="#{cibleBonusRDeptCtrl.updateFiltre()}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p:separator/>
+
+                        <p:selectManyCheckbox id="grid_critere" value="#{cibleBonusRDeptCtrl.selectedServices}" layout="grid" columns="1" converter="serviceConverter">
+                            <f:selectItems value="#{cibleBonusRDeptCtrl.services}" var="i" itemLabel="#{i.nom}" itemValue="#{i}" />
+                            <p:ajax />
+                        </p:selectManyCheckbox>
+
+                        <p:separator />
+
+                        <p:commandButton value="#{langue['common.ajouter']}"
+                                         actionListener="#{cibleBonusRDeptCtrl.addServiceToTable()}"
+                                         update="datalist,grid_critere" icon="ui-icon-plus" />
+                        <p:separator />
+
+                        <p:dataTable id="datalist" value="#{cibleBonusRDeptCtrl.cibles}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="15"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                            <p:column class="hardBreak" style="width: 70%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.service}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.idservice.nom}"/> 
+                            </p:column>
+
+                            <p:column style="width: 20% ; text-align:center" headerText="#{langue.valeur_cible}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.valeurcible}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.valeurcible}">                                             
+                                            <p:ajax  />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 10%" >
+                                <f:facet name="header">
+                                    <h:outputText value="Action"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-trash">
+                                    <p:ajax update="datalist,:PrimeRQntifCreateForm:grid_critere" event="click" listener="#{cibleBonusRDeptCtrl.removeIndicator(item)}" />
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:separator/>
+
+                        <center>
+                            <p:commandButton value="#{langue['common.fermer']}" 
+                                             onclick="PF('PrimeRQntifCreateDialog').hide()"
+                                             icon="ui-icon-close"/>
+
+                            <p:commandButton icon="ui-icon-save" actionListener="#{cibleBonusRDeptCtrl.save()}" value="#{langue['common.enregistrer']}" update="display,:PrimeRQntifListerForm:datalist,:PrimeRQntifListerForm:growl,:PrimeRQntifListerForm">
+                                <p:confirm header="#{langue['notification.confirmation']}" 
+                                           message="#{langue['notification.confirmation_enregistrement']}" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+                        </center>
+
+                    </h:panelGroup>
+
+                </div>
+
+            </h:form>
+
+        </p:dialog>
+    </ui:composition>
+</html>

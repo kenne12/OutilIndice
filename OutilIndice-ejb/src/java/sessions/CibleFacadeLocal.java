@@ -32,6 +32,8 @@ public interface CibleFacadeLocal {
 
     Long nextId();
 
-    List<Cible> findByIdSousPeriode(long idStructure, int idPeriode, int idSousPeriode, int idCritere);
+    List<Cible> findByIdSousPeriode(long idService, int idPeriode, int idSousPeriode, int idCritere);
+
+    List<Cible> findByIdStructureSousPeriode(long idStructure, int idPeriode, int idSousPeriode, int idCritere);
 
 }

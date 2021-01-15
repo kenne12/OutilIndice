@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+
+    <h:form id="search_form">
+
+        <div class="row">
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>#{langue.sous_periode}</label>
+                    <h:selectOneMenu id="type_sousperiode" class="form-control" value="#{cibleBonusRDeptCtrl.sousperiode.idsousperiode}"                                     
+                                     required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                        <f:selectItems value="#{cibleBonusRDeptCtrl.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
+                        <p:ajax listener="#{cibleBonusRDeptCtrl.searchData()}" />
+                    </h:selectOneMenu>
+                </div>
+            </div>
+
+            <div class="col-md-1 ">
+                <p:commandButton class="mt-3" value="#{langue['common.chercher']}" update=":PrimeRQntifListerForm"  actionListener="#{cibleBonusRDeptCtrl.searchData()}" />
+            </div>                           
+        </div>
+
+    </h:form>
+
+
+    <h:form id="PrimeRQntifListerForm">
+
+        <p:messages id="growl" closable="true">
+            <p:effect type="pulsate" event="load" delay="50" />
+        </p:messages>
+
+        <div class="row">
+            <div class="col-md-9">
+                <div class="panel panel-success">
+                    <div style="color: white" class="panel-heading bg-success">
+                        #{langue['cible_bonus_revenu_dept.liste_cibles_bonus_revenu_dept']}
+                        <p:commandButton update=":PrimeRQntifCreateForm"
+                                         icon="ui-icon-plus"
+                                         value="#{langue['common.ajouter']}"
+                                         style="float: right"
+                                         actionListener="#{cibleBonusRDeptCtrl.prepareCreate()}"/>      
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div class="table-responsive">
+
+                            <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 70%">#{langue.service}</th>
+                                        <th style="width: 15%">#{langue.valeur_cible}</th>
+                                        <th style="width: 15%;text-align: center">#{langue['common.actions']}</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <ui:repeat value="#{cibleBonusRDeptCtrl.listCibles}" var="item">
+                                        <tr>
+                                            <td>#{item.idservice.nom}</td>
+                                            <td><h:outputLabel value="#{item.valeurcible}"><f:convertNumber /></h:outputLabel></td>
+                                            <td style="text-align: center">                                        
+                                                <p:commandButton icon="ui-icon-pencil" update=":PrimeRQntifEditForm"
+                                                                 class="btn btn-success btn-sm"
+                                                                 actionListener="#{cibleBonusRDeptCtrl.prepareEdit(item)}"/>
+
+                                                <p:commandButton icon="ui-icon-trash" update=":PrimeRQntifListerForm"
+                                                                 class="btn btn-danger btn-sm"
+                                                                 actionListener="#{cibleBonusRDeptCtrl.delete(item)}">
+                                                    <p:confirm header="#{langue['notification.confirm_delete_dialog_header']}"
+                                                               message="#{langue['notification.confirm_delete_message']} ?"
+                                                               icon="ui-icon-alert"/>
+                                                </p:commandButton>
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:form>
+
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+    <p:dialog id="notify1" widgetVar="NotifyDialog1" height="400" width="700" resizable="true" responsive="true" modal="true" style="text-align: center; font-size: 14px; font-family: Cambria;">
+        <f:facet name="header">
+            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{cibleBonusRDeptCtrl.routine.titleNotify}" />
+        </f:facet>
+        <h:form id="NotifyForm1">
+            <h:graphicImage id="nt_img" url="#{cibleBonusRDeptCtrl.routine.iconMessage}" style="cursor:pointer" />
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+
+            <h:outputText id="nt_msg" value="#{cibleBonusRDeptCtrl.routine.message}"/>
+
+            <hr size="3" style="background-color: cornflowerblue; margin-top: 5%;"/>
+
+            <p:commandButton style="font-family: Cambria; font-size: 14px;" value="#{langue['common.fermer']}" onclick="PF('NotifyDialog1').hide()" type="button" immediate="true"/>
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+        </h:form>
+    </p:dialog>
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+</ui:composition>

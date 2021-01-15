@@ -78,6 +78,11 @@
 
                         <li id="parametrage_eval">
                             <a href="#">#{langue.evaluation}<span class="fa arrow"></span></a>
+
+                            <li>
+                                <a href="#{request.contextPath}/parametrage/categorie/categorie.html">#{langue.categorie}</a>
+                            </li>
+
                             <ul class="nav nav-third-level">
                                 <li>
                                     <a href="#{request.contextPath}/parametrage/critere/critere.html">#{langue.critere}</a>
@@ -86,66 +91,42 @@
                                 <li>
                                     <a href="#{request.contextPath}/parametrage/sous_critere/sous_critere.html">#{langue.sous_critere}</a>
                                 </li>
-                                
+
                                 <li>
                                     <a class="nav-link" href="#{request.contextPath}/parametrage/reponse/reponse.html">Elements de reponse</a>
                                 </li>
 
                                 <li>
-                                    <a class="nav-link" href="#{request.contextPath}/parametrage/critere_str/critere_str.html">Critere / Structure</a>
-                                </li>
-                                
-                                <li>
-                                    <a class="nav-link" href="#{request.contextPath}/parametrage/p_prime_responsabilite/p_prime_responsabilite.html">Prime de responsabilité</a>
-                                </li>
-                                
-                                <li>
-                                    <a class="nav-link" href="#{request.contextPath}/parametrage/p_heure_supplementaire/p_heure_supplementaire.html">Prime heure supp</a>
-                                </li>
-                                
-                                <li>
-                                    <a class="nav-link" href="#{request.contextPath}/parametrage/b_pratique_privee/b_pratique_privee.html">Bonus pratique privée</a>
-                                </li>
-                                
-                                <li>
-                                    <a class="nav-link" href="#{request.contextPath}/parametrage/prime_resultat_qltif_dept/prime_resultat_qltif_dept.html">Prime R Q Dépt</a>
-                                </li>
-                                
-                                <li>
-                                    <a class="nav-link" href="#{request.contextPath}/parametrage/cn_incitation_heure_perdure/cn_incitation_heure_perdure.html">Critère I N Heure Perdue</a>
-                                </li>
-                                
-                                <li>
-                                    <a class="nav-link" href="#{request.contextPath}/parametrage/prime_performance_indiv/prime_performance_indiv.html">Prime performance individuelle</a>
-                                </li>
-                                
-                                <li>
-                                    <a class="nav-link" href="#{request.contextPath}/parametrage/bonus_revenu_dept/bonus_revenu_dept.html">Bonus Revenu Dept</a>
-                                </li>
-                                
-                                <li>
                                     <a class="nav-link" href="#{request.contextPath}/parametrage/s_critere_str/s_critere_str.html">Sous - Critere / Structure</a>
-                                </li>  
-
-                                <li>
-                                    <a class="nav-link" href="#{request.contextPath}/parametrage/critere_service/critere_service.html"> Critere / Service</a>
-                                </li> 
-                                            
-                                <li>
-                                    <a class="nav-link" href="#{request.contextPath}/parametrage/s_critere_service/s_critere_service.html"> Sous - Critere / Service</a>
                                 </li>
 
                                 <li>
-                                    <a href="#{request.contextPath}/parametrage/periode/periode.html">#{langue.periode}</a>
+                                    <a class="nav-link" href="#{request.contextPath}/parametrage/p_prime_responsabilite/p_prime_responsabilite.html">1 - Prime de responsabilité</a>
                                 </li>
 
                                 <li>
-                                    <a href="#{request.contextPath}/parametrage/categorie_str/categorie_str.html">Barème / Catégorie</a>
+                                    <a class="nav-link" href="#{request.contextPath}/parametrage/p_heure_supplementaire/p_heure_supplementaire.html">2 - Bonus heure supp</a>
                                 </li>
-                                
+
                                 <li>
-                                    <a href="#{request.contextPath}/parametrage/s_critere_categorie/s_critere_categorie.html">Sous - critère / Catégorie</a>
+                                    <a class="nav-link" href="#{request.contextPath}/parametrage/b_pratique_privee/b_pratique_privee.html">3 - Bonus pratique privée</a>
                                 </li>
+
+                                <li>
+                                    <a class="nav-link" href="#{request.contextPath}/parametrage/prime_resultat_qltif_dept/prime_resultat_qltif_dept.html">4 - Prime R Qntif Dépt</a>
+                                </li>
+
+                                <li>
+                                    <a class="nav-link" href="#{request.contextPath}/parametrage/bonus_revenu_dept/bonus_revenu_dept.html">5 - Bonus Revenu Dept</a>
+                                </li>
+
+                                <li>
+                                    <a class="nav-link" href="#{request.contextPath}/parametrage/prime_performance_indiv/prime_performance_indiv.html">6 - Prime performance individuelle</a>
+                                </li>
+
+                                <li>
+                                    <a class="nav-link" href="#{request.contextPath}/parametrage/cn_incitation_heure_perdure/cn_incitation_heure_perdure.html">7 - Critère I N Heure Perdue</a>
+                                </li>                                  
                             </ul>
                         </li>
 
@@ -171,12 +152,12 @@
                         </li>
 
                         <li>
-                            <a href="#{request.contextPath}/parametrage/categorie/categorie.html">#{langue.categorie}</a>
+                            <a href="#{request.contextPath}/parametrage/personnel/personnel.html">#{langue.personnel}</a>
                         </li>
 
                         <li>
-                            <a href="#{request.contextPath}/parametrage/personnel/personnel.html">#{langue.personnel}</a>
-                        </li>                        
+                            <a href="#{request.contextPath}/parametrage/periode/periode.html">#{langue.periode}</a>
+                        </li>
                     </ul>
                 </li>
 
@@ -198,7 +179,23 @@
                                     <a href="#{request.contextPath}/operation/depense/depense.html">#{langue.depenses}</a>
                                 </li>
                             </ul>
-                        </li>    
+                        </li>
+
+                        <li id="traitement_cible">
+                            <a href="#">
+                                <i class="fa fa-exchange fa-fw"></i>
+                                #{langue.cible_departement}<span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-third-level">
+                                <li>
+                                    <a href="#{request.contextPath}/operation/prime_qnte_dept/prime_qnte_dept.html">Prime Résultat Qntif</a>
+                                </li>
+
+                                <li>
+                                    <a href="#{request.contextPath}/operation/cible_bonus_revenu_dept/cible_bonus_revenu_dept.html">Prime Bonus Revenu</a>
+                                </li>
+                            </ul>
+                        </li>
 
                         <li id="traitement_evaluation">
                             <a href="#">
@@ -206,14 +203,7 @@
                                 #{langue.evaluation}<span class="fa arrow"></span>
                             </a>
                             <ul class="nav nav-third-level">
-                                <li>
-                                    <a href="#{request.contextPath}/operation/prime_qnte_dept/prime_qnte_dept.html">Prime Résultat Qntif</a>
-                                </li>
-                                
-                                <li>
-                                    <a href="#{request.contextPath}/operation/prime_qnte_dept/prime_qnte_dept.html">Prime Résultat Qltif</a>
-                                </li>
-                                                            
+
                                 <li>
                                     <a href="#{request.contextPath}/operation/evaluation_personnel/evaluation_personnel.html">#{langue.personnel}</a>
                                 </li>
@@ -221,7 +211,7 @@
                                 <li>
                                     <a href="#{request.contextPath}/operation/evaluation_service/evaluation_service.html">#{langue.service}</a>
                                 </li>
-                                
+
                                 <li>
                                     <a href="#{request.contextPath}/operation/partage/partage.html">Partage des primes</a>
                                 </li>

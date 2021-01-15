@@ -47,8 +47,15 @@ public class CibleFacade extends AbstractFacade<Cible> implements CibleFacadeLoc
     }
 
     @Override
-    public List<Cible> findByIdSousPeriode(long idStructure, int idPeriode, int idSousPeriode, int idCritere) {
-        Query query = em.createQuery("SELECT c FROM Cible c WHERE c.idstructure.idstructure=:idStructure AND c.idperiode.idperiode=:idPeriode AND c.idsousperiode.idsousperiode=:idSousPeriode AND c.idcritere.idcritere=:idCritere ORDER BY c.idindicateur.nom");
+    public List<Cible> findByIdSousPeriode(long idService, int idPeriode, int idSousPeriode, int idCritere) {
+        Query query = em.createQuery("SELECT c FROM Cible c WHERE c.idservice.idservice=:idService AND c.idperiode.idperiode=:idPeriode AND c.idsousperiode.idsousperiode=:idSousPeriode AND c.idcritere.idcritere=:idCritere ORDER BY c.idindicateur.nom");
+        query.setParameter("idService", idService).setParameter("idPeriode", idPeriode).setParameter("idSousPeriode", idSousPeriode).setParameter("idCritere", idCritere);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Cible> findByIdStructureSousPeriode(long idStructure, int idPeriode, int idSousPeriode, int idCritere) {
+        Query query = em.createQuery("SELECT c FROM Cible c WHERE c.idstructure.idstructure=:idStructure AND c.idperiode.idperiode=:idPeriode AND c.idsousperiode.idsousperiode=:idSousPeriode AND c.idcritere.idcritere=:idCritere ORDER BY c.idservice.nom");
         query.setParameter("idStructure", idStructure).setParameter("idPeriode", idPeriode).setParameter("idSousPeriode", idSousPeriode).setParameter("idCritere", idCritere);
         return query.getResultList();
     }
