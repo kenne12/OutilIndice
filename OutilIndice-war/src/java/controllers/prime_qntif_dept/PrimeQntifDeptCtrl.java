@@ -11,6 +11,7 @@ import entities.Critere;
 import entities.Indicateur;
 import entities.Service;
 import entities.Sousperiode;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -24,7 +25,7 @@ import utils.SessionMBean;
  */
 @ManagedBean
 @SessionScoped
-public class PrimeQntifDeptCtrl extends AbstractPrimeQntifDeptCtrl {
+public class PrimeQntifDeptCtrl extends AbstractPrimeQntifDeptCtrl implements Serializable{
 
     /**
      * Creates a new instance of PrimeQntifDeptCtrl

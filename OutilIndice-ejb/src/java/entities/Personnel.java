@@ -121,6 +121,14 @@ public class Personnel implements Serializable {
         this.etat = etat;
     }
 
+    public Responsabilite getIdresponsabilite() {
+        return idresponsabilite;
+    }
+
+    public void setIdresponsabilite(Responsabilite idresponsabilite) {
+        this.idresponsabilite = idresponsabilite;
+    }
+
     @XmlTransient
     public Collection<Evaluationpersonnel> getEvaluationpersonnelCollection() {
         return evaluationpersonnelCollection;

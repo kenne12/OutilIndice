@@ -6,11 +6,14 @@
 package controllers.evaluation_personnel;
 
 import entities.Categorie;
-import entities.Categoriestructure;
-import entities.Criterestructure;
+import entities.Critereresponsabilite;
 import entities.Detailsc;
+import entities.Evaluationbonuspp;
+import entities.Evaluationheuresupp;
 import entities.Evaluationpersonnel;
+import entities.Evaluationresponsabilite;
 import entities.Note;
+import entities.Parametragecritere;
 import entities.Personnel;
 import entities.Sousperiode;
 import entities.Structure;
@@ -19,13 +22,16 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import sessions.CategorieFacadeLocal;
-import sessions.CategoriestructureFacadeLocal;
-import sessions.CriterestructureFacadeLocal;
+import sessions.CritereresponsabiliteFacadeLocal;
 import sessions.DetailscFacadeLocal;
 import sessions.ElementReponseFacadeLocal;
+import sessions.EvaluationbonusppFacadeLocal;
+import sessions.EvaluationheuresuppFacadeLocal;
 import sessions.EvaluationpersonnelFacadeLocal;
+import sessions.EvaluationresponsabiliteFacadeLocal;
 import sessions.NoteFacadeLocal;
 import sessions.NoteserviceFacadeLocal;
+import sessions.ParametragecritereFacadeLocal;
 import sessions.PersonnelFacadeLocal;
 import sessions.SousperiodeFacadeLocal;
 import sessions.StructureFacadeLocal;
@@ -51,9 +57,31 @@ public class AbstractEvaluationPersonnel {
     protected List<Personnel> personnels = new ArrayList<>();
 
     @EJB
+    protected ParametragecritereFacadeLocal parametragecritereFacadeLocal;
+    protected Parametragecritere parametragecritere = new Parametragecritere();
+    protected Parametragecritere parametragecritereHsp = new Parametragecritere();
+    protected Parametragecritere parametragecritereBpp = new Parametragecritere();
+
+    @EJB
+    protected EvaluationheuresuppFacadeLocal evaluationheuresuppFacadeLocal;
+    protected Evaluationheuresupp evaluationheuresupp = new Evaluationheuresupp();
+    protected Evaluationheuresupp evaluationheuresuppN = new Evaluationheuresupp();
+
+    @EJB
     protected CategorieFacadeLocal categorieFacadeLocal;
     protected Categorie categorie = new Categorie();
-    protected List<Categorie> categories = new ArrayList<>();
+
+    @EJB
+    protected CritereresponsabiliteFacadeLocal critereresponsabiliteFacadeLocal;
+    protected Critereresponsabilite critereresponsabilite = new Critereresponsabilite();
+
+    @EJB
+    protected EvaluationresponsabiliteFacadeLocal evaluationresponsabiliteFacadeLocal;
+    protected Evaluationresponsabilite evaluationresponsabilite = new Evaluationresponsabilite();
+
+    @EJB
+    protected EvaluationbonusppFacadeLocal evaluationbonusppFacadeLocal;
+    protected Evaluationbonuspp evaluationbonuspp = new Evaluationbonuspp();
 
     @EJB
     protected SousperiodeFacadeLocal sousperiodeFacadeLocal;
@@ -66,18 +94,9 @@ public class AbstractEvaluationPersonnel {
     protected List<Detailsc> listDetailsc = new ArrayList<>();
 
     @EJB
-    protected CriterestructureFacadeLocal criterestructureFacadeLocal;
-
-    protected List<Criterestructure> criterestructures = new ArrayList<>();
-
-    @EJB
     protected StructureFacadeLocal structureFacadeLocal;
     protected Structure structure = new Structure();
     protected List<Structure> structures = new ArrayList<>();
-
-    @EJB
-    protected CategoriestructureFacadeLocal categoriestructureFacadeLocal;
-    protected Categoriestructure categoriestructure = new Categoriestructure();
 
     @EJB
     protected NoteFacadeLocal noteFacadeLocal;
@@ -97,6 +116,9 @@ public class AbstractEvaluationPersonnel {
     protected double score_2 = 0;
     protected double scoreIndice = 0;
 
+    protected double totalPointPi;
+    protected double percentagePi;
+
     protected long idStructureSource;
     protected long idStructureDestination;
 
@@ -113,10 +135,6 @@ public class AbstractEvaluationPersonnel {
 
     public String getMode() {
         return mode;
-    }
-
-    public List<Criterestructure> getCriterestructures() {
-        return criterestructures;
     }
 
     public Structure getStructure() {
@@ -175,11 +193,6 @@ public class AbstractEvaluationPersonnel {
         this.categorie = categorie;
     }
 
-    public List<Categorie> getCategories() {
-        categories = categorieFacadeLocal.findAllRangeByCode();
-        return categories;
-    }
-
     public Personnel getPersonnel() {
         return personnel;
     }
@@ -226,14 +239,6 @@ public class AbstractEvaluationPersonnel {
         this.evaluationpersonnel = evaluationpersonnel;
     }
 
-    public Categoriestructure getCategoriestructure() {
-        return categoriestructure;
-    }
-
-    public void setCategoriestructure(Categoriestructure categoriestructure) {
-        this.categoriestructure = categoriestructure;
-    }
-
     public Note getNote() {
         return note;
     }
@@ -264,6 +269,58 @@ public class AbstractEvaluationPersonnel {
 
     public double getScoreIndice() {
         return scoreIndice;
+    }
+
+    public Parametragecritere getParametragecritere() {
+        return parametragecritere;
+    }
+
+    public double getPercentagePi() {
+        return percentagePi;
+    }
+
+    public double getTotalPointPi() {
+        return totalPointPi;
+    }
+
+    public Evaluationheuresupp getEvaluationheuresupp() {
+        return evaluationheuresupp;
+    }
+
+    public void setEvaluationheuresupp(Evaluationheuresupp evaluationheuresupp) {
+        this.evaluationheuresupp = evaluationheuresupp;
+    }
+
+    public Evaluationresponsabilite getEvaluationresponsabilite() {
+        return evaluationresponsabilite;
+    }
+
+    public void setEvaluationresponsabilite(Evaluationresponsabilite evaluationresponsabilite) {
+        this.evaluationresponsabilite = evaluationresponsabilite;
+    }
+
+    public Critereresponsabilite getCritereresponsabilite() {
+        return critereresponsabilite;
+    }
+
+    public void setCritereresponsabilite(Critereresponsabilite critereresponsabilite) {
+        this.critereresponsabilite = critereresponsabilite;
+    }
+
+    public Parametragecritere getParametragecritereBpp() {
+        return parametragecritereBpp;
+    }
+
+    public void setParametragecritereBpp(Parametragecritere parametragecritereBpp) {
+        this.parametragecritereBpp = parametragecritereBpp;
+    }
+
+    public Evaluationbonuspp getEvaluationbonuspp() {
+        return evaluationbonuspp;
+    }
+
+    public void setEvaluationbonuspp(Evaluationbonuspp evaluationbonuspp) {
+        this.evaluationbonuspp = evaluationbonuspp;
     }
 
 }

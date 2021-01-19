@@ -10,6 +10,7 @@ import entities.Categorie;
 import entities.Critere;
 import entities.Parametragecritere;
 import entities.Service;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -23,7 +24,7 @@ import utils.SessionMBean;
  */
 @ManagedBean
 @SessionScoped
-public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl {
+public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements Serializable{
 
     /**
      * Creates a new instance of BonusRevenuDeptCtrl

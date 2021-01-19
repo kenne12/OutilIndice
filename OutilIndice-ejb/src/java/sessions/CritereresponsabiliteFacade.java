@@ -30,7 +30,7 @@ public class CritereresponsabiliteFacade extends AbstractFacade<Critereresponsab
     public CritereresponsabiliteFacade() {
         super(Critereresponsabilite.class);
     }
-    
+
     @Override
     public Long nextId() {
         try {
@@ -51,6 +51,17 @@ public class CritereresponsabiliteFacade extends AbstractFacade<Critereresponsab
         Query query = em.createQuery("SELECT c FROM Critereresponsabilite c WHERE c.idstructure.idstructure=:idStructure ORDER BY c.idresponsabilite.nom");
         query.setParameter("idStructure", idStructure);
         return query.getResultList();
+    }
+
+    @Override
+    public Critereresponsabilite findByIdResponsabilite(long idStructure, int idResponsabilite, int idCritere) {
+        Query query = em.createQuery("SELECT c FROM Critereresponsabilite c WHERE c.idstructure.idstructure=:idStructure AND c.idresponsabilite.idresponsabilite=:idResponsabilite AND c.idcritere.idcritere=:idCritere");
+        query.setParameter("idStructure", idStructure).setParameter("idResponsabilite", idResponsabilite).setParameter("idCritere", idCritere);
+        List list = query.getResultList();
+        if (!list.isEmpty()) {
+            return (Critereresponsabilite) list.get(0);
+        }
+        return null;
     }
 
 }

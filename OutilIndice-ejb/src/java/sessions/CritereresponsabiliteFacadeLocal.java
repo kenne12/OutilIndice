@@ -34,4 +34,6 @@ public interface CritereresponsabiliteFacadeLocal {
 
     List<Critereresponsabilite> findByIdStructure(long idStructure);
 
+    Critereresponsabilite findByIdResponsabilite(long idStructure, int idResponsabilite, int idCritere);
+
 }

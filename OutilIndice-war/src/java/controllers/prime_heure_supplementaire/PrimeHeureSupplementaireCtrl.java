@@ -9,6 +9,7 @@ import controllers.util.JsfUtil;
 import entities.Categorie;
 import entities.Critere;
 import entities.Parametragecritere;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -22,7 +23,7 @@ import utils.SessionMBean;
  */
 @ManagedBean
 @SessionScoped
-public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementaireCtrl {
+public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementaireCtrl implements Serializable{
 
     /**
      * Creates a new instance of PrimeHeureSupplementaireCtrl

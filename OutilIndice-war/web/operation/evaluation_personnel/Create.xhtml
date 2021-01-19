@@ -4,7 +4,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
 
     <ui:composition>
 
@@ -32,7 +33,7 @@
                                                      id="personnel" value="#{evaluationPersonnelController.personnel.idpersonnel}">
                                         <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
                                         <f:selectItems value="#{evaluationPersonnelController.personnels}" var="p" itemLabel="#{p.nom} #{p.prenom}" itemValue="#{p.idpersonnel}" />
-                                        <p:ajax update="grid_critere,datalist,:NotifZone,datalist_2,datalist_3,somme" listener="#{evaluationPersonnelController.updateEvaluationData()}"/>
+                                        <p:ajax update="grid_critere,datalist,:NotifZone,datalist_2,datalist_3,somme,detail_personnel,hsp_recap_j,hsp_recap_n,display" listener="#{evaluationPersonnelController.updateEvaluationData()}"/>
                                     </h:selectOneMenu>                                                
                                 </div>
                             </div>
@@ -44,7 +45,7 @@
                                                      id="periode" value="#{evaluationPersonnelController.sousperiode.idsousperiode}">
                                         <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
                                         <f:selectItems value="#{evaluationPersonnelController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
-                                        <p:ajax update="grid_critere,datalist,:NotifZone,datalist_2,datalist_3,somme" listener="#{evaluationPersonnelController.updateEvaluationData()}"/>
+                                        <p:ajax update="grid_critere,datalist,:NotifZone,datalist_2,datalist_3,somme,detail_personnel,hsp_recap_j,,hsp_recap_n,display" listener="#{evaluationPersonnelController.updateEvaluationData()}"/>
                                     </h:selectOneMenu>                                                
                                 </div>
                             </div>
@@ -65,8 +66,9 @@
                             update="datalist,datalist_2,datalist_3,grid_critere,somme" icon="ui-icon-plus" />
 
                         <p:separator />
-                        <h:outputText value="I. CRITERES D'EVALUATON PERSONNELS" style="font-size: 20px" />
+                        <h:outputText value="I. CRITERES DE PERFORMANCE INDIVIDUELLE DU PERSONNEL" style="font-size: 20px" />
                         <p:separator />
+                        <h:outputText id="detail_personnel" value="Catégorie : #{evaluationPersonnelController.personnel.idcategorie.nom} ; Point Max : #{evaluationPersonnelController.parametragecritere.point}" style="font-size: 20px;color: red" />
 
                         <p:dataTable id="datalist" value="#{evaluationPersonnelController.evaluationpersonnels}" var="item"                             
                                      paginator="true"
@@ -78,34 +80,26 @@
                                      rowIndexVar="index"
                                      emptyMessage="#{langue['common.tableau_vide']}">
 
-                            <p:column class="hardBreak" style="width: 40%;" >
+                            <p:column class="hardBreak" style="width: 45%;" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.sous_critere}"/>
                                 </f:facet>
-                                <h:outputText class="hardBreak" value="#{item.iddetailsc.idsouscritere.nom} / [#{item.iddetailsc.pointMax}]"/> 
+                                <h:outputText class="hardBreak" value="#{item.iddetailsc.idsouscritere.nom}"/> 
                             </p:column>
-                            
+
+                            <p:column class="hardBreak" style="width: 5%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.point_max}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.iddetailsc.pointMax}"/> 
+                            </p:column>
+
                             <p:column class="hardBreak" style="width: 5%;" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.note}"/>
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{item.note}"/> 
                             </p:column>
-
-                            <p:column style="width: 5%; text-align:center" headerText="#{langue.note}">
-                                <p:cellEditor>
-                                    <f:facet name="output">
-                                        <h:outputText value="#{item.pointmaxindice}" >
-                                            <f:convertNumber />
-                                        </h:outputText>
-                                    </f:facet>
-                                    <f:facet name="input">
-                                        <p:inputText required="true" value="#{item.pointmaxindice}">                                             
-                                            <p:ajax update="datalist" listener="#{evaluationPersonnelController.updateIndice()}" />
-                                        </p:inputText>
-                                    </f:facet>
-                                </p:cellEditor>
-                            </p:column> 
 
                             <p:column style="width: 35%; text-align:left" headerText="#{langue.reponse}">
                                 <p:cellEditor>
@@ -115,35 +109,122 @@
                                     <f:facet name="input">
                                         <p:selectOneMenu value="#{item.idelementreponse}" converter="elementreponseConverter">
                                             <f:selectItems value="#{item.iddetailsc.idsouscritere.elementreponseCollection}" var="obj" itemLabel="#{obj.nom}" itemValue="#{obj}" />
-                                            <p:ajax update="datalist,:EvaluationCreateForm:somme" listener="#{evaluationPersonnelController.setResponse('1' , index , evaluationPersonnelController.evaluationpersonnels)}" />
+                                            <p:ajax update="datalist,:EvaluationCreateForm:somme,:EvaluationCreateForm:resultat_pi,:EvaluationCreateForm:score_pi" listener="#{evaluationPersonnelController.setResponse('1' , index , evaluationPersonnelController.evaluationpersonnels)}" />
                                         </p:selectOneMenu>
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
 
-                            <p:column style="width: 10%">
+                            <p:column style="width: 10%;text-align: center">
                                 <f:facet name="header">
                                     <h:outputText value="Action"/>
                                 </f:facet>
                                 <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist,:EvaluationCreateForm:somme,:EvaluationCreateForm:grid_critere" event="click" listener="#{evaluationPersonnelController.removeCritere('1', item, evaluationPersonnelController.evaluationpersonnels)}" />
+                                    <p:ajax update="datalist,:EvaluationCreateForm:somme,:EvaluationCreateForm:grid_critere,:EvaluationCreateForm:resultat_pi,:EvaluationCreateForm:score_pi" event="click" listener="#{evaluationPersonnelController.removeCritere('1', item, evaluationPersonnelController.evaluationpersonnels)}" />
                                 </p:commandButton>                            
                             </p:column>
 
                             <p:columnGroup type="footer" id="footer_tab">
                                 <p:row>
-                                    <p:column style="text-align:right" footerText="Totaux" />                                                                          
-                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.score}"/>
-                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.scoreIndice}"/>
+                                    <p:column style="text-align:right" footerText="Totaux" />
+                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.totalPointPi}"/>
+                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.score}"/>   
                                     <p:column colspan="2" style="text-align:center" footerText=" / " /> 
                                 </p:row>
                             </p:columnGroup>
 
                         </p:dataTable>
 
-                        <p:separator/>
-                        <h:outputText value="II. CRITERES D'INCITATIONS POSITIVES" style="font-size: 20px" />
                         <p:separator />
+                        <h:outputText id="score_pi" value="Score : #{((evaluationPersonnelController.score / evaluationPersonnelController.totalPointPi) * 100)} % ; &nbsp;" style="font-size: 20px;color: red" />
+                        <h:outputText id="resultat_pi" value="Point : #{(((evaluationPersonnelController.score / evaluationPersonnelController.totalPointPi) * 100) * evaluationPersonnelController.parametragecritere.point) / 100} / #{evaluationPersonnelController.parametragecritere.point}" style="font-size: 20px;color: red" />
+
+                        <p:separator />
+                        <h:outputText value="II. PRIME POUR LES HEURES SUPPLEMENTAIRES" style="font-size: 20px" />
+                        <p:separator />
+
+                        <div class="row" jsf:id="hsp_recap_j">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Coef de jour</label>
+                                    <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.evaluationheuresupp.coefjour}" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Nombre d'heure</label>
+                                    <h:inputText class="form-control" value="#{evaluationPersonnelController.evaluationheuresupp.nbheurejour}" >
+                                        <p:ajax update="hsp_jour_tp" listener="#{evaluationPersonnelController.calculHs('1' , 'jour')}" />
+                                    </h:inputText>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Total point du jour</label>
+                                    <h:inputText class="form-control" id="hsp_jour_tp" disabled="true" value="#{evaluationPersonnelController.evaluationheuresupp.pointjour}" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" jsf:id="hsp_recap_n">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Coef de nuit</label>
+                                    <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.evaluationheuresupp.coefnuit}" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Nombre d'heure</label>
+                                    <h:inputText class="form-control" value="#{evaluationPersonnelController.evaluationheuresupp.nbheurenuit}" >
+                                        <p:ajax update="hsp_nuit_tp" listener="#{evaluationPersonnelController.calculHs('1' , 'nuit')}" />
+                                    </h:inputText>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Total point de nuit</label>
+                                    <h:inputText class="form-control" id="hsp_nuit_tp" disabled="true" value="#{evaluationPersonnelController.evaluationheuresupp.pointnuit}" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <p:separator />
+                        <h:outputText value="III - PRIME DE RESPONSABILITE" style="font-size: 20px;color: red" />
+                        <p:separator />
+                        <h:outputText value="RESPONSABILITE : #{evaluationPersonnelController.personnel.idresponsabilite.nom}" style="font-size: 20px" />
+                        <p:separator />
+
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label>Point Max</label>
+                                <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.critereresponsabilite.point}" />
+                            </div>
+
+                            <div class="form-group col-md-2">
+                                <label>Point</label>
+                                <h:inputText class="form-control" value="#{evaluationPersonnelController.evaluationresponsabilite.point}" />
+                            </div>
+                        </div>
+
+                        <p:separator />
+                        <h:outputText value="IV - BONUS POUR NE PAS DETOURNER LES PATIENTS POUR LE PRIVE" style="font-size: 20px" />
+                        <p:separator />
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label>Point Max</label>
+                                <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.parametragecritereBpp.point}" />
+                            </div>
+
+                            <div class="form-group col-md-2">
+                                <label>Point</label>
+                                <h:inputText class="form-control"  value="#{evaluationPersonnelController.evaluationbonuspp.point}" />
+                            </div>
+                        </div>
 
                         <p:dataTable id="datalist_2" value="#{evaluationPersonnelController.evaluationpersonnelIps}" var="item"                             
                                      paginator="true"
@@ -245,7 +326,7 @@
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column> 
-                
+
                             <p:column style="width: 40%; text-align:left" headerText="#{langue.reponse}">
                                 <p:cellEditor>
                                     <f:facet name="output">
@@ -267,7 +348,7 @@
                                 <p:commandButton icon="ui-icon-trash">
                                     <p:ajax update="datalist_3,:EvaluationCreateForm:somme,:EvaluationCreateForm:grid_critere" event="click" listener="#{evaluationPersonnelController.removeCritere('3' , item , evaluationPersonnelController.evaluationpersonnelIns)}" />
                                 </p:commandButton>
-                               
+
                             </p:column>
 
                             <p:columnGroup type="footer" id="footer_tab_2">
