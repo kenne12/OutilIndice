@@ -33,7 +33,7 @@
                                                      id="personnel" value="#{evaluationPersonnelController.personnel.idpersonnel}">
                                         <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
                                         <f:selectItems value="#{evaluationPersonnelController.personnels}" var="p" itemLabel="#{p.nom} #{p.prenom}" itemValue="#{p.idpersonnel}" />
-                                        <p:ajax update="grid_critere,datalist,:NotifZone,datalist_2,datalist_3,somme,detail_personnel,hsp_recap_j,hsp_recap_n,display" listener="#{evaluationPersonnelController.updateEvaluationData()}"/>
+                                        <p:ajax update="grid_critere,datalist,:NotifZone,datalist_2,somme,detail_personnel,hsp_recap_j,hsp_recap_n,display" listener="#{evaluationPersonnelController.updateEvaluationData()}"/>
                                     </h:selectOneMenu>                                                
                                 </div>
                             </div>
@@ -45,7 +45,7 @@
                                                      id="periode" value="#{evaluationPersonnelController.sousperiode.idsousperiode}">
                                         <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
                                         <f:selectItems value="#{evaluationPersonnelController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
-                                        <p:ajax update="grid_critere,datalist,:NotifZone,datalist_2,datalist_3,somme,detail_personnel,hsp_recap_j,,hsp_recap_n,display" listener="#{evaluationPersonnelController.updateEvaluationData()}"/>
+                                        <p:ajax update="grid_critere,datalist,:NotifZone,datalist_2,somme,detail_personnel,hsp_recap_j,,hsp_recap_n,display" listener="#{evaluationPersonnelController.updateEvaluationData()}"/>
                                     </h:selectOneMenu>                                                
                                 </div>
                             </div>
@@ -63,10 +63,10 @@
                         <p:commandButton                            
                             value="#{langue['common.ajouter']}"
                             actionListener="#{evaluationPersonnelController.addCritereToTable()}"
-                            update="datalist,datalist_2,datalist_3,grid_critere,somme" icon="ui-icon-plus" />
+                            update="datalist,datalist_2,grid_critere,somme" icon="ui-icon-plus" />
 
                         <p:separator />
-                        <h:outputText value="I. CRITERES DE PERFORMANCE INDIVIDUELLE DU PERSONNEL" style="font-size: 20px" />
+                        <h:outputText value="I. CRITERES DE PERFORMANCE INDIVIDUELLE DU PERSONNEL" style="font-size: 20px ; color: red" />
                         <p:separator />
                         <h:outputText id="detail_personnel" value="Catégorie : #{evaluationPersonnelController.personnel.idcategorie.nom} ; Point Max : #{evaluationPersonnelController.parametragecritere.point}" style="font-size: 20px;color: red" />
 
@@ -140,7 +140,7 @@
                         <h:outputText id="resultat_pi" value="Point : #{(((evaluationPersonnelController.score / evaluationPersonnelController.totalPointPi) * 100) * evaluationPersonnelController.parametragecritere.point) / 100} / #{evaluationPersonnelController.parametragecritere.point}" style="font-size: 20px;color: red" />
 
                         <p:separator />
-                        <h:outputText value="II. PRIME POUR LES HEURES SUPPLEMENTAIRES" style="font-size: 20px" />
+                        <h:outputText value="II. PRIME POUR LES HEURES SUPPLEMENTAIRES" style="font-size: 20px ; color: red" />
                         <p:separator />
 
                         <div class="row" jsf:id="hsp_recap_j">
@@ -212,7 +212,7 @@
                         </div>
 
                         <p:separator />
-                        <h:outputText value="IV - BONUS POUR NE PAS DETOURNER LES PATIENTS POUR LE PRIVE" style="font-size: 20px" />
+                        <h:outputText value="IV - BONUS POUR NE PAS DETOURNER LES PATIENTS POUR LE PRIVE" style="font-size: 20px ; color: red" />
                         <p:separator />
                         <div class="row">
                             <div class="form-group col-md-2">
@@ -226,142 +226,99 @@
                             </div>
                         </div>
 
-                        <p:dataTable id="datalist_2" value="#{evaluationPersonnelController.evaluationpersonnelIps}" var="item"                             
+                        <p:separator />
+                        <h:outputText value="V - PRIME DE RESULTAT QUANTITATIF DU DEPARTEMENT" style="font-size: 20px;color: red" />
+                        <p:separator />
+
+                        <p:dataTable id="datalist_2" value="#{evaluationPersonnelController.evaluationrqntifdepts}" var="objrqd"                             
                                      paginator="true"
                                      editable="true"
                                      editMode="cell"
-                                     rows="#{evaluationPersonnelController.evaluationpersonnelIps.size()}"
+                                     rows="#{evaluationPersonnelController.evaluationrqntifdepts.size()}"
                                      rowsPerPageTemplate="10,20,30,40,50"
-                                     style="margin-top: 1%;font-size: 15px"
+                                     style="margin-top: 1%;font-size: 15px;width: 80%"
                                      rowIndexVar="index"
                                      emptyMessage="#{langue['common.tableau_vide']}">
 
-                            <p:column class="hardBreak" style="width: 40%;" >
+                            <p:column class="hardBreak" style="width: 60%;" >
                                 <f:facet name="header">
-                                    <h:outputText value="#{langue.sous_critere}"/>
+                                    <h:outputText value="#{langue.indicateur}"/>
                                 </f:facet>
-                                <h:outputText class="hardBreak" value="#{item.iddetailsc.idsouscritere.nom}"/> 
+                                <h:outputText class="hardBreak" value="#{objrqd.idcible.idindicateur.nom}"/> 
                             </p:column>
 
-                            <p:column style="width: 10%; text-align:center" headerText="#{langue.note}">
+                            <p:column class="hardBreak" style="width: 15%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.cible_dept}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{objrqd.cible}">
+                                    <f:convertNumber />
+                                </h:outputText> 
+                            </p:column>
+
+                            <p:column style="width: 15%; text-align:center" headerText="#{langue.realisation}">
                                 <p:cellEditor>
                                     <f:facet name="output">
-                                        <h:outputText value="#{item.note}" >
+                                        <h:outputText value="#{objrqd.realisation}" >
                                             <f:convertNumber />
                                         </h:outputText>
                                     </f:facet>
                                     <f:facet name="input">
-                                        <p:inputText required="true" value="#{item.note}">                                             
-                                            <p:ajax event="keyup" />
+                                        <p:inputText required="true" value="#{objrqd.realisation}">                                             
+                                            <p:ajax update="datalist_2" listener="#{evaluationPersonnelController.calculPrimeQtif('1')}" />
                                         </p:inputText>
-                                    </f:facet>
-                                </p:cellEditor>
-                            </p:column> 
-
-                            <p:column style="width: 40%; text-align:left" headerText="#{langue.reponse}">
-                                <p:cellEditor>
-                                    <f:facet name="output">
-                                        <h:outputText class="hardBreak" value="#{item.idelementreponse.nom}" />
-                                    </f:facet>
-                                    <f:facet name="input">
-                                        <p:selectOneMenu value="#{item.idelementreponse}" converter="elementreponseConverter">
-                                            <f:selectItems value="#{item.iddetailsc.idsouscritere.elementreponseCollection}" var="obj" itemLabel="#{obj.nom}" itemValue="#{obj}" />
-                                            <p:ajax update="datalist_2,:EvaluationCreateForm:somme" listener="#{evaluationPersonnelController.setResponse('2', index , evaluationPersonnelController.evaluationpersonnelIps)}" />
-                                        </p:selectOneMenu>
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
 
-                            <p:column style="width: 10%">
+                            <p:column class="hardBreak" style="width: 10%;" >
                                 <f:facet name="header">
-                                    <h:outputText value="Action"/>
+                                    <h:outputText value="#{langue.ratio}"/>
                                 </f:facet>
-                                <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist_2,:EvaluationCreateForm:somme,:EvaluationCreateForm:grid_critere" event="click" listener="#{evaluationPersonnelController.removeCritere('2' , item , evaluationPersonnelController.evaluationpersonnelIps)}" />
-                                </p:commandButton>                                  
+                                <h:outputText class="hardBreak" value="#{objrqd.ratio}">
+                                    <f:convertNumber pattern="0.00" />
+                                </h:outputText> 
                             </p:column>
 
                             <p:columnGroup type="footer" id="footer_tab_2">
                                 <p:row>
                                     <p:column style="text-align:right" footerText="Totaux" />                                                                          
-                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.score_1}"/>  
-                                    <p:column colspan="2" style="text-align:center" footerText=" / " /> 
+                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.ciblePrqnt}"/> 
+                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.realisationPrqnt}"/>
+                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.ratioPrqnt}"/> 
                                 </p:row>
                             </p:columnGroup>
-
                         </p:dataTable>
 
                         <p:separator/>
-                        <h:outputText value="III. CRITERES D'INCITATIONS NEGATIVES" style="font-size: 20px" />
+                        <h:outputText value="VI - Prime de Résultat Qualitatif du Département" style="font-size: 20px;color: red" />
                         <p:separator />
 
-                        <p:dataTable id="datalist_3" value="#{evaluationPersonnelController.evaluationpersonnelIns}" var="item"                             
-                                     paginator="true"
-                                     editable="true"
-                                     editMode="cell"
-                                     rows="#{evaluationPersonnelController.evaluationpersonnelIns.size()}"
-                                     rowsPerPageTemplate="10,20,30,40,50"
-                                     style="margin-top: 1%;font-size: 15px"
-                                     rowIndexVar="index"
-                                     emptyMessage="#{langue['common.tableau_vide']}">
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label>Point Max </label>
+                                <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.parametragecriterePrq.point}" >
+                                    <f:convertNumber />
+                                </h:inputText>
+                            </div>
 
-                            <p:column class="hardBreak" style="width: 40%;" >
-                                <f:facet name="header">
-                                    <h:outputText value="#{langue.sous_critere}"/>
-                                </f:facet>
-                                <h:outputText class="hardBreak" value="#{item.iddetailsc.idsouscritere.nom}"/> 
-                            </p:column>
+                            <div class="form-group col-md-2">
+                                <label>Score (%)</label>
+                                <h:inputText disabled="true" class="form-control"  value="#{evaluationPersonnelController.evaluationRPrimeQltifDept.score}" >
+                                    <f:convertNumber />
+                                </h:inputText>
+                            </div>
 
-                            <p:column style="width: 10%; text-align:center" headerText="#{langue.note}">
-                                <p:cellEditor>
-                                    <f:facet name="output">
-                                        <h:outputText value="#{item.note}" >
-                                            <f:convertNumber />
-                                        </h:outputText>
-                                    </f:facet>
-                                    <f:facet name="input">
-                                        <p:inputText required="true" value="#{item.note}">                                             
-                                            <p:ajax event="keyup" />
-                                        </p:inputText>
-                                    </f:facet>
-                                </p:cellEditor>
-                            </p:column> 
-
-                            <p:column style="width: 40%; text-align:left" headerText="#{langue.reponse}">
-                                <p:cellEditor>
-                                    <f:facet name="output">
-                                        <h:outputText class="hardBreak" value="#{item.idelementreponse.nom}" />
-                                    </f:facet>
-                                    <f:facet name="input">
-                                        <p:selectOneMenu value="#{item.idelementreponse}" converter="elementreponseConverter">
-                                            <f:selectItems value="#{item.iddetailsc.idsouscritere.elementreponseCollection}" var="obj" itemLabel="#{obj.nom}" itemValue="#{obj}" />
-                                            <p:ajax update="datalist_3,:EvaluationCreateForm:somme" listener="#{evaluationPersonnelController.setResponse('3' , index , evaluationPersonnelController.evaluationpersonnelIns)}" />
-                                        </p:selectOneMenu>
-                                    </f:facet>
-                                </p:cellEditor>
-                            </p:column>
-
-                            <p:column style="width: 10%">
-                                <f:facet name="header">
-                                    <h:outputText value="Action"/>
-                                </f:facet>
-                                <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist_3,:EvaluationCreateForm:somme,:EvaluationCreateForm:grid_critere" event="click" listener="#{evaluationPersonnelController.removeCritere('3' , item , evaluationPersonnelController.evaluationpersonnelIns)}" />
-                                </p:commandButton>
-
-                            </p:column>
-
-                            <p:columnGroup type="footer" id="footer_tab_2">
-                                <p:row>
-                                    <p:column style="text-align:right" footerText="Totaux" />                                                                          
-                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.score_2}"/>  
-                                    <p:column colspan="2" style="text-align:center" footerText=" / " /> 
-                                </p:row>
-                            </p:columnGroup>
-
-                        </p:dataTable>
+                            <div class="form-group col-md-2">
+                                <label>Point du personnel</label>
+                                <h:inputText disabled="true" class="form-control"  value="#{evaluationPersonnelController.evaluationRPrimeQltifPersonnel.point}" >
+                                    <f:convertNumber pattern="0.00" />
+                                </h:inputText>
+                            </div>
+                        </div>
 
                         <p:separator />
+
                         <h:outputText id="somme" value="Note = I + II - III = #{evaluationPersonnelController.score} + #{evaluationPersonnelController.score_1} - #{evaluationPersonnelController.score_2} = #{evaluationPersonnelController.score + evaluationPersonnelController.score_1 - evaluationPersonnelController.score_2}"  style="font-size: 20px"/>
                         <p:separator />
 

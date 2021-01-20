@@ -6,12 +6,16 @@
 package controllers.evaluation_personnel;
 
 import entities.Categorie;
+import entities.Cible;
 import entities.Critereresponsabilite;
 import entities.Detailsc;
+import entities.EvaluationRPrimeQltifDept;
+import entities.EvaluationRPrimeQltifPersonnel;
 import entities.Evaluationbonuspp;
 import entities.Evaluationheuresupp;
 import entities.Evaluationpersonnel;
 import entities.Evaluationresponsabilite;
+import entities.Evaluationrqntifdept;
 import entities.Note;
 import entities.Parametragecritere;
 import entities.Personnel;
@@ -22,13 +26,17 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import sessions.CategorieFacadeLocal;
+import sessions.CibleFacadeLocal;
 import sessions.CritereresponsabiliteFacadeLocal;
 import sessions.DetailscFacadeLocal;
 import sessions.ElementReponseFacadeLocal;
+import sessions.EvaluationRPrimeQltifDeptFacadeLocal;
+import sessions.EvaluationRPrimeQltifPersonnelFacadeLocal;
 import sessions.EvaluationbonusppFacadeLocal;
 import sessions.EvaluationheuresuppFacadeLocal;
 import sessions.EvaluationpersonnelFacadeLocal;
 import sessions.EvaluationresponsabiliteFacadeLocal;
+import sessions.EvaluationrqntifdeptFacadeLocal;
 import sessions.NoteFacadeLocal;
 import sessions.NoteserviceFacadeLocal;
 import sessions.ParametragecritereFacadeLocal;
@@ -48,8 +56,6 @@ public class AbstractEvaluationPersonnel {
     protected EvaluationpersonnelFacadeLocal evaluationpersonnelFacadeLocal;
     protected Evaluationpersonnel evaluationpersonnel = new Evaluationpersonnel();
     protected List<Evaluationpersonnel> evaluationpersonnels = new ArrayList<>();
-    protected List<Evaluationpersonnel> evaluationpersonnelIps = new ArrayList<>();
-    protected List<Evaluationpersonnel> evaluationpersonnelIns = new ArrayList<>();
 
     @EJB
     protected PersonnelFacadeLocal personnelFacadeLocal;
@@ -61,6 +67,7 @@ public class AbstractEvaluationPersonnel {
     protected Parametragecritere parametragecritere = new Parametragecritere();
     protected Parametragecritere parametragecritereHsp = new Parametragecritere();
     protected Parametragecritere parametragecritereBpp = new Parametragecritere();
+    protected Parametragecritere parametragecriterePrq = new Parametragecritere();
 
     @EJB
     protected EvaluationheuresuppFacadeLocal evaluationheuresuppFacadeLocal;
@@ -84,6 +91,22 @@ public class AbstractEvaluationPersonnel {
     protected Evaluationbonuspp evaluationbonuspp = new Evaluationbonuspp();
 
     @EJB
+    protected CibleFacadeLocal cibleFacadeLocal;
+    protected List<Cible> cibleRqntifs = new ArrayList<>();
+
+    @EJB
+    protected EvaluationrqntifdeptFacadeLocal evaluationrqntifdeptFacadeLocal;
+    protected List<Evaluationrqntifdept> evaluationrqntifdepts = new ArrayList<>();
+
+    @EJB
+    protected EvaluationRPrimeQltifDeptFacadeLocal evaluationRPrimeQltifDeptFacadeLocal;
+    protected EvaluationRPrimeQltifDept evaluationRPrimeQltifDept = new EvaluationRPrimeQltifDept();
+
+    @EJB
+    protected EvaluationRPrimeQltifPersonnelFacadeLocal evaluationRPrimeQltifPersonnelFacadeLocal;
+    protected EvaluationRPrimeQltifPersonnel evaluationRPrimeQltifPersonnel = new EvaluationRPrimeQltifPersonnel();
+
+    @EJB
     protected SousperiodeFacadeLocal sousperiodeFacadeLocal;
     protected Sousperiode sousperiode = new Sousperiode();
     protected List<Sousperiode> sousperiodes = new ArrayList<>();
@@ -95,7 +118,7 @@ public class AbstractEvaluationPersonnel {
 
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
-    protected Structure structure = new Structure();
+    protected Structure structure = SessionMBean.getStructure();
     protected List<Structure> structures = new ArrayList<>();
 
     @EJB
@@ -121,6 +144,10 @@ public class AbstractEvaluationPersonnel {
 
     protected long idStructureSource;
     protected long idStructureDestination;
+
+    protected double ratioPrqnt = 0;
+    protected double ciblePrqnt = 0;
+    protected double realisationPrqnt = 0;
 
     protected List<Integer> listDetail = new ArrayList<>();
 
@@ -251,14 +278,6 @@ public class AbstractEvaluationPersonnel {
         return notes;
     }
 
-    public List<Evaluationpersonnel> getEvaluationpersonnelIps() {
-        return evaluationpersonnelIps;
-    }
-
-    public List<Evaluationpersonnel> getEvaluationpersonnelIns() {
-        return evaluationpersonnelIns;
-    }
-
     public double getScore_1() {
         return score_1;
     }
@@ -315,12 +334,52 @@ public class AbstractEvaluationPersonnel {
         this.parametragecritereBpp = parametragecritereBpp;
     }
 
+    public Parametragecritere getParametragecriterePrq() {
+        return parametragecriterePrq;
+    }
+
+    public void setParametragecriterePrq(Parametragecritere parametragecriterePrq) {
+        this.parametragecriterePrq = parametragecriterePrq;
+    }
+
     public Evaluationbonuspp getEvaluationbonuspp() {
         return evaluationbonuspp;
     }
 
     public void setEvaluationbonuspp(Evaluationbonuspp evaluationbonuspp) {
         this.evaluationbonuspp = evaluationbonuspp;
+    }
+
+    public List<Evaluationrqntifdept> getEvaluationrqntifdepts() {
+        return evaluationrqntifdepts;
+    }
+
+    public double getRatioPrqnt() {
+        return ratioPrqnt;
+    }
+
+    public double getCiblePrqnt() {
+        return ciblePrqnt;
+    }
+
+    public double getRealisationPrqnt() {
+        return realisationPrqnt;
+    }
+
+    public EvaluationRPrimeQltifDept getEvaluationRPrimeQltifDept() {
+        return evaluationRPrimeQltifDept;
+    }
+
+    public void setEvaluationRPrimeQltifDept(EvaluationRPrimeQltifDept evaluationRPrimeQltifDept) {
+        this.evaluationRPrimeQltifDept = evaluationRPrimeQltifDept;
+    }
+
+    public EvaluationRPrimeQltifPersonnel getEvaluationRPrimeQltifPersonnel() {
+        return evaluationRPrimeQltifPersonnel;
+    }
+
+    public void setEvaluationRPrimeQltifPersonnel(EvaluationRPrimeQltifPersonnel evaluationRPrimeQltifPersonnel) {
+        this.evaluationRPrimeQltifPersonnel = evaluationRPrimeQltifPersonnel;
     }
 
 }
