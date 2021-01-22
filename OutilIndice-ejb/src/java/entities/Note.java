@@ -7,6 +7,7 @@ package entities;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -46,7 +47,14 @@ public class Note implements Serializable {
     private Double noteip;
     private Double notefinale;
     private Double sommeindice;
-
+    @Column(name = "penalitedepartement")
+    private double penaliteDepartement;
+    @Column(name = "pointpenalitedepartement")
+    private double pointPenaliteDepartement;
+    @Column(name = "penalitepersonnel")
+    protected double penalitePersonnel;
+    @Column(name = "pointpenalitepersonnel")
+    protected double pointPenalitePersonnel;
     @JoinColumn(name = "idperiode", referencedColumnName = "idperiode")
     @ManyToOne(fetch = FetchType.LAZY)
     private Periode idperiode;
@@ -134,6 +142,38 @@ public class Note implements Serializable {
 
     public void setSommeindice(Double sommeindice) {
         this.sommeindice = sommeindice;
+    }
+
+    public double getPenaliteDepartement() {
+        return penaliteDepartement;
+    }
+
+    public void setPenaliteDepartement(double penaliteDepartement) {
+        this.penaliteDepartement = penaliteDepartement;
+    }
+
+    public double getPointPenaliteDepartement() {
+        return pointPenaliteDepartement;
+    }
+
+    public void setPointPenaliteDepartement(double pointPenaliteDepartement) {
+        this.pointPenaliteDepartement = pointPenaliteDepartement;
+    }
+
+    public double getPenalitePersonnel() {
+        return penalitePersonnel;
+    }
+
+    public void setPenalitePersonnel(double penalitePersonnel) {
+        this.penalitePersonnel = penalitePersonnel;
+    }
+
+    public double getPointPenalitePersonnel() {
+        return pointPenalitePersonnel;
+    }
+
+    public void setPointPenalitePersonnel(double pointPenalitePersonnel) {
+        this.pointPenalitePersonnel = pointPenalitePersonnel;
     }
 
     public Periode getIdperiode() {

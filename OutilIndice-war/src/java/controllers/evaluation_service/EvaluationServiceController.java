@@ -6,7 +6,6 @@
 package controllers.evaluation_service;
 
 import controllers.util.JsfUtil;
-import entities.Evaluationpersonnel;
 import entities.Evaluationservice;
 import entities.Note;
 import entities.Noteservice;
@@ -159,11 +158,6 @@ public class EvaluationServiceController extends AbstractEvaluationService imple
                     for (Souscritereservice s : listSousCritereService) {
                         Evaluationservice ev = new Evaluationservice();
                         ev.setIdevaluationservice(0l);
-                        if (s.getIdsouscritere().getIncitatif()) {
-                            ev.setMultiplicateur(s.getIdsouscritere().getMultiplicateur());
-                        } else {
-                            ev.setMultiplicateur(0);
-                        }
                         ev.setIdsouscritereservice(s);
                         ev.setNote(0d);
                         ev.setObservation("--------");

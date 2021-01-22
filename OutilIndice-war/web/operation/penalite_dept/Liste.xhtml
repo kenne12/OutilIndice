@@ -7,23 +7,47 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:jsf="http://xmlns.jcp.org/jsf">
 
-    <h:form id="SousCritereListerForm">
+
+    <h:form id="search_form">
+
+        <div class="row">
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>#{langue.sous_periode}</label>
+                    <h:selectOneMenu id="type_sousperiode" class="form-control" value="#{penaliteDeptCtrl.sousperiode.idsousperiode}"                                     
+                                     required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                        <f:selectItems value="#{penaliteDeptCtrl.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
+                        <p:ajax listener="#{penaliteDeptCtrl.searchData()}" />
+                    </h:selectOneMenu>
+                </div>
+            </div>
+
+            <div class="col-md-1 ">
+                <p:commandButton class="mt-3" value="#{langue['common.chercher']}" update=":PenaliteDeptListerForm"  actionListener="#{penaliteDeptCtrl.searchData()}" />
+            </div>                           
+        </div>
+
+    </h:form>
+
+
+    <h:form id="PenaliteDeptListerForm">
 
         <p:messages id="growl" closable="true">
             <p:effect type="pulsate" event="load" delay="50" />
         </p:messages>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-9">
                 <div class="panel panel-success">
-
                     <div style="color: white" class="panel-heading bg-success">
-                        #{langue['sous_critere.list']}
-                        <p:commandButton update=":SousCritereCreateForm,:notify1"
+                        #{langue['recette_realisee_dept.liste']}
+                        <p:commandButton update=":PenaliteDeptCreateForm"
                                          icon="ui-icon-plus"
-                                         style="float: right"
                                          value="#{langue['common.ajouter']}"
-                                         actionListener="#{reponseController.prepareCreate()}"/>  
+                                         style="float: right"
+                                         actionListener="#{penaliteDeptCtrl.prepareCreate()}"/>      
                     </div>
 
                     <div class="panel-body">
@@ -32,36 +56,27 @@
 
                             <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
                                 <thead>
-                                    <tr>     
-                                        <th style="width: 30%">#{langue.sous_critere}</th>
-                                        <th style="width: 50%">#{langue['common.nom']}</th>
-                                        <th style="width: 10%">#{langue['common.valeur']}</th>
-                                        <th style="width: 10%">#{langue['common.actions']}</th>
+                                    <tr>
+                                        <th style="width: 50%">#{langue.service}</th>
+                                        <th style="width: 10%;text-align: center">#{langue.pourcentage}</th>
+                                        <th style="width: 10%;text-align: center">#{langue['common.actions']}</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    <ui:repeat value="#{reponseController.elementReponses}" var="item">
+                                    <ui:repeat value="#{penaliteDeptCtrl.listEvaluationPenaliteDepts}" var="item">
                                         <tr>
-                                            <td>#{item.idsouscritere.code} - #{item.idsouscritere.nom}</td>
-                                            <td>#{item.nom}</td>
-                                            <td style="text-align: center">#{item.valeur}</td>                                    
+                                            <td>#{item.idservice.nom}</td>
+                                            <td style="text-align: center"><h:outputLabel value="#{item.valeur}"><f:convertNumber /></h:outputLabel></td>
                                             <td style="text-align: center">                                        
-                                                <p:commandButton class="btn btn-danger btn-sm" icon="ui-icon-trash" 
-                                                                 actionListener="#{reponseController.delete(item)}"
-                                                                 update="SousCritereListerForm:datalist,SousCritereListerForm:growl,:notify1">
-                                                    <p:confirm header="#{langue['notification.confirm_delete_dialog_header']}"
-                                                               message="#{langue['notification.confirm_delete_message']} ?"
-                                                               icon="ui-icon-alert"/>
-                                                </p:commandButton>
-
-                                                <p:commandButton icon="ui-icon-pencil" update=":SousCritereCreateForm,:notify1"
+                                                <p:commandButton icon="ui-icon-pencil" update=":PenaliteDeptEditForm"
                                                                  class="btn btn-success btn-sm"
-                                                                 actionListener="#{reponseController.prepareEdit(item)}"/>
+                                                                 actionListener="#{penaliteDeptCtrl.prepareEdit(item)}"/>
                                             </td>
                                         </tr>
                                     </ui:repeat>
                                 </tbody>
+
                             </table>
                         </div>
                     </div>
@@ -75,14 +90,14 @@
 
     <p:dialog id="notify1" widgetVar="NotifyDialog1" height="400" width="700" resizable="true" responsive="true" modal="true" style="text-align: center; font-size: 14px; font-family: Cambria;">
         <f:facet name="header">
-            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{reponseController.routine.titleNotify}" />
+            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{penaliteDeptCtrl.routine.titleNotify}" />
         </f:facet>
         <h:form id="NotifyForm1">
-            <h:graphicImage id="nt_img" url="#{reponseController.routine.iconMessage}" style="cursor:pointer" />
+            <h:graphicImage id="nt_img" url="#{penaliteDeptCtrl.routine.iconMessage}" style="cursor:pointer" />
 
             <hr size="3" style="background-color: cornflowerblue;"/>
 
-            <h:outputText id="nt_msg" value="#{reponseController.routine.message}"/>
+            <h:outputText id="nt_msg" value="#{penaliteDeptCtrl.routine.message}"/>
 
             <hr size="3" style="background-color: cornflowerblue; margin-top: 5%;"/>
 

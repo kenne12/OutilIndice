@@ -37,29 +37,7 @@
                             update="datalist,grid_critere" icon="ui-icon-plus" />
 
                         <p:separator />
-
-                        <div class="row">  
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <p:outputLabel value="#{langue.indice}" for="indice" />
-                                    <h:inputText class="form-control" id="indice" value="#{sousCritereStrController.indice}">
-                                        <p:ajax event="keyup" update="datalist" listener="#{sousCritereStrController.updateDataTable('indice')}" />
-                                    </h:inputText>
-                                </div>
-                            </div>
-
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <p:outputLabel value="#{langue.denominateur}" for="denominateur" />
-                                    <h:inputText class="form-control" id="denominateur" value="#{sousCritereStrController.denominateur}">
-                                        <p:ajax event="keyup" update="datalist" listener="#{sousCritereStrController.updateDataTable('denominateur')}" />
-                                    </h:inputText>
-                                </div>
-                            </div>
-                        </div>
-
-                        <p:separator />
-
+ 
                         <p:dataTable id="datalist" value="#{sousCritereStrController.listDetailsc}" var="item"                             
                                      paginator="true"
                                      editable="true"
@@ -70,14 +48,14 @@
                                      rowIndexVar="index"
                                      emptyMessage="#{langue['common.tableau_vide']}">
 
-                            <p:column class="hardBreak" style="width: 30%;" >
+                            <p:column class="hardBreak" style="width: 40%;" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.sous_critere}"/>
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{item.idsouscritere.code} - #{item.idsouscritere.nom}"/> 
                             </p:column>
 
-                            <p:column style="width: 5%; text-align:center" headerText="#{langue['sous_criteres.point_max']}">
+                            <p:column style="width: 10%; text-align:center" headerText="#{langue['sous_criteres.point_max']}">
                                 <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText value="#{item.pointMax}" >
@@ -92,44 +70,7 @@
                                 </p:cellEditor>
                             </p:column>
 
-                            <p:column style="width: 5%; text-align:center" headerText="#{langue.indice}">
-                                <p:cellEditor>
-                                    <f:facet name="output">
-                                        <h:outputText value="#{item.indice}" >
-                                            <f:convertNumber />
-                                        </h:outputText>
-                                    </f:facet>
-                                    <f:facet name="input">
-                                        <p:inputText required="true" value="#{item.indice}">                                             
-                                            <p:ajax update="datalist" listener="#{sousCritereStrController.updateDataTable('')}" />
-                                        </p:inputText>
-                                    </f:facet>
-                                </p:cellEditor>
-                            </p:column>
-
-                            <p:column style="width: 7%; text-align:center" headerText="Dénomin">
-                                <p:cellEditor>
-                                    <f:facet name="output">
-                                        <h:outputText value="#{item.denominateur}" >
-                                            <f:convertNumber />
-                                        </h:outputText>
-                                    </f:facet>
-                                    <f:facet name="input">
-                                        <p:inputText required="true" value="#{item.denominateur}">                                             
-                                            <p:ajax  update="datalist" listener="#{sousCritereStrController.updateDataTable('')}" />
-                                        </p:inputText>
-                                    </f:facet>
-                                </p:cellEditor>
-                            </p:column> 
-
-                            <p:column class="hardBreak" style="width: 5%;text-align: center" >
-                                <f:facet name="header">
-                                    <h:outputText value="#{langue['sous_criteres.point_max']}"/>
-                                </f:facet>
-                                <h:outputText class="hardBreak" value="#{item.pointmaxindice}"/> 
-                            </p:column>
-
-                            <p:column style="width: 35%; text-align:left" headerText="#{langue['common.details']}">
+                            <p:column style="width: 40%; text-align:left" headerText="#{langue['common.details']}">
                                 <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText class="hardBreak" value="#{item.detail}" />
@@ -159,9 +100,6 @@
                                 <p:row>
                                     <p:column style="text-align:right" footerText="Totaux"/>
                                     <p:column style="text-align:center" footerText="#{sousCritereStrController.score}"/>
-                                    <p:column style="text-align:center" footerText=" / "/>
-                                    <p:column style="text-align:center" footerText=" / "/>
-                                    <p:column style="text-align:center" footerText="#{sousCritereStrController.scoreIndice}"/>
                                     <p:column colspan="2" style="text-align:center" footerText=" / " /> 
                                 </p:row>
                             </p:columnGroup>

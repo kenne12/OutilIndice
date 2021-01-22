@@ -7,7 +7,6 @@ package controllers.r_bonus_revenu_dept;
 
 import controllers.util.JsfUtil;
 import entities.Cible;
-import entities.Critere;
 import entities.Indicateur;
 import entities.Service;
 import entities.Sousperiode;
@@ -47,13 +46,13 @@ public class RealisationBonusRDeptCtrl extends AbstractRealisationBonusRDeptCtrl
         cible = new Cible();
         cible.setIdservice(new Service());
         cibles.clear();
-        RequestContext.getCurrentInstance().execute("PF('PrimeRQntifCreateDialog').show()");
+        RequestContext.getCurrentInstance().execute("PF('BonusRevenuDeptCreateDialog').show()");
     }
     
     public void prepareEdit(Cible c) {
         this.cible = c;
         mode = "Edit";
-        RequestContext.getCurrentInstance().execute("PF('PrimeRQntifEditDialog').show()");
+        RequestContext.getCurrentInstance().execute("PF('BonusRevenuDeptEditDialog').show()");
     }
     
     public void updateFiltre() {
@@ -100,7 +99,7 @@ public class RealisationBonusRDeptCtrl extends AbstractRealisationBonusRDeptCtrl
             this.cibles.clear();
             cible = new Cible();
             cible.setIdservice(new Service());
-            RequestContext.getCurrentInstance().execute("PF('PrimeRQntifCreateDialog').hide()");
+            RequestContext.getCurrentInstance().execute("PF('BonusRevenuDeptCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -115,7 +114,7 @@ public class RealisationBonusRDeptCtrl extends AbstractRealisationBonusRDeptCtrl
             cible.setIdindicateur(new Indicateur());
             listCibles = cibleFacadeLocal.findByIdStructureSousPeriode(SessionMBean.getStructure().getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 6);
             this.getTotals2(listCibles);
-            RequestContext.getCurrentInstance().execute("PF('PrimeRQntifEditDialog').hide()");
+            RequestContext.getCurrentInstance().execute("PF('BonusRevenuDeptEditDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();

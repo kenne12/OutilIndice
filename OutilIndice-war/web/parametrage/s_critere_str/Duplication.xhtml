@@ -53,21 +53,6 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <p:outputLabel value="#{langue.categorie}" for="categorie" />
-                                    <h:selectOneMenu disabled="#{sousCritereStrController.mode.equals('Edit')}" 
-                                                     class="form-control" 
-                                                     id="categorie" value="#{sousCritereStrController.categorie.idcategorie}">
-                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
-                                        <f:selectItems value="#{sousCritereStrController.categories}" var="c" itemLabel="#{c.nom}" itemValue="#{c.idcategorie}" />
-                                        <p:ajax update="detail,datalist,:NotifZone:grow_msg" listener="#{sousCritereStrController.updateFiltreDuplication()}"/>
-                                    </h:selectOneMenu>                                                
-                                </div>
-                            </div>
-                        </div>
-
                         <div jsf:id="detail" class="row">
                             <div class="col-md-3">
                                 <div class="form-group">

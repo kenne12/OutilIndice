@@ -37,8 +37,6 @@
                                         <th style="width: 32%">#{langue['common.nom']}</th>
                                         <th style="width: 33%">#{langue.critere}</th>
                                         <th style="width: 5%">#{langue.points}</th>
-                                        <th style="width: 5%;text-align: center">#{langue.incitatif} ?</th>
-                                        <th style="width: 5%;text-align: center">#{langue.type}</th>
                                         <th style="width: 10%">#{langue['common.actions']}</th>
                                     </tr>
                                 </thead>
@@ -50,8 +48,6 @@
                                             <td>#{item.nom}</td>
                                             <td>#{item.idcritere.nom}</td>
                                             <td style="text-align: center">#{item.pointmax}</td>
-                                            <td><center><h:selectBooleanCheckbox disabled="true" value="#{item.incitatif}"/></center></td>
-                                            <td style="text-align: center"><h:outputLabel value="#{sousCritereController.returnSign(item)}" /></td>
                                             <td>                                        
                                                 <p:commandButton class="btn btn-danger btn-sm" icon="ui-icon-trash" 
                                                                  actionListener="#{sousCritereController.delete(item)}"

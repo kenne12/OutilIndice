@@ -32,11 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Souscritere.findByIdsouscritere", query = "SELECT s FROM Souscritere s WHERE s.idsouscritere = :idsouscritere"),
     @NamedQuery(name = "Souscritere.findByNom", query = "SELECT s FROM Souscritere s WHERE s.nom = :nom"),
     @NamedQuery(name = "Souscritere.findByCode", query = "SELECT s FROM Souscritere s WHERE s.code = :code"),
-    @NamedQuery(name = "Souscritere.findByDetail", query = "SELECT s FROM Souscritere s WHERE s.detail = :detail"),
-    @NamedQuery(name = "Souscritere.findByService", query = "SELECT s FROM Souscritere s WHERE s.service = :service"),
-    @NamedQuery(name = "Souscritere.findByPersonnel", query = "SELECT s FROM Souscritere s WHERE s.personnel = :personnel"),
-    @NamedQuery(name = "Souscritere.findByIncitatif", query = "SELECT s FROM Souscritere s WHERE s.incitatif = :incitatif"),
-    @NamedQuery(name = "Souscritere.findByMultiplicateur", query = "SELECT s FROM Souscritere s WHERE s.multiplicateur = :multiplicateur")})
+    @NamedQuery(name = "Souscritere.findByDetail", query = "SELECT s FROM Souscritere s WHERE s.detail = :detail")})
 public class Souscritere implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,14 +44,7 @@ public class Souscritere implements Serializable {
     @Size(max = 15)
     private String code;
     private String detail;
-    private Boolean service;
-    private Boolean personnel;
-    private Boolean incitatif;
-    private Integer multiplicateur;
-    private int numerateur;
-    private int denominateur;
-    private boolean positif;
-    private String signe;
+
     private int pointmax;
     @JoinColumn(name = "idcritere", referencedColumnName = "idcritere")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -112,38 +101,6 @@ public class Souscritere implements Serializable {
         this.detail = detail;
     }
 
-    public Boolean getService() {
-        return service;
-    }
-
-    public void setService(Boolean service) {
-        this.service = service;
-    }
-
-    public Boolean getPersonnel() {
-        return personnel;
-    }
-
-    public void setPersonnel(Boolean personnel) {
-        this.personnel = personnel;
-    }
-
-    public Boolean getIncitatif() {
-        return incitatif;
-    }
-
-    public void setIncitatif(Boolean incitatif) {
-        this.incitatif = incitatif;
-    }
-
-    public Integer getMultiplicateur() {
-        return multiplicateur;
-    }
-
-    public void setMultiplicateur(Integer multiplicateur) {
-        this.multiplicateur = multiplicateur;
-    }
-
     public int getPointmax() {
         return pointmax;
     }
@@ -158,38 +115,6 @@ public class Souscritere implements Serializable {
 
     public void setIdcritere(Critere idcritere) {
         this.idcritere = idcritere;
-    }
-
-    public int getNumerateur() {
-        return numerateur;
-    }
-
-    public void setNumerateur(int numerateur) {
-        this.numerateur = numerateur;
-    }
-
-    public int getDenominateur() {
-        return denominateur;
-    }
-
-    public void setDenominateur(int denominateur) {
-        this.denominateur = denominateur;
-    }
-
-    public boolean isPositif() {
-        return positif;
-    }
-
-    public void setPositif(boolean positif) {
-        this.positif = positif;
-    }
-
-    public String getSigne() {
-        return signe;
-    }
-
-    public void setSigne(String signe) {
-        this.signe = signe;
     }
 
     @XmlTransient

@@ -48,13 +48,13 @@ public class CibleBonusRDeptCtrl extends AbstractCibleBonusRDeptCtrl implements 
         cible = new Cible();
         cible.setIdservice(new Service());
         cibles.clear();
-        RequestContext.getCurrentInstance().execute("PF('PrimeRQntifCreateDialog').show()");
+        RequestContext.getCurrentInstance().execute("PF('CibleBonusRDeptCreateDialog').show()");
     }
     
     public void prepareEdit(Cible c) {
         this.cible = c;
         mode = "Edit";
-        RequestContext.getCurrentInstance().execute("PF('PrimeRQntifEditDialog').show()");
+        RequestContext.getCurrentInstance().execute("PF('CibleBonusRDeptEditDialog').show()");
     }
     
     public void updateFiltre() {
@@ -148,7 +148,7 @@ public class CibleBonusRDeptCtrl extends AbstractCibleBonusRDeptCtrl implements 
             this.cibles.clear();
             cible = new Cible();
             cible.setIdservice(new Service());
-            RequestContext.getCurrentInstance().execute("PF('PrimeRQntifCreateDialog').hide()");
+            RequestContext.getCurrentInstance().execute("PF('CibleBonusRDeptCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -162,7 +162,7 @@ public class CibleBonusRDeptCtrl extends AbstractCibleBonusRDeptCtrl implements 
             cible = new Cible();
             cible.setIdindicateur(new Indicateur());
             listCibles = cibleFacadeLocal.findByIdStructureSousPeriode(SessionMBean.getStructure().getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 6);
-            RequestContext.getCurrentInstance().execute("PF('PrimeRQntifEditDialog').hide()");
+            RequestContext.getCurrentInstance().execute("PF('CibleBonusRDeptEditDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();

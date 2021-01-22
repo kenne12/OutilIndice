@@ -33,7 +33,7 @@
                                                      id="personnel" value="#{evaluationPersonnelController.personnel.idpersonnel}">
                                         <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
                                         <f:selectItems value="#{evaluationPersonnelController.personnels}" var="p" itemLabel="#{p.nom} #{p.prenom}" itemValue="#{p.idpersonnel}" />
-                                        <p:ajax update="grid_critere,datalist,:NotifZone,datalist_2,somme,detail_personnel,hsp_recap_j,hsp_recap_n,display" listener="#{evaluationPersonnelController.updateEvaluationData()}"/>
+                                        <p:ajax update="grid_critere,datalist,:NotifZone,datalist_2,detail_personnel,hsp_recap_j,hsp_recap_n,display" listener="#{evaluationPersonnelController.updateEvaluationData()}"/>
                                     </h:selectOneMenu>                                                
                                 </div>
                             </div>
@@ -45,7 +45,7 @@
                                                      id="periode" value="#{evaluationPersonnelController.sousperiode.idsousperiode}">
                                         <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
                                         <f:selectItems value="#{evaluationPersonnelController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
-                                        <p:ajax update="grid_critere,datalist,:NotifZone,datalist_2,somme,detail_personnel,hsp_recap_j,,hsp_recap_n,display" listener="#{evaluationPersonnelController.updateEvaluationData()}"/>
+                                        <p:ajax update="grid_critere,datalist,:NotifZone,datalist_2,detail_personnel,hsp_recap_j,,hsp_recap_n,display" listener="#{evaluationPersonnelController.updateEvaluationData()}"/>
                                     </h:selectOneMenu>                                                
                                 </div>
                             </div>
@@ -63,13 +63,28 @@
                         <p:commandButton                            
                             value="#{langue['common.ajouter']}"
                             actionListener="#{evaluationPersonnelController.addCritereToTable()}"
-                            update="datalist,datalist_2,grid_critere,somme" icon="ui-icon-plus" />
+                            update="datalist,datalist_2,grid_critere" icon="ui-icon-plus" />
 
                         <p:separator />
                         <h:outputText value="I. CRITERES DE PERFORMANCE INDIVIDUELLE DU PERSONNEL" style="font-size: 20px ; color: red" />
                         <p:separator />
-                        <h:outputText id="detail_personnel" value="Catégorie : #{evaluationPersonnelController.personnel.idcategorie.nom} ; Point Max : #{evaluationPersonnelController.parametragecritere.point}" style="font-size: 20px;color: red" />
-
+                        
+                        <div class="row" jsf:id="detail_personnel">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Catégorie</label>
+                                    <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.personnel.idcategorie.nom}" />
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Point Max</label>
+                                    <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.parametragecritere.point}" />
+                                </div>
+                            </div>
+                        </div>
+                        
                         <p:dataTable id="datalist" value="#{evaluationPersonnelController.evaluationpersonnels}" var="item"                             
                                      paginator="true"
                                      editable="true"
@@ -109,7 +124,7 @@
                                     <f:facet name="input">
                                         <p:selectOneMenu value="#{item.idelementreponse}" converter="elementreponseConverter">
                                             <f:selectItems value="#{item.iddetailsc.idsouscritere.elementreponseCollection}" var="obj" itemLabel="#{obj.nom}" itemValue="#{obj}" />
-                                            <p:ajax update="datalist,:EvaluationCreateForm:somme,:EvaluationCreateForm:resultat_pi,:EvaluationCreateForm:score_pi" listener="#{evaluationPersonnelController.setResponse('1' , index , evaluationPersonnelController.evaluationpersonnels)}" />
+                                            <p:ajax update="datalist,:EvaluationCreateForm:resultat_pi,:EvaluationCreateForm:score_pi" listener="#{evaluationPersonnelController.setResponse('1' , index , evaluationPersonnelController.evaluationpersonnels)}" />
                                         </p:selectOneMenu>
                                     </f:facet>
                                 </p:cellEditor>
@@ -120,7 +135,7 @@
                                     <h:outputText value="Action"/>
                                 </f:facet>
                                 <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist,:EvaluationCreateForm:somme,:EvaluationCreateForm:grid_critere,:EvaluationCreateForm:resultat_pi,:EvaluationCreateForm:score_pi" event="click" listener="#{evaluationPersonnelController.removeCritere('1', item, evaluationPersonnelController.evaluationpersonnels)}" />
+                                    <p:ajax update="datalist,:EvaluationCreateForm:grid_critere,:EvaluationCreateForm:resultat_pi,:EvaluationCreateForm:score_pi" event="click" listener="#{evaluationPersonnelController.removeCritere('1', item, evaluationPersonnelController.evaluationpersonnels)}" />
                                 </p:commandButton>                            
                             </p:column>
 
@@ -318,7 +333,7 @@
                         </div>
 
                         <p:separator />
-                        <h:outputText value="VI - Bonus du revenu du Département" style="font-size: 20px;color: red" />
+                        <h:outputText value="VII - Bonus du revenu du Département" style="font-size: 20px;color: red" />
                         <p:separator />
 
                         <div class="row">
@@ -343,9 +358,9 @@
                                 </h:inputText>
                             </div>
                         </div>
-                                             
+
                         <p:separator />
-                        <h:outputText value="VII - CRITERES NEGATIFS D'INCITATION - HEURES PERDUES" style="font-size: 20px ; color: red" />
+                        <h:outputText value="VIII - CRITERES NEGATIFS D'INCITATION - HEURES PERDUES" style="font-size: 20px ; color: red" />
                         <p:separator />
 
                         <div class="row" jsf:id="hsn_recap_j">
@@ -398,7 +413,38 @@
                             </div>
                         </div>
 
-                        <h:outputText id="somme" value="Note = I + II - III = #{evaluationPersonnelController.score} + #{evaluationPersonnelController.score_1} - #{evaluationPersonnelController.score_2} = #{evaluationPersonnelController.score + evaluationPersonnelController.score_1 - evaluationPersonnelController.score_2}"  style="font-size: 20px"/>
+                        <p:separator/>
+                        <h:outputText value="IX - PENALITE DE DEPARTEMENT" style="font-size: 20px ; color: red" />
+                        <p:separator />
+                        
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label>#{langue.pourcentage} (%)</label>
+                                <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.evaluationPenaliteDept.valeur}" />
+                            </div>
+
+                            <div class="form-group col-md-2">
+                                <label>Point Soustrait</label>
+                                <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.note.pointPenaliteDepartement}" />
+                            </div>
+                        </div>
+                        
+                        <p:separator/>
+                        <h:outputText value="X - PENALITE INDIVIDUELLE" style="font-size: 20px ; color: red" />
+                        <p:separator />
+                        
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label>#{langue.pourcentage} (%)</label>
+                                <h:inputText class="form-control" value="#{evaluationPersonnelController.note.penalitePersonnel}" />
+                            </div>
+
+                            <div class="form-group col-md-2">
+                                <label>Point Soustrait</label>
+                                <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.note.pointPenalitePersonnel}" />
+                            </div>
+                        </div>
+                        
                         <p:separator />
 
                         <center>

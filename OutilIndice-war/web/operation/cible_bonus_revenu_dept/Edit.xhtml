@@ -6,14 +6,14 @@
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition>
-        <p:dialog id="PrimeRQntifEditDlg" 
-                  widgetVar="PrimeRQntifEditDialog" 
+        <p:dialog id="CibleBonusRDeptEditDlg" 
+                  widgetVar="CibleBonusRDeptEditDialog" 
                   modal="true" resizable="false" appendTo="@(body)" 
                   header="#{langue['cible_bonus_revenu_dept.formulaire_edition']}"
                   closeOnEscape="true"
                   width="40%">
 
-            <h:form id="PrimeRQntifEditForm">
+            <h:form id="CibleBonusRDeptEditForm">
 
                 <h:panelGroup id="display" rendered="true">
 
@@ -39,10 +39,10 @@
 
                     <center>
                         <p:commandButton value="#{langue['common.fermer']}" 
-                                         onclick="PF('PrimeRQntifEditDialog').hide()"
+                                         onclick="PF('CibleBonusRDeptEditDialog').hide()"
                                          icon="ui-icon-close"/>
 
-                        <p:commandButton icon="ui-icon-save" actionListener="#{cibleBonusRDeptCtrl.edit()}" value="#{langue['common.enregistrer']}" update="display,:PrimeRQntifListerForm:growl,:PrimeRQntifListerForm">
+                        <p:commandButton icon="ui-icon-save" actionListener="#{cibleBonusRDeptCtrl.edit()}" value="#{langue['common.enregistrer']}" update="display,:CibleBonusRDeptListerForm:growl,:CibleBonusRDeptListerForm">
                             <p:confirm header="#{langue['notification.confirmation']}" 
                                        message="#{langue['notification.confirmation_enregistrement']}" 
                                        icon="ui-icon-alert"/>

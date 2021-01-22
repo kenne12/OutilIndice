@@ -5,11 +5,11 @@
  */
 package controllers.evaluation_personnel;
 
-import entities.Categorie;
 import entities.Cible;
 import entities.Critereresponsabilite;
 import entities.Detailsc;
 import entities.EvaluationBonusRDeptPersonnel;
+import entities.EvaluationPenaliteDept;
 import entities.EvaluationRPrimeQltifDept;
 import entities.EvaluationRPrimeQltifPersonnel;
 import entities.Evaluationbonuspp;
@@ -25,13 +25,12 @@ import entities.Structure;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.faces.context.FacesContext;
-import sessions.CategorieFacadeLocal;
 import sessions.CibleFacadeLocal;
 import sessions.CritereresponsabiliteFacadeLocal;
 import sessions.DetailscFacadeLocal;
 import sessions.ElementReponseFacadeLocal;
 import sessions.EvaluationBonusRDeptPersonnelFacadeLocal;
+import sessions.EvaluationPenaliteDeptFacadeLocal;
 import sessions.EvaluationRPrimeQltifDeptFacadeLocal;
 import sessions.EvaluationRPrimeQltifPersonnelFacadeLocal;
 import sessions.EvaluationbonusppFacadeLocal;
@@ -40,7 +39,6 @@ import sessions.EvaluationpersonnelFacadeLocal;
 import sessions.EvaluationresponsabiliteFacadeLocal;
 import sessions.EvaluationrqntifdeptFacadeLocal;
 import sessions.NoteFacadeLocal;
-import sessions.NoteserviceFacadeLocal;
 import sessions.ParametragecritereFacadeLocal;
 import sessions.PersonnelFacadeLocal;
 import sessions.SousperiodeFacadeLocal;
@@ -79,10 +77,6 @@ public class AbstractEvaluationPersonnel {
     protected Evaluationheuresupp evaluationheuresuppN = new Evaluationheuresupp();
 
     @EJB
-    protected CategorieFacadeLocal categorieFacadeLocal;
-    protected Categorie categorie = new Categorie();
-
-    @EJB
     protected CritereresponsabiliteFacadeLocal critereresponsabiliteFacadeLocal;
     protected Critereresponsabilite critereresponsabilite = new Critereresponsabilite();
 
@@ -116,6 +110,10 @@ public class AbstractEvaluationPersonnel {
     protected EvaluationBonusRDeptPersonnel evaluationBonusRDeptPersonnel = new EvaluationBonusRDeptPersonnel();
 
     @EJB
+    protected EvaluationPenaliteDeptFacadeLocal evaluationPenaliteDeptFacadeLocal;
+    protected EvaluationPenaliteDept evaluationPenaliteDept = new EvaluationPenaliteDept();
+
+    @EJB
     protected SousperiodeFacadeLocal sousperiodeFacadeLocal;
     protected Sousperiode sousperiode = new Sousperiode();
     protected List<Sousperiode> sousperiodes = new ArrayList<>();
@@ -136,31 +134,17 @@ public class AbstractEvaluationPersonnel {
     protected List<Note> notes = new ArrayList<>();
 
     @EJB
-    protected NoteserviceFacadeLocal noteserviceFacadeLocal;
-
-    @EJB
     protected ElementReponseFacadeLocal elementReponseFacadeLocal;
 
     protected Routine routine = new Routine();
-    protected static final double scoreMax = 100;
     protected double score = 0;
-    protected double score_1 = 0;
-    protected double score_2 = 0;
-    protected double scoreIndice = 0;
 
     protected double totalPointPi;
     protected double percentagePi;
 
-    protected long idStructureSource;
-    protected long idStructureDestination;
-
     protected double ratioPrqnt = 0;
     protected double ciblePrqnt = 0;
     protected double realisationPrqnt = 0;
-
-    protected List<Integer> listDetail = new ArrayList<>();
-
-    String sc = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
 
     protected String mode = "";
     protected String message = "";
@@ -195,38 +179,6 @@ public class AbstractEvaluationPersonnel {
 
     public String getMessage() {
         return message;
-    }
-
-    public long getIdStructureSource() {
-        return idStructureSource;
-    }
-
-    public void setIdStructureSource(long idStructureSource) {
-        this.idStructureSource = idStructureSource;
-    }
-
-    public long getIdStructureDestination() {
-        return idStructureDestination;
-    }
-
-    public void setIdStructureDestination(long idStructureDestination) {
-        this.idStructureDestination = idStructureDestination;
-    }
-
-    public List<Integer> getListDetail() {
-        return listDetail;
-    }
-
-    public void setListDetail(List<Integer> listDetail) {
-        this.listDetail = listDetail;
-    }
-
-    public Categorie getCategorie() {
-        return categorie;
-    }
-
-    public void setCategorie(Categorie categorie) {
-        this.categorie = categorie;
     }
 
     public Personnel getPersonnel() {
@@ -285,18 +237,6 @@ public class AbstractEvaluationPersonnel {
 
     public List<Note> getNotes() {
         return notes;
-    }
-
-    public double getScore_1() {
-        return score_1;
-    }
-
-    public double getScore_2() {
-        return score_2;
-    }
-
-    public double getScoreIndice() {
-        return scoreIndice;
     }
 
     public Parametragecritere getParametragecritere() {
@@ -417,6 +357,14 @@ public class AbstractEvaluationPersonnel {
 
     public void setParametragecritereHsn(Parametragecritere parametragecritereHsn) {
         this.parametragecritereHsn = parametragecritereHsn;
+    }
+
+    public EvaluationPenaliteDept getEvaluationPenaliteDept() {
+        return evaluationPenaliteDept;
+    }
+
+    public void setEvaluationPenaliteDept(EvaluationPenaliteDept evaluationPenaliteDept) {
+        this.evaluationPenaliteDept = evaluationPenaliteDept;
     }
 
 }

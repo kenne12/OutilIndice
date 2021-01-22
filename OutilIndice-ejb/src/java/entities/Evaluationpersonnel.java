@@ -28,8 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Evaluationpersonnel.findAll", query = "SELECT e FROM Evaluationpersonnel e"),
     @NamedQuery(name = "Evaluationpersonnel.findByIdevaluationpersonnel", query = "SELECT e FROM Evaluationpersonnel e WHERE e.idevaluationpersonnel = :idevaluationpersonnel"),
     @NamedQuery(name = "Evaluationpersonnel.findByNote", query = "SELECT e FROM Evaluationpersonnel e WHERE e.note = :note"),
-    @NamedQuery(name = "Evaluationpersonnel.findByObservation", query = "SELECT e FROM Evaluationpersonnel e WHERE e.observation = :observation"),
-    @NamedQuery(name = "Evaluationpersonnel.findByMultiplicateur", query = "SELECT e FROM Evaluationpersonnel e WHERE e.multiplicateur = :multiplicateur")})
+    @NamedQuery(name = "Evaluationpersonnel.findByObservation", query = "SELECT e FROM Evaluationpersonnel e WHERE e.observation = :observation")})
 public class Evaluationpersonnel implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,8 +40,6 @@ public class Evaluationpersonnel implements Serializable {
     private Double note;
     @Size(max = 254)
     private String observation;
-    private Integer multiplicateur;
-    private Double pointmaxindice;
     @JoinColumn(name = "iddetailsc", referencedColumnName = "iddetailsc")
     @ManyToOne(fetch = FetchType.LAZY)
     private Detailsc iddetailsc;
@@ -89,22 +86,6 @@ public class Evaluationpersonnel implements Serializable {
 
     public void setObservation(String observation) {
         this.observation = observation;
-    }
-
-    public Integer getMultiplicateur() {
-        return multiplicateur;
-    }
-
-    public void setMultiplicateur(Integer multiplicateur) {
-        this.multiplicateur = multiplicateur;
-    }
-
-    public Double getPointmaxindice() {
-        return pointmaxindice;
-    }
-
-    public void setPointmaxindice(Double pointmaxindice) {
-        this.pointmaxindice = pointmaxindice;
     }
 
     public Detailsc getIddetailsc() {

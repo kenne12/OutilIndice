@@ -11,7 +11,6 @@ import entities.Souscritere;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.faces.context.FacesContext;
 import sessions.CritereFacadeLocal;
 import sessions.ElementReponseFacadeLocal;
 import sessions.RubriquescFacadeLocal;
@@ -43,8 +42,6 @@ public class AbstractSousCritere {
     protected ElementReponseFacadeLocal elementReponseFacadeLocal;
 
     protected Routine routine = new Routine();
-
-    String sc = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
 
     protected String mode = "";
 

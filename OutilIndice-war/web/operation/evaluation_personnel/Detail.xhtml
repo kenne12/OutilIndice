@@ -77,13 +77,6 @@
                                 <h:outputText class="hardBreak" value="#{item.note}"/> 
                             </p:column>
 
-                            <p:column class="hardBreak" style="width: 5%;text-align: center" >
-                                <f:facet name="header">
-                                    <h:outputText value="#{langue.note}"/>
-                                </f:facet>
-                                <h:outputText class="hardBreak" value="#{item.pointmaxindice}"/> 
-                            </p:column>
-
                             <p:column class="hardBreak" style="width: 35%;" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.reponse}"/>
@@ -95,7 +88,6 @@
                                 <p:row>
                                     <p:column style="text-align:right" footerText="Totaux" />                                                                          
                                     <p:column style="text-align:center" footerText="#{evaluationPersonnelController.score}"/>
-                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.scoreIndice}"/>
                                     <p:column style="text-align:center" footerText=" / " /> 
                                 </p:row>
                             </p:columnGroup>
@@ -103,7 +95,7 @@
                         </p:dataTable>
 
                         <p:separator />
-                        <h:outputText id="somme" value="Note = I + II - III = #{evaluationPersonnelController.score} + #{evaluationPersonnelController.score_1} - #{evaluationPersonnelController.score_2} = #{evaluationPersonnelController.score + evaluationPersonnelController.score_1 - evaluationPersonnelController.score_2}"  style="font-size: 20px"/>
+                        <h:outputText id="somme" value="Note = I + II - III ="  style="font-size: 20px"/>
                         <p:separator />
 
                         <center>

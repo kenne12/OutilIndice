@@ -23,23 +23,11 @@
                     </h:selectOneMenu>
                 </div>
             </div>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label>#{langue.periode}</label>
-                    <h:selectOneMenu id="type_structure" class="form-control" 
-                                     value="#{depenseController.periode.idperiode}"
-                                     required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
-                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                        <f:selectItems value="#{depenseController.periodes}" var="p" itemLabel="#{p.nom}" itemValue="#{p.idperiode}" />
-                        <p:ajax update=":DepenseListerForm:datalist" listener="#{depenseController.updateData()}" />
-                    </h:selectOneMenu>
-                </div>
-            </div>
+            
             <div class="col-md-2">
                 <div class="form-group">
                     <label>#{langue.sous_periode}</label>
-                    <h:selectOneMenu id="type_sousperiode" class="form-control" 
-                                     value="#{depenseController.sousperiode.idsousperiode}"
+                    <h:selectOneMenu id="type_sousperiode" class="form-control" value="#{depenseController.sousperiode.idsousperiode}"           
                                      required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
                         <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
                         <f:selectItems value="#{depenseController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />

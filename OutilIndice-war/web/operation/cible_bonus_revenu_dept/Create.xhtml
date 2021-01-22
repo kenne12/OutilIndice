@@ -8,15 +8,15 @@
 
     <ui:composition>
 
-        <p:dialog id="PrimeRQntifCreateDlg" 
-                  widgetVar="PrimeRQntifCreateDialog" 
+        <p:dialog id="CibleBonusRDeptCreateDlg" 
+                  widgetVar="CibleBonusRDeptCreateDialog" 
                   modal="true" resizable="false" appendTo="@(body)" 
                   header="#{langue['cible_bonus_revenu_dept.formulaire_creation']}"
                   closeOnEscape="true"
                   width="70%"
                   height="600">
 
-            <h:form id="PrimeRQntifCreateForm">
+            <h:form id="CibleBonusRDeptCreateForm">
 
                 <div class="col-md-12">
 
@@ -121,7 +121,7 @@
                                     <h:outputText value="Action"/>
                                 </f:facet>
                                 <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist,:PrimeRQntifCreateForm:grid_critere" event="click" listener="#{cibleBonusRDeptCtrl.removeIndicator(item)}" />
+                                    <p:ajax update="datalist,:CibleBonusRDeptCreateForm:grid_critere" event="click" listener="#{cibleBonusRDeptCtrl.removeIndicator(item)}" />
                                 </p:commandButton>
                             </p:column>
 
@@ -131,10 +131,10 @@
 
                         <center>
                             <p:commandButton value="#{langue['common.fermer']}" 
-                                             onclick="PF('PrimeRQntifCreateDialog').hide()"
+                                             onclick="PF('CibleBonusRDeptCreateDialog').hide()"
                                              icon="ui-icon-close"/>
 
-                            <p:commandButton icon="ui-icon-save" actionListener="#{cibleBonusRDeptCtrl.save()}" value="#{langue['common.enregistrer']}" update="display,:PrimeRQntifListerForm:datalist,:PrimeRQntifListerForm:growl,:PrimeRQntifListerForm">
+                            <p:commandButton icon="ui-icon-save" actionListener="#{cibleBonusRDeptCtrl.save()}" value="#{langue['common.enregistrer']}" update="display,:CibleBonusRDeptListerForm:datalist,:CibleBonusRDeptListerForm:growl,:CibleBonusRDeptListerForm">
                                 <p:confirm header="#{langue['notification.confirmation']}" 
                                            message="#{langue['notification.confirmation_enregistrement']}" 
                                            icon="ui-icon-alert"/>

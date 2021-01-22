@@ -43,9 +43,6 @@ public class Detailsc implements Serializable {
     @Column(name = "point_max")
     private Double pointMax;
     private String detail;
-    private int indice;
-    private int denominateur;
-    private double pointmaxindice;
     @OneToMany(mappedBy = "iddetailsc", fetch = FetchType.LAZY)
     private Collection<Evaluationpersonnel> evaluationpersonnelCollection;
     @JoinColumn(name = "idcategorie", referencedColumnName = "idcategorie")
@@ -87,30 +84,6 @@ public class Detailsc implements Serializable {
 
     public void setDetail(String detail) {
         this.detail = detail;
-    }
-
-    public int getIndice() {
-        return indice;
-    }
-
-    public void setIndice(int indice) {
-        this.indice = indice;
-    }
-
-    public int getDenominateur() {
-        return denominateur;
-    }
-
-    public void setDenominateur(int denominateur) {
-        this.denominateur = denominateur;
-    }
-
-    public double getPointmaxindice() {
-        return pointmaxindice;
-    }
-
-    public void setPointmaxindice(double pointmaxindice) {
-        this.pointmaxindice = pointmaxindice;
     }
 
     @XmlTransient

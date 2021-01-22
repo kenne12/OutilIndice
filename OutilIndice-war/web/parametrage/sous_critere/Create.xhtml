@@ -4,8 +4,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:jsf="http://xmlns.jcp.org/jsf">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:composition>
 
@@ -79,74 +78,6 @@
                         <h:inputTextarea rows="6" class="form-control" id="detail" value="#{sousCritereController.souscritere.detail}" >
                             <p:ajax />
                         </h:inputTextarea>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <div class="form-check">                                
-                                    <h:selectBooleanCheckbox id="critere_personnel" class="form-check-input" value="#{sousCritereController.souscritere.personnel}" >
-                                        <p:ajax listener="#{sousCritereController.action('personnel')}" update="critere_service,display"/>
-                                    </h:selectBooleanCheckbox>  
-                                    <label for="critere_personnel" class="form-check-label">#{langue['sous_critere.sous_critere_evaluation_personnel']}</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <div class="form-check">                                
-                                    <h:selectBooleanCheckbox id="critere_service" class="form-check-input" value="#{sousCritereController.souscritere.service}" >
-                                        <p:ajax listener="#{sousCritereController.action('service')}" update="critere_personnel,display" />
-                                    </h:selectBooleanCheckbox>
-                                    <label for="critere_service" class="form-check-label">#{langue['sous_critere.sous_critere_evaluation_service']}</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <div class="form-check">                                
-                                    <h:selectBooleanCheckbox id="critere_incitatif" class="form-check-input" value="#{sousCritereController.souscritere.incitatif}" >
-                                        <p:ajax listener="#{sousCritereController.updateMultiplicateur()}" update="multiplicateur_div,display"  />
-                                    </h:selectBooleanCheckbox>
-                                    <label for="critere_incitatif" class="form-check-label">#{langue['sous_critere.sous_critere_incitatif']}</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div jsf:id="multiplicateur_div" jsf:rendered="#{sousCritereController.souscritere.incitatif}" class="col-md-3">
-                            <div class="form-group">
-                                <p:outputLabel rendered="#{sousCritereController.souscritere.incitatif}" value="#{langue['common.multiplicateur']}" for="signe" />
-                                <h:selectOneMenu rendered="#{sousCritereController.souscritere.incitatif}" class="form-control" id="signe" value="#{sousCritereController.souscritere.signe}">
-                                    <f:selectItem itemLabel="Positif" itemValue="+" />
-                                    <f:selectItem itemLabel="Négatif" itemValue="-" />
-                                    <p:ajax />
-                                </h:selectOneMenu>
-                            </div>
-                        </div>                        
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <p:outputLabel value="#{langue['common.numerateur']}" for="numerateur" />
-                                <h:inputText  class="form-control" id="numerateur" value="#{sousCritereController.souscritere.numerateur}" >
-                                    <p:ajax />
-                                </h:inputText>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <p:outputLabel value="#{langue['common.denominateur']}" for="denominateur" />
-                                <h:inputText  class="form-control" id="denominateur" value="#{sousCritereController.souscritere.denominateur}" >
-                                    <p:ajax />
-                                </h:inputText>
-                            </div>
-                        </div>
                     </div>
 
                     <p:separator/>

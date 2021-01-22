@@ -59,6 +59,13 @@ public class DetailscFacade extends AbstractFacade<Detailsc> implements Detailsc
         query.setParameter("idStructure", idStructure).setParameter("personnel", personnel);
         return query.getResultList();
     }
+    
+    @Override
+    public List<Detailsc> findByIdStructureIdCritere(long idStructure, int idCritere) {
+        Query query = em.createQuery("SELECT d FROM Detailsc d WHERE d.idstructure.idstructure=:idStructure AND d.idsouscritere.idcritere.idcritere=:idCritere ORDER BY d.idsouscritere.code");
+        query.setParameter("idStructure", idStructure).setParameter("idCritere", idCritere);
+        return query.getResultList();
+    }
 
     @Override
     public List<Detailsc> findByIdStructure(long idStructure, int idCategorie) {

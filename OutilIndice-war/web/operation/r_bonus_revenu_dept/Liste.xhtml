@@ -25,14 +25,14 @@
             </div>
 
             <div class="col-md-1 ">
-                <p:commandButton class="mt-3" value="#{langue['common.chercher']}" update=":PrimeRQntifListerForm"  actionListener="#{realisationBonusRDeptCtrl.searchData()}" />
+                <p:commandButton class="mt-3" value="#{langue['common.chercher']}" update=":BonusRevenuDeptListerForm"  actionListener="#{realisationBonusRDeptCtrl.searchData()}" />
             </div>                           
         </div>
 
     </h:form>
 
 
-    <h:form id="PrimeRQntifListerForm">
+    <h:form id="BonusRevenuDeptListerForm">
 
         <p:messages id="growl" closable="true">
             <p:effect type="pulsate" event="load" delay="50" />
@@ -43,7 +43,7 @@
                 <div class="panel panel-success">
                     <div style="color: white" class="panel-heading bg-success">
                         #{langue['recette_realisee_dept.liste']}
-                        <p:commandButton update=":PrimeRQntifCreateForm"
+                        <p:commandButton update=":BonusRevenuDeptCreateForm"
                                          icon="ui-icon-plus"
                                          value="#{langue['common.ajouter']}"
                                          style="float: right"
@@ -73,7 +73,7 @@
                                             <td><h:outputLabel value="#{item.valeurrealisee}"><f:convertNumber /></h:outputLabel></td>
                                             <td><h:outputLabel value="#{item.ratio}"><f:convertNumber pattern="0.00" /></h:outputLabel></td>
                                             <td style="text-align: center">                                        
-                                                <p:commandButton icon="ui-icon-pencil" update=":PrimeRQntifEditForm"
+                                                <p:commandButton icon="ui-icon-pencil" update=":BonusRevenuDeptEditForm"
                                                                  class="btn btn-success btn-sm"
                                                                  actionListener="#{realisationBonusRDeptCtrl.prepareEdit(item)}"/>
                                             </td>

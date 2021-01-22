@@ -52,36 +52,6 @@ public class ReponseController extends AbstractElementResponse implements Serial
         RequestContext.getCurrentInstance().execute("PF('SousCritereCreateDialog').show()");
     }
 
-    public void action(String option) {
-        if (option.equals("personnel")) {
-            if (souscritere.getPersonnel()) {
-                souscritere.setService(false);
-            }
-
-            if (!souscritere.getPersonnel()) {
-                souscritere.setService(true);
-            }
-        }
-
-        if (option.equals("service")) {
-            if (souscritere.getService()) {
-                souscritere.setPersonnel(false);
-            }
-
-            if (!souscritere.getService()) {
-                souscritere.setPersonnel(true);
-            }
-        }
-    }
-
-    public void updateMultiplicateur() {
-        if (souscritere.getIncitatif()) {
-            souscritere.setMultiplicateur(0);
-        } else {
-            souscritere.setMultiplicateur(1);
-        }
-    }
-
     public void save() {
         try {
             if (souscritere.getIdsouscritere() == -1) {

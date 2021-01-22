@@ -78,12 +78,12 @@
 
                         <li id="parametrage_eval">
                             <a href="#">#{langue.evaluation}<span class="fa arrow"></span></a>
-
-                            <li>
-                                <a href="#{request.contextPath}/parametrage/categorie/categorie.html">#{langue.categorie}</a>
-                            </li>
-
                             <ul class="nav nav-third-level">
+
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/categorie/categorie.html">#{langue.categorie}</a>
+                                </li>
+
                                 <li>
                                     <a href="#{request.contextPath}/parametrage/critere/critere.html">#{langue.critere}</a>
                                 </li>
@@ -184,7 +184,7 @@
                         <li id="traitement_cible">
                             <a href="#">
                                 <i class="fa fa-exchange fa-fw"></i>
-                                #{langue.cible_departement}<span class="fa arrow"></span>
+                                #{langue.cible_dept}<span class="fa arrow"></span>
                             </a>
                             <ul class="nav nav-third-level">
                                 <li>
@@ -196,11 +196,11 @@
                                 </li>
                             </ul>
                         </li>
-                        
+
                         <li id="traitement_realisation">
                             <a href="#">
                                 <i class="fa fa-exchange fa-fw"></i>
-                                #{langue.realisation_departement}<span class="fa arrow"></span>
+                                #{langue.realisation_dept}<span class="fa arrow"></span>
                             </a>
                             <ul class="nav nav-third-level">
                                 <li>
@@ -209,6 +209,10 @@
 
                                 <li>
                                     <a href="#{request.contextPath}/operation/r_bonus_revenu_dept/r_bonus_revenu_dept.html">Bonus Recette</a>
+                                </li>
+
+                                <li>
+                                    <a href="#{request.contextPath}/operation/penalite_dept/penalite_dept.html">Pénalité</a>
                                 </li>
                             </ul>
                         </li>
@@ -219,13 +223,8 @@
                                 #{langue.evaluation}<span class="fa arrow"></span>
                             </a>
                             <ul class="nav nav-third-level">
-
                                 <li>
                                     <a href="#{request.contextPath}/operation/evaluation_personnel/evaluation_personnel.html">#{langue.personnel}</a>
-                                </li>
-
-                                <li>
-                                    <a href="#{request.contextPath}/operation/evaluation_service/evaluation_service.html">#{langue.service}</a>
                                 </li>
 
                                 <li>
