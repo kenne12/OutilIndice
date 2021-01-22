@@ -318,6 +318,85 @@
                         </div>
 
                         <p:separator />
+                        <h:outputText value="VI - Bonus du revenu du Département" style="font-size: 20px;color: red" />
+                        <p:separator />
+
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label>Point Max </label>
+                                <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.parametragecritereBrd.point}" >
+                                    <f:convertNumber />
+                                </h:inputText>
+                            </div>
+
+                            <div class="form-group col-md-2">
+                                <label>Score (%)</label>
+                                <h:inputText disabled="true" class="form-control"  value="#{evaluationPersonnelController.cibleBrd.ratio}" >
+                                    <f:convertNumber pattern="0.00" />
+                                </h:inputText>
+                            </div>
+
+                            <div class="form-group col-md-2">
+                                <label>Point du personnel</label>
+                                <h:inputText disabled="true" class="form-control"  value="#{evaluationPersonnelController.evaluationBonusRDeptPersonnel.point}" >
+                                    <f:convertNumber pattern="0.00" />
+                                </h:inputText>
+                            </div>
+                        </div>
+                                             
+                        <p:separator />
+                        <h:outputText value="VII - CRITERES NEGATIFS D'INCITATION - HEURES PERDUES" style="font-size: 20px ; color: red" />
+                        <p:separator />
+
+                        <div class="row" jsf:id="hsn_recap_j">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Coef de jour</label>
+                                    <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.evaluationheuresuppN.coefjour}" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Nombre d'heure</label>
+                                    <h:inputText class="form-control" value="#{evaluationPersonnelController.evaluationheuresuppN.nbheurejour}" >
+                                        <p:ajax update="hsn_jour_tp" listener="#{evaluationPersonnelController.calculHs('2' , 'jour')}" />
+                                    </h:inputText>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Total point du jour</label>
+                                    <h:inputText class="form-control" id="hsn_jour_tp" disabled="true" value="#{evaluationPersonnelController.evaluationheuresuppN.pointjour}" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" jsf:id="hsn_recap_n">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Coef de nuit</label>
+                                    <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.evaluationheuresuppN.coefnuit}" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Nombre d'heure</label>
+                                    <h:inputText class="form-control" value="#{evaluationPersonnelController.evaluationheuresuppN.nbheurenuit}" >
+                                        <p:ajax update="hsn_nuit_tp" listener="#{evaluationPersonnelController.calculHs('2' , 'nuit')}" />
+                                    </h:inputText>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Total point de nuit</label>
+                                    <h:inputText class="form-control" id="hsn_nuit_tp" disabled="true" value="#{evaluationPersonnelController.evaluationheuresuppN.pointnuit}" />
+                                </div>
+                            </div>
+                        </div>
 
                         <h:outputText id="somme" value="Note = I + II - III = #{evaluationPersonnelController.score} + #{evaluationPersonnelController.score_1} - #{evaluationPersonnelController.score_2} = #{evaluationPersonnelController.score + evaluationPersonnelController.score_1 - evaluationPersonnelController.score_2}"  style="font-size: 20px"/>
                         <p:separator />

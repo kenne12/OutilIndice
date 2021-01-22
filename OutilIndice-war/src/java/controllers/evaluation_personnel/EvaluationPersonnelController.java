@@ -11,6 +11,7 @@ import entities.Cible;
 import entities.Critereresponsabilite;
 import entities.Detailsc;
 import entities.Elementreponse;
+import entities.EvaluationBonusRDeptPersonnel;
 import entities.EvaluationRPrimeQltifPersonnel;
 import entities.Evaluationbonuspp;
 import entities.Evaluationheuresupp;
@@ -215,6 +216,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                 evaluationheuresupp = evaluationheuresuppFacadeLocal.findByIdPersonnel(SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), personnel.getIdpersonnel(), 2);
                 if (evaluationheuresupp == null) {
                     evaluationheuresupp = new Evaluationheuresupp();
+                    evaluationheuresupp.setIdcritere(parametragecritereHsp.getIdcritere());
                     evaluationheuresupp.setCoefnuit(parametragecritereHsp.getValeurnuit());
                     evaluationheuresupp.setCoefjour(parametragecritereHsp.getValeurjournee());
                 }
@@ -276,6 +278,36 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                         evaluationRPrimeQltifPersonnel.setIdevaluationrprimeqltifdept(evaluationRPrimeQltifDept);
                         evaluationRPrimeQltifPersonnel.setPoint((evaluationRPrimeQltifDept.getScore() * parametragecriterePrq.getPoint()) / 100);
                     }
+                }
+
+                parametragecritereBrd = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 6, personnel.getIdcategorie().getIdcategorie());
+                if (parametragecritereBrd == null) {
+                    JsfUtil.addErrorMessage("Veuillez définir le point max par catégorie de la prime du résultat revenu du département");
+                    return;
+                }
+
+                cibleBrd = cibleFacadeLocal.findByIdSousPeriodeOneLine(personnel.getIdservice().getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 6);
+                if (cibleBrd != null) {
+                    evaluationBonusRDeptPersonnel = evaluationBonusRDeptPersonnelFacadeLocal.findByIdPersonnel(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
+                    if (evaluationBonusRDeptPersonnel == null) {
+                        evaluationBonusRDeptPersonnel = new EvaluationBonusRDeptPersonnel();
+                        evaluationBonusRDeptPersonnel.setIdcible(cibleBrd);
+                        evaluationBonusRDeptPersonnel.setPoint((parametragecritereBrd.getPoint() * cibleBrd.getRatio()) / 100);
+                    }
+                }
+
+                parametragecritereHsn = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 8, personnel.getIdcategorie().getIdcategorie());
+                if (parametragecritereHsn == null) {
+                    JsfUtil.addErrorMessage("Veuillez définir les coefficient");
+                    return;
+                }
+
+                evaluationheuresuppN = evaluationheuresuppFacadeLocal.findByIdPersonnel(SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), personnel.getIdpersonnel(), 8);
+                if (evaluationheuresuppN == null) {
+                    evaluationheuresuppN = new Evaluationheuresupp();
+                    evaluationheuresuppN.setIdcritere(parametragecritereHsn.getIdcritere());
+                    evaluationheuresuppN.setCoefnuit(parametragecritereHsn.getValeurnuit());
+                    evaluationheuresuppN.setCoefjour(parametragecritereHsn.getValeurjournee());
                 }
             }
         }

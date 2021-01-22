@@ -9,6 +9,7 @@ import entities.Categorie;
 import entities.Cible;
 import entities.Critereresponsabilite;
 import entities.Detailsc;
+import entities.EvaluationBonusRDeptPersonnel;
 import entities.EvaluationRPrimeQltifDept;
 import entities.EvaluationRPrimeQltifPersonnel;
 import entities.Evaluationbonuspp;
@@ -30,6 +31,7 @@ import sessions.CibleFacadeLocal;
 import sessions.CritereresponsabiliteFacadeLocal;
 import sessions.DetailscFacadeLocal;
 import sessions.ElementReponseFacadeLocal;
+import sessions.EvaluationBonusRDeptPersonnelFacadeLocal;
 import sessions.EvaluationRPrimeQltifDeptFacadeLocal;
 import sessions.EvaluationRPrimeQltifPersonnelFacadeLocal;
 import sessions.EvaluationbonusppFacadeLocal;
@@ -66,8 +68,10 @@ public class AbstractEvaluationPersonnel {
     protected ParametragecritereFacadeLocal parametragecritereFacadeLocal;
     protected Parametragecritere parametragecritere = new Parametragecritere();
     protected Parametragecritere parametragecritereHsp = new Parametragecritere();
+    protected Parametragecritere parametragecritereHsn = new Parametragecritere();
     protected Parametragecritere parametragecritereBpp = new Parametragecritere();
     protected Parametragecritere parametragecriterePrq = new Parametragecritere();
+    protected Parametragecritere parametragecritereBrd = new Parametragecritere();
 
     @EJB
     protected EvaluationheuresuppFacadeLocal evaluationheuresuppFacadeLocal;
@@ -93,6 +97,7 @@ public class AbstractEvaluationPersonnel {
     @EJB
     protected CibleFacadeLocal cibleFacadeLocal;
     protected List<Cible> cibleRqntifs = new ArrayList<>();
+    protected Cible cibleBrd = new Cible();
 
     @EJB
     protected EvaluationrqntifdeptFacadeLocal evaluationrqntifdeptFacadeLocal;
@@ -105,6 +110,10 @@ public class AbstractEvaluationPersonnel {
     @EJB
     protected EvaluationRPrimeQltifPersonnelFacadeLocal evaluationRPrimeQltifPersonnelFacadeLocal;
     protected EvaluationRPrimeQltifPersonnel evaluationRPrimeQltifPersonnel = new EvaluationRPrimeQltifPersonnel();
+
+    @EJB
+    protected EvaluationBonusRDeptPersonnelFacadeLocal evaluationBonusRDeptPersonnelFacadeLocal;
+    protected EvaluationBonusRDeptPersonnel evaluationBonusRDeptPersonnel = new EvaluationBonusRDeptPersonnel();
 
     @EJB
     protected SousperiodeFacadeLocal sousperiodeFacadeLocal;
@@ -380,6 +389,34 @@ public class AbstractEvaluationPersonnel {
 
     public void setEvaluationRPrimeQltifPersonnel(EvaluationRPrimeQltifPersonnel evaluationRPrimeQltifPersonnel) {
         this.evaluationRPrimeQltifPersonnel = evaluationRPrimeQltifPersonnel;
+    }
+
+    public Parametragecritere getParametragecritereBrd() {
+        return parametragecritereBrd;
+    }
+
+    public Cible getCibleBrd() {
+        return cibleBrd;
+    }
+
+    public void setCibleBrd(Cible cibleBrd) {
+        this.cibleBrd = cibleBrd;
+    }
+
+    public EvaluationBonusRDeptPersonnel getEvaluationBonusRDeptPersonnel() {
+        return evaluationBonusRDeptPersonnel;
+    }
+
+    public Evaluationheuresupp getEvaluationheuresuppN() {
+        return evaluationheuresuppN;
+    }
+
+    public Parametragecritere getParametragecritereHsn() {
+        return parametragecritereHsn;
+    }
+
+    public void setParametragecritereHsn(Parametragecritere parametragecritereHsn) {
+        this.parametragecritereHsn = parametragecritereHsn;
     }
 
 }

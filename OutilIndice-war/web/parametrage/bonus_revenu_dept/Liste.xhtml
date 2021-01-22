@@ -32,7 +32,7 @@
                             <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th style="width: 60%">#{langue.service}</th>
+                                        <th style="width: 60%">#{langue.categorie}</th>
                                         <th style="width: 10%">#{langue.indice}</th>
                                         <th style="width: 10%">#{langue.denominateur}</th>
                                         <th style="width: 10%">#{langue.point_max}</th>
@@ -43,7 +43,7 @@
                                 <tbody>
                                     <ui:repeat value="#{bonusRevenuDeptCtrl.listParametres}" var="item">
                                         <tr>
-                                            <td>#{item.idservice.nom}</td>
+                                            <td>#{item.idcategorie.nom}</td>
                                             <td>#{item.indice}</td>
                                             <td>#{item.denominateur}</td>
                                             <td>#{item.point}</td>

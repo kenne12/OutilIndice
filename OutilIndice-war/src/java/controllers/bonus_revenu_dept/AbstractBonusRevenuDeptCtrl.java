@@ -6,13 +6,13 @@
 package controllers.bonus_revenu_dept;
 
 import entities.Parametragecritere;
-import entities.Service;
+import entities.Categorie;
 import entities.Structure;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import sessions.ParametragecritereFacadeLocal;
-import sessions.ServiceFacadeLocal;
+import sessions.CategorieFacadeLocal;
 import sessions.StructureFacadeLocal;
 import utils.Routine;
 
@@ -29,10 +29,10 @@ public class AbstractBonusRevenuDeptCtrl {
     protected List<Parametragecritere> listParametres = new ArrayList<>();
 
     @EJB
-    protected ServiceFacadeLocal serviceFacadeLocal;
-    protected Service service = new Service();
-    protected List<Service> services = new ArrayList<>();
-    protected List<Service> selectedServices = new ArrayList<>();
+    protected CategorieFacadeLocal categorieFacadeLocal;
+    protected Categorie categorie = new Categorie();
+    protected List<Categorie> categories = new ArrayList<>();
+    protected List<Categorie> selectedCategories = new ArrayList<>();
 
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
@@ -56,24 +56,24 @@ public class AbstractBonusRevenuDeptCtrl {
         return parametragecriteres;
     }
 
-    public Service getService() {
-        return service;
+    public Categorie getCategorie() {
+        return categorie;
     }
 
-    public void setService(Service service) {
-        this.service = service;
+    public void setCategorie(Categorie categorie) {
+        this.categorie = categorie;
     }
 
-    public List<Service> getServices() {
-        return services;
+    public List<Categorie> getCategories() {
+        return categories;
     }
 
-    public List<Service> getSelectedServices() {
-        return selectedServices;
+    public List<Categorie> getSelectedCategories() {
+        return selectedCategories;
     }
 
-    public void setSelectedServices(List<Service> selectedServices) {
-        this.selectedServices = selectedServices;
+    public void setSelectedCategories(List<Categorie> selectedCategories) {
+        this.selectedCategories = selectedCategories;
     }
 
     public Structure getStructure() {

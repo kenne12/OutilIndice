@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <p:dialog id="PrimeRQntifEditDlg" 
+                  widgetVar="PrimeRQntifEditDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['recette_realisee_dept.formulaire_edition']}"
+                  closeOnEscape="true"
+                  width="40%">
+
+            <h:form id="PrimeRQntifEditForm">
+
+                <h:panelGroup id="display" rendered="true">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue.service}" for="service" />
+                                <h:inputText class="form-control" id="service" value="#{realisationBonusRDeptCtrl.cible.idservice.nom}" readonly="true" />                                              
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue.valeur_cible}" for="val_cible" />
+                                <h:inputText disabled="true" class="form-control" id="val_cible" value="#{realisationBonusRDeptCtrl.cible.valeurcible}" >
+                                    <f:convertNumber />
+                                </h:inputText>                                                                             
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue.valeur_realisee}" for="val_realisee" />
+                                <h:inputText class="form-control" id="val_realisee" value="#{realisationBonusRDeptCtrl.cible.valeurrealisee}" >
+                                    <p:ajax update="ratio" event="keyup" listener="#{realisationBonusRDeptCtrl.updateLine()}" />
+                                </h:inputText>                                                                             
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-3">
+                            <p:outputLabel value="#{langue.ratio}" for="ratio" />
+                            <h:inputText disabled="true" id="ratio" class="form-control" value="#{realisationBonusRDeptCtrl.cible.ratio}" />
+                        </div>
+                    </div>
+
+                    <p:separator/>
+
+                    <center>
+                        <p:commandButton value="#{langue['common.fermer']}" 
+                                         onclick="PF('PrimeRQntifEditDialog').hide()"
+                                         icon="ui-icon-close"/>
+
+                        <p:commandButton icon="ui-icon-save" actionListener="#{realisationBonusRDeptCtrl.edit()}" value="#{langue['common.enregistrer']}" update="display,:PrimeRQntifListerForm:growl,:PrimeRQntifListerForm">
+                            <p:confirm header="#{langue['notification.confirmation']}" 
+                                       message="#{langue['notification.confirmation_enregistrement']}" 
+                                       icon="ui-icon-alert"/>
+                        </p:commandButton>
+                    </center>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

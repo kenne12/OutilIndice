@@ -36,4 +36,6 @@ public interface CibleFacadeLocal {
 
     List<Cible> findByIdStructureSousPeriode(long idStructure, int idPeriode, int idSousPeriode, int idCritere);
 
+    Cible findByIdSousPeriodeOneLine(long idService, int idPeriode, int idSousPeriode, int idCritere);
+
 }

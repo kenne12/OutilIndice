@@ -9,7 +9,7 @@ import controllers.util.JsfUtil;
 import entities.Categorie;
 import entities.Critere;
 import entities.Parametragecritere;
-import entities.Service;
+import entities.Categorie;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -24,14 +24,14 @@ import utils.SessionMBean;
  */
 @ManagedBean
 @SessionScoped
-public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements Serializable{
+public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements Serializable {
 
     /**
      * Creates a new instance of BonusRevenuDeptCtrl
      */
     public BonusRevenuDeptCtrl() {
     }
-
+    
     @PostConstruct
     private void init() {
         structure = SessionMBean.getStructure();
@@ -39,50 +39,50 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
         structures.add(SessionMBean.getStructure());
         listParametres = parametragecritereFacadeLocal.findByIdStructureBrd(SessionMBean.getStructure().getIdstructure(), 6, true);
         parametragecritere = new Parametragecritere();
-        parametragecritere.setIdservice(new Service());
+        parametragecritere.setIdcategorie(new Categorie());
     }
-
+    
     public void prepareCreate() {
         this.denominateur = 5;
         this.updateFiltre();
         mode = "Create";
         RequestContext.getCurrentInstance().execute("PF('BonusRevenuDeptCreateDialog').show()");
     }
-
+    
     public void prepareEdit(Parametragecritere p) {
         this.parametragecritere = p;
         mode = "Edit";
         RequestContext.getCurrentInstance().execute("PF('BonusRevenuDeptEditDialog').show()");
     }
-
+    
     public void updateFiltre() {
-        services.clear();
-        selectedServices.clear();
+        categories.clear();
+        selectedCategories.clear();
         parametragecriteres.clear();
         if (structure.getIdstructure() != null && structure.getIdstructure() > 0) {
             List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructureBrd(SessionMBean.getStructure().getIdstructure(), 6, true);
             if (list.isEmpty() || list == null) {
-                services.addAll(serviceFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure()));
+                categories.addAll(categorieFacadeLocal.findAllRangeByCode());
             } else {
                 parametragecriteres.addAll(list);
-                services.addAll(serviceFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure()));
+                categories.addAll(categorieFacadeLocal.findAllRangeByCode());
                 for (Parametragecritere pc : list) {
-                    selectedServices.add(pc.getIdservice());
+                    selectedCategories.add(pc.getIdcategorie());
                 }
-                services.removeAll(selectedServices);
-                selectedServices.clear();
+                categories.removeAll(selectedCategories);
+                selectedCategories.clear();
             }
         }
     }
-
-    public void addServicesToTable() {
-        if (!selectedServices.isEmpty()) {
-            for (Service s : selectedServices) {
+    
+    public void addCategoriesToTable() {
+        if (!selectedCategories.isEmpty()) {
+            for (Categorie c : selectedCategories) {
                 Parametragecritere pc = new Parametragecritere();
                 pc.setIdparametragecritere(0l);
                 pc.setIdstructure(structure);
                 pc.setIdcritere(new Critere(6));
-                pc.setIndice(0);
+                pc.setIndice(c.getIndice());
                 pc.setDenominateurjournee(0);
                 pc.setDenominateurnuit(0);
                 pc.setValeurjournee(0);
@@ -90,8 +90,9 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
                 pc.setPoint(0d);
                 if (denominateur > 0) {
                     pc.setDenominateur((int) denominateur);
+                    pc.setPoint(pc.getIndice() / denominateur);
                 }
-                pc.setIdservice(s);
+                pc.setIdcategorie(c);
                 pc.setHeuresupp(false);
                 pc.setHeuresupn(false);
                 pc.setPratiqueprivee(false);
@@ -100,10 +101,10 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
                 pc.setBonusrevenudept(true);
                 parametragecriteres.add(pc);
             }
-            services.removeAll(selectedServices);
+            categories.removeAll(selectedCategories);
         }
     }
-
+    
     public void removeCategory(Parametragecritere p) {
         if (p.getIdparametragecritere() != 0l) {
             parametragecritereFacadeLocal.remove(p);
@@ -112,7 +113,7 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
         } else {
             int conteur = 0;
             for (Parametragecritere pc : parametragecriteres) {
-                if (pc.getIdservice().getIdservice().equals(p.getIdservice().getIdservice())) {
+                if (pc.getIdcategorie().getIdcategorie().equals(p.getIdcategorie().getIdcategorie())) {
                     break;
                 }
                 conteur++;
@@ -121,7 +122,7 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
         }
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }
-
+    
     public void updateData(String mode) {
         int i = 0;
         for (Parametragecritere pc : parametragecriteres) {
@@ -131,7 +132,7 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
             i++;
         }
     }
-
+    
     public void updateData2(String mode) {
         int i = 0;
         for (Parametragecritere pc : parametragecriteres) {
@@ -140,7 +141,7 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
             i++;
         }
     }
-
+    
     public void updateDataLine(String mode) {
         try {
             parametragecritere.setPoint(parametragecritere.getIndice() / parametragecritere.getDenominateur());
@@ -148,14 +149,14 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
             parametragecritere.setPoint(0);
         }
     }
-
+    
     public void save() {
         try {
             if (parametragecriteres.isEmpty()) {
                 JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
                 return;
             }
-
+            
             for (Parametragecritere pc : parametragecriteres) {
                 if (pc.getIdparametragecritere() == 0l) {
                     pc.setIdparametragecritere(parametragecritereFacadeLocal.nextId());
@@ -166,7 +167,7 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
             }
             listParametres = parametragecritereFacadeLocal.findByIdStructureBrd(SessionMBean.getStructure().getIdstructure(), 6, true);
             this.parametragecriteres.clear();
-
+            
             RequestContext.getCurrentInstance().execute("PF('BonusRevenuDeptCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
@@ -174,7 +175,7 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-
+    
     public void edit() {
         try {
             parametragecritereFacadeLocal.edit(parametragecritere);
@@ -188,7 +189,7 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-
+    
     public void delete(Parametragecritere p) {
         try {
             parametragecritereFacadeLocal.remove(p);
@@ -199,5 +200,5 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-
+    
 }

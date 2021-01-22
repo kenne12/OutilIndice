@@ -35,8 +35,8 @@
 
                         <p:separator/>
 
-                        <p:selectManyCheckbox id="grid_critere" value="#{bonusRevenuDeptCtrl.selectedServices}" layout="grid" columns="1" converter="serviceConverter">
-                            <f:selectItems value="#{bonusRevenuDeptCtrl.services}" var="s" itemLabel="#{s.nom}" itemValue="#{s}" />
+                        <p:selectManyCheckbox id="grid_critere" value="#{bonusRevenuDeptCtrl.selectedCategories}" layout="grid" columns="1" converter="categorieConverter">
+                            <f:selectItems value="#{bonusRevenuDeptCtrl.categories}" var="s" itemLabel="#{s.nom}" itemValue="#{s}" />
                             <p:ajax />
                         </p:selectManyCheckbox>
 
@@ -56,7 +56,7 @@
                         <p:separator />
 
                         <p:commandButton value="#{langue['common.ajouter']}"
-                                         actionListener="#{bonusRevenuDeptCtrl.addServicesToTable()}"
+                                         actionListener="#{bonusRevenuDeptCtrl.addCategoriesToTable()}"
                                          update="datalist,grid_critere" icon="ui-icon-plus" />
                         <p:separator />
 
@@ -72,9 +72,9 @@
 
                             <p:column class="hardBreak" style="width: 50%;" >
                                 <f:facet name="header">
-                                    <h:outputText value="#{langue.service}"/>
+                                    <h:outputText value="#{langue.categorie}"/>
                                 </f:facet>
-                                <h:outputText class="hardBreak" value="#{item.idservice.nom}"/> 
+                                <h:outputText class="hardBreak" value="#{item.idcategorie.nom}"/> 
                             </p:column>
 
                             <p:column style="width: 10% ; text-align:center" headerText="#{langue.indice}">
@@ -107,14 +107,14 @@
                                 </p:cellEditor>
                             </p:column>
 
-                            <p:column class="hardBreak" style="width: 10%;" >
+                            <p:column class="hardBreak" style="width: 10%;text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.point_max}"/>
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{item.point}"/> 
                             </p:column>
 
-                            <p:column style="width: 10%" >
+                            <p:column style="width: 10%;text-align: center">
                                 <f:facet name="header">
                                     <h:outputText value="Action"/>
                                 </f:facet>

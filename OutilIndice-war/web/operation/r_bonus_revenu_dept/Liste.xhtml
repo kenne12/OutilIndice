@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+
+    <h:form id="search_form">
+
+        <div class="row">
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>#{langue.sous_periode}</label>
+                    <h:selectOneMenu id="type_sousperiode" class="form-control" value="#{realisationBonusRDeptCtrl.sousperiode.idsousperiode}"                                     
+                                     required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                        <f:selectItems value="#{realisationBonusRDeptCtrl.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
+                        <p:ajax listener="#{realisationBonusRDeptCtrl.searchData()}" />
+                    </h:selectOneMenu>
+                </div>
+            </div>
+
+            <div class="col-md-1 ">
+                <p:commandButton class="mt-3" value="#{langue['common.chercher']}" update=":PrimeRQntifListerForm"  actionListener="#{realisationBonusRDeptCtrl.searchData()}" />
+            </div>                           
+        </div>
+
+    </h:form>
+
+
+    <h:form id="PrimeRQntifListerForm">
+
+        <p:messages id="growl" closable="true">
+            <p:effect type="pulsate" event="load" delay="50" />
+        </p:messages>
+
+        <div class="row">
+            <div class="col-md-9">
+                <div class="panel panel-success">
+                    <div style="color: white" class="panel-heading bg-success">
+                        #{langue['recette_realisee_dept.liste']}
+                        <p:commandButton update=":PrimeRQntifCreateForm"
+                                         icon="ui-icon-plus"
+                                         value="#{langue['common.ajouter']}"
+                                         style="float: right"
+                                         actionListener="#{realisationBonusRDeptCtrl.prepareCreate()}"/>      
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div class="table-responsive">
+
+                            <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50%">#{langue.service}</th>
+                                        <th style="width: 15%">#{langue.valeur_cible}</th>
+                                        <th style="width: 15%">#{langue.realisation}</th>
+                                        <th style="width: 10%">#{langue.ratio}</th>
+                                        <th style="width: 10%;text-align: center">#{langue['common.actions']}</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <ui:repeat value="#{realisationBonusRDeptCtrl.listCibles}" var="item">
+                                        <tr>
+                                            <td>#{item.idservice.nom}</td>
+                                            <td><h:outputLabel value="#{item.valeurcible}"><f:convertNumber /></h:outputLabel></td>
+                                            <td><h:outputLabel value="#{item.valeurrealisee}"><f:convertNumber /></h:outputLabel></td>
+                                            <td><h:outputLabel value="#{item.ratio}"><f:convertNumber pattern="0.00" /></h:outputLabel></td>
+                                            <td style="text-align: center">                                        
+                                                <p:commandButton icon="ui-icon-pencil" update=":PrimeRQntifEditForm"
+                                                                 class="btn btn-success btn-sm"
+                                                                 actionListener="#{realisationBonusRDeptCtrl.prepareEdit(item)}"/>
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </tbody>
+
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="">Totaux</th>                               
+                                        <th> <h:outputLabel value="#{realisationBonusRDeptCtrl.totalCible}"> <f:convertNumber />  </h:outputLabel>  </th>
+                                        <th> <h:outputLabel value="#{realisationBonusRDeptCtrl.totalRealisation}"> <f:convertNumber />  </h:outputLabel>  </th>
+                                        <th> <h:outputLabel value="#{realisationBonusRDeptCtrl.totalRatio}"> <f:convertNumber pattern="0.00" />  </h:outputLabel>  </th>
+                                        <th style="text-align: center"> <h:outputLabel value=" / " /> </th>
+                                    </tr>
+                                </tfoot>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:form>
+
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+    <p:dialog id="notify1" widgetVar="NotifyDialog1" height="400" width="700" resizable="true" responsive="true" modal="true" style="text-align: center; font-size: 14px; font-family: Cambria;">
+        <f:facet name="header">
+            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{realisationBonusRDeptCtrl.routine.titleNotify}" />
+        </f:facet>
+        <h:form id="NotifyForm1">
+            <h:graphicImage id="nt_img" url="#{realisationBonusRDeptCtrl.routine.iconMessage}" style="cursor:pointer" />
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+
+            <h:outputText id="nt_msg" value="#{realisationBonusRDeptCtrl.routine.message}"/>
+
+            <hr size="3" style="background-color: cornflowerblue; margin-top: 5%;"/>
+
+            <p:commandButton style="font-family: Cambria; font-size: 14px;" value="#{langue['common.fermer']}" onclick="PF('NotifyDialog1').hide()" type="button" immediate="true"/>
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+        </h:form>
+    </p:dialog>
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+</ui:composition>
