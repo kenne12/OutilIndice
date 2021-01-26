@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="PrimeRQltifEditDlg" 
+                  widgetVar="PrimeRQltifEditDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['prime_resultat_quantitatif_pmax_dept.formulaire_edition']}"
+                  closeOnEscape="true"
+                  width="40%">
+
+            <h:form id="PrimeRQltifEditForm">
+
+                <h:panelGroup id="display" rendered="true">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue.categorie}" for="categorie" />
+                                <h:inputText class="form-control" id="categorie" value="#{pMaxPrimeRQntifDeptCtrl.parametragecritere.idcategorie.nom}" readonly="true" />                                              
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue.indice}" for="indice" />
+                                <h:inputText class="form-control" id="indice" value="#{pMaxPrimeRQntifDeptCtrl.parametragecritere.indice}" >
+                                    <p:ajax event="keyup" update="point_max" listener="#{pMaxPrimeRQntifDeptCtrl.updateDataLine('')}" />
+                                </h:inputText>                                              
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>#{langue.denominateur}</label>
+                                <h:inputText class="form-control" value="#{pMaxPrimeRQntifDeptCtrl.parametragecritere.denominateur}" >
+                                    <p:ajax event="keyup" update="point_max" listener="#{pMaxPrimeRQntifDeptCtrl.updateDataLine('')}" />
+                                </h:inputText>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>#{langue.point_max}</label>
+                                <h:inputText id="point_max" disabled="true" class="form-control" value="#{pMaxPrimeRQntifDeptCtrl.parametragecritere.point}" />                                 
+                            </div>
+                        </div>
+                    </div>
+
+                    <p:separator/>
+
+                    <center>
+                        <p:commandButton value="#{langue['common.fermer']}" 
+                                         onclick="PF('PrimeRQltifEditDialog').hide()"
+                                         icon="ui-icon-close"/>
+
+                        <p:commandButton icon="ui-icon-save" actionListener="#{pMaxPrimeRQntifDeptCtrl.edit()}" value="#{langue['common.enregistrer']}" update="display,:PrimeRQltifListerForm:growl,:PrimeRQltifListerForm">
+                            <p:confirm header="#{langue['notification.confirmation']}" 
+                                       message="#{langue['notification.confirmation_enregistrement']}" 
+                                       icon="ui-icon-alert"/>
+                        </p:commandButton>
+                    </center>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

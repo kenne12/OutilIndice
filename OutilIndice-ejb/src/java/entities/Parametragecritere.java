@@ -36,6 +36,7 @@ public class Parametragecritere implements Serializable {
     private boolean heuresupn;
     private boolean pratiqueprivee;
     private boolean resultatqualitatifdept;
+    private boolean resultatquantitatifdept;
     private boolean performanceindividuelle;
     private boolean bonusrevenudept;
     @JoinColumn(name = "idcategorie", referencedColumnName = "idcategorie")
@@ -176,6 +177,14 @@ public class Parametragecritere implements Serializable {
 
     public void setBonusrevenudept(boolean bonusrevenudept) {
         this.bonusrevenudept = bonusrevenudept;
+    }
+
+    public boolean isResultatquantitatifdept() {
+        return resultatquantitatifdept;
+    }
+
+    public void setResultatquantitatifdept(boolean resultatquantitatifdept) {
+        this.resultatquantitatifdept = resultatquantitatifdept;
     }
 
     public Categorie getIdcategorie() {

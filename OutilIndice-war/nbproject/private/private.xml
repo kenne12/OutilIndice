@@ -3,7 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-war/src/java/controllers/penalite_dept/AbstractPenaliteDeptCtrl.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-war/web/parametrage/cn_incitation_heure_perdure/cn_incitation_heure_perdure.xhtml</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-war/web/parametrage/cn_incitation_heure_perdure/Create.xhtml</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-war/web/parametrage/prime_performance_indiv/Create.xhtml</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-war/src/java/controllers/evaluation_personnel/EvaluationPersonnelController.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-war/src/java/controllers/recette/AbstractRecetteController.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-war/web/parametrage/p_heure_supplementaire/Create.xhtml</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-war/web/parametrage/bonus_revenu_dept/Create.xhtml</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-war/web/parametrage/prime_resultat_qltif_dept/Create.xhtml</file>
             <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-war/src/java/langues/langue_fr.properties</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-war/src/java/controllers/evaluation_personnel/AbstractEvaluationPersonnel.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-war/web/template/menu_left.xhtml</file>
         </group>
     </open-files>
 </project-private>
