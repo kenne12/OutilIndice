@@ -52,8 +52,6 @@
                                     <tr>                                        
                                         <th style="width: 30%">#{langue.personnel}</th>
                                         <th style="width: 10%">#{langue.note}</th>
-                                        <th style="width: 10%">#{langue.note} IN </th>
-                                        <th style="width: 10%">#{langue.note} IP </th>
                                         <th style="width: 10%">#{langue.note} Finale </th>
                                         <th style="width: 10%">#{langue['common.action']}</th>
                                     </tr>
@@ -64,8 +62,7 @@
                                         <tr>
                                             <td>#{item.idpersonnel.nom} #{item.idpersonnel.prenom}</td>
                                             <td>#{item.notepersonnelle}</td>
-                                            <td>#{item.notein}</td>
-                                            <td>#{item.noteip}</td>
+    
                                             <td>#{item.notefinale}</td>
                                             <td>                                        
                                                 <p:commandButton icon="ui-icon-pencil" update=":EvaluationCreateForm"

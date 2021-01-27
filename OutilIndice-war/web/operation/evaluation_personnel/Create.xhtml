@@ -68,7 +68,7 @@
                         <p:separator />
                         <h:outputText value="I. CRITERES DE PERFORMANCE INDIVIDUELLE DU PERSONNEL" style="font-size: 20px ; color: red" />
                         <p:separator />
-                        
+
                         <div class="row" jsf:id="detail_personnel">
                             <div class="col-md-3">
                                 <div class="form-group">
@@ -76,7 +76,7 @@
                                     <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.personnel.idcategorie.nom}" />
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Point Max</label>
@@ -84,7 +84,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <p:dataTable id="datalist" value="#{evaluationPersonnelController.evaluationpersonnels}" var="item"                             
                                      paginator="true"
                                      editable="true"
@@ -236,7 +236,7 @@
                             </div>
 
                             <div class="form-group col-md-2">
-                                <label>Point</label>
+                                <label>Point Max</label>
                                 <h:inputText class="form-control"  value="#{evaluationPersonnelController.evaluationbonuspp.point}" />
                             </div>
                         </div>
@@ -280,7 +280,7 @@
                                     </f:facet>
                                     <f:facet name="input">
                                         <p:inputText required="true" value="#{objrqd.realisation}">                                             
-                                            <p:ajax update="datalist_2" listener="#{evaluationPersonnelController.calculPrimeQtif('1')}" />
+                                            <p:ajax update="datalist_2,:EvaluationCreateForm:prqntif_dept_result_box" listener="#{evaluationPersonnelController.calculPrimeQtif('1')}" />
                                         </p:inputText>
                                     </f:facet>
                                 </p:cellEditor>
@@ -304,6 +304,34 @@
                                 </p:row>
                             </p:columnGroup>
                         </p:dataTable>
+
+                        <br/>
+                        <div class="row" jsf:id="prqntif_dept_result_box">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Point Max</label>
+                                    <h:inputText disabled="true" class="form-control" value="#{evaluationPersonnelController.parametragecriterePrqn.point}" />
+                                </div>
+                            </div>
+
+                            <div class=" col-md-1">
+                                <div class="form-group">
+                                    <label>% Obtenu</label>
+                                    <h:inputText disabled="true" class="form-control" value="#{evaluationPersonnelController.note.poucentageRQntif}" >
+                                        <f:convertNumber pattern="0.00" />
+                                    </h:inputText>
+                                </div>
+                            </div>
+
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label>Score</label>
+                                    <h:inputText disabled="true" class="form-control" value="#{evaluationPersonnelController.note.pointRqntif}" >
+                                        <f:convertNumber pattern="0.00" />
+                                    </h:inputText>
+                                </div>
+                            </div>
+                        </div>
 
                         <p:separator/>
                         <h:outputText value="VI - Prime de Résultat Qualitatif du Département" style="font-size: 20px;color: red" />
@@ -416,7 +444,7 @@
                         <p:separator/>
                         <h:outputText value="IX - PENALITE DE DEPARTEMENT" style="font-size: 20px ; color: red" />
                         <p:separator />
-                        
+
                         <div class="row">
                             <div class="form-group col-md-2">
                                 <label>#{langue.pourcentage} (%)</label>
@@ -428,11 +456,11 @@
                                 <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.note.pointPenaliteDepartement}" />
                             </div>
                         </div>
-                        
+
                         <p:separator/>
                         <h:outputText value="X - PENALITE INDIVIDUELLE" style="font-size: 20px ; color: red" />
                         <p:separator />
-                        
+
                         <div class="row">
                             <div class="form-group col-md-2">
                                 <label>#{langue.pourcentage} (%)</label>
@@ -444,7 +472,7 @@
                                 <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.note.pointPenalitePersonnel}" />
                             </div>
                         </div>
-                        
+
                         <p:separator />
 
                         <center>

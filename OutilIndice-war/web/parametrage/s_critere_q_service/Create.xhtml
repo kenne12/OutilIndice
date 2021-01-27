@@ -38,20 +38,6 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form-group">
-                                    <p:outputLabel value="#{langue.critere}" for="critere" />
-                                    <h:selectOneMenu class="form-control" id="critere"
-                                                     value="#{sousCritereServiceController.critereservice.critere.idcritere}">
-                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
-                                        <f:selectItems value="#{sousCritereServiceController.critereservices}" var="cs" itemLabel="#{cs.critere.nom} (#{cs.poids})" itemValue="#{cs.critere.idcritere}" />
-                                        <p:ajax update="grid_critere,datalist" listener="#{sousCritereServiceController.updateFiltreSc()}"/>
-                                    </h:selectOneMenu>                                                
-                                </div>
-                            </div>
-                        </div>
-
                         <p:separator/>
 
                         <p:selectManyCheckbox id="grid_critere" value="#{sousCritereServiceController.selectedSouscriteres}" layout="grid" columns="1" converter="sousCritereConverter">

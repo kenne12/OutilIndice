@@ -3,50 +3,36 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:p="http://primefaces.org/ui">
 
     <ui:composition>
 
-        <p:dialog id="SousCritereCreateDlg" 
-                  widgetVar="SousCritereCreateDialog" 
+        <p:dialog id="SousCritereQualiteCreateDlg" 
+                  widgetVar="SousCritereQualiteCreateDialog" 
                   modal="true" resizable="false" appendTo="@(body)" 
-                  header="#{langue['sous_critere.formulaire_creation']}"
+                  header="#{langue['sous_critere_qualite.formulaire_creation']}"
                   closeOnEscape="true"
                   width="60%"
                   height="600px">
 
-            <h:form id="SousCritereCreateForm">
+            <h:form id="SousCritereQualiteCreateForm">
 
                 <h:panelGroup id="display">
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <p:outputLabel value="#{langue.rubrique}" for="rubrique" />
-                                <h:selectOneMenu class="form-control" id="rubrique" value="#{sousCritereController.rubriquesc.idrubriquesc}">
-                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="-1" /> 
-                                    <f:selectItems value="#{sousCritereController.listRubriquesc}" var="itemR" itemLabel="#{itemR.nom}" itemValue="#{itemR.idrubriquesc}" />
-                                    <p:ajax />
-                                </h:selectOneMenu>                                                
-                            </div>
-                        </div>                        
-                    </div>
 
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <p:outputLabel value="#{langue['common.code']}" for="code" />
-                                <h:inputText class="form-control" id="code" value="#{sousCritereController.souscritere.code}" required="true" requiredMessage="#{langue['common.valeur_requise']}" >
+                                <h:inputText class="form-control" id="code" value="#{sousCritereQualiteCtrl.souscritere.code}" required="true" requiredMessage="#{langue['common.valeur_requise']}" >
                                     <p:ajax />
                                 </h:inputText>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-3">
                             <div class="form-group">
                                 <p:outputLabel value="#{langue['common.point_max']}" for="pt_max" />
-                                <h:inputText class="form-control" id="pt_max" value="#{sousCritereController.souscritere.pointmax}" required="true" requiredMessage="#{langue['common.valeur_requise']}" >
+                                <h:inputText class="form-control" id="pt_max" value="#{sousCritereQualiteCtrl.souscritere.pointmax}" required="true" requiredMessage="#{langue['common.valeur_requise']}" >
                                     <p:ajax />
                                 </h:inputText>
                             </div>
@@ -55,14 +41,14 @@
 
                     <div class="form-group">
                         <p:outputLabel value="#{langue['common.nom']}" for="nom" />
-                        <h:inputTextarea rows="3" class="form-control" id="nom" value="#{sousCritereController.souscritere.nom}" required="true" requiredMessage="#{langue['common.valeur_requise']}" >
+                        <h:inputTextarea rows="3" class="form-control" id="nom" value="#{sousCritereQualiteCtrl.souscritere.nom}" required="true" requiredMessage="#{langue['common.valeur_requise']}" >
                             <p:ajax />
                         </h:inputTextarea>
                     </div>
 
                     <div class="form-group">
                         <p:outputLabel value="#{langue['common.details']}" for="detail" />
-                        <h:inputTextarea rows="6" class="form-control" id="detail" value="#{sousCritereController.souscritere.detail}" >
+                        <h:inputTextarea rows="6" class="form-control" id="detail" value="#{sousCritereQualiteCtrl.souscritere.detail}" >
                             <p:ajax />
                         </h:inputTextarea>
                     </div>
@@ -72,10 +58,10 @@
                     <center>
 
                         <p:commandButton value="#{langue['common.fermer']}" 
-                                         onclick="PF('SousCritereCreateDialog').hide()"
+                                         onclick="PF('SousCritereQualiteCreateDialog').hide()"
                                          icon="ui-icon-close"/>
 
-                        <p:commandButton icon="ui-icon-save" actionListener="#{sousCritereController.save()}" value="#{langue['common.enregistrer']}" update="display,:SousCritereListerForm:datalist,:SousCritereListerForm:growl">
+                        <p:commandButton icon="ui-icon-save" actionListener="#{sousCritereQualiteCtrl.save()}" value="#{langue['common.enregistrer']}" update="display,:SousCritereQualiteListerForm:datalist,:SousCritereQualiteListerForm:growl">
                             <p:confirm header="#{langue['notification.confirmation']}" 
                                        message="#{langue['notification.confirmation_enregistrement']}" 
                                        icon="ui-icon-alert"/>

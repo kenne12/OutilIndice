@@ -70,6 +70,7 @@ public class AbstractEvaluationPersonnel {
     protected Parametragecritere parametragecritereBpp = new Parametragecritere();
     protected Parametragecritere parametragecriterePrq = new Parametragecritere();
     protected Parametragecritere parametragecritereBrd = new Parametragecritere();
+    protected Parametragecritere parametragecriterePrqn = new Parametragecritere();
 
     @EJB
     protected EvaluationheuresuppFacadeLocal evaluationheuresuppFacadeLocal;
@@ -365,6 +366,14 @@ public class AbstractEvaluationPersonnel {
 
     public void setEvaluationPenaliteDept(EvaluationPenaliteDept evaluationPenaliteDept) {
         this.evaluationPenaliteDept = evaluationPenaliteDept;
+    }
+
+    public Parametragecritere getParametragecriterePrqn() {
+        return parametragecriterePrqn;
+    }
+
+    public void setParametragecriterePrqn(Parametragecritere parametragecriterePrqn) {
+        this.parametragecriterePrqn = parametragecriterePrqn;
     }
 
 }

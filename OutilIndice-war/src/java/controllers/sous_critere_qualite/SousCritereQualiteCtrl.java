@@ -3,14 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controllers.sous_critere;
+package controllers.sous_critere_qualite;
 
 import controllers.util.JsfUtil;
 import entities.Critere;
 import entities.Elementreponse;
 import entities.Rubriquesc;
 import entities.Souscritere;
-import java.io.Serializable;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -19,14 +18,16 @@ import utils.Utilitaires;
 
 /**
  *
- * @author kenne
+ * @author USER
  */
 @ManagedBean
 @SessionScoped
-public class SousCritereController extends AbstractSousCritere implements Serializable {
+public class SousCritereQualiteCtrl extends AbstractSousCritereQualiteCtrl {
 
-    public SousCritereController() {
-
+    /**
+     * Creates a new instance of SousCritereQualiteCtrl
+     */
+    public SousCritereQualiteCtrl() {
     }
 
     public void prepareCreate() {
@@ -37,9 +38,8 @@ public class SousCritereController extends AbstractSousCritere implements Serial
         souscritere = new Souscritere();
         souscritere.setPointmax(0);
         souscritere.setDetail("-");
-        rubriquesc = new Rubriquesc();
         mode = "Create";
-        RequestContext.getCurrentInstance().execute("PF('SousCritereCreateDialog').show()");
+        RequestContext.getCurrentInstance().execute("PF('SousCritereQualiteCreateDialog').show()");
     }
 
     public void prepareEdit(Souscritere sc) {
@@ -48,32 +48,26 @@ public class SousCritereController extends AbstractSousCritere implements Serial
             return;
         }
         this.souscritere = sc;
-        rubriquesc = new Rubriquesc();
-        if (souscritere.getIdrubriquesc() != null) {
-            rubriquesc = souscritere.getIdrubriquesc();
-        }
-
         mode = "Edit";
-        RequestContext.getCurrentInstance().execute("PF('SousCritereCreateDialog').show()");
+        RequestContext.getCurrentInstance().execute("PF('SousCritereQualiteCreateDialog').show()");
     }
 
     public void save() {
         try {
             if ("Create".equals(mode)) {
                 souscritere.setIdsouscritere(souscritereFacadeLocal.nextVal());
-                souscritere.setIdcritere(new Critere(7));
-                souscritere.setIdrubriquesc(rubriquesc);
+                souscritere.setIdcritere(new Critere(5));
+                souscritere.setIdrubriquesc(new Rubriquesc(5));
                 souscritereFacadeLocal.create(souscritere);
                 souscritere = new Souscritere();
-                RequestContext.getCurrentInstance().execute("PF('SousCritereCreateDialog').hide()");
+                RequestContext.getCurrentInstance().execute("PF('SousCritereQualiteCreateDialog').hide()");
                 JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
             } else if ("Edit".equals(mode)) {
                 if (souscritere != null) {
-                    souscritere.setIdrubriquesc(rubriquescFacadeLocal.find(rubriquesc.getIdrubriquesc()));
                     souscritereFacadeLocal.edit(souscritere);
                     souscritere = new Souscritere();
                     JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
-                    RequestContext.getCurrentInstance().execute("PF('SousCritereCreateDialog').hide()");
+                    RequestContext.getCurrentInstance().execute("PF('SousCritereQualiteCreateDialog').hide()");
                 } else {
                     JsfUtil.addErrorMessage("Aucune ligne seletionnée");
                 }

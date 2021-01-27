@@ -30,7 +30,7 @@ public class AbstractSousCritere {
 
     @EJB
     protected CritereFacadeLocal critereFacadeLocal;
-    protected Critere critere = new Critere();
+    protected Critere critere = new Critere(7);
     protected List<Critere> criteres = new ArrayList<>();
 
     @EJB
@@ -75,7 +75,7 @@ public class AbstractSousCritere {
     }
 
     public List<Souscritere> getSouscriteres() {
-        souscriteres = souscritereFacadeLocal.findAllRangeByCode();
+        souscriteres = souscritereFacadeLocal.findByIdCritere(7);
         return souscriteres;
     }
 

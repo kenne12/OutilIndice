@@ -27,10 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Note.findAll", query = "SELECT n FROM Note n"),
     @NamedQuery(name = "Note.findByIdnote", query = "SELECT n FROM Note n WHERE n.idnote = :idnote"),
-    @NamedQuery(name = "Note.findByNotepersonnelle", query = "SELECT n FROM Note n WHERE n.notepersonnelle = :notepersonnelle"),
-    @NamedQuery(name = "Note.findByNoteservice", query = "SELECT n FROM Note n WHERE n.noteservice = :noteservice"),
-    @NamedQuery(name = "Note.findByPoidsservice", query = "SELECT n FROM Note n WHERE n.poidsservice = :poidsservice"),
-    @NamedQuery(name = "Note.findByPoidpersonnel", query = "SELECT n FROM Note n WHERE n.poidpersonnel = :poidpersonnel")})
+    @NamedQuery(name = "Note.findByNotepersonnelle", query = "SELECT n FROM Note n WHERE n.notepersonnelle = :notepersonnelle")})
 public class Note implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -40,13 +37,13 @@ public class Note implements Serializable {
     private Long idnote;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     private Double notepersonnelle;
-    private Double noteservice;
-    private Double poidsservice;
-    private Double poidpersonnel;
-    private Double notein;
-    private Double noteip;
     private Double notefinale;
-    private Double sommeindice;
+    @Column(name = "pointmaxrqntif")
+    private double pointMaxRQntif;
+    @Column(name = "poucentagerqntif")
+    private double poucentageRQntif;
+    @Column(name = "pointrqntif")
+    private double pointRqntif;
     @Column(name = "penalitedepartement")
     private double penaliteDepartement;
     @Column(name = "pointpenalitedepartement")
@@ -88,46 +85,6 @@ public class Note implements Serializable {
         this.notepersonnelle = notepersonnelle;
     }
 
-    public Double getNoteservice() {
-        return noteservice;
-    }
-
-    public void setNoteservice(Double noteservice) {
-        this.noteservice = noteservice;
-    }
-
-    public Double getPoidsservice() {
-        return poidsservice;
-    }
-
-    public void setPoidsservice(Double poidsservice) {
-        this.poidsservice = poidsservice;
-    }
-
-    public Double getPoidpersonnel() {
-        return poidpersonnel;
-    }
-
-    public void setPoidpersonnel(Double poidpersonnel) {
-        this.poidpersonnel = poidpersonnel;
-    }
-
-    public Double getNotein() {
-        return notein;
-    }
-
-    public void setNotein(Double notein) {
-        this.notein = notein;
-    }
-
-    public Double getNoteip() {
-        return noteip;
-    }
-
-    public void setNoteip(Double noteip) {
-        this.noteip = noteip;
-    }
-
     public Double getNotefinale() {
         return notefinale;
     }
@@ -136,12 +93,28 @@ public class Note implements Serializable {
         this.notefinale = notefinale;
     }
 
-    public Double getSommeindice() {
-        return sommeindice;
+    public double getPointMaxRQntif() {
+        return pointMaxRQntif;
     }
 
-    public void setSommeindice(Double sommeindice) {
-        this.sommeindice = sommeindice;
+    public void setPointMaxRQntif(double pointMaxRQntif) {
+        this.pointMaxRQntif = pointMaxRQntif;
+    }
+
+    public double getPoucentageRQntif() {
+        return poucentageRQntif;
+    }
+
+    public void setPoucentageRQntif(double poucentageRQntif) {
+        this.poucentageRQntif = poucentageRQntif;
+    }
+
+    public double getPointRqntif() {
+        return pointRqntif;
+    }
+
+    public void setPointRqntif(double pointRqntif) {
+        this.pointRqntif = pointRqntif;
     }
 
     public double getPenaliteDepartement() {

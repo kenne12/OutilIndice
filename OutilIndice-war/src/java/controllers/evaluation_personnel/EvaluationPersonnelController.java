@@ -224,22 +224,27 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                     JsfUtil.addErrorMessage("Veuillez définir le point max du bonus pour ne pas détourner les patients pour le privé");
                 }
 
-                cibleRqntifs = cibleFacadeLocal.findByIdSousPeriode(personnel.getIdservice().getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 4);
-                if (!cibleRqntifs.isEmpty()) {
-                    evaluationrqntifdepts = evaluationrqntifdeptFacadeLocal.findByIdPersonnel(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 4);
-                    if (evaluationrqntifdepts.isEmpty()) {
-                        for (Cible c : cibleRqntifs) {
-                            Evaluationrqntifdept ev = new Evaluationrqntifdept();
-                            ev.setCible(c.getValeurcible());
-                            ev.setRealisation(0);
-                            ev.setRatio(0);
-                            ev.setIdcible(c);
-                            ev.setIdpersonnel(personnel);
-                            evaluationrqntifdepts.add(ev);
+                parametragecriterePrqn = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 4, personnel.getIdcategorie().getIdcategorie());
+                if (parametragecriterePrqn != null) {
+                    cibleRqntifs = cibleFacadeLocal.findByIdSousPeriode(personnel.getIdservice().getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 4);
+                    if (!cibleRqntifs.isEmpty()) {
+                        evaluationrqntifdepts = evaluationrqntifdeptFacadeLocal.findByIdPersonnel(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 4);
+                        if (evaluationrqntifdepts.isEmpty()) {
+                            for (Cible c : cibleRqntifs) {
+                                Evaluationrqntifdept ev = new Evaluationrqntifdept();
+                                ev.setCible(c.getValeurcible());
+                                ev.setRealisation(0);
+                                ev.setRatio(0);
+                                ev.setIdcible(c);
+                                ev.setIdpersonnel(personnel);
+                                evaluationrqntifdepts.add(ev);
+                            }
                         }
+                    } else {
+                        JsfUtil.addErrorMessage("Veuillez définir les cibles pour le revenu des quantitatifs de département");
                     }
                 } else {
-                    JsfUtil.addErrorMessage("Veuillez définir les cibles pour le revenu des quantitatifs de département");
+                    parametragecriterePrqn = new Parametragecritere();
                 }
 
                 parametragecriterePrq = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 5, personnel.getIdcategorie().getIdcategorie());
@@ -482,14 +487,10 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
             n.setIdsousperiode(sousperiode);
             n.setNotepersonnelle(score);
             n.setNotefinale(note);
-            n.setPoidpersonnel(this.sommeDetailCritere());
-            n.setNoteservice(0d);
-            n.setPoidsservice(0d);
             noteFacadeLocal.create(n);
         } else {
             n.setNotepersonnelle(score);
             n.setNotefinale(note);
-            n.setPoidpersonnel(this.sommeDetailCritere());
             noteFacadeLocal.edit(n);
         }
     }
@@ -596,6 +597,11 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
             this.ratioPrqnt = (realisation / cible) * 100;
             this.ciblePrqnt = cible;
             this.realisationPrqnt = realisation;
+            note.setPoucentageRQntif(ratioPrqnt);
+            try {
+                note.setPointRqntif((parametragecriterePrqn.getPoint() * ratioPrqnt) / 100);
+            } catch (Exception e) {
+            }
         }
     }
 }

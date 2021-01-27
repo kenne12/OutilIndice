@@ -158,36 +158,24 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
         critereservices.clear();
         souscritereservices.clear();
         selectedSouscriteres.clear();
-        if (structure.getIdstructure() != null && structure.getIdstructure() > 0) {
-            if (service.getIdservice() != null && service.getIdservice() > 0) {
 
-                List<Critereservice> list = critereserviceFacadeLocal.findByIdService(service.getIdservice());
-                if (list.isEmpty()) {
-                    JsfUtil.addErrorMessage("Veuillez définir les criteres pour ce service");
-                    return;
-                }
-
-                critereservices.addAll(list);
-
-                souscritereservices = souscritereserviceFacadeLocal.findByIdService(service.getIdservice());
-
-                List<Souscritere> listTransfert = new ArrayList<>();
+        if (service.getIdservice() != null && service.getIdservice() > 0) {
+            souscritereservices = souscritereserviceFacadeLocal.findByIdServiceIdCritere(service.getIdservice(), 5);
+            if (!souscritereservices.isEmpty()) {
+                List<Souscritere> list = new ArrayList<>();
                 for (Souscritereservice scs : souscritereservices) {
-                    listTransfert.add(scs.getIdsouscritere());
+                    list.add(scs.getIdsouscritere());
                 }
 
-                List<Souscritere> listAll = new ArrayList<>();
-                for (Critereservice cs : critereservices) {
-                    listAll.addAll(souscritereFacadeLocal.findByIdCritereService(cs.getCritere().getIdcritere()));
+                souscriteres = souscritereFacadeLocal.findByIdCritere(5);
+                if (!souscriteres.isEmpty()) {
+                    souscriteres.removeAll(list);
                 }
-
-                souscriteres.addAll(listAll);
-                if (!listTransfert.isEmpty()) {
-                    souscriteres.removeAll(listTransfert);
-                }
-
+            } else {
+                souscriteres = souscritereFacadeLocal.findByIdCritere(5);
             }
         }
+
         score = this.sommeCritere();
     }
 
@@ -361,11 +349,6 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
         try {
             if (souscritereservices.isEmpty()) {
                 JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
-                return;
-            }
-
-            if (this.verifyQuantite()) {
-                JsfUtil.addErrorMessage(message);
                 return;
             }
 
