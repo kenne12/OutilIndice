@@ -42,7 +42,7 @@
             <div class="col-md-9">
                 <div class="panel panel-success">
                     <div style="color: white" class="panel-heading bg-success">
-                        #{langue['recette_realisee_dept.liste']}
+                        #{langue['cni_pdept.liste']}
                         <p:commandButton update=":PenaliteDeptCreateForm"
                                          icon="ui-icon-plus"
                                          value="#{langue['common.ajouter']}"
@@ -64,12 +64,12 @@
                                 </thead>
 
                                 <tbody>
-                                    <ui:repeat value="#{penaliteDeptCtrl.listEvaluationPenaliteDepts}" var="item">
+                                    <ui:repeat value="#{penaliteDeptCtrl.evaluationPenaliteDepts}" var="item">
                                         <tr>
                                             <td>#{item.idservice.nom}</td>
                                             <td style="text-align: center"><h:outputLabel value="#{item.valeur}"><f:convertNumber /></h:outputLabel></td>
                                             <td style="text-align: center">                                        
-                                                <p:commandButton icon="ui-icon-pencil" update=":PenaliteDeptEditForm"
+                                                <p:commandButton icon="ui-icon-pencil" update=":PenaliteDeptCreateForm"
                                                                  class="btn btn-success btn-sm"
                                                                  actionListener="#{penaliteDeptCtrl.prepareEdit(item)}"/>
                                             </td>

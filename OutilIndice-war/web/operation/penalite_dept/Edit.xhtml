@@ -3,14 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:p="http://primefaces.org/ui">
 
     <ui:composition>
         <p:dialog id="PenaliteDeptEditDlg" 
                   widgetVar="PenaliteDeptEditDialog" 
                   modal="true" resizable="false" appendTo="@(body)" 
-                  header="#{langue['recette_realisee_dept.formulaire_edition']}"
+                  header="#{langue['cni_pdept.formulaire_edition']}"
                   closeOnEscape="true"
                   width="40%">
 
@@ -18,26 +17,8 @@
 
                 <h:panelGroup id="display" rendered="true">
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <p:outputLabel value="#{langue.service}" for="service" />
-                                <h:inputText class="form-control" id="service" value="#{penaliteDeptCtrl.evaluationPenaliteDept.idservice.nom}" readonly="true" />                                              
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <p:outputLabel value="#{langue.pourcentage}" for="val_cible" />
-                                <h:inputText disabled="true" class="form-control" id="val_cible" value="#{penaliteDeptCtrl.evaluationPenaliteDept.valeur}" >
-                                    <f:convertNumber />
-                                </h:inputText>                                                                             
-                            </div>
-                        </div>
-                    </div>
-                    
+
                     <p:separator/>
 
                     <center>

@@ -11,9 +11,9 @@
         <p:dialog id="PenaliteDeptCreateDlg" 
                   widgetVar="PenaliteDeptCreateDialog" 
                   modal="true" resizable="false" appendTo="@(body)" 
-                  header="#{langue['recette_realisee_dept.formulaire_creation']}"
+                  header="#{langue['cni_pdept.formulaire_creation']}"
                   closeOnEscape="true"
-                  width="70%"
+                  width="60%"
                   height="600">
 
             <h:form id="PenaliteDeptCreateForm">
@@ -31,13 +31,14 @@
                             </h:selectOneMenu>                                                
                         </div>
 
-                        <div class="row">                                                        
+                        <div class="row">            
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <p:outputLabel value="#{langue.periode}" for="periode" />
-                                    <h:selectOneMenu disabled="true" converter="periodeConverter" class="form-control" id="periode" value="#{penaliteDeptCtrl.periode}">            
+                                    <p:outputLabel value="#{langue.service}" for="service" />
+                                    <h:selectOneMenu converter="serviceConverter" class="form-control" id="service" value="#{penaliteDeptCtrl.service}">            
                                         <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                                        <f:selectItems value="#{penaliteDeptCtrl.periodes}" var="prd" itemLabel="#{prd.nom}" itemValue="#{prd}" />
+                                        <f:selectItems value="#{penaliteDeptCtrl.services}" var="srv" itemLabel="#{srv.nom}" itemValue="#{srv}" />
+                                        <p:ajax update="datalist,grid_critere" listener="#{penaliteDeptCtrl.updateFiltre()}"/>
                                     </h:selectOneMenu>
                                 </div>
                             </div>
@@ -51,24 +52,24 @@
                                         <p:ajax update="datalist,grid_critere" listener="#{penaliteDeptCtrl.updateFiltre()}"/>
                                     </h:selectOneMenu>
                                 </div>
-                            </div>     
+                            </div>                 
                         </div> 
 
                         <p:separator/>
 
-                        <p:selectManyCheckbox id="grid_critere" value="#{penaliteDeptCtrl.selectedServices}" layout="grid" columns="1" converter="serviceConverter">
-                            <f:selectItems value="#{penaliteDeptCtrl.services}" var="i" itemLabel="#{i.nom}" itemValue="#{i}" />
+                        <p:selectManyCheckbox id="grid_critere" value="#{penaliteDeptCtrl.selectedPenalites}" layout="grid" columns="1" converter="penaliteConverter">
+                            <f:selectItems value="#{penaliteDeptCtrl.penalites}" var="p" itemLabel="#{p.nom}" itemValue="#{p}" />
                             <p:ajax />
                         </p:selectManyCheckbox>
 
                         <p:separator />
 
                         <p:commandButton value="#{langue['common.ajouter']}"
-                                         actionListener="#{penaliteDeptCtrl.addServiceToTable()}"
+                                         actionListener="#{penaliteDeptCtrl.addPenaliteToTable()}"
                                          update="datalist,grid_critere" icon="ui-icon-plus" />
                         <p:separator />
 
-                        <p:dataTable id="datalist" value="#{penaliteDeptCtrl.evaluationPenaliteDepts}" var="item"                             
+                        <p:dataTable id="datalist" value="#{penaliteDeptCtrl.lignePenaliteDepts}" var="item"                             
                                      paginator="true"
                                      editable="true"
                                      editMode="cell"
@@ -78,26 +79,27 @@
                                      rowIndexVar="index"
                                      emptyMessage="#{langue['common.tableau_vide']}">
 
-                            <p:column class="hardBreak" style="width: 75%;" >
+                            <p:column class="hardBreak" style="width: 73%;" >
                                 <f:facet name="header">
-                                    <h:outputText value="#{langue.service}"/>
+                                    <h:outputText value="#{langue.liste_penalite}"/>
                                 </f:facet>
-                                <h:outputText class="hardBreak" value="#{item.idservice.nom}"/> 
+                                <h:outputText class="hardBreak" value="#{item.idpenalite.nom}"/> 
                             </p:column>
 
-                            <p:column style="width: 15% ; text-align:center" headerText="#{langue.pourcentage}">
-                                <p:cellEditor>
-                                    <f:facet name="output">
-                                        <h:outputText value="#{item.valeur}" >
-                                            <f:convertNumber />
-                                        </h:outputText>
-                                    </f:facet>
-                                    <f:facet name="input">
-                                        <p:inputText required="true" value="#{item.valeur}">                                             
-                                            <p:ajax  />
-                                        </p:inputText>
-                                    </f:facet>
-                                </p:cellEditor>
+                            <p:column class="hardBreak" style="width: 12%;text-align:center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.pourcentage}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.valeur}"/> 
+                            </p:column>
+
+                            <p:column class="hardBreak" style="width: 5%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="Etat"/>
+                                </f:facet>
+                                <h:selectBooleanCheckbox value="#{item.etat}">
+                                    <p:ajax update="datalist" listener="#{penaliteDeptCtrl.updateValue(item)}" />
+                                </h:selectBooleanCheckbox>
                             </p:column>
 
                             <p:column style="width: 10%;text-align: center" >

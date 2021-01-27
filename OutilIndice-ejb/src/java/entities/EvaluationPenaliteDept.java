@@ -26,7 +26,7 @@ public class EvaluationPenaliteDept implements Serializable {
     @Id
     @Basic(optional = false)
     private Long idevaluationpenalitedept;
-    private double valeur;
+    private int valeur;
     @JoinColumn(name = "idservice", referencedColumnName = "idservice")
     @ManyToOne(fetch = FetchType.LAZY)
     private Service idservice;
@@ -52,11 +52,11 @@ public class EvaluationPenaliteDept implements Serializable {
         this.idevaluationpenalitedept = idevaluationpenalitedept;
     }
 
-    public double getValeur() {
+    public int getValeur() {
         return valeur;
     }
 
-    public void setValeur(double valeur) {
+    public void setValeur(int valeur) {
         this.valeur = valeur;
     }
 

@@ -6,7 +6,8 @@
 package controllers.penalite_dept;
 
 import entities.EvaluationPenaliteDept;
-import entities.Periode;
+import entities.LignePenaliteDept;
+import entities.Penalite;
 import entities.Service;
 import entities.Sousperiode;
 import entities.Structure;
@@ -14,7 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import sessions.EvaluationPenaliteDeptFacadeLocal;
-import sessions.PeriodeFacadeLocal;
+import sessions.LignePenaliteDeptFacadeLocal;
+import sessions.PenaliteFacadeLocal;
 import sessions.ServiceFacadeLocal;
 import sessions.SousperiodeFacadeLocal;
 import sessions.StructureFacadeLocal;
@@ -31,12 +33,15 @@ public class AbstractPenaliteDeptCtrl {
     protected EvaluationPenaliteDeptFacadeLocal evaluationPenaliteDeptFacadeLocal;
     protected EvaluationPenaliteDept evaluationPenaliteDept = new EvaluationPenaliteDept();
     protected List<EvaluationPenaliteDept> evaluationPenaliteDepts = new ArrayList<>();
-    protected List<EvaluationPenaliteDept> listEvaluationPenaliteDepts = new ArrayList<>();
 
     @EJB
-    protected PeriodeFacadeLocal periodeFacadeLocal;
-    protected Periode periode = SessionMBean.getPeriode();
-    protected List<Periode> periodes = new ArrayList<>();
+    protected PenaliteFacadeLocal penaliteFacadeLocal;
+    protected List<Penalite> penalites = new ArrayList<>();
+    protected List<Penalite> selectedPenalites = new ArrayList<>();
+
+    @EJB
+    protected LignePenaliteDeptFacadeLocal lignePenaliteDeptFacadeLocal;
+    protected List<LignePenaliteDept> lignePenaliteDepts = new ArrayList<>();
 
     @EJB
     protected SousperiodeFacadeLocal sousperiodeFacadeLocal;
@@ -45,8 +50,8 @@ public class AbstractPenaliteDeptCtrl {
 
     @EJB
     protected ServiceFacadeLocal serviceFacadeLocal;
+    protected Service service = new Service();
     protected List<Service> services = new ArrayList<>();
-    protected List<Service> selectedServices = new ArrayList<>();
 
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
@@ -84,24 +89,8 @@ public class AbstractPenaliteDeptCtrl {
         return evaluationPenaliteDepts;
     }
 
-    public List<EvaluationPenaliteDept> getListEvaluationPenaliteDepts() {
-        return listEvaluationPenaliteDepts;
-    }
-
-    public Periode getPeriode() {
-        return periode;
-    }
-
-    public void setPeriode(Periode periode) {
-        this.periode = periode;
-    }
-
-    public List<Periode> getPeriodes() {
-        periodes = periodeFacadeLocal.findAllRange();
-        return periodes;
-    }
-
     public List<Service> getServices() {
+        services = serviceFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
         return services;
     }
 
@@ -118,12 +107,28 @@ public class AbstractPenaliteDeptCtrl {
         return sousperiodes;
     }
 
-    public List<Service> getSelectedServices() {
-        return selectedServices;
+    public List<Penalite> getPenalites() {
+        return penalites;
     }
 
-    public void setSelectedServices(List<Service> selectedServices) {
-        this.selectedServices = selectedServices;
+    public List<Penalite> getSelectedPenalites() {
+        return selectedPenalites;
+    }
+
+    public void setSelectedPenalites(List<Penalite> selectedPenalites) {
+        this.selectedPenalites = selectedPenalites;
+    }
+
+    public List<LignePenaliteDept> getLignePenaliteDepts() {
+        return lignePenaliteDepts;
+    }
+
+    public Service getService() {
+        return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
     }
 
 }

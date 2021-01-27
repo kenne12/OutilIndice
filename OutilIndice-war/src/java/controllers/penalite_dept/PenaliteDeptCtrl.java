@@ -7,9 +7,10 @@ package controllers.penalite_dept;
 
 import controllers.util.JsfUtil;
 import entities.EvaluationPenaliteDept;
+import entities.LignePenaliteDept;
+import entities.Penalite;
 import entities.Service;
 import entities.Sousperiode;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -34,112 +35,163 @@ public class PenaliteDeptCtrl extends AbstractPenaliteDeptCtrl {
     private void init() {
         structures.clear();
         structures.add(SessionMBean.getStructure());
-        evaluationPenaliteDept = new EvaluationPenaliteDept();
-        evaluationPenaliteDept.setIdservice(new Service());
     }
 
     public void prepareCreate() {
         mode = "Create";
         sousperiode = new Sousperiode();
+        service = new Service();
+        lignePenaliteDepts.clear();
         evaluationPenaliteDept = new EvaluationPenaliteDept();
-        evaluationPenaliteDept.setIdservice(new Service());
-        evaluationPenaliteDepts.clear();
+        selectedPenalites.clear();
         RequestContext.getCurrentInstance().execute("PF('PenaliteDeptCreateDialog').show()");
     }
 
-    public void prepareEdit(EvaluationPenaliteDept c) {
-        this.evaluationPenaliteDept = c;
+    public void prepareEdit(EvaluationPenaliteDept e) {
+        this.evaluationPenaliteDept = e;
+        this.service = e.getIdservice();
+        this.sousperiode = e.getIdsousperiode();
         mode = "Edit";
-        RequestContext.getCurrentInstance().execute("PF('PenaliteDeptEditDialog').show()");
+        this.updateFiltre();
+        RequestContext.getCurrentInstance().execute("PF('PenaliteDeptCreateDialog').show()");
     }
 
     public void updateFiltre() {
-        evaluationPenaliteDepts.clear();
-        services.clear();
-        selectedServices.clear();
+        penalites.clear();
+        selectedPenalites.clear();
+        lignePenaliteDepts.clear();
         if (sousperiode.getIdsousperiode() != null && sousperiode.getIdsousperiode() > 0) {
-            List<EvaluationPenaliteDept> list = evaluationPenaliteDeptFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
-            if (list.isEmpty() || list == null) {
-                services.addAll(serviceFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure()));
-            } else {
-                evaluationPenaliteDepts.addAll(list);
-                services.addAll(serviceFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure()));
-
-                for (EvaluationPenaliteDept e : list) {
-                    selectedServices.add(e.getIdservice());
+            if (service.getIdservice() != null && service.getIdservice() > 0) {
+                if (mode.equals("Create")) {
+                    evaluationPenaliteDept = evaluationPenaliteDeptFacadeLocal.findByIdService(service.getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
                 }
 
-                services.removeAll(selectedServices);
-                selectedServices.clear();
+                if (evaluationPenaliteDept != null) {
+                    lignePenaliteDepts = lignePenaliteDeptFacadeLocal.findByIdEvaluationPenaliteDept(evaluationPenaliteDept.getIdevaluationpenalitedept());
+                    penalites = penaliteFacadeLocal.findAllService();
+                    if (!lignePenaliteDepts.isEmpty()) {
+                        for (LignePenaliteDept lpd : lignePenaliteDepts) {
+                            selectedPenalites.add(lpd.getIdpenalite());
+                        }
+                        penalites.removeAll(selectedPenalites);
+                        selectedPenalites.clear();
+                    } else {
+                        if (!penalites.isEmpty()) {
+                            for (Penalite p : penalites) {
+                                LignePenaliteDept lpd = new LignePenaliteDept();
+                                lpd.setIdlignepenalitedept(0l);
+                                lpd.setEtat(false);
+                                lpd.setValeur(0);
+                                lpd.setIdpenalite(p);
+                                lignePenaliteDepts.add(lpd);
+                            }
+                            penalites.clear();
+                        }
+                    }
+                } else {
+                    evaluationPenaliteDept = new EvaluationPenaliteDept();
+                    evaluationPenaliteDept.setIdevaluationpenalitedept(0l);
+                    evaluationPenaliteDept.setIdservice(service);
+                    evaluationPenaliteDept.setIdperiode(SessionMBean.getPeriode());
+                    evaluationPenaliteDept.setIdsousperiode(sousperiode);
+                    penalites = penaliteFacadeLocal.findAllService();
+                    if (!penalites.isEmpty()) {
+                        for (Penalite p : penalites) {
+                            LignePenaliteDept lpd = new LignePenaliteDept();
+                            lpd.setIdlignepenalitedept(0l);
+                            lpd.setEtat(false);
+                            lpd.setValeur(0);
+                            lpd.setIdpenalite(p);
+                            lignePenaliteDepts.add(lpd);
+                        }
+                    }
+                    penalites.clear();
+                }
             }
+        }
+    }
+
+    public void updateValue(LignePenaliteDept item) {
+        int counter = 0;
+        for (int i = 0; i < lignePenaliteDepts.size(); i++) {
+            if (lignePenaliteDepts.get(i).getIdpenalite().getIdpenalite().equals(item.getIdpenalite().getIdpenalite())) {
+                counter = i;
+                break;
+            }
+        }
+        if (item.isEtat()) {
+            lignePenaliteDepts.get(counter).setValeur(item.getIdpenalite().getPourcentage());
+        } else {
+            lignePenaliteDepts.get(counter).setValeur(0);
         }
     }
 
     public void searchData() {
         try {
-            listEvaluationPenaliteDepts.clear();
+            evaluationPenaliteDepts.clear();
             if (sousperiode.getIdsousperiode() != null) {
-                listEvaluationPenaliteDepts = evaluationPenaliteDeptFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
+                evaluationPenaliteDepts = evaluationPenaliteDeptFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void addServiceToTable() {
-        if (!selectedServices.isEmpty()) {
-            for (Service s : selectedServices) {
-                EvaluationPenaliteDept e = new EvaluationPenaliteDept();
-                e.setIdevaluationpenalitedept(0l);
-                e.setIdperiode(periode);
-                e.setIdservice(s);
-                e.setIdsousperiode(sousperiode);
-                e.setValeur(0);
-                evaluationPenaliteDepts.add(e);
+    public void addPenaliteToTable() {
+        if (!selectedPenalites.isEmpty()) {
+            for (Penalite p : selectedPenalites) {
+                LignePenaliteDept lpd = new LignePenaliteDept();
+                lpd.setIdlignepenalitedept(0l);
+                lpd.setEtat(false);
+                lpd.setIdpenalite(p);
+                lpd.setValeur(0);
+                lignePenaliteDepts.add(lpd);
             }
-            services.removeAll(selectedServices);
+            penalites.removeAll(selectedPenalites);
+            selectedPenalites.clear();
         }
     }
 
-    public void removeService(EvaluationPenaliteDept e) {
-        if (e.getIdevaluationpenalitedept() != 0l) {
-            evaluationPenaliteDeptFacadeLocal.remove(e);
-            evaluationPenaliteDepts.remove(e);
-            listEvaluationPenaliteDepts = evaluationPenaliteDeptFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
-            services.add(e.getIdservice());
+    public void removeService(LignePenaliteDept l) {
+        if (l.getIdlignepenalitedept() != 0l) {
+            lignePenaliteDepts.remove(l);
+            lignePenaliteDeptFacadeLocal.remove(l);
+            //listEvaluationPenaliteDepts = evaluationPenaliteDeptFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
+            penalites.add(l.getIdpenalite());
         } else {
             int conteur = 0;
-            for (EvaluationPenaliteDept ev : evaluationPenaliteDepts) {
-                if (ev.getIdservice().getIdservice().equals(e.getIdservice().getIdservice())) {
+            for (LignePenaliteDept lpd : lignePenaliteDepts) {
+                if (lpd.getIdpenalite().getIdpenalite().equals(l.getIdpenalite().getIdpenalite())) {
                     break;
                 }
                 conteur++;
             }
-            evaluationPenaliteDepts.remove(conteur);
-            services.add(e.getIdservice());
+            lignePenaliteDepts.remove(conteur);
+            penalites.add(l.getIdpenalite());
         }
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }
 
     public void save() {
         try {
-            if (evaluationPenaliteDepts.isEmpty()) {
-                JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
-                return;
+            this.calculTotal();
+            if (evaluationPenaliteDept.getIdevaluationpenalitedept() == 0) {
+                evaluationPenaliteDept.setIdevaluationpenalitedept(evaluationPenaliteDeptFacadeLocal.nextId());
+                evaluationPenaliteDeptFacadeLocal.create(evaluationPenaliteDept);
+            } else {
+                evaluationPenaliteDeptFacadeLocal.edit(evaluationPenaliteDept);
             }
-
-            for (EvaluationPenaliteDept c : evaluationPenaliteDepts) {
-                if (c.getIdevaluationpenalitedept() == 0l) {
-                    c.setIdevaluationpenalitedept(evaluationPenaliteDeptFacadeLocal.nextId());
-                    evaluationPenaliteDeptFacadeLocal.create(c);
+            for (LignePenaliteDept lpd : lignePenaliteDepts) {
+                if (lpd.getIdlignepenalitedept() == 0l) {
+                    lpd.setIdlignepenalitedept(lignePenaliteDeptFacadeLocal.nextId());
+                    lpd.setIdevaluationpenalitedept(evaluationPenaliteDept);
+                    lignePenaliteDeptFacadeLocal.create(lpd);
                 } else {
-                    evaluationPenaliteDeptFacadeLocal.edit(c);
+                    lignePenaliteDeptFacadeLocal.edit(lpd);
                 }
             }
-            listEvaluationPenaliteDepts = evaluationPenaliteDeptFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
-            this.evaluationPenaliteDepts.clear();
+            evaluationPenaliteDepts = evaluationPenaliteDeptFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
             evaluationPenaliteDept = new EvaluationPenaliteDept();
-            evaluationPenaliteDept.setIdservice(new Service());
             RequestContext.getCurrentInstance().execute("PF('PenaliteDeptCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
@@ -152,8 +204,7 @@ public class PenaliteDeptCtrl extends AbstractPenaliteDeptCtrl {
         try {
             evaluationPenaliteDeptFacadeLocal.edit(evaluationPenaliteDept);
             evaluationPenaliteDept = new EvaluationPenaliteDept();
-            evaluationPenaliteDept.setIdservice(new Service());
-            listEvaluationPenaliteDepts = evaluationPenaliteDeptFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
+            evaluationPenaliteDepts = evaluationPenaliteDeptFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
             RequestContext.getCurrentInstance().execute("PF('PenaliteDeptEditDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
@@ -162,17 +213,28 @@ public class PenaliteDeptCtrl extends AbstractPenaliteDeptCtrl {
         }
     }
 
-    public void delete(EvaluationPenaliteDept c) {
+    public void delete(EvaluationPenaliteDept e) {
         try {
-            evaluationPenaliteDeptFacadeLocal.remove(c);
-            listEvaluationPenaliteDepts = evaluationPenaliteDeptFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
-            evaluationPenaliteDept = new EvaluationPenaliteDept();
-            evaluationPenaliteDept.setIdservice(new Service());
+            evaluationPenaliteDeptFacadeLocal.remove(e);
+            lignePenaliteDeptFacadeLocal.deleteByIdEvaluation(e.getIdevaluationpenalitedept());
+            evaluationPenaliteDepts = evaluationPenaliteDeptFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
             JsfUtil.addFatalErrorMessage("Exception");
         }
+    }
+
+    public void calculTotal() {
+        if (!lignePenaliteDepts.isEmpty()) {
+            int valeur = 0;
+            for (LignePenaliteDept lpd : lignePenaliteDepts) {
+                valeur += lpd.getValeur();
+            }
+            evaluationPenaliteDept.setValeur(valeur);
+            return;
+        }
+        evaluationPenaliteDept.setValeur(0);
     }
 
 }

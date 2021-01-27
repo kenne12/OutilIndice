@@ -22,6 +22,7 @@ public class Penalite implements Serializable {
     @Basic(optional = false)
     private Integer idpenalite;
     private String nom;
+    private int pourcentage;
     private boolean personnel;
     private boolean service;
 
@@ -42,6 +43,14 @@ public class Penalite implements Serializable {
 
     public String getNom() {
         return nom;
+    }
+
+    public int getPourcentage() {
+        return pourcentage;
+    }
+
+    public void setPourcentage(int pourcentage) {
+        this.pourcentage = pourcentage;
     }
 
     public void setNom(String nom) {
