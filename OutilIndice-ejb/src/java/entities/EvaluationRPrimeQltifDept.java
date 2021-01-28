@@ -26,7 +26,9 @@ public class EvaluationRPrimeQltifDept implements Serializable {
     @Id
     @Basic(optional = false)
     private Long idevaluationrprimeqltifdept;
-    private double score;
+    private int cible;
+    private int score;
+    private double pourcentage;
     @JoinColumn(name = "idservice", referencedColumnName = "idservice")
     @ManyToOne(fetch = FetchType.LAZY)
     private Service idservice;
@@ -55,12 +57,28 @@ public class EvaluationRPrimeQltifDept implements Serializable {
         this.idevaluationrprimeqltifdept = idevaluationrprimeqltifdept;
     }
 
-    public double getScore() {
+    public int getCible() {
+        return cible;
+    }
+
+    public void setCible(int cible) {
+        this.cible = cible;
+    }
+
+    public int getScore() {
         return score;
     }
 
-    public void setScore(double score) {
+    public void setScore(int score) {
         this.score = score;
+    }
+
+    public double getPourcentage() {
+        return pourcentage;
+    }
+
+    public void setPourcentage(double pourcentage) {
+        this.pourcentage = pourcentage;
     }
 
     public Periode getIdperiode() {

@@ -34,11 +34,12 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <p:outputLabel value="#{langue.periode}" for="periode" />
-                                    <h:selectOneMenu disabled="true" converter="periodeConverter" class="form-control"                                                      
-                                                     id="periode" value="#{realisationPrimeRQltifDeptCtrl.periode}">
+                                    <p:outputLabel value="#{langue.service}" for="service" />
+                                    <h:selectOneMenu converter="serviceConverter" class="form-control"                                                      
+                                                     id="service" value="#{realisationPrimeRQltifDeptCtrl.service}">
                                         <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                                        <f:selectItems value="#{realisationPrimeRQltifDeptCtrl.periodes}" var="prd" itemLabel="#{prd.nom}" itemValue="#{prd}" />
+                                        <f:selectItems value="#{realisationPrimeRQltifDeptCtrl.services}" var="srv" itemLabel="#{srv.nom}" itemValue="#{srv}" />
+                                        <p:ajax update="grid_critere,datalist" listener="#{realisationPrimeRQltifDeptCtrl.updateFiltre()}"/>
                                     </h:selectOneMenu>
                                 </div>
                             </div>
@@ -58,19 +59,19 @@
 
                         <p:separator/>
 
-                        <p:selectManyCheckbox id="grid_critere" value="#{realisationPrimeRQltifDeptCtrl.selectedServices}" layout="grid" columns="1" converter="serviceConverter">
-                            <f:selectItems value="#{realisationPrimeRQltifDeptCtrl.services}" var="i" itemLabel="#{i.nom}" itemValue="#{i}" />
+                        <p:selectManyCheckbox id="grid_critere" value="#{realisationPrimeRQltifDeptCtrl.selectedSouscritereservices}" layout="grid" columns="1" converter="sousCritereServiceConverter">
+                            <f:selectItems value="#{realisationPrimeRQltifDeptCtrl.souscritereservices}" var="sc" itemLabel="#{sc.idsouscritere.nom}" itemValue="#{sc}" />
                             <p:ajax />
                         </p:selectManyCheckbox>
 
                         <p:separator />
 
                         <p:commandButton value="#{langue['common.ajouter']}"
-                                         actionListener="#{realisationPrimeRQltifDeptCtrl.addServiceToTable()}"
+                                         actionListener="#{realisationPrimeRQltifDeptCtrl.addSousCritereToTable()}"
                                          update="datalist,grid_critere" icon="ui-icon-plus" />
                         <p:separator />
 
-                        <p:dataTable id="datalist" value="#{realisationPrimeRQltifDeptCtrl.evaluationRPrimeQltifDepts}" var="item"                             
+                        <p:dataTable id="datalist" value="#{realisationPrimeRQltifDeptCtrl.lignePrimeQualiteDepts}" var="item"                             
                                      paginator="true"
                                      editable="true"
                                      editMode="cell"
@@ -80,36 +81,68 @@
                                      rowIndexVar="index"
                                      emptyMessage="#{langue['common.tableau_vide']}">
 
-                            <p:column class="hardBreak" style="width: 70%;" >
+                            <p:column class="hardBreak" style="width: 60%;" >
                                 <f:facet name="header">
-                                    <h:outputText value="#{langue.service}"/>
+                                    <h:outputText value="#{langue.sous_critere}"/>
                                 </f:facet>
-                                <h:outputText class="hardBreak" value="#{item.idservice.nom}"/> 
+                                <h:outputText class="hardBreak" value="#{item.idsouscritereservice.idsouscritere.nom}"/> 
                             </p:column>
 
-                            <p:column style="width: 20% ; text-align:center" headerText="#{langue.valeur_cible}">
+                            <p:column class="hardBreak" style="width: 10%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.val_cible}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.valeurCible}"/> 
+                            </p:column>
+
+                            <p:column style="width: 10% ; text-align:center" headerText="#{langue.valeur_realisee}">
                                 <p:cellEditor>
                                     <f:facet name="output">
-                                        <h:outputText value="#{item.score}" >
+                                        <h:outputText value="#{item.valeurRealisee}" >
                                             <f:convertNumber />
                                         </h:outputText>
                                     </f:facet>
                                     <f:facet name="input">
-                                        <p:inputText required="true" value="#{item.score}">                                             
-                                            <p:ajax  />
+                                        <p:inputText required="true" value="#{item.valeurRealisee}">                                             
+                                            <p:ajax update="datalist" listener="#{realisationPrimeRQltifDeptCtrl.calculData('valeur')}"  />
                                         </p:inputText>
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
 
-                            <p:column style="width: 10%" >
+                            <p:column style="width: 10% ; text-align:center" headerText="#{langue.ratio}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.ratio}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.ratio}">                                             
+                                            <p:ajax update="datalist" listener="#{realisationPrimeRQltifDeptCtrl.calculData('ratio')}"  />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 10%;text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="Action"/>
                                 </f:facet>
                                 <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist,:RPrimeRQLtifCreateForm:grid_critere" event="click" listener="#{realisationPrimeRQltifDeptCtrl.removeIndicator(item)}" />
+                                    <p:ajax update="datalist,:RPrimeRQLtifCreateForm:grid_critere" event="click" listener="#{realisationPrimeRQltifDeptCtrl.removeSousCritere(item)}" />
                                 </p:commandButton>
                             </p:column>
+
+                            <p:columnGroup type="footer">
+                                <p:row>
+                                    <p:column style="text-align:right" footerText="Totaux" />                                                                          
+                                    <p:column style="text-align:center" footerText="#{realisationPrimeRQltifDeptCtrl.evaluationRPrimeQltifDept.cible}"/>  
+                                    <p:column style="text-align:center" footerText="#{realisationPrimeRQltifDeptCtrl.evaluationRPrimeQltifDept.score}"/> 
+                                    <p:column style="text-align:center" footerText="#{realisationPrimeRQltifDeptCtrl.evaluationRPrimeQltifDept.pourcentage}"/> 
+                                    <p:column style="text-align:center" footerText="/" /> 
+                                </p:row>
+                            </p:columnGroup>
 
                         </p:dataTable>
 

@@ -57,17 +57,21 @@
                             <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th style="width: 70%">#{langue.service}</th>
-                                        <th style="width: 15%">#{langue.valeur_cible} (%)</th>
-                                        <th style="width: 15%;text-align: center">#{langue['common.actions']}</th>
+                                        <th style="width: 50%">#{langue.service}</th>
+                                        <th style="width: 15%">#{langue.valeur_cible}</th>
+                                        <th style="width: 15%">#{langue.valeur_realisee}</th>
+                                        <th style="width: 10%">#{langue.ratio}</th>
+                                        <th style="width: 10%;text-align: center">#{langue['common.actions']}</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    <ui:repeat value="#{realisationPrimeRQltifDeptCtrl.listEvaluationRPrimeQltifDepts}" var="item">
+                                    <ui:repeat value="#{realisationPrimeRQltifDeptCtrl.evaluationRPrimeQltifDepts}" var="item">
                                         <tr>
                                             <td>#{item.idservice.nom}</td>
-                                            <td><h:outputLabel value="#{item.score}"><f:convertNumber /></h:outputLabel></td>
+                                            <td>#{item.cible}</td>
+                                            <td>#{item.score}</td>
+                                            <td>#{item.pourcentage}</td>
                                             <td style="text-align: center">                                        
                                                 <p:commandButton icon="ui-icon-pencil" update=":RPrimeRQLtifEditForm"
                                                                  class="btn btn-success btn-sm"

@@ -255,7 +255,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                         if (evaluationRPrimeQltifPersonnel == null) {
                             evaluationRPrimeQltifPersonnel = new EvaluationRPrimeQltifPersonnel();
                             evaluationRPrimeQltifPersonnel.setIdevaluationrprimeqltifdept(evaluationRPrimeQltifDept);
-                            evaluationRPrimeQltifPersonnel.setPoint((evaluationRPrimeQltifDept.getScore() * parametragecriterePrq.getPoint()) / 100);
+                            evaluationRPrimeQltifPersonnel.setPoint((parametragecriterePrq.getPoint() * evaluationRPrimeQltifDept.getPourcentage()) / 100);
                         }
                     }
                 } else {

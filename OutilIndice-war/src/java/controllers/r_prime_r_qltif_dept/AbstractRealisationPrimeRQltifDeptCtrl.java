@@ -6,16 +6,18 @@
 package controllers.r_prime_r_qltif_dept;
 
 import entities.EvaluationRPrimeQltifDept;
-import entities.Periode;
+import entities.LignePrimeQualiteDept;
 import entities.Service;
+import entities.Souscritereservice;
 import entities.Sousperiode;
 import entities.Structure;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import sessions.EvaluationRPrimeQltifDeptFacadeLocal;
-import sessions.PeriodeFacadeLocal;
+import sessions.LignePrimeQualiteDeptFacadeLocal;
 import sessions.ServiceFacadeLocal;
+import sessions.SouscritereserviceFacadeLocal;
 import sessions.SousperiodeFacadeLocal;
 import sessions.StructureFacadeLocal;
 import utils.Routine;
@@ -31,12 +33,15 @@ public class AbstractRealisationPrimeRQltifDeptCtrl {
     protected EvaluationRPrimeQltifDeptFacadeLocal evaluationRPrimeQltifDeptFacadeLocal;
     protected EvaluationRPrimeQltifDept evaluationRPrimeQltifDept = new EvaluationRPrimeQltifDept();
     protected List<EvaluationRPrimeQltifDept> evaluationRPrimeQltifDepts = new ArrayList<>();
-    protected List<EvaluationRPrimeQltifDept> listEvaluationRPrimeQltifDepts = new ArrayList<>();
 
     @EJB
-    protected PeriodeFacadeLocal periodeFacadeLocal;
-    protected Periode periode = SessionMBean.getPeriode();
-    protected List<Periode> periodes = new ArrayList<>();
+    protected SouscritereserviceFacadeLocal souscritereserviceFacadeLocal;
+    protected List<Souscritereservice> souscritereservices = new ArrayList<>();
+    protected List<Souscritereservice> selectedSouscritereservices = new ArrayList<>();
+
+    @EJB
+    protected LignePrimeQualiteDeptFacadeLocal lignePrimeQualiteDeptFacadeLocal;
+    protected List<LignePrimeQualiteDept> lignePrimeQualiteDepts = new ArrayList<>();
 
     @EJB
     protected SousperiodeFacadeLocal sousperiodeFacadeLocal;
@@ -45,8 +50,8 @@ public class AbstractRealisationPrimeRQltifDeptCtrl {
 
     @EJB
     protected ServiceFacadeLocal serviceFacadeLocal;
+    protected Service service = new Service();
     protected List<Service> services = new ArrayList<>();
-    protected List<Service> selectedServices = new ArrayList<>();
 
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
@@ -84,28 +89,8 @@ public class AbstractRealisationPrimeRQltifDeptCtrl {
         return evaluationRPrimeQltifDepts;
     }
 
-    public void setEvaluationRPrimeQltifDepts(List<EvaluationRPrimeQltifDept> evaluationRPrimeQltifDepts) {
-        this.evaluationRPrimeQltifDepts = evaluationRPrimeQltifDepts;
-    }
-
-    public List<EvaluationRPrimeQltifDept> getListEvaluationRPrimeQltifDepts() {
-        return listEvaluationRPrimeQltifDepts;
-    }
-
-    public Periode getPeriode() {
-        return periode;
-    }
-
-    public void setPeriode(Periode periode) {
-        this.periode = periode;
-    }
-
-    public List<Periode> getPeriodes() {
-        periodes = periodeFacadeLocal.findAllRange();
-        return periodes;
-    }
-
     public List<Service> getServices() {
+        services = serviceFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
         return services;
     }
 
@@ -122,12 +107,28 @@ public class AbstractRealisationPrimeRQltifDeptCtrl {
         return sousperiodes;
     }
 
-    public List<Service> getSelectedServices() {
-        return selectedServices;
+    public Service getService() {
+        return service;
     }
 
-    public void setSelectedServices(List<Service> selectedServices) {
-        this.selectedServices = selectedServices;
+    public void setService(Service service) {
+        this.service = service;
+    }
+
+    public List<Souscritereservice> getSouscritereservices() {
+        return souscritereservices;
+    }
+
+    public List<Souscritereservice> getSelectedSouscritereservices() {
+        return selectedSouscritereservices;
+    }
+
+    public void setSelectedSouscritereservices(List<Souscritereservice> selectedSouscritereservices) {
+        this.selectedSouscritereservices = selectedSouscritereservices;
+    }
+
+    public List<LignePrimeQualiteDept> getLignePrimeQualiteDepts() {
+        return lignePrimeQualiteDepts;
     }
 
 }

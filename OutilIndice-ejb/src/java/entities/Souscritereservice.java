@@ -41,7 +41,7 @@ public class Souscritereservice implements Serializable {
     @Size(max = 254)
     private String detail;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    private Double pointmax;
+    private int pointmax;
     @OneToMany(mappedBy = "idsouscritereservice", fetch = FetchType.LAZY)
     private Collection<Evaluationservice> evaluationserviceCollection;
     @JoinColumn(name = "idservice", referencedColumnName = "idservice")
@@ -74,11 +74,11 @@ public class Souscritereservice implements Serializable {
         this.detail = detail;
     }
 
-    public Double getPointmax() {
+    public int getPointmax() {
         return pointmax;
     }
 
-    public void setPointmax(Double pointmax) {
+    public void setPointmax(int pointmax) {
         this.pointmax = pointmax;
     }
 

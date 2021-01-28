@@ -201,12 +201,15 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
                     obj.setIdservice(service);
                     obj.setIdsouscritere(sc);
                     obj.setDetail(sc.getDetail());
-                    obj.setPointmax(0d);
+                    obj.setPointmax( sc.getPointmax());
                     souscritereservices.add(obj);
                 }
             }
+            score = this.sommeCritere();
+            souscriteres.removeAll(selectedSouscriteres);
+            selectedSouscriteres.clear();
         }
-        score = this.sommeCritere();
+        
     }
 
     private boolean checkCritereInTable(Souscritere sc) {

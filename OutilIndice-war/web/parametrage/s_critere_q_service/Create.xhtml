@@ -32,7 +32,7 @@
                                                      id="service" value="#{sousCritereServiceController.service.idservice}">
                                         <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
                                         <f:selectItems value="#{sousCritereServiceController.services}" var="s" itemLabel="#{s.nom}" itemValue="#{s.idservice}" />
-                                        <p:ajax update="grid_critere,critere,datalist" listener="#{sousCritereServiceController.updateFiltre()}"/>
+                                        <p:ajax update="grid_critere,datalist" listener="#{sousCritereServiceController.updateFiltre()}"/>
                                     </h:selectOneMenu>                                                
                                 </div>
                             </div>
@@ -50,7 +50,7 @@
                         <p:commandButton                            
                             value="#{langue['common.ajouter']}"
                             actionListener="#{sousCritereServiceController.addSousCritereToTable()}"
-                            update="datalist" icon="ui-icon-plus" />
+                            update="datalist,grid_critere" icon="ui-icon-plus" />
 
                         <p:separator />
 
