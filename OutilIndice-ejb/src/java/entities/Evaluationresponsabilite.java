@@ -8,6 +8,7 @@ package entities;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -26,7 +27,10 @@ public class Evaluationresponsabilite implements Serializable {
     @Basic(optional = false)
     @NotNull
     private Long idevaluationresponsabilite;
+    @Column(name = "pointmax")
+    private double pointMax;
     private double point;
+    private double ratio;
     @JoinColumn(name = "idperiode", referencedColumnName = "idperiode")
     @ManyToOne(fetch = FetchType.LAZY)
     private Periode idperiode;
@@ -53,6 +57,22 @@ public class Evaluationresponsabilite implements Serializable {
 
     public void setIdevaluationresponsabilite(Long idevaluationresponsabilite) {
         this.idevaluationresponsabilite = idevaluationresponsabilite;
+    }
+
+    public double getPointMax() {
+        return pointMax;
+    }
+
+    public void setPointMax(double pointMax) {
+        this.pointMax = pointMax;
+    }
+
+    public double getRatio() {
+        return ratio;
+    }
+
+    public void setRatio(double ratio) {
+        this.ratio = ratio;
     }
 
     public double getPoint() {

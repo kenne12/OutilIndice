@@ -54,13 +54,6 @@ public class DetailscFacade extends AbstractFacade<Detailsc> implements Detailsc
     }
 
     @Override
-    public List<Detailsc> findByIdStructure(long idStructure, boolean personnel) {
-        Query query = em.createQuery("SELECT d FROM Detailsc d WHERE d.idstructure.idstructure=:idStructure AND d.idsouscritere.personnel=:personnel ORDER BY d.idsouscritere.code");
-        query.setParameter("idStructure", idStructure).setParameter("personnel", personnel);
-        return query.getResultList();
-    }
-    
-    @Override
     public List<Detailsc> findByIdStructureIdCritere(long idStructure, int idCritere) {
         Query query = em.createQuery("SELECT d FROM Detailsc d WHERE d.idstructure.idstructure=:idStructure AND d.idsouscritere.idcritere.idcritere=:idCritere ORDER BY d.idsouscritere.code");
         query.setParameter("idStructure", idStructure).setParameter("idCritere", idCritere);
@@ -78,13 +71,6 @@ public class DetailscFacade extends AbstractFacade<Detailsc> implements Detailsc
     public List<Detailsc> findByIdStructurePersonnel(long idStructure, int idCategorie) {
         Query query = em.createQuery("SELECT d FROM Detailsc d WHERE d.idstructure.idstructure=:idStructure AND d.idcategorie.idcategorie=:idCategorie ORDER BY d.idsouscritere.code");
         query.setParameter("idStructure", idStructure).setParameter("idCategorie", idCategorie);
-        return query.getResultList();
-    }
-
-    @Override
-    public List<Detailsc> findByIdStructurePersonnel(long idStructure, int idCategorie, boolean personnel) {
-        Query query = em.createQuery("SELECT d FROM Detailsc d WHERE d.idstructure.idstructure=:idStructure AND d.idcategorie.idcategorie=:idCategorie AND d.idsouscritere.personnel=:personnel ORDER BY d.idsouscritere.code");
-        query.setParameter("idStructure", idStructure).setParameter("idCategorie", idCategorie).setParameter("personnel", personnel);
         return query.getResultList();
     }
 

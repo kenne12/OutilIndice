@@ -8,12 +8,11 @@ package entities;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -26,38 +25,42 @@ public class LignePenalitePersonnel implements Serializable {
 
     @Id
     @Basic(optional = false)
-    @Column(name = "idlignepenalitepersonnel")
-    private Long idLignePenalitePersonnel;
+    private Long idlignepenalitepersonnel;
 
-    private int score;
+    private int valeur;
     private int cible;
     private double ratio;
+    private boolean etat;
 
-    @JoinColumn(name = "idevaluationpenalitepersonnel", referencedColumnName = "idevaluationpenalitepersonnel")
-    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idpenalite", referencedColumnName = "idpenalite")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Penalite idPenalite;
+
+    @JoinColumn(name = "idEvaluationPenalitePersonnel", referencedColumnName = "idevaluationpenalitepersonnel")
+    @ManyToOne(fetch = FetchType.LAZY)
     private EvaluationPenalitePersonnel idEvaluationPenalitePersonnel;
 
     public LignePenalitePersonnel() {
     }
 
-    public LignePenalitePersonnel(Long idLignePenalitePersonnel) {
-        this.idLignePenalitePersonnel = idLignePenalitePersonnel;
+    public LignePenalitePersonnel(Long idlignepenalitepersonnel) {
+        this.idlignepenalitepersonnel = idlignepenalitepersonnel;
     }
 
-    public Long getIdLignePenalitePersonnel() {
-        return idLignePenalitePersonnel;
+    public Long getIdlignepenalitepersonnel() {
+        return idlignepenalitepersonnel;
     }
 
-    public void setIdLignePenalitePersonnel(Long idLignePenalitePersonnel) {
-        this.idLignePenalitePersonnel = idLignePenalitePersonnel;
+    public void setIdlignepenalitepersonnel(Long idlignepenalitepersonnel) {
+        this.idlignepenalitepersonnel = idlignepenalitepersonnel;
     }
 
-    public int getScore() {
-        return score;
+    public int getValeur() {
+        return valeur;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setValeur(int valeur) {
+        this.valeur = valeur;
     }
 
     public int getCible() {
@@ -76,6 +79,22 @@ public class LignePenalitePersonnel implements Serializable {
         this.ratio = ratio;
     }
 
+    public boolean isEtat() {
+        return etat;
+    }
+
+    public void setEtat(boolean etat) {
+        this.etat = etat;
+    }
+
+    public Penalite getIdPenalite() {
+        return idPenalite;
+    }
+
+    public void setIdPenalite(Penalite idPenalite) {
+        this.idPenalite = idPenalite;
+    }
+
     public EvaluationPenalitePersonnel getIdEvaluationPenalitePersonnel() {
         return idEvaluationPenalitePersonnel;
     }
@@ -87,7 +106,7 @@ public class LignePenalitePersonnel implements Serializable {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 41 * hash + Objects.hashCode(this.idLignePenalitePersonnel);
+        hash = 41 * hash + Objects.hashCode(this.idlignepenalitepersonnel);
         return hash;
     }
 
@@ -100,7 +119,7 @@ public class LignePenalitePersonnel implements Serializable {
             return false;
         }
         final LignePenalitePersonnel other = (LignePenalitePersonnel) obj;
-        if (!Objects.equals(this.idLignePenalitePersonnel, other.idLignePenalitePersonnel)) {
+        if (!Objects.equals(this.idlignepenalitepersonnel, other.idlignepenalitepersonnel)) {
             return false;
         }
         return true;
@@ -108,7 +127,7 @@ public class LignePenalitePersonnel implements Serializable {
 
     @Override
     public String toString() {
-        return "LignePenalitePersonnel{" + "idLignePenalitePersonnel=" + idLignePenalitePersonnel + '}';
+        return "LignePenalitePersonnel{" + "idLignePenalitePersonnel=" + idlignepenalitepersonnel + '}';
     }
 
 }

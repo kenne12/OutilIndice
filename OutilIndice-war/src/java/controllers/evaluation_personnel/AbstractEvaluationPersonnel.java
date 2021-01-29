@@ -10,6 +10,7 @@ import entities.Critereresponsabilite;
 import entities.Detailsc;
 import entities.EvaluationBonusRDeptPersonnel;
 import entities.EvaluationPenaliteDept;
+import entities.EvaluationPenalitePersonnel;
 import entities.EvaluationRPrimeQltifDept;
 import entities.EvaluationRPrimeQltifPersonnel;
 import entities.Evaluationbonuspp;
@@ -17,8 +18,10 @@ import entities.Evaluationheuresupp;
 import entities.Evaluationpersonnel;
 import entities.Evaluationresponsabilite;
 import entities.Evaluationrqntifdept;
+import entities.LignePenalitePersonnel;
 import entities.Note;
 import entities.Parametragecritere;
+import entities.Penalite;
 import entities.Personnel;
 import entities.Sousperiode;
 import entities.Structure;
@@ -31,6 +34,7 @@ import sessions.DetailscFacadeLocal;
 import sessions.ElementReponseFacadeLocal;
 import sessions.EvaluationBonusRDeptPersonnelFacadeLocal;
 import sessions.EvaluationPenaliteDeptFacadeLocal;
+import sessions.EvaluationPenalitePersonnelFacadeLocal;
 import sessions.EvaluationRPrimeQltifDeptFacadeLocal;
 import sessions.EvaluationRPrimeQltifPersonnelFacadeLocal;
 import sessions.EvaluationbonusppFacadeLocal;
@@ -38,11 +42,14 @@ import sessions.EvaluationheuresuppFacadeLocal;
 import sessions.EvaluationpersonnelFacadeLocal;
 import sessions.EvaluationresponsabiliteFacadeLocal;
 import sessions.EvaluationrqntifdeptFacadeLocal;
+import sessions.LignePenalitePersonnelFacadeLocal;
 import sessions.NoteFacadeLocal;
 import sessions.ParametragecritereFacadeLocal;
+import sessions.PenaliteFacadeLocal;
 import sessions.PersonnelFacadeLocal;
 import sessions.SousperiodeFacadeLocal;
 import sessions.StructureFacadeLocal;
+import utils.MappingResultat;
 import utils.Routine;
 import utils.SessionMBean;
 
@@ -115,6 +122,19 @@ public class AbstractEvaluationPersonnel {
     protected EvaluationPenaliteDept evaluationPenaliteDept = new EvaluationPenaliteDept();
 
     @EJB
+    protected EvaluationPenalitePersonnelFacadeLocal evaluationPenalitePersonnelFacade;
+    protected EvaluationPenalitePersonnel evaluationPenalitePersonnel = new EvaluationPenalitePersonnel();
+
+    @EJB
+    protected LignePenalitePersonnelFacadeLocal lignePenalitePersonnelFacadeLocal;
+    protected List<LignePenalitePersonnel> lignePenalitePersonnels = new ArrayList<>();
+
+    @EJB
+    protected PenaliteFacadeLocal penaliteFacadeLocal;
+    protected List<Penalite> penalites = new ArrayList<>();
+    protected List<Penalite> selectedPenalites = new ArrayList<>();
+
+    @EJB
     protected SousperiodeFacadeLocal sousperiodeFacadeLocal;
     protected Sousperiode sousperiode = new Sousperiode();
     protected List<Sousperiode> sousperiodes = new ArrayList<>();
@@ -138,14 +158,22 @@ public class AbstractEvaluationPersonnel {
     protected ElementReponseFacadeLocal elementReponseFacadeLocal;
 
     protected Routine routine = new Routine();
-    protected double score = 0;
 
     protected double totalPointPi;
     protected double percentagePi;
 
+    protected double notePi = 0;
+    protected double scorePi = 0;
+    protected double pointPi = 0;
+
     protected double ratioPrqnt = 0;
     protected double ciblePrqnt = 0;
     protected double realisationPrqnt = 0;
+
+    protected double totalPIncitationPositif = 0;
+    protected double totalPIncitationNegatif = 0;
+
+    protected List<MappingResultat> mappingResultats = new ArrayList<>();
 
     protected String mode = "";
     protected String message = "";
@@ -168,10 +196,6 @@ public class AbstractEvaluationPersonnel {
 
     public List<Structure> getStructures() {
         return structures;
-    }
-
-    public double getScore() {
-        return score;
     }
 
     public List<Detailsc> getListDetailsc() {
@@ -374,6 +398,50 @@ public class AbstractEvaluationPersonnel {
 
     public void setParametragecriterePrqn(Parametragecritere parametragecriterePrqn) {
         this.parametragecriterePrqn = parametragecriterePrqn;
+    }
+
+    public List<LignePenalitePersonnel> getLignePenalitePersonnels() {
+        return lignePenalitePersonnels;
+    }
+
+    public EvaluationPenalitePersonnel getEvaluationPenalitePersonnel() {
+        return evaluationPenalitePersonnel;
+    }
+
+    public void setEvaluationPenalitePersonnel(EvaluationPenalitePersonnel evaluationPenalitePersonnel) {
+        this.evaluationPenalitePersonnel = evaluationPenalitePersonnel;
+    }
+
+    public List<Penalite> getPenalites() {
+        return penalites;
+    }
+
+    public List<Penalite> getSelectedPenalites() {
+        return selectedPenalites;
+    }
+
+    public void setSelectedPenalites(List<Penalite> selectedPenalites) {
+        this.selectedPenalites = selectedPenalites;
+    }
+
+    public double getScorePi() {
+        return scorePi;
+    }
+
+    public double getPointPi() {
+        return pointPi;
+    }
+
+    public double getNotePi() {
+        return notePi;
+    }
+
+    public double getTotalPIncitationPositif() {
+        return totalPIncitationPositif;
+    }
+
+    public double getTotalPIncitationNegatif() {
+        return totalPIncitationNegatif;
     }
 
 }

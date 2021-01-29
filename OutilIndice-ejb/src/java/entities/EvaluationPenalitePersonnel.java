@@ -8,12 +8,11 @@ package entities;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -26,38 +25,37 @@ public class EvaluationPenalitePersonnel implements Serializable {
 
     @Id
     @Basic(optional = false)
-    @Column(name = "idevaluationpenalitepersonnel")
-    private Long idEvaluationPenalitePersonnel;
+    private Long idevaluationpenalitepersonnel;
 
     private int score;
     private int cible;
     private double ratio;
 
-    @JoinColumn(name = "idpersonnel", referencedColumnName = "idpersonnel")
-    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idPersonnel", referencedColumnName = "idpersonnel")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Personnel idPersonnel;
 
-    @JoinColumn(name = "idperiode", referencedColumnName = "idperiode")
-    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idPeriode", referencedColumnName = "idperiode")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Periode idPeriode;
 
-    @JoinColumn(name = "idsousperiode", referencedColumnName = "idsousperiode")
-    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idSousperiode", referencedColumnName = "idsousperiode")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Sousperiode idSousperiode;
 
     public EvaluationPenalitePersonnel() {
     }
 
-    public EvaluationPenalitePersonnel(Long idEvaluationPenalitePersonnel) {
-        this.idEvaluationPenalitePersonnel = idEvaluationPenalitePersonnel;
+    public EvaluationPenalitePersonnel(Long idevaluationpenalitepersonnel) {
+        this.idevaluationpenalitepersonnel = idevaluationpenalitepersonnel;
     }
 
-    public Long getIdEvaluationPenalitePersonnel() {
-        return idEvaluationPenalitePersonnel;
+    public Long getIdevaluationpenalitepersonnel() {
+        return idevaluationpenalitepersonnel;
     }
 
-    public void setIdEvaluationPenalitePersonnel(Long idEvaluationPenalitePersonnel) {
-        this.idEvaluationPenalitePersonnel = idEvaluationPenalitePersonnel;
+    public void setIdevaluationpenalitepersonnel(Long idevaluationpenalitepersonnel) {
+        this.idevaluationpenalitepersonnel = idevaluationpenalitepersonnel;
     }
 
     public int getScore() {
@@ -111,7 +109,7 @@ public class EvaluationPenalitePersonnel implements Serializable {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 23 * hash + Objects.hashCode(this.idEvaluationPenalitePersonnel);
+        hash = 23 * hash + Objects.hashCode(this.idevaluationpenalitepersonnel);
         return hash;
     }
 
@@ -124,7 +122,7 @@ public class EvaluationPenalitePersonnel implements Serializable {
             return false;
         }
         final EvaluationPenalitePersonnel other = (EvaluationPenalitePersonnel) obj;
-        if (!Objects.equals(this.idEvaluationPenalitePersonnel, other.idEvaluationPenalitePersonnel)) {
+        if (!Objects.equals(this.idevaluationpenalitepersonnel, other.idevaluationpenalitepersonnel)) {
             return false;
         }
         return true;
@@ -132,7 +130,7 @@ public class EvaluationPenalitePersonnel implements Serializable {
 
     @Override
     public String toString() {
-        return "EvaluationPenalitePersonnel{" + "idEvaluationPenalitePersonnel=" + idEvaluationPenalitePersonnel + '}';
+        return "EvaluationPenalitePersonnel{" + "idEvaluationPenalitePersonnel=" + idevaluationpenalitepersonnel + '}';
     }
 
 }

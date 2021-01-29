@@ -26,28 +26,24 @@
                     <h:panelGroup id="display">
 
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <p:outputLabel value="#{langue.personnel}" for="personnel" />
-                                    <h:selectOneMenu class="form-control"                                         
-                                                     id="personnel" value="#{evaluationPersonnelController.personnel.idpersonnel}">
-                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
-                                        <f:selectItems value="#{evaluationPersonnelController.personnels}" var="p" itemLabel="#{p.nom} #{p.prenom}" itemValue="#{p.idpersonnel}" />
-                                        <p:ajax update="grid_critere,datalist,:NotifZone,datalist_2,detail_personnel,hsp_recap_j,hsp_recap_n,display" listener="#{evaluationPersonnelController.updateEvaluationData()}"/>
-                                    </h:selectOneMenu>                                                
-                                </div>
+                            <div class="form-group col-md-6">
+                                <p:outputLabel value="#{langue.personnel}" for="personnel" />
+                                <h:selectOneMenu class="form-control" id="personnel"                                        
+                                                 value="#{evaluationPersonnelController.personnel.idpersonnel}">
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                    <f:selectItems value="#{evaluationPersonnelController.personnels}" var="p" itemLabel="#{p.nom} #{p.prenom}" itemValue="#{p.idpersonnel}" />
+                                    <p:ajax update="display,:NotifZone" listener="#{evaluationPersonnelController.updateEvaluationData()}"/>
+                                </h:selectOneMenu>                                                
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <p:outputLabel value="#{langue.periode}" for="periode" />
-                                    <h:selectOneMenu class="form-control"                                         
-                                                     id="periode" value="#{evaluationPersonnelController.sousperiode.idsousperiode}">
-                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
-                                        <f:selectItems value="#{evaluationPersonnelController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
-                                        <p:ajax update="grid_critere,datalist,:NotifZone,datalist_2,detail_personnel,hsp_recap_j,,hsp_recap_n,display" listener="#{evaluationPersonnelController.updateEvaluationData()}"/>
-                                    </h:selectOneMenu>                                                
-                                </div>
+                            <div class="form-group col-md-6">
+                                <p:outputLabel value="#{langue.periode}" for="periode" />
+                                <h:selectOneMenu class="form-control" id="periode"                                        
+                                                 value="#{evaluationPersonnelController.sousperiode.idsousperiode}">
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                    <f:selectItems value="#{evaluationPersonnelController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
+                                    <p:ajax update="display,:NotifZone" listener="#{evaluationPersonnelController.updateEvaluationData()}"/>
+                                </h:selectOneMenu>                                                
                             </div>
                         </div>
 
@@ -63,29 +59,30 @@
                         <p:commandButton                            
                             value="#{langue['common.ajouter']}"
                             actionListener="#{evaluationPersonnelController.addCritereToTable()}"
-                            update="datalist,datalist_2,grid_critere" icon="ui-icon-plus" />
+                            update="datalist_pi,datalist_prime_res_qnt_dept,grid_critere" icon="ui-icon-plus" />
 
                         <p:separator />
                         <h:outputText value="I. CRITERES DE PERFORMANCE INDIVIDUELLE DU PERSONNEL" style="font-size: 20px ; color: red" />
                         <p:separator />
 
                         <div class="row" jsf:id="detail_personnel">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Catégorie</label>
-                                    <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.personnel.idcategorie.nom}" />
-                                </div>
+                            <div class="form-group col-md-3">
+                                <label>#{langue.categorie}</label>
+                                <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.personnel.idcategorie.nom}" />
                             </div>
 
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Point Max</label>
-                                    <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.parametragecritere.point}" />
-                                </div>
+                            <div class="form-group col-md-3">
+                                <label>#{langue.service}</label>
+                                <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.personnel.idservice.nom}" />
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label>#{langue.responsabilite}</label>
+                                <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.personnel.idresponsabilite.nom}" />
                             </div>
                         </div>
 
-                        <p:dataTable id="datalist" value="#{evaluationPersonnelController.evaluationpersonnels}" var="item"                             
+                        <p:dataTable id="datalist_pi" value="#{evaluationPersonnelController.evaluationpersonnels}" var="item"                             
                                      paginator="true"
                                      editable="true"
                                      editMode="cell"
@@ -102,21 +99,25 @@
                                 <h:outputText class="hardBreak" value="#{item.iddetailsc.idsouscritere.nom}"/> 
                             </p:column>
 
-                            <p:column class="hardBreak" style="width: 5%;" >
+                            <p:column class="hardBreak" style="width: 6%; text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.point_max}"/>
                                 </f:facet>
-                                <h:outputText class="hardBreak" value="#{item.iddetailsc.pointMax}"/> 
+                                <h:outputText class="hardBreak" value="#{item.iddetailsc.pointMax}">
+                                    <f:convertNumber />
+                                </h:outputText> 
                             </p:column>
 
-                            <p:column class="hardBreak" style="width: 5%;" >
+                            <p:column class="hardBreak" style="width: 6%; text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.note}"/>
                                 </f:facet>
-                                <h:outputText class="hardBreak" value="#{item.note}"/> 
+                                <h:outputText class="hardBreak" value="#{item.note}">
+                                    <f:convertNumber />
+                                </h:outputText>
                             </p:column>
 
-                            <p:column style="width: 35%; text-align:left" headerText="#{langue.reponse}">
+                            <p:column style="width: 36%; text-align:left" headerText="#{langue.reponse}">
                                 <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText class="hardBreak" value="#{item.idelementreponse.nom}" />
@@ -124,26 +125,26 @@
                                     <f:facet name="input">
                                         <p:selectOneMenu value="#{item.idelementreponse}" converter="elementreponseConverter">
                                             <f:selectItems value="#{item.iddetailsc.idsouscritere.elementreponseCollection}" var="obj" itemLabel="#{obj.nom}" itemValue="#{obj}" />
-                                            <p:ajax update="datalist,:EvaluationCreateForm:resultat_pi,:EvaluationCreateForm:score_pi" listener="#{evaluationPersonnelController.setResponse('1' , index , evaluationPersonnelController.evaluationpersonnels)}" />
+                                            <p:ajax update="datalist_pi,:EvaluationCreateForm:detail_pi,:EvaluationCreateForm:id_total_incitation" listener="#{evaluationPersonnelController.setResponse('1' , index , evaluationPersonnelController.evaluationpersonnels)}" />
                                         </p:selectOneMenu>
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
 
-                            <p:column style="width: 10%;text-align: center">
+                            <p:column style="width: 7%;text-align: center">
                                 <f:facet name="header">
                                     <h:outputText value="Action"/>
                                 </f:facet>
-                                <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist,:EvaluationCreateForm:grid_critere,:EvaluationCreateForm:resultat_pi,:EvaluationCreateForm:score_pi" event="click" listener="#{evaluationPersonnelController.removeCritere('1', item, evaluationPersonnelController.evaluationpersonnels)}" />
+                                <p:commandButton disabled="true" class="btn btn-sm btn-danger" icon="ui-icon-trash">
+                                    <p:ajax update="datalist_pi,:EvaluationCreateForm:grid_critere,:EvaluationCreateForm:detail_pi,,:EvaluationCreateForm:id_total_incitation" event="click" listener="#{evaluationPersonnelController.removeCritere('1', item, evaluationPersonnelController.evaluationpersonnels)}" />
                                 </p:commandButton>                            
                             </p:column>
 
-                            <p:columnGroup type="footer" id="footer_tab">
+                            <p:columnGroup type="footer">
                                 <p:row>
-                                    <p:column style="text-align:right" footerText="Totaux" />
-                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.totalPointPi}"/>
-                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.score}"/>   
+                                    <p:column style="text-align:right" footerText="#{langue.totaux}" />
+                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.totalPointPi}" />
+                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.notePi}" />   
                                     <p:column colspan="2" style="text-align:center" footerText=" / " /> 
                                 </p:row>
                             </p:columnGroup>
@@ -151,127 +152,143 @@
                         </p:dataTable>
 
                         <p:separator />
-                        <h:outputText id="score_pi" value="Score : #{((evaluationPersonnelController.score / evaluationPersonnelController.totalPointPi) * 100)} % ; &nbsp;" style="font-size: 20px;color: red" />
-                        <h:outputText id="resultat_pi" value="Point : #{(((evaluationPersonnelController.score / evaluationPersonnelController.totalPointPi) * 100) * evaluationPersonnelController.parametragecritere.point) / 100} / #{evaluationPersonnelController.parametragecritere.point}" style="font-size: 20px;color: red" />
 
-                        <p:separator />
+                        <div class="row" jsf:id="detail_pi">
+                            <div class="form-group col-md-1">
+                                <label>#{langue.point_max}</label>
+                                <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.parametragecritere.point}" />
+                            </div>
+
+                            <div class="form-group col-md-2">
+                                <label>#{langue.score_obtenu} (%)</label>
+                                <h:inputText id="score_pi" class="form-control" value="#{evaluationPersonnelController.scorePi}" readonly="true" required="false" />
+                            </div>
+
+                            <div class="form-group col-md-1">
+                                <label>#{langue.points}</label>
+                                <h:inputText id="point_pi" class="form-control" value="#{evaluationPersonnelController.pointPi}" readonly="true" required="false" />
+                            </div>
+                        </div>
+
+                        <p:separator style="width: 70%;margin-left: 0%" />
                         <h:outputText value="II. PRIME POUR LES HEURES SUPPLEMENTAIRES" style="font-size: 20px ; color: red" />
-                        <p:separator />
+                        <p:separator style="width: 70%;margin-left: 0%" />
 
-                        <div class="row" jsf:id="hsp_recap_j">
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Coef de jour</label>
-                                    <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.evaluationheuresupp.coefjour}" />
-                                </div>
+                        <div class="row" jsf:id="prime_hs_detail_j">
+                            <div class="form-group col-md-2">
+                                <label>Coef de jour</label>
+                                <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.evaluationheuresupp.coefjour}" />
                             </div>
 
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Nombre d'heure</label>
-                                    <h:inputText class="form-control" value="#{evaluationPersonnelController.evaluationheuresupp.nbheurejour}" >
-                                        <p:ajax update="hsp_jour_tp" listener="#{evaluationPersonnelController.calculHs('1' , 'jour')}" />
-                                    </h:inputText>
-                                </div>
+                            <div class="form-group col-md-2">
+                                <label>Nombre d'heure</label>
+                                <h:inputText class="form-control" value="#{evaluationPersonnelController.evaluationheuresupp.nbheurejour}" >
+                                    <p:ajax update="hsp_jour_tp,:EvaluationCreateForm:id_total_incitation" listener="#{evaluationPersonnelController.calculHs('1' , 'jour')}" />
+                                </h:inputText>
                             </div>
 
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Total point du jour</label>
-                                    <h:inputText class="form-control" id="hsp_jour_tp" disabled="true" value="#{evaluationPersonnelController.evaluationheuresupp.pointjour}" />
-                                </div>
+                            <div class="form-group col-md-2">
+                                <label>Total point du jour</label>
+                                <h:inputText class="form-control" id="hsp_jour_tp" disabled="true" value="#{evaluationPersonnelController.evaluationheuresupp.pointjour}" />
                             </div>
                         </div>
 
-                        <div class="row" jsf:id="hsp_recap_n">
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Coef de nuit</label>
-                                    <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.evaluationheuresupp.coefnuit}" />
-                                </div>
+                        <div class="row" jsf:id="prime_hs_detail_n">
+                            <div class="form-group col-md-2">
+                                <label>Coef de nuit</label>
+                                <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.evaluationheuresupp.coefnuit}" />
                             </div>
 
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Nombre d'heure</label>
-                                    <h:inputText class="form-control" value="#{evaluationPersonnelController.evaluationheuresupp.nbheurenuit}" >
-                                        <p:ajax update="hsp_nuit_tp" listener="#{evaluationPersonnelController.calculHs('1' , 'nuit')}" />
-                                    </h:inputText>
-                                </div>
+                            <div class="form-group col-md-2">
+                                <label>Nombre d'heure</label>
+                                <h:inputText class="form-control" value="#{evaluationPersonnelController.evaluationheuresupp.nbheurenuit}" >
+                                    <p:ajax update="hsp_nuit_tp,:EvaluationCreateForm:id_total_incitation" listener="#{evaluationPersonnelController.calculHs('1' , 'nuit')}" />
+                                </h:inputText>
                             </div>
 
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Total point de nuit</label>
-                                    <h:inputText class="form-control" id="hsp_nuit_tp" disabled="true" value="#{evaluationPersonnelController.evaluationheuresupp.pointnuit}" />
-                                </div>
+                            <div class="form-group col-md-2">
+                                <label>Total point de nuit</label>
+                                <h:inputText class="form-control" id="hsp_nuit_tp" disabled="true" value="#{evaluationPersonnelController.evaluationheuresupp.pointnuit}" />
                             </div>
                         </div>
 
-                        <p:separator />
+                        <p:separator style="width: 70%;margin-left: 0%" />
                         <h:outputText value="III - PRIME DE RESPONSABILITE" style="font-size: 20px;color: red" />
-                        <p:separator />
-                        <h:outputText value="RESPONSABILITE : #{evaluationPersonnelController.personnel.idresponsabilite.nom}" style="font-size: 20px" />
-                        <p:separator />
+                        <p:separator style="width: 70%;margin-left: 0%" />
 
-                        <div class="row">
-                            <div class="form-group col-md-2">
-                                <label>Point Max</label>
-                                <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.critereresponsabilite.point}" />
+                        <div class="row" jsf:id="detail_prime_respo">
+                            <div class="form-group col-md-1">
+                                <label>#{langue.point_max}</label>
+                                <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.evaluationresponsabilite.pointMax}" />
                             </div>
 
                             <div class="form-group col-md-2">
+                                <label>#{langue.score_obtenu} (%)</label>
+                                <h:inputText class="form-control" value="#{evaluationPersonnelController.evaluationresponsabilite.ratio}" >
+                                    <p:ajax update="id_point_responsabilite,:EvaluationCreateForm:id_total_incitation" listener="#{evaluationPersonnelController.updatePointResponsabilite()}" />
+                                </h:inputText>
+                            </div>
+
+                            <div class="form-group col-md-1">
                                 <label>Point</label>
-                                <h:inputText class="form-control" value="#{evaluationPersonnelController.evaluationresponsabilite.point}" />
+                                <h:inputText class="form-control" id="id_point_responsabilite" disabled="true"   value="#{evaluationPersonnelController.evaluationresponsabilite.point}" />
                             </div>
                         </div>
 
-                        <p:separator />
+                        <p:separator style="width: 70%;margin-left: 0%" />
                         <h:outputText value="IV - BONUS POUR NE PAS DETOURNER LES PATIENTS POUR LE PRIVE" style="font-size: 20px ; color: red" />
-                        <p:separator />
-                        <div class="row">
-                            <div class="form-group col-md-2">
-                                <label>Point Max</label>
-                                <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.parametragecritereBpp.point}" />
+                        <p:separator style="width: 70%;margin-left: 0%" />
+                        
+                        <div class="row" jsf:id="detail_bonus_pp">
+                            <div class="form-group col-md-1">
+                                <label>#{langue.point_max}</label>
+                                <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.evaluationbonuspp.pointMax}" />
                             </div>
 
                             <div class="form-group col-md-2">
-                                <label>Point Max</label>
-                                <h:inputText class="form-control"  value="#{evaluationPersonnelController.evaluationbonuspp.point}" />
+                                <label>#{langue.score_obtenu} (%)</label>
+                                <h:inputText class="form-control" value="#{evaluationPersonnelController.evaluationbonuspp.ratio}" >
+                                    <p:ajax update="id_point_pratique_p,:EvaluationCreateForm:id_total_incitation" listener="#{evaluationPersonnelController.updatePointPratiquePrivee()}" />
+                                </h:inputText>
+                            </div>
+
+                            <div class="form-group col-md-1">
+                                <label>#{langue.points}</label>
+                                <h:inputText class="form-control" id="id_point_pratique_p" disabled="true"  value="#{evaluationPersonnelController.evaluationbonuspp.point}" />
                             </div>
                         </div>
 
-                        <p:separator />
+                        <p:separator style="width: 70%;margin-left: 0%" />
                         <h:outputText value="V - PRIME DE RESULTAT QUANTITATIF DU DEPARTEMENT" style="font-size: 20px;color: red" />
-                        <p:separator />
+                        <p:separator style="width: 70%;margin-left: 0%" />
 
-                        <p:dataTable id="datalist_2" value="#{evaluationPersonnelController.evaluationrqntifdepts}" var="objrqd"                             
+                        <p:dataTable id="datalist_prime_res_qnt_dept" value="#{evaluationPersonnelController.evaluationrqntifdepts}" var="objrqd"                             
                                      paginator="true"
                                      editable="true"
                                      editMode="cell"
                                      rows="#{evaluationPersonnelController.evaluationrqntifdepts.size()}"
                                      rowsPerPageTemplate="10,20,30,40,50"
-                                     style="margin-top: 1%;font-size: 15px;width: 80%"
+                                     style="font-size: 14px;width: 70%"
                                      rowIndexVar="index"
                                      emptyMessage="#{langue['common.tableau_vide']}">
 
-                            <p:column class="hardBreak" style="width: 60%;" >
+                            <p:column class="hardBreak" style="width: 73%;" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.indicateur}"/>
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{objrqd.idcible.idindicateur.nom}"/> 
                             </p:column>
 
-                            <p:column class="hardBreak" style="width: 15%;" >
+                            <p:column class="hardBreak" style="width: 10%;text-align: right" >
                                 <f:facet name="header">
-                                    <h:outputText value="#{langue.cible_dept}"/>
+                                    <h:outputText value="#{langue.cible_dept}" />
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{objrqd.cible}">
                                     <f:convertNumber />
                                 </h:outputText> 
                             </p:column>
 
-                            <p:column style="width: 15%; text-align:center" headerText="#{langue.realisation}">
+                            <p:column style="width: 10%; text-align:right" headerText="#{langue.realisation}">
                                 <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText value="#{objrqd.realisation}" >
@@ -280,172 +297,153 @@
                                     </f:facet>
                                     <f:facet name="input">
                                         <p:inputText required="true" value="#{objrqd.realisation}">                                             
-                                            <p:ajax update="datalist_2,:EvaluationCreateForm:prqntif_dept_result_box" listener="#{evaluationPersonnelController.calculPrimeQtif('1')}" />
+                                            <p:ajax update="datalist_prime_res_qnt_dept,:EvaluationCreateForm:detail_prime_qnt_dept,:EvaluationCreateForm:id_total_incitation" listener="#{evaluationPersonnelController.calculPrimeQtif('1')}" />
                                         </p:inputText>
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
 
-                            <p:column class="hardBreak" style="width: 10%;" >
+                            <p:column class="hardBreak" style="width: 7%;text-align: right" >
                                 <f:facet name="header">
-                                    <h:outputText value="#{langue.ratio}"/>
+                                    <h:outputText value="%"/>
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{objrqd.ratio}">
                                     <f:convertNumber pattern="0.00" />
                                 </h:outputText> 
                             </p:column>
 
-                            <p:columnGroup type="footer" id="footer_tab_2">
+                            <p:columnGroup type="footer">
                                 <p:row>
-                                    <p:column style="text-align:right" footerText="Totaux" />                                                                          
-                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.ciblePrqnt}"/> 
-                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.realisationPrqnt}"/>
-                                    <p:column style="text-align:center" footerText="#{evaluationPersonnelController.ratioPrqnt}"/> 
+                                    <p:column style="text-align:right" footerText="#{langue.totaux}" />                                                                          
+                                    <p:column style="text-align:right" footerText="#{evaluationPersonnelController.ciblePrqnt}"/> 
+                                    <p:column style="text-align:right" footerText="#{evaluationPersonnelController.realisationPrqnt}"/>
+                                    <p:column style="text-align:right" footerText="#{evaluationPersonnelController.ratioPrqnt}"/> 
                                 </p:row>
                             </p:columnGroup>
                         </p:dataTable>
 
-                        <br/>
-                        <div class="row" jsf:id="prqntif_dept_result_box">
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Point Max</label>
-                                    <h:inputText disabled="true" class="form-control" value="#{evaluationPersonnelController.parametragecriterePrqn.point}" />
-                                </div>
+                        <div class="row" jsf:id="detail_prime_qnt_dept">
+                            <div class="form-group col-md-1">        
+                                <label>#{langue.point_max}</label>
+                                <h:inputText disabled="true" class="form-control" value="#{evaluationPersonnelController.parametragecriterePrqn.point}" />
                             </div>
 
-                            <div class=" col-md-1">
-                                <div class="form-group">
-                                    <label>% Obtenu</label>
-                                    <h:inputText disabled="true" class="form-control" value="#{evaluationPersonnelController.note.poucentageRQntif}" >
-                                        <f:convertNumber pattern="0.00" />
-                                    </h:inputText>
-                                </div>
+                            <div class="form-group col-md-1">
+                                <label>% Obtenu</label>
+                                <h:inputText disabled="true" class="form-control" value="#{evaluationPersonnelController.note.poucentageRQntif}" >
+                                    <f:convertNumber pattern="0.00" />
+                                </h:inputText>
                             </div>
 
-                            <div class="col-md-1">
-                                <div class="form-group">
-                                    <label>Score</label>
-                                    <h:inputText disabled="true" class="form-control" value="#{evaluationPersonnelController.note.pointRqntif}" >
-                                        <f:convertNumber pattern="0.00" />
-                                    </h:inputText>
-                                </div>
+                            <div class="form-group col-md-1">
+                                <label>#{langue.score}</label>
+                                <h:inputText disabled="true" class="form-control" value="#{evaluationPersonnelController.note.pointRqntif}" >
+                                    <f:convertNumber pattern="0.00" />
+                                </h:inputText>
                             </div>
                         </div>
 
-                        <p:separator/>
+                        <p:separator style="width: 70%;margin-left: 0%" />
                         <h:outputText value="VI - Prime de Résultat Qualitatif du Département" style="font-size: 20px;color: red" />
-                        <p:separator />
+                        <p:separator style="width: 70%;margin-left: 0%" />
 
                         <div class="row">
                             <div class="form-group col-md-2">
-                                <label>Point Max </label>
+                                <label>#{langue.point_max}</label>
                                 <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.parametragecriterePrq.point}" >
                                     <f:convertNumber />
                                 </h:inputText>
                             </div>
 
                             <div class="form-group col-md-2">
-                                <label>Score (%)</label>
+                                <label>#{langue.score} (%)</label>
                                 <h:inputText disabled="true" class="form-control"  value="#{evaluationPersonnelController.evaluationRPrimeQltifDept.pourcentage}" >
                                     <f:convertNumber />
                                 </h:inputText>
                             </div>
 
                             <div class="form-group col-md-2">
-                                <label>Point du personnel</label>
+                                <label>#{langue.point_obtenu}</label>
                                 <h:inputText disabled="true" class="form-control"  value="#{evaluationPersonnelController.evaluationRPrimeQltifPersonnel.point}" >
                                     <f:convertNumber pattern="0.00" />
                                 </h:inputText>
                             </div>
                         </div>
 
-                        <p:separator />
+                        <p:separator style="width: 70%;margin-left: 0%" />
                         <h:outputText value="VII - Bonus du revenu du Département" style="font-size: 20px;color: red" />
-                        <p:separator />
+                        <p:separator style="width: 70%;margin-left: 0%" />
 
                         <div class="row">
                             <div class="form-group col-md-2">
-                                <label>Point Max </label>
+                                <label>#{langue.point_max}</label>
                                 <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.parametragecritereBrd.point}" >
                                     <f:convertNumber />
                                 </h:inputText>
                             </div>
 
                             <div class="form-group col-md-2">
-                                <label>Score (%)</label>
+                                <label>#{langue.score} (%)</label>
                                 <h:inputText disabled="true" class="form-control"  value="#{evaluationPersonnelController.cibleBrd.ratio}" >
                                     <f:convertNumber pattern="0.00" />
                                 </h:inputText>
                             </div>
 
                             <div class="form-group col-md-2">
-                                <label>Point du personnel</label>
+                                <label>#{langue.point_obtenu}</label>
                                 <h:inputText disabled="true" class="form-control"  value="#{evaluationPersonnelController.evaluationBonusRDeptPersonnel.point}" >
                                     <f:convertNumber pattern="0.00" />
                                 </h:inputText>
                             </div>
                         </div>
 
-                        <p:separator />
+                        <p:separator style="width: 70%;margin-left: 0%" />
                         <h:outputText value="VIII - CRITERES NEGATIFS D'INCITATION - HEURES PERDUES" style="font-size: 20px ; color: red" />
-                        <p:separator />
+                        <p:separator style="width: 70%;margin-left: 0%" />
 
-                        <div class="row" jsf:id="hsn_recap_j">
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Coef de jour</label>
-                                    <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.evaluationheuresuppN.coefjour}" />
-                                </div>
+                        <div class="row" jsf:id="cni_hp_detail_j">
+                            <div class="form-group col-md-2">
+                                <label>Coef de jour</label>
+                                <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.evaluationheuresuppN.coefjour}" />
                             </div>
 
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Nombre d'heure</label>
-                                    <h:inputText class="form-control" value="#{evaluationPersonnelController.evaluationheuresuppN.nbheurejour}" >
-                                        <p:ajax update="hsn_jour_tp" listener="#{evaluationPersonnelController.calculHs('2' , 'jour')}" />
-                                    </h:inputText>
-                                </div>
+                            <div class="form-group col-md-2">
+                                <label>Nombre d'heure</label>
+                                <h:inputText class="form-control" value="#{evaluationPersonnelController.evaluationheuresuppN.nbheurejour}" >
+                                    <p:ajax update="hsn_jour_tp,:EvaluationCreateForm:id_total_incitation" listener="#{evaluationPersonnelController.calculHs('2' , 'jour')}" />
+                                </h:inputText>
                             </div>
 
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Total point du jour</label>
-                                    <h:inputText class="form-control" id="hsn_jour_tp" disabled="true" value="#{evaluationPersonnelController.evaluationheuresuppN.pointjour}" />
-                                </div>
+                            <div class="form-group col-md-2">
+                                <label>Total point du jour</label>
+                                <h:inputText class="form-control" id="hsn_jour_tp" disabled="true" value="#{evaluationPersonnelController.evaluationheuresuppN.pointjour}" />
                             </div>
                         </div>
 
-                        <div class="row" jsf:id="hsn_recap_n">
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Coef de nuit</label>
-                                    <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.evaluationheuresuppN.coefnuit}" />
-                                </div>
+                        <div class="row" jsf:id="cni_hp_detail_n">
+                            <div class="form-group col-md-2">
+                                <label>Coef de nuit</label>
+                                <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.evaluationheuresuppN.coefnuit}" />
                             </div>
 
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Nombre d'heure</label>
-                                    <h:inputText class="form-control" value="#{evaluationPersonnelController.evaluationheuresuppN.nbheurenuit}" >
-                                        <p:ajax update="hsn_nuit_tp" listener="#{evaluationPersonnelController.calculHs('2' , 'nuit')}" />
-                                    </h:inputText>
-                                </div>
+                            <div class="form-group col-md-2">
+                                <label>Nombre d'heure</label>
+                                <h:inputText class="form-control" value="#{evaluationPersonnelController.evaluationheuresuppN.nbheurenuit}" >
+                                    <p:ajax update="hsn_nuit_tp,:EvaluationCreateForm:id_total_incitation" listener="#{evaluationPersonnelController.calculHs('2' , 'nuit')}" />
+                                </h:inputText>
                             </div>
 
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Total point de nuit</label>
-                                    <h:inputText class="form-control" id="hsn_nuit_tp" disabled="true" value="#{evaluationPersonnelController.evaluationheuresuppN.pointnuit}" />
-                                </div>
+                            <div class="form-group col-md-2">
+                                <label>Total point de nuit</label>
+                                <h:inputText class="form-control" id="hsn_nuit_tp" disabled="true" value="#{evaluationPersonnelController.evaluationheuresuppN.pointnuit}" />
                             </div>
                         </div>
 
-                        <p:separator/>
+                        <p:separator style="width: 70%;margin-left: 0%"/>
                         <h:outputText value="IX - PENALITE DE DEPARTEMENT" style="font-size: 20px ; color: red" />
-                        <p:separator />
+                        <p:separator style="width: 70%;margin-left: 0%" />
 
-                        <div class="row">
+                        <div class="row" jsf:id="detail_cni_pdept">
                             <div class="form-group col-md-2">
                                 <label>#{langue.pourcentage} (%)</label>
                                 <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.evaluationPenaliteDept.valeur}" />
@@ -457,23 +455,75 @@
                             </div>
                         </div>
 
-                        <p:separator/>
+                        <p:separator style="width: 70%;margin-left: 0%" />
                         <h:outputText value="X - PENALITE INDIVIDUELLE" style="font-size: 20px ; color: red" />
-                        <p:separator />
+                        <p:separator style="width: 70%;margin-left: 0%" />
 
-                        <div class="row">
+                        <p:dataTable id="datalist_penalite" value="#{evaluationPersonnelController.lignePenalitePersonnels}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="15"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px;width: 70%"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                            <p:column class="hardBreak" style="width: 73%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.liste_penalite}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.idPenalite.nom}"/> 
+                            </p:column>
+
+                            <p:column class="hardBreak" style="width: 10%;text-align:center" >
+                                <f:facet name="header">
+                                    <h:outputText value=" % "/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.valeur}"/> 
+                            </p:column>
+
+                            <p:column class="hardBreak" style="width: 7%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="Etat"/>
+                                </f:facet>
+                                <h:selectBooleanCheckbox value="#{item.etat}">
+                                    <p:ajax update="datalist_penalite,:EvaluationCreateForm:detail_cni_pi,:EvaluationCreateForm:id_total_incitation" listener="#{evaluationPersonnelController.updateValue(item)}" />
+                                </h:selectBooleanCheckbox>
+                            </p:column>
+
+                            <p:column style="width: 10%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue['common.action']}"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-trash">
+                                    <p:ajax update="datalist_penalite,:EvaluationCreateForm:detail_cni_pi,:EvaluationCreateForm:id_total_incitation" event="click" listener="#{evaluationPersonnelController.removeLignePenalite(item)}" />
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:separator style="width: 70%;margin-left: 0%" />
+
+                        <div jsf:id="detail_cni_pi" class="row">
                             <div class="form-group col-md-2">
                                 <label>#{langue.pourcentage} (%)</label>
-                                <h:inputText class="form-control" value="#{evaluationPersonnelController.note.penalitePersonnel}" />
+                                <h:inputText class="form-control" id="id_percentage_cni_pi" value="#{evaluationPersonnelController.evaluationPenalitePersonnel.score}" />
                             </div>
 
                             <div class="form-group col-md-2">
                                 <label>Point Soustrait</label>
-                                <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.note.pointPenalitePersonnel}" />
+                                <h:inputText class="form-control" id="id_ptsoustrait_cni_pi" disabled="true" value="#{evaluationPersonnelController.note.pointPenalitePersonnel}" />
                             </div>
                         </div>
-
-                        <p:separator />
+                        
+                        <p:separator style="width: 70%;margin-left: 0%" />
+                        
+                        <div class="row" jsf:id="id_total_incitation">
+                            <div class="col-md-3"><span> Total Incitation Positif : #{evaluationPersonnelController.totalPIncitationPositif}</span> </div>
+                            <div class="col-md-3"><span> Total Incitation Négatif : #{evaluationPersonnelController.totalPIncitationNegatif}</span> </div>
+                        </div>
+                        <p:separator style="width: 70%;margin-left: 0%" />
 
                         <center>
                             <p:commandButton value="#{langue['common.fermer']}" 
@@ -481,7 +531,7 @@
                                              icon="ui-icon-close"/>
 
                             <p:commandButton icon="ui-icon-save" actionListener="#{evaluationPersonnelController.save()}" value="#{langue['common.enregistrer']}" 
-                                             update="display,:EvaluationListerForm:datalist,:EvaluationListerForm:growl,error_msg">
+                                             update="display,:EvaluationListerForm:growl,error_msg">
                                 <p:confirm header="#{langue['notification.confirmation']}" 
                                            message="#{langue['notification.confirmation_enregistrement']}" 
                                            icon="ui-icon-alert"/>

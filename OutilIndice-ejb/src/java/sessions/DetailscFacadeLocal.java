@@ -34,14 +34,10 @@ public interface DetailscFacadeLocal {
 
     List<Detailsc> findByIdStructure(long idStructure);
 
-    List<Detailsc> findByIdStructure(long idStructure, boolean personnel);
-
     List<Detailsc> findByIdStructureIdCritere(long idStructure, int idCritere);
 
     List<Detailsc> findByIdStructure(long idStructure, int idCategorie);
 
     List<Detailsc> findByIdStructurePersonnel(long idStructure, int idCategorie);
-
-    List<Detailsc> findByIdStructurePersonnel(long idStructure, int idCategorie, boolean personnel);
 
 }
