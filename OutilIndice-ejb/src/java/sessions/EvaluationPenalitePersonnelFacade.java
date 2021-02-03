@@ -18,6 +18,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class EvaluationPenalitePersonnelFacade extends AbstractFacade<EvaluationPenalitePersonnel> implements EvaluationPenalitePersonnelFacadeLocal {
+
     @PersistenceContext(unitName = "OutilIndice-ejbPU")
     private EntityManager em;
 
@@ -29,7 +30,7 @@ public class EvaluationPenalitePersonnelFacade extends AbstractFacade<Evaluation
     public EvaluationPenalitePersonnelFacade() {
         super(EvaluationPenalitePersonnel.class);
     }
-    
+
     @Override
     public Long nextId() {
         try {
@@ -62,5 +63,12 @@ public class EvaluationPenalitePersonnelFacade extends AbstractFacade<Evaluation
         query.setParameter("idService", idService).setParameter("idPeriode", idPeriode).setParameter("idSousPeriode", idSousPeriode);
         return query.getResultList();
     }
-    
+
+    @Override
+    public void deleteByIdNote(Long idNote) {
+        Query query = em.createQuery("DELETE FROM EvaluationPenalitePersonnel e WHERE e.idnote.idnote=:idNote");
+        query.setParameter("idNote", idNote);
+        query.executeUpdate();
+    }
+
 }

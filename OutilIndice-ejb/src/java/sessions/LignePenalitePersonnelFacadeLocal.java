@@ -36,4 +36,6 @@ public interface LignePenalitePersonnelFacadeLocal {
 
     void deleteByIdEvaluation(long idEvaluation);
 
+    void deleteByIdNote(Long idNote);
+
 }

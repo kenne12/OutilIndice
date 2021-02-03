@@ -34,4 +34,6 @@ public interface EvaluationresponsabiliteFacadeLocal {
 
     Evaluationresponsabilite findByIdPersonnel(int idPeriode, int idSousPeriode, long idPersonnel, int idCritere);
 
+    void deleteByIdNote(Long idNote);
+
 }

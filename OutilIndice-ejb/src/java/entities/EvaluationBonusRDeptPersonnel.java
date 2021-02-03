@@ -33,6 +33,9 @@ public class EvaluationBonusRDeptPersonnel implements Serializable {
     @JoinColumn(name = "idcible", referencedColumnName = "idcible")
     @ManyToOne(fetch = FetchType.LAZY)
     private Cible idcible;
+    @JoinColumn(name = "idnote", referencedColumnName = "idnote")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Note idnote;
 
     public EvaluationBonusRDeptPersonnel() {
     }
@@ -71,6 +74,14 @@ public class EvaluationBonusRDeptPersonnel implements Serializable {
 
     public void setIdcible(Cible idcible) {
         this.idcible = idcible;
+    }
+
+    public Note getIdnote() {
+        return idnote;
+    }
+
+    public void setIdnote(Note idnote) {
+        this.idnote = idnote;
     }
 
     @Override

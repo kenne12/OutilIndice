@@ -43,6 +43,9 @@ public class Evaluationresponsabilite implements Serializable {
     @JoinColumn(name = "idcritere", referencedColumnName = "idcritere")
     @ManyToOne(fetch = FetchType.LAZY)
     private Critere idcritere;
+    @JoinColumn(name = "idnote", referencedColumnName = "idnote")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Note idnote;
 
     public Evaluationresponsabilite() {
     }
@@ -113,6 +116,14 @@ public class Evaluationresponsabilite implements Serializable {
 
     public void setIdcritere(Critere idcritere) {
         this.idcritere = idcritere;
+    }
+
+    public Note getIdnote() {
+        return idnote;
+    }
+
+    public void setIdnote(Note idnote) {
+        this.idnote = idnote;
     }
 
     @Override

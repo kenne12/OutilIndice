@@ -35,7 +35,7 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label>Sous - Periode</label>                               
+                                    <label>#{langue.sous_periode}</label>                               
                                     <h:selectOneMenu class="form-control" value="#{evaluationPersonnelController.sousperiode.idsousperiode}">
                                         <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
                                         <f:selectItems value="#{evaluationPersonnelController.sousperiodes}" var="item" itemLabel="#{item.nom}" itemValue="#{item.idsousperiode}" />
@@ -50,10 +50,11 @@
                             <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>                                        
-                                        <th style="width: 30%">#{langue.personnel}</th>
-                                        <th style="width: 10%">#{langue.note}</th>
-                                        <th style="width: 10%">#{langue.note} Finale </th>
-                                        <th style="width: 10%">#{langue['common.action']}</th>
+                                        <th style="width: 55%">#{langue.personnel}</th>
+                                        <th style="width: 10%">Incitation + </th>
+                                        <th style="width: 10%">Incitation - </th>
+                                        <th style="width: 10%">Point Total</th>
+                                        <th style="width: 15%">#{langue['common.action']}</th>
                                     </tr>
                                 </thead>
 
@@ -61,9 +62,9 @@
                                     <ui:repeat value="#{evaluationPersonnelController.notes}" var="item">
                                         <tr>
                                             <td>#{item.idpersonnel.nom} #{item.idpersonnel.prenom}</td>
-                                            <td>#{item.notepersonnelle}</td>
-    
-                                            <td>#{item.notefinale}</td>
+                                            <td>#{item.incitationPositif}</td>
+                                            <td>#{item.incitationNegatif}</td>
+                                            <td>#{item.totalPoint}</td>
                                             <td>                                        
                                                 <p:commandButton icon="ui-icon-pencil" update=":EvaluationCreateForm"
                                                                  class="btn btn-success btn-sm"

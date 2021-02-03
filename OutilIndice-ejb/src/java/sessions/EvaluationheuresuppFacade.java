@@ -57,5 +57,12 @@ public class EvaluationheuresuppFacade extends AbstractFacade<Evaluationheuresup
         }
         return null;
     }
+    
+    @Override
+    public void deleteByIdNote(Long idNote) {
+        Query query = em.createQuery("DELETE FROM Evaluationheuresupp e WHERE e.idnote.idnote=:idNote");
+        query.setParameter("idNote", idNote);
+        query.executeUpdate();
+    }
 
 }

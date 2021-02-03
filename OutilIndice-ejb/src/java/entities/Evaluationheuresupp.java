@@ -44,6 +44,9 @@ public class Evaluationheuresupp implements Serializable {
     @JoinColumn(name = "idcritere", referencedColumnName = "idcritere")
     @ManyToOne(fetch = FetchType.LAZY)
     private Critere idcritere;
+    @JoinColumn(name = "idnote", referencedColumnName = "idnote")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Note idnote;
 
     public Evaluationheuresupp() {
     }
@@ -138,6 +141,14 @@ public class Evaluationheuresupp implements Serializable {
 
     public void setIdpersonnel(Personnel idpersonnel) {
         this.idpersonnel = idpersonnel;
+    }
+
+    public Note getIdnote() {
+        return idnote;
+    }
+
+    public void setIdnote(Note idnote) {
+        this.idnote = idnote;
     }
 
     @Override

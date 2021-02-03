@@ -22,7 +22,7 @@ public class Evaluationrqntifdept implements Serializable {
 
     @Id
     @Basic(optional = false)
-    private long idevaluationrqntifdept;
+    private Long idevaluationrqntifdept;
     private double cible;
     private double realisation;
     private double ratio;
@@ -32,19 +32,22 @@ public class Evaluationrqntifdept implements Serializable {
     @JoinColumn(name = "idcible", referencedColumnName = "idcible")
     @ManyToOne(fetch = FetchType.LAZY)
     private Cible idcible;
+    @JoinColumn(name = "idnote", referencedColumnName = "idnote")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Note idnote;
 
     public Evaluationrqntifdept() {
     }
 
-    public Evaluationrqntifdept(long idevaluationrqntifdept) {
+    public Evaluationrqntifdept(Long idevaluationrqntifdept) {
         this.idevaluationrqntifdept = idevaluationrqntifdept;
     }
 
-    public long getIdevaluationrqntifdept() {
+    public Long getIdevaluationrqntifdept() {
         return idevaluationrqntifdept;
     }
 
-    public void setIdevaluationrqntifdept(long idevaluationrqntifdept) {
+    public void setIdevaluationrqntifdept(Long idevaluationrqntifdept) {
         this.idevaluationrqntifdept = idevaluationrqntifdept;
     }
 
@@ -86,6 +89,14 @@ public class Evaluationrqntifdept implements Serializable {
 
     public void setIdcible(Cible idcible) {
         this.idcible = idcible;
+    }
+
+    public Note getIdnote() {
+        return idnote;
+    }
+
+    public void setIdnote(Note idnote) {
+        this.idnote = idnote;
     }
 
     @Override

@@ -34,4 +34,6 @@ public interface EvaluationbonusppFacadeLocal {
 
     Evaluationbonuspp findByIdPersonnel(int idPeriode, int idSousPeriode, long idPersonnel, int idCritere);
 
+    void deleteByIdNote(Long idNote);
+
 }

@@ -43,6 +43,10 @@ public class EvaluationPenalitePersonnel implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Sousperiode idSousperiode;
 
+    @JoinColumn(name = "idnote", referencedColumnName = "idnote")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Note idnote;
+
     public EvaluationPenalitePersonnel() {
     }
 
@@ -104,6 +108,14 @@ public class EvaluationPenalitePersonnel implements Serializable {
 
     public void setIdSousperiode(Sousperiode idSousperiode) {
         this.idSousperiode = idSousperiode;
+    }
+
+    public Note getIdnote() {
+        return idnote;
+    }
+
+    public void setIdnote(Note idnote) {
+        this.idnote = idnote;
     }
 
     @Override

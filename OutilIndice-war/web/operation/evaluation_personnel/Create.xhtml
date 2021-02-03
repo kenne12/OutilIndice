@@ -125,7 +125,7 @@
                                     <f:facet name="input">
                                         <p:selectOneMenu value="#{item.idelementreponse}" converter="elementreponseConverter">
                                             <f:selectItems value="#{item.iddetailsc.idsouscritere.elementreponseCollection}" var="obj" itemLabel="#{obj.nom}" itemValue="#{obj}" />
-                                            <p:ajax update="datalist_pi,:EvaluationCreateForm:detail_pi,:EvaluationCreateForm:id_total_incitation" listener="#{evaluationPersonnelController.setResponse('1' , index , evaluationPersonnelController.evaluationpersonnels)}" />
+                                            <p:ajax update="datalist_pi,:EvaluationCreateForm:detail_pi,:EvaluationCreateForm:id_total_incitation" listener="#{evaluationPersonnelController.setResponse(index , evaluationPersonnelController.evaluationpersonnels)}" />
                                         </p:selectOneMenu>
                                     </f:facet>
                                 </p:cellEditor>
@@ -238,7 +238,7 @@
                         <p:separator style="width: 70%;margin-left: 0%" />
                         <h:outputText value="IV - BONUS POUR NE PAS DETOURNER LES PATIENTS POUR LE PRIVE" style="font-size: 20px ; color: red" />
                         <p:separator style="width: 70%;margin-left: 0%" />
-                        
+
                         <div class="row" jsf:id="detail_bonus_pp">
                             <div class="form-group col-md-1">
                                 <label>#{langue.point_max}</label>
@@ -516,12 +516,13 @@
                                 <h:inputText class="form-control" id="id_ptsoustrait_cni_pi" disabled="true" value="#{evaluationPersonnelController.note.pointPenalitePersonnel}" />
                             </div>
                         </div>
-                        
+
                         <p:separator style="width: 70%;margin-left: 0%" />
-                        
+
                         <div class="row" jsf:id="id_total_incitation">
                             <div class="col-md-3"><span> Total Incitation Positif : #{evaluationPersonnelController.totalPIncitationPositif}</span> </div>
                             <div class="col-md-3"><span> Total Incitation Négatif : #{evaluationPersonnelController.totalPIncitationNegatif}</span> </div>
+                            <p:commandButton update=":EvaluationCreateForm:detail_cni_pi,:EvaluationCreateForm:detail_cni_pdept,id_total_incitation" class="btn btn-primary" value="#{langue.actualiser}" onclick="#{evaluationPersonnelController.calculFinal()}" />
                         </div>
                         <p:separator style="width: 70%;margin-left: 0%" />
 

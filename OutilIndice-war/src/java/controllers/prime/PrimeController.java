@@ -134,7 +134,7 @@ public class PrimeController extends AbstractPrimeController implements Serializ
                 prime.setIdperiode(SessionMBean.getPeriode());
                 prime.setIdpersonnel(n.getIdpersonnel());
                 prime.setIdsousperiode(sousperiode);
-                prime.setNotepersonnelle(n.getNotepersonnelle());
+                prime.setNotepersonnelle(n.getTotalPoint());
                 prime.setMontantglobal(montantPrime);
                 //double point = ((n.getNotepersonnelle() * poidPersonnel) / 100) + ((n.getNoteservice() * poidService) / 100);
                 //prime.setPoint(point);
@@ -167,7 +167,7 @@ public class PrimeController extends AbstractPrimeController implements Serializ
                     obj.setIdperiode(n.getIdperiode());
                     obj.setIdpersonnel(n.getIdpersonnel());
                     obj.setIdsousperiode(n.getIdsousperiode());
-                    obj.setNotepersonnelle(n.getNotepersonnelle());
+                    obj.setNotepersonnelle(n.getTotalPoint());
                     //obj.setNoteservice(n.getNoteservice());
                     primes.add(obj);
                 }

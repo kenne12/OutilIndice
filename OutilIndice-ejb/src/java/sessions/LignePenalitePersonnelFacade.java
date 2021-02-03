@@ -48,15 +48,22 @@ public class LignePenalitePersonnelFacade extends AbstractFacade<LignePenalitePe
 
     @Override
     public List<LignePenalitePersonnel> findByIdEvaluation(long idEvaluation) {
-        Query query = em.createQuery("SELECT l FROM LignePenalitePersonnel l WHERE l.idEvaluationPenalitePersonnel.idEvaluationPenalitePersonnel=:idEvaluation");
+        Query query = em.createQuery("SELECT l FROM LignePenalitePersonnel l WHERE l.idEvaluationPenalitePersonnel.idevaluationpenalitepersonnel=:idEvaluation");
         query.setParameter("idEvaluation", idEvaluation);
         return query.getResultList();
     }
 
     @Override
     public void deleteByIdEvaluation(long idEvaluation) {
-        Query query = em.createQuery("DELETE FROM LignePenalitePersonnel l WHERE l.idEvaluationPenalitePersonnel.idEvaluationPenalitePersonnel=:idEvaluation");
+        Query query = em.createQuery("DELETE FROM LignePenalitePersonnel l WHERE l.idEvaluationPenalitePersonnel.idevaluationpenalitepersonnel=:idEvaluation");
         query.setParameter("idEvaluation", idEvaluation);
+        query.executeUpdate();
+    }
+    
+    @Override
+    public void deleteByIdNote(Long idNote) {
+        Query query = em.createQuery("DELETE FROM LignePenalitePersonnel e WHERE e.idEvaluationPenalitePersonnel.idnote.idnote=:idNote");
+        query.setParameter("idNote", idNote);
         query.executeUpdate();
     }
 

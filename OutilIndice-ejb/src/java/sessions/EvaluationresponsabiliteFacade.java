@@ -58,4 +58,11 @@ public class EvaluationresponsabiliteFacade extends AbstractFacade<Evaluationres
         return null;
     }
 
+    @Override
+    public void deleteByIdNote(Long idNote) {
+        Query query = em.createQuery("DELETE FROM Evaluationresponsabilite e WHERE e.idnote.idnote=:idNote");
+        query.setParameter("idNote", idNote);
+        query.executeUpdate();
+    }
+
 }

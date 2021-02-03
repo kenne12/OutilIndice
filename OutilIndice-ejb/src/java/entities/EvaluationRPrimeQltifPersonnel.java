@@ -33,6 +33,9 @@ public class EvaluationRPrimeQltifPersonnel implements Serializable {
     @JoinColumn(name = "idevaluationrprimeqltifdept", referencedColumnName = "idevaluationrprimeqltifdept")
     @ManyToOne(fetch = FetchType.LAZY)
     private EvaluationRPrimeQltifDept idevaluationrprimeqltifdept;
+    @JoinColumn(name = "idnote", referencedColumnName = "idnote")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Note idnote;
 
     public EvaluationRPrimeQltifPersonnel() {
     }
@@ -71,6 +74,14 @@ public class EvaluationRPrimeQltifPersonnel implements Serializable {
 
     public void setIdpersonnel(Personnel idpersonnel) {
         this.idpersonnel = idpersonnel;
+    }
+
+    public Note getIdnote() {
+        return idnote;
+    }
+
+    public void setIdnote(Note idnote) {
+        this.idnote = idnote;
     }
 
     @Override

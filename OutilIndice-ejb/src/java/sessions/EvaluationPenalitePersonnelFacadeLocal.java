@@ -36,4 +36,6 @@ public interface EvaluationPenalitePersonnelFacadeLocal {
 
     List<EvaluationPenalitePersonnel> findIdServiceIdPeriode(long idService, int idPeriode, int idSousPeriode);
 
+    void deleteByIdNote(Long idNote);
+
 }

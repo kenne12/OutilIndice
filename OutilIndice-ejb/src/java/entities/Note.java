@@ -26,8 +26,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Note.findAll", query = "SELECT n FROM Note n"),
-    @NamedQuery(name = "Note.findByIdnote", query = "SELECT n FROM Note n WHERE n.idnote = :idnote"),
-    @NamedQuery(name = "Note.findByNotepersonnelle", query = "SELECT n FROM Note n WHERE n.notepersonnelle = :notepersonnelle")})
+    @NamedQuery(name = "Note.findByIdnote", query = "SELECT n FROM Note n WHERE n.idnote = :idnote")})
+
 public class Note implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -36,8 +36,16 @@ public class Note implements Serializable {
     @NotNull
     private Long idnote;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    private Double notepersonnelle;
-    private Double notefinale;
+    @Column(name = "incitationpositif")
+    private double incitationPositif;
+    @Column(name = "incitationnegatif")
+    private double incitationNegatif;
+    @Column(name = "totalpoint")
+    private double totalPoint;
+    @Column(name = "pointpindiv")
+    private double pointPIndiv;
+    @Column(name = "scorepindiv")
+    private double scorePIndiv;
     @Column(name = "pointmaxrqntif")
     private double pointMaxRQntif;
     @Column(name = "poucentagerqntif")
@@ -52,6 +60,18 @@ public class Note implements Serializable {
     protected double penalitePersonnel;
     @Column(name = "pointpenalitepersonnel")
     protected double pointPenalitePersonnel;
+    @Column(name = "pointheuresupp")
+    protected double pointHeureSupp;
+    @Column(name = "incitationnhp")
+    protected double incitationNHP;
+    @Column(name = "pointresponsabilite")
+    protected double pointResponsabilite;
+    @Column(name = "pointpratiquep")
+    protected double pointPratiqueP;
+    @Column(name = "pointrqltifdept")
+    private double pointRQltifDept;
+    @Column(name = "pointbonusrdept")
+    private double pointBonusRDept;
     @JoinColumn(name = "idperiode", referencedColumnName = "idperiode")
     @ManyToOne(fetch = FetchType.LAZY)
     private Periode idperiode;
@@ -77,20 +97,12 @@ public class Note implements Serializable {
         this.idnote = idnote;
     }
 
-    public Double getNotepersonnelle() {
-        return notepersonnelle;
+    public double getPointPIndiv() {
+        return pointPIndiv;
     }
 
-    public void setNotepersonnelle(Double notepersonnelle) {
-        this.notepersonnelle = notepersonnelle;
-    }
-
-    public Double getNotefinale() {
-        return notefinale;
-    }
-
-    public void setNotefinale(Double notefinale) {
-        this.notefinale = notefinale;
+    public void setPointPIndiv(double pointPIndiv) {
+        this.pointPIndiv = pointPIndiv;
     }
 
     public double getPointMaxRQntif() {
@@ -147,6 +159,86 @@ public class Note implements Serializable {
 
     public void setPointPenalitePersonnel(double pointPenalitePersonnel) {
         this.pointPenalitePersonnel = pointPenalitePersonnel;
+    }
+
+    public double getIncitationPositif() {
+        return incitationPositif;
+    }
+
+    public void setIncitationPositif(double incitationPositif) {
+        this.incitationPositif = incitationPositif;
+    }
+
+    public double getIncitationNegatif() {
+        return incitationNegatif;
+    }
+
+    public void setIncitationNegatif(double incitationNegatif) {
+        this.incitationNegatif = incitationNegatif;
+    }
+
+    public double getTotalPoint() {
+        return totalPoint;
+    }
+
+    public void setTotalPoint(double totalPoint) {
+        this.totalPoint = totalPoint;
+    }
+
+    public double getScorePIndiv() {
+        return scorePIndiv;
+    }
+
+    public void setScorePIndiv(double scorePIndiv) {
+        this.scorePIndiv = scorePIndiv;
+    }
+
+    public double getPointHeureSupp() {
+        return pointHeureSupp;
+    }
+
+    public void setPointHeureSupp(double pointHeureSupp) {
+        this.pointHeureSupp = pointHeureSupp;
+    }
+
+    public double getIncitationNHP() {
+        return incitationNHP;
+    }
+
+    public void setIncitationNHP(double incitationNHP) {
+        this.incitationNHP = incitationNHP;
+    }
+
+    public double getPointResponsabilite() {
+        return pointResponsabilite;
+    }
+
+    public void setPointResponsabilite(double pointResponsabilite) {
+        this.pointResponsabilite = pointResponsabilite;
+    }
+
+    public double getPointPratiqueP() {
+        return pointPratiqueP;
+    }
+
+    public void setPointPratiqueP(double pointPratiqueP) {
+        this.pointPratiqueP = pointPratiqueP;
+    }
+
+    public double getPointRQltifDept() {
+        return pointRQltifDept;
+    }
+
+    public void setPointRQltifDept(double pointRQltifDept) {
+        this.pointRQltifDept = pointRQltifDept;
+    }
+
+    public double getPointBonusRDept() {
+        return pointBonusRDept;
+    }
+
+    public void setPointBonusRDept(double pointBonusRDept) {
+        this.pointBonusRDept = pointBonusRDept;
     }
 
     public Periode getIdperiode() {
