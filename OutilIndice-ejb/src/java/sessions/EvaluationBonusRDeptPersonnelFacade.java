@@ -56,5 +56,12 @@ public class EvaluationBonusRDeptPersonnelFacade extends AbstractFacade<Evaluati
         }
         return null;
     }
+    
+    @Override
+    public void deleteByIdNote(Long idNote) {
+        Query query = em.createQuery("DELETE FROM EvaluationBonusRDeptPersonnel e WHERE e.idnote.idnote=:idNote");
+        query.setParameter("idNote", idNote);
+        query.executeUpdate();
+    }
 
 }

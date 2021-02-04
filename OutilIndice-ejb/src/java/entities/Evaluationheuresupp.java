@@ -32,15 +32,6 @@ public class Evaluationheuresupp implements Serializable {
     private int nbheurenuit;
     private double pointjour;
     private double pointnuit;
-    @JoinColumn(name = "idperiode", referencedColumnName = "idperiode")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Periode idperiode;
-    @JoinColumn(name = "idsousperiode", referencedColumnName = "idsousperiode")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Sousperiode idsousperiode;
-    @JoinColumn(name = "idpersonnel", referencedColumnName = "idpersonnel")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Personnel idpersonnel;
     @JoinColumn(name = "idcritere", referencedColumnName = "idcritere")
     @ManyToOne(fetch = FetchType.LAZY)
     private Critere idcritere;
@@ -111,36 +102,12 @@ public class Evaluationheuresupp implements Serializable {
         this.pointnuit = pointnuit;
     }
 
-    public Periode getIdperiode() {
-        return idperiode;
-    }
-
-    public void setIdperiode(Periode idperiode) {
-        this.idperiode = idperiode;
-    }
-
     public Critere getIdcritere() {
         return idcritere;
     }
 
     public void setIdcritere(Critere idcritere) {
         this.idcritere = idcritere;
-    }
-
-    public Sousperiode getIdsousperiode() {
-        return idsousperiode;
-    }
-
-    public void setIdsousperiode(Sousperiode idsousperiode) {
-        this.idsousperiode = idsousperiode;
-    }
-
-    public Personnel getIdpersonnel() {
-        return idpersonnel;
-    }
-
-    public void setIdpersonnel(Personnel idpersonnel) {
-        this.idpersonnel = idpersonnel;
     }
 
     public Note getIdnote() {

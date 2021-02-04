@@ -6,7 +6,6 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -16,13 +15,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -54,8 +51,6 @@ public class Personnel implements Serializable {
     @Size(max = 254)
     private String matricule;
     private Boolean etat;
-    @OneToMany(mappedBy = "idpersonnel", fetch = FetchType.LAZY)
-    private Collection<Evaluationpersonnel> evaluationpersonnelCollection;
     @JoinColumn(name = "idcategorie", referencedColumnName = "idcategorie")
     @ManyToOne(fetch = FetchType.LAZY)
     private Categorie idcategorie;
@@ -127,15 +122,6 @@ public class Personnel implements Serializable {
 
     public void setIdresponsabilite(Responsabilite idresponsabilite) {
         this.idresponsabilite = idresponsabilite;
-    }
-
-    @XmlTransient
-    public Collection<Evaluationpersonnel> getEvaluationpersonnelCollection() {
-        return evaluationpersonnelCollection;
-    }
-
-    public void setEvaluationpersonnelCollection(Collection<Evaluationpersonnel> evaluationpersonnelCollection) {
-        this.evaluationpersonnelCollection = evaluationpersonnelCollection;
     }
 
     public Categorie getIdcategorie() {

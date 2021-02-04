@@ -36,4 +36,6 @@ public interface EvaluationpersonnelFacadeLocal {
 
     void deleteData(long idPersonnel, int idPeriode, int idSousPeriode);
 
+    void deleteData(long idNote);
+
 }

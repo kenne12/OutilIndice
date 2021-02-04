@@ -31,15 +31,6 @@ public class Evaluationbonuspp implements Serializable {
     private double pointMax;
     private double ratio;
     private double point;
-    @JoinColumn(name = "idperiode", referencedColumnName = "idperiode")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Periode idperiode;
-    @JoinColumn(name = "idsousperiode", referencedColumnName = "idsousperiode")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Sousperiode idsousperiode;
-    @JoinColumn(name = "idpersonnel", referencedColumnName = "idpersonnel")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Personnel idpersonnel;
     @JoinColumn(name = "idcritere", referencedColumnName = "idcritere")
     @ManyToOne(fetch = FetchType.LAZY)
     private Critere idcritere;
@@ -84,30 +75,6 @@ public class Evaluationbonuspp implements Serializable {
 
     public void setPoint(double point) {
         this.point = point;
-    }
-
-    public Periode getIdperiode() {
-        return idperiode;
-    }
-
-    public void setIdperiode(Periode idperiode) {
-        this.idperiode = idperiode;
-    }
-
-    public Sousperiode getIdsousperiode() {
-        return idsousperiode;
-    }
-
-    public void setIdsousperiode(Sousperiode idsousperiode) {
-        this.idsousperiode = idsousperiode;
-    }
-
-    public Personnel getIdpersonnel() {
-        return idpersonnel;
-    }
-
-    public void setIdpersonnel(Personnel idpersonnel) {
-        this.idpersonnel = idpersonnel;
     }
 
     public Critere getIdcritere() {

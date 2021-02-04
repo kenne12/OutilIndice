@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Sousperiode.findByCode", query = "SELECT s FROM Sousperiode s WHERE s.code = :code"),
     @NamedQuery(name = "Sousperiode.findByNumero", query = "SELECT s FROM Sousperiode s WHERE s.numero = :numero")})
 public class Sousperiode implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -44,8 +45,6 @@ public class Sousperiode implements Serializable {
     private Integer numero;
     @OneToMany(mappedBy = "idsousperiode", fetch = FetchType.LAZY)
     private Collection<Note> noteCollection;
-    @OneToMany(mappedBy = "idsousperiode", fetch = FetchType.LAZY)
-    private Collection<Evaluationpersonnel> evaluationpersonnelCollection;
     @OneToMany(mappedBy = "idsousperiode", fetch = FetchType.LAZY)
     private Collection<Depense> depenseCollection;
     @OneToMany(mappedBy = "idsousperiode", fetch = FetchType.LAZY)
@@ -100,15 +99,6 @@ public class Sousperiode implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Evaluationpersonnel> getEvaluationpersonnelCollection() {
-        return evaluationpersonnelCollection;
-    }
-
-    public void setEvaluationpersonnelCollection(Collection<Evaluationpersonnel> evaluationpersonnelCollection) {
-        this.evaluationpersonnelCollection = evaluationpersonnelCollection;
-    }
-
-    @XmlTransient
     public Collection<Depense> getDepenseCollection() {
         return depenseCollection;
     }
@@ -150,5 +140,5 @@ public class Sousperiode implements Serializable {
     public String toString() {
         return "entities.Sousperiode[ idsousperiode=" + idsousperiode + " ]";
     }
-    
+
 }

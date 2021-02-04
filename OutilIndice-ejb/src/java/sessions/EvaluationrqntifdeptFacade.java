@@ -48,9 +48,16 @@ public class EvaluationrqntifdeptFacade extends AbstractFacade<Evaluationrqntifd
 
     @Override
     public List<Evaluationrqntifdept> findByIdPersonnel(long idPersonnel, int idPeriode, int idSousPeriode, int idCritere) {
-        Query query = em.createQuery("SELECT e FROM Evaluationrqntifdept e WHERE e.idpersonnel.idpersonnel=:idPersonnel AND e.idcible.idperiode.idperiode=:idPeriode AND e.idcible.idsousperiode.idsousperiode=:idSousPeriode AND e.idcible.idcritere.idcritere=:idCritere");
+        Query query = em.createQuery("SELECT e FROM Evaluationrqntifdept e WHERE e.idnote.idpersonnel.idpersonnel=:idPersonnel AND e.idcible.idperiode.idperiode=:idPeriode AND e.idcible.idsousperiode.idsousperiode=:idSousPeriode AND e.idcible.idcritere.idcritere=:idCritere");
         query.setParameter("idPersonnel", idPersonnel).setParameter("idPeriode", idPeriode);
         query.setParameter("idSousPeriode", idSousPeriode).setParameter("idCritere", idCritere);
         return query.getResultList();
+    }
+
+    @Override
+    public void deleteByIdNote(Long idNote) {
+        Query query = em.createQuery("DELETE FROM Evaluationrqntifdept e WHERE e.idnote.idnote=:idNote");
+        query.setParameter("idNote", idNote);
+        query.executeUpdate();
     }
 }

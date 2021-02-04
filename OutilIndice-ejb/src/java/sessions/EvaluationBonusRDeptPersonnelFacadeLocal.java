@@ -34,4 +34,6 @@ public interface EvaluationBonusRDeptPersonnelFacadeLocal {
 
     EvaluationBonusRDeptPersonnel findByIdPersonnel(long idPersonnel, int idPeriode, int idSousPeriode);
 
+    void deleteByIdNote(Long idNote);
+
 }

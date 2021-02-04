@@ -26,10 +26,8 @@ public class LignePenalitePersonnel implements Serializable {
     @Id
     @Basic(optional = false)
     private Long idlignepenalitepersonnel;
-
     private int valeur;
     private int cible;
-    private double ratio;
     private boolean etat;
 
     @JoinColumn(name = "idpenalite", referencedColumnName = "idpenalite")
@@ -69,14 +67,6 @@ public class LignePenalitePersonnel implements Serializable {
 
     public void setCible(int cible) {
         this.cible = cible;
-    }
-
-    public double getRatio() {
-        return ratio;
-    }
-
-    public void setRatio(double ratio) {
-        this.ratio = ratio;
     }
 
     public boolean isEtat() {

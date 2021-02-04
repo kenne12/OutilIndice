@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Periode.findByIdparent", query = "SELECT p FROM Periode p WHERE p.idparent = :idparent"),
     @NamedQuery(name = "Periode.findByEtat", query = "SELECT p FROM Periode p WHERE p.etat = :etat")})
 public class Periode implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -46,8 +47,6 @@ public class Periode implements Serializable {
     private Boolean etat;
     @OneToMany(mappedBy = "idperiode", fetch = FetchType.LAZY)
     private Collection<Note> noteCollection;
-    @OneToMany(mappedBy = "idperiode", fetch = FetchType.LAZY)
-    private Collection<Evaluationpersonnel> evaluationpersonnelCollection;
     @OneToMany(mappedBy = "idperiode", fetch = FetchType.LAZY)
     private Collection<Evaluationservice> evaluationserviceCollection;
     @OneToMany(mappedBy = "idperiode", fetch = FetchType.LAZY)
@@ -112,15 +111,6 @@ public class Periode implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Evaluationpersonnel> getEvaluationpersonnelCollection() {
-        return evaluationpersonnelCollection;
-    }
-
-    public void setEvaluationpersonnelCollection(Collection<Evaluationpersonnel> evaluationpersonnelCollection) {
-        this.evaluationpersonnelCollection = evaluationpersonnelCollection;
-    }
-
-    @XmlTransient
     public Collection<Evaluationservice> getEvaluationserviceCollection() {
         return evaluationserviceCollection;
     }
@@ -171,5 +161,5 @@ public class Periode implements Serializable {
     public String toString() {
         return "entities.Periode[ idperiode=" + idperiode + " ]";
     }
-    
+
 }

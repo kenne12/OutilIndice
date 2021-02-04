@@ -43,19 +43,12 @@ public class Evaluationpersonnel implements Serializable {
     @JoinColumn(name = "iddetailsc", referencedColumnName = "iddetailsc")
     @ManyToOne(fetch = FetchType.LAZY)
     private Detailsc iddetailsc;
-    @JoinColumn(name = "idperiode", referencedColumnName = "idperiode")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Periode idperiode;
-    @JoinColumn(name = "idpersonnel", referencedColumnName = "idpersonnel")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Personnel idpersonnel;
-    @JoinColumn(name = "idsousperiode", referencedColumnName = "idsousperiode")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Sousperiode idsousperiode;
-
     @JoinColumn(name = "idelementreponse", referencedColumnName = "idelementreponse")
     @ManyToOne(fetch = FetchType.LAZY)
     private Elementreponse idelementreponse;
+    @JoinColumn(name = "idnote", referencedColumnName = "idnote")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Note idnote;
 
     public Evaluationpersonnel() {
     }
@@ -96,36 +89,20 @@ public class Evaluationpersonnel implements Serializable {
         this.iddetailsc = iddetailsc;
     }
 
-    public Periode getIdperiode() {
-        return idperiode;
-    }
-
-    public void setIdperiode(Periode idperiode) {
-        this.idperiode = idperiode;
-    }
-
-    public Personnel getIdpersonnel() {
-        return idpersonnel;
-    }
-
-    public void setIdpersonnel(Personnel idpersonnel) {
-        this.idpersonnel = idpersonnel;
-    }
-
-    public Sousperiode getIdsousperiode() {
-        return idsousperiode;
-    }
-
-    public void setIdsousperiode(Sousperiode idsousperiode) {
-        this.idsousperiode = idsousperiode;
-    }
-
     public Elementreponse getIdelementreponse() {
         return idelementreponse;
     }
 
     public void setIdelementreponse(Elementreponse idelementreponse) {
         this.idelementreponse = idelementreponse;
+    }
+
+    public Note getIdnote() {
+        return idnote;
+    }
+
+    public void setIdnote(Note idnote) {
+        this.idnote = idnote;
     }
 
     @Override

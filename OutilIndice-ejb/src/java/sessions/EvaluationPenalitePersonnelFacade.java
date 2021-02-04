@@ -48,7 +48,7 @@ public class EvaluationPenalitePersonnelFacade extends AbstractFacade<Evaluation
 
     @Override
     public EvaluationPenalitePersonnel findIdPersonnelIdPeriode(long idPersonnel, int idPeriode, int idSousPeriode) {
-        Query query = em.createQuery("SELECT e FROM EvaluationPenalitePersonnel e WHERE e.idPersonnel.idpersonnel=:idPersonnel AND e.idPeriode.idperiode=:idPeriode AND e.idSousperiode.idsousperiode=:idSousPeriode");
+        Query query = em.createQuery("SELECT e FROM EvaluationPenalitePersonnel e WHERE e.idnote.idpersonnel.idpersonnel=:idPersonnel AND e.idnote.idperiode.idperiode=:idPeriode AND e.idnote.idsousperiode.idsousperiode=:idSousPeriode");
         query.setParameter("idPersonnel", idPersonnel).setParameter("idPeriode", idPeriode).setParameter("idSousPeriode", idSousPeriode);
         List list = query.getResultList();
         if (!list.isEmpty()) {
@@ -59,7 +59,7 @@ public class EvaluationPenalitePersonnelFacade extends AbstractFacade<Evaluation
 
     @Override
     public List<EvaluationPenalitePersonnel> findIdServiceIdPeriode(long idService, int idPeriode, int idSousPeriode) {
-        Query query = em.createQuery("SELECT e FROM EvaluationPenalitePersonnel e WHERE e.idPersonnel.idservice.idservice=:idService AND e.idPeriode.idperiode=:idPeriode AND e.idSousperiode.idsousperiode=:idSousPeriode");
+        Query query = em.createQuery("SELECT e FROM EvaluationPenalitePersonnel e WHERE e.idnote.idpersonnel.idservice.idservice=:idService AND e.idnote.idperiode.idperiode=:idPeriode AND e.idnote.idsousperiode.idsousperiode=:idSousPeriode");
         query.setParameter("idService", idService).setParameter("idPeriode", idPeriode).setParameter("idSousPeriode", idSousPeriode);
         return query.getResultList();
     }

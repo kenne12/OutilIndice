@@ -48,7 +48,7 @@ public class EvaluationresponsabiliteFacade extends AbstractFacade<Evaluationres
 
     @Override
     public Evaluationresponsabilite findByIdPersonnel(int idPeriode, int idSousPeriode, long idPersonnel, int idCritere) {
-        Query query = em.createQuery("SELECT e FROM Evaluationresponsabilite e WHERE e.idperiode.idperiode=:idPeriode AND e.idsousperiode.idsousperiode=:idSousPeriode AND e.idpersonnel.idpersonnel=:idPersonnel AND e.idcritere.idcritere=:idCritere");
+        Query query = em.createQuery("SELECT e FROM Evaluationresponsabilite e WHERE e.idnote.idperiode.idperiode=:idPeriode AND e.idnote.idsousperiode.idsousperiode=:idSousPeriode AND e.idnote.idpersonnel.idpersonnel=:idPersonnel AND e.idcritere.idcritere=:idCritere");
         query.setParameter("idPeriode", idPeriode).setParameter("idSousPeriode", idSousPeriode);
         query.setParameter("idPersonnel", idPersonnel).setParameter("idCritere", idCritere);
         List list = query.getResultList();

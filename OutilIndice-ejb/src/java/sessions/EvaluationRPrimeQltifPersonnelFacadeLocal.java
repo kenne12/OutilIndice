@@ -34,4 +34,6 @@ public interface EvaluationRPrimeQltifPersonnelFacadeLocal {
 
     EvaluationRPrimeQltifPersonnel findByIdPersonnel(long idPersonnel, int idPeriode, int idSousPeriode);
 
+    void deleteByIdNote(Long idNote);
+
 }

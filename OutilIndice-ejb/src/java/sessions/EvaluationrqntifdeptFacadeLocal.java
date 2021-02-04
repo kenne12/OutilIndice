@@ -34,4 +34,6 @@ public interface EvaluationrqntifdeptFacadeLocal {
 
     List<Evaluationrqntifdept> findByIdPersonnel(long idPersonnel, int idPeriode, int idSousPeriode, int idCritere);
 
+    void deleteByIdNote(Long idNote);
+
 }

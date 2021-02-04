@@ -48,15 +48,22 @@ public class EvaluationpersonnelFacade extends AbstractFacade<Evaluationpersonne
 
     @Override
     public List<Evaluationpersonnel> findByPersonnel(long idPersonnel, int idPeriode, int idSousPeriode) {
-        Query query = em.createQuery("SELECT e FROM Evaluationpersonnel e WHERE e.idpersonnel.idpersonnel=:idPersonnel AND e.idperiode.idperiode=:idPeriode AND e.idsousperiode.idsousperiode=:idSousPeriode");
+        Query query = em.createQuery("SELECT e FROM Evaluationpersonnel e WHERE e.idnote.idpersonnel.idpersonnel=:idPersonnel AND e.idnote.idperiode.idperiode=:idPeriode AND e.idnote.idsousperiode.idsousperiode=:idSousPeriode");
         query.setParameter("idPersonnel", idPersonnel).setParameter("idPeriode", idPeriode).setParameter("idSousPeriode", idSousPeriode);
         return query.getResultList();
     }
 
     @Override
     public void deleteData(long idPersonnel, int idPeriode, int idSousPeriode) {
-        Query query = em.createQuery("DELETE FROM Evaluationpersonnel e WHERE e.idpersonnel.idpersonnel=:idPersonnel AND e.idperiode.idperiode=:idPeriode AND e.idsousperiode.idsousperiode=:idSousPeriode");
+        Query query = em.createQuery("DELETE FROM Evaluationpersonnel e WHERE e.idnote.idpersonnel.idpersonnel=:idPersonnel AND e.idnote.idperiode.idperiode=:idPeriode AND e.idnote.idsousperiode.idsousperiode=:idSousPeriode");
         query.setParameter("idPersonnel", idPersonnel).setParameter("idPeriode", idPeriode).setParameter("idSousPeriode", idSousPeriode);
+        query.executeUpdate();
+    }
+    
+    @Override
+    public void deleteData(long idNote) {
+        Query query = em.createQuery("DELETE FROM Evaluationpersonnel e WHERE e.idnote.idnote=:idNote");
+        query.setParameter("idNote", idNote);
         query.executeUpdate();
     }
 
