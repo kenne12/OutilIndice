@@ -6,6 +6,8 @@
 package controllers.login;
 
 import controllers.util.JsfUtil;
+import entities.Critere;
+import entities.Criterestructure;
 import utils.SessionMBean;
 import entities.Utilisateur;
 import java.io.IOException;
@@ -28,6 +30,7 @@ import entities.Privilege;
 import entities.Structure;
 import entities.Utilisateurstructure;
 import org.primefaces.context.RequestContext;
+import sessions.CriterestructureFacadeLocal;
 import sessions.MenuFacadeLocal;
 import sessions.PeriodeFacadeLocal;
 import sessions.PrivilegeFacadeLocal;
@@ -38,6 +41,9 @@ import utils.Routine;
 @ManagedBean
 @SessionScoped
 public class LoginController implements Serializable {
+
+    @EJB
+    protected CriterestructureFacadeLocal criterestructureFacadeLocal;
 
     @EJB
     private MenuFacadeLocal menuBFacadeLocal;
@@ -162,6 +168,16 @@ public class LoginController implements Serializable {
 
                 periode = periodeFacadeLocal.find(periode.getIdperiode());
                 session.setAttribute("periode", periode);
+
+                List<Criterestructure> list = criterestructureFacadeLocal.findByIdStructure(structure.getIdstructure());
+                session.setAttribute("criterestructures", list);
+                List<Critere> criteres = new ArrayList<>();
+                if (!list.isEmpty()) {
+                    for (Criterestructure c : list) {
+                        criteres.add(c.getCritere());
+                    }
+                }
+                session.setAttribute("criteres", criteres);
             } catch (Exception e) {
             }
             showSessionPanel = false;

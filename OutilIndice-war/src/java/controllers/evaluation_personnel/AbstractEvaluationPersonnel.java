@@ -6,6 +6,7 @@
 package controllers.evaluation_personnel;
 
 import entities.Cible;
+import entities.Critere;
 import entities.Critereresponsabilite;
 import entities.Detailsc;
 import entities.EvaluationBonusRDeptPersonnel;
@@ -153,6 +154,9 @@ public class AbstractEvaluationPersonnel {
     protected NoteFacadeLocal noteFacadeLocal;
     protected Note note = new Note();
     protected List<Note> notes = new ArrayList<>();
+
+    @EJB
+    protected List<Critere> criteres = SessionMBean.getCriteres();
 
     @EJB
     protected ElementReponseFacadeLocal elementReponseFacadeLocal;

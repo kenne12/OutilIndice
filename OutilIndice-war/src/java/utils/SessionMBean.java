@@ -1,5 +1,7 @@
 package utils;
 
+import entities.Critere;
+import entities.Criterestructure;
 import entities.Periode;
 import entities.Structure;
 import entities.Utilisateur;
@@ -48,6 +50,22 @@ public class SessionMBean {
         HttpSession session = getSession();
         if (session != null) {
             return (Periode) session.getAttribute("periode");
+        }
+        return null;
+    }
+
+    public static List<Criterestructure> getCritereStructures() {
+        HttpSession session = getSession();
+        if (session != null) {
+            return (List<Criterestructure>) session.getAttribute("criterestructures");
+        }
+        return null;
+    }
+
+    public static List<Critere> getCriteres() {
+        HttpSession session = getSession();
+        if (session != null) {
+            return (List<Critere>) session.getAttribute("criteres");
         }
         return null;
     }
