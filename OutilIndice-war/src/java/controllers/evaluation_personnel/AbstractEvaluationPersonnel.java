@@ -28,7 +28,9 @@ import entities.Sousperiode;
 import entities.Structure;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.transaction.UserTransaction;
 import sessions.CibleFacadeLocal;
 import sessions.CritereresponsabiliteFacadeLocal;
 import sessions.DetailscFacadeLocal;
@@ -59,6 +61,9 @@ import utils.SessionMBean;
  * @author USER
  */
 public class AbstractEvaluationPersonnel {
+
+    @Resource
+    protected UserTransaction ut;
 
     @EJB
     protected EvaluationpersonnelFacadeLocal evaluationpersonnelFacadeLocal;
@@ -155,7 +160,6 @@ public class AbstractEvaluationPersonnel {
     protected Note note = new Note();
     protected List<Note> notes = new ArrayList<>();
 
-    @EJB
     protected List<Critere> criteres = SessionMBean.getCriteres();
 
     @EJB
@@ -181,6 +185,17 @@ public class AbstractEvaluationPersonnel {
 
     protected String mode = "";
     protected String message = "";
+
+    protected boolean criter1 = false;
+    protected boolean criter2 = false;
+    protected boolean criter3 = false;
+    protected boolean criter4 = false;
+    protected boolean criter5 = false;
+    protected boolean criter6 = false;
+    protected boolean criter7 = false;
+    protected boolean criter8 = false;
+    protected boolean criter9 = false;
+    protected boolean criter10 = false;
 
     public Routine getRoutine() {
         return routine;
@@ -446,6 +461,46 @@ public class AbstractEvaluationPersonnel {
 
     public double getTotalPIncitationNegatif() {
         return totalPIncitationNegatif;
+    }
+
+    public boolean isCriter1() {
+        return criter1;
+    }
+
+    public boolean isCriter2() {
+        return criter2;
+    }
+
+    public boolean isCriter3() {
+        return criter3;
+    }
+
+    public boolean isCriter4() {
+        return criter4;
+    }
+
+    public boolean isCriter5() {
+        return criter5;
+    }
+
+    public boolean isCriter6() {
+        return criter6;
+    }
+
+    public boolean isCriter7() {
+        return criter7;
+    }
+
+    public boolean isCriter8() {
+        return criter8;
+    }
+
+    public boolean isCriter9() {
+        return criter9;
+    }
+
+    public boolean isCriter10() {
+        return criter10;
     }
 
 }

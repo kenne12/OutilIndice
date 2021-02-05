@@ -531,8 +531,10 @@
                                              onclick="PF('EvaluationCreateDialog').hide()"
                                              icon="ui-icon-close"/>
 
-                            <p:commandButton icon="ui-icon-save" actionListener="#{evaluationPersonnelController.save()}" value="#{langue['common.enregistrer']}" 
-                                             update="display,:EvaluationListerForm:growl,error_msg">
+                            <p:commandButton icon="ui-icon-save" actionListener="#{evaluationPersonnelController.save()}"
+                                             value="#{langue['common.enregistrer']}"
+                                             onclick="PF('AjaxNotifyDialog').show()"
+                                             update="display,:EvaluationListerForm:growl,error_msg,:notify1">
                                 <p:confirm header="#{langue['notification.confirmation']}" 
                                            message="#{langue['notification.confirmation_enregistrement']}" 
                                            icon="ui-icon-alert"/>
