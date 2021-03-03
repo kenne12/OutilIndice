@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -33,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Critere.findByCode", query = "SELECT c FROM Critere c WHERE c.code = :code"),
     @NamedQuery(name = "Critere.findByPoids", query = "SELECT c FROM Critere c WHERE c.poids = :poids")})
 public class Critere implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -44,6 +46,11 @@ public class Critere implements Serializable {
     private String code;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     private Double poids;
+    @Column(name = "pointmax")
+    private Integer pointMax;
+    @Column(name = "scoremoyen")
+    private Integer scoreMoyen;
+    private Double resultat;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "critere", fetch = FetchType.LAZY)
     private Collection<Criterestructure> criterestructureCollection;
     @OneToMany(mappedBy = "idcritere", fetch = FetchType.LAZY)
@@ -88,6 +95,30 @@ public class Critere implements Serializable {
 
     public void setPoids(Double poids) {
         this.poids = poids;
+    }
+
+    public Integer getPointMax() {
+        return pointMax;
+    }
+
+    public void setPointMax(Integer pointMax) {
+        this.pointMax = pointMax;
+    }
+
+    public Integer getScoreMoyen() {
+        return scoreMoyen;
+    }
+
+    public void setScoreMoyen(Integer scoreMoyen) {
+        this.scoreMoyen = scoreMoyen;
+    }
+
+    public Double getResultat() {
+        return resultat;
+    }
+
+    public void setResultat(Double resultat) {
+        this.resultat = resultat;
     }
 
     @XmlTransient
@@ -141,5 +172,5 @@ public class Critere implements Serializable {
     public String toString() {
         return "entities.Critere[ idcritere=" + idcritere + " ]";
     }
-    
+
 }
