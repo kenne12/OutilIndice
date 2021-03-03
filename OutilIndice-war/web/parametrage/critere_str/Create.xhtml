@@ -13,7 +13,7 @@
                   modal="true" resizable="false" appendTo="@(body)" 
                   header="#{langue['critere_structure.formulaire_creation']}"
                   closeOnEscape="true"
-                  width="70%"
+                  width="80%"
                   height="600">
 
             <h:form id="CritereCreateForm">
@@ -57,14 +57,14 @@
                                      rowIndexVar="index"
                                      emptyMessage="#{langue['common.tableau_vide']}">
 
-                            <p:column class="hardBreak" style="width: 15%;" >
+                            <p:column class="hardBreak" style="width: 5%;" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue['common.code']}"/>
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{item.critere.code}"/> 
                             </p:column>
 
-                            <p:column class="hardBreak" style="width: 60%;" >
+                            <p:column class="hardBreak" style="width: 50%;" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue['common.nom']}"/>
                                 </f:facet>
@@ -89,19 +89,49 @@
                             <p:column style="width: 10% ; text-align:center" headerText="#{langue['sous_criteres.point_max']}">
                                 <p:cellEditor>
                                     <f:facet name="output">
-                                        <h:outputText value="#{item.pointmax}" >
+                                        <h:outputText value="#{item.pointMax}" >
                                             <f:convertNumber />
                                         </h:outputText>
                                     </f:facet>
                                     <f:facet name="input">
-                                        <p:inputText required="true" value="#{item.pointmax}">                                             
+                                        <p:inputText required="true" value="#{item.pointMax}">                                             
+                                            <p:ajax event="keyup" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            
+                            <p:column style="width: 10% ; text-align:center" headerText="#{langue['common.score_moy']}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.scoreMoyen}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.scoreMoyen}">                                             
+                                            <p:ajax event="keyup" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            
+                            <p:column style="width: 10% ; text-align:center" headerText="#{langue['common.resultat']}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.resultat}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.resultat}">                                             
                                             <p:ajax event="keyup" />
                                         </p:inputText>
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
 
-                            <p:column style="width: 10%" >
+                            <p:column style="width: 5%" >
                                 <f:facet name="header">
                                     <h:outputText value="Action"/>
                                 </f:facet>
@@ -115,7 +145,7 @@
                                     <p:column colspan="2" style="text-align:right" footerText="Totaux" />                                                                          
                                     <p:column style="text-align:center" footerText="#{critereStrController.score}"/>
                                     <p:column style="text-align:center" footerText="#{critereStrController.pointMax}"/>
-                                    <p:column style="text-align:center" footerText="/" /> 
+                                    <p:column colspan="3" style="text-align:center" footerText="/" /> 
                                 </p:row>
                             </p:columnGroup>
 
