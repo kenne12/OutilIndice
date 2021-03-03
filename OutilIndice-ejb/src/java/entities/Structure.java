@@ -47,6 +47,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Structure.findByObjectifgeneral", query = "SELECT s FROM Structure s WHERE s.objectifgeneral = :objectifgeneral"),
     @NamedQuery(name = "Structure.findByObjectifspecifique", query = "SELECT s FROM Structure s WHERE s.objectifspecifique = :objectifspecifique")})
 public class Structure implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -78,6 +79,7 @@ public class Structure implements Serializable {
     private String objectifgeneral;
     @Size(max = 254)
     private String objectifspecifique;
+
     @JoinTable(name = "utilisateurstructure", joinColumns = {
         @JoinColumn(name = "idstructure", referencedColumnName = "idstructure")}, inverseJoinColumns = {
         @JoinColumn(name = "idutilisateur", referencedColumnName = "idutilisateur")})
@@ -104,6 +106,9 @@ public class Structure implements Serializable {
     private Collection<Recette> recetteCollection;
     @OneToMany(mappedBy = "idstructure", fetch = FetchType.LAZY)
     private Collection<Service> serviceCollection;
+
+    @OneToMany(mappedBy = "structure", fetch = FetchType.LAZY)
+    private Collection<EffectifCategorie> effectifCategorieCollection;
 
     public Structure() {
     }
@@ -234,6 +239,15 @@ public class Structure implements Serializable {
     }
 
     @XmlTransient
+    public Collection<EffectifCategorie> getEffectifCategorieCollection() {
+        return effectifCategorieCollection;
+    }
+
+    public void setEffectifCategorieCollection(Collection<EffectifCategorie> effectifCategorieCollection) {
+        this.effectifCategorieCollection = effectifCategorieCollection;
+    }
+
+    @XmlTransient
     public Collection<Criterestructure> getCriterestructureCollection() {
         return criterestructureCollection;
     }
@@ -335,5 +349,5 @@ public class Structure implements Serializable {
     public String toString() {
         return "entities.Structure[ idstructure=" + idstructure + " ]";
     }
-    
+
 }

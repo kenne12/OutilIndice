@@ -27,24 +27,24 @@ import utils.SessionMBean;
 @ManagedBean
 @SessionScoped
 public class CritereStrController extends AbstractCritereStr implements Serializable {
-    
+
+    public CritereStrController() {
+
+    }
+
     @PostConstruct
     private void init() {
         structures.clear();
         structures.add(SessionMBean.getStructure());
     }
-    
-    public CritereStrController() {
-        
-    }
-    
+
     public void prepareCreate() {
         structure = SessionMBean.getStructure();
         this.updateFiltre();
         mode = "Create";
         RequestContext.getCurrentInstance().execute("PF('CritereCreateDialog').show()");
     }
-    
+
     public void prepareEdit(Structure s) {
         this.structure = s;
         if (structure != null) {
@@ -53,7 +53,7 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
             RequestContext.getCurrentInstance().execute("PF('CritereCreateDialog').show()");
         }
     }
-    
+
     public void updateFiltre() {
         criteres.clear();
         selectedCriteres.clear();
@@ -73,7 +73,7 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
         }
         score = this.sommeCritere();
     }
-    
+
     public void addCritereToTable() {
         if (!selectedCriteres.isEmpty()) {
             for (Critere c : selectedCriteres) {
@@ -91,7 +91,7 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
         }
         score = this.sommeCritere();
     }
-    
+
     private boolean checkCritereInTable(Critere c) {
         boolean result = false;
         for (Criterestructure cs : criterestructures) {
@@ -102,7 +102,7 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
         }
         return result;
     }
-    
+
     public void removeCritere(Criterestructure item) {
         if (item.getCritere() != null) {
             criterestructureFacadeLocal.remove(item);
@@ -120,7 +120,7 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
         score = this.sommeCritere();
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }
-    
+
     public String returnCritere(Structure s) {
         String resultat = "";
         if (s.getCriterestructureCollection() != null) {
@@ -136,7 +136,7 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
         }
         return resultat;
     }
-    
+
     @Transactional
     public void save() {
         try {
@@ -144,12 +144,12 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
                 JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
                 return;
             }
-            
+
             if (this.sommeCritere() > scoreMax) {
                 JsfUtil.addErrorMessage(routine.localizeMessage("notification.erreur_poids"));
                 return;
             }
-            
+
             criterestructures.forEach(cs -> {
                 Criterestructure obj = criterestructureFacadeLocal.findByIdStructureIdCritere(structure.getIdstructure(), cs.getCritere().getIdcritere());
                 if (obj == null) {
@@ -160,10 +160,10 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
                     criterestructureFacadeLocal.edit(cs);
                 }
             });
-            
+
             this.criterestructures.clear();
             this.structure = new Structure();
-            
+
             RequestContext.getCurrentInstance().execute("PF('CritereCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
@@ -171,7 +171,7 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-    
+
     public void delete(Souscritere sc) {
         try {
             if (sc != null) {
@@ -186,7 +186,7 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-    
+
     private double sommeCritere() {
         this.pointMax = 0;
         if (criterestructures.isEmpty()) {
@@ -201,5 +201,5 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
         this.pointMax = pointMax;
         return resultat;
     }
-    
+
 }

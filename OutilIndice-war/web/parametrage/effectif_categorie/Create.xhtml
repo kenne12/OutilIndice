@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="EffectifCategorieCreateDlg" 
+                  widgetVar="EffectifCategorieCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['effectif_categorie.formulaire_creation']}"
+                  closeOnEscape="true"
+                  width="60%"
+                  height="600">
+
+            <h:form id="EffectifCategorieCreateForm">
+
+                <div class="col-md-12">
+
+                    <h:panelGroup id="display">
+
+                        <div class="form-group">
+                            <p:outputLabel value="#{langue.structure}" for="structure" />
+                            <h:selectOneMenu disabled="true" converter="structureConverter" 
+                                             class="form-control" 
+                                             id="structure" value="#{effectifCategorieCtrl.structure}">
+                                <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                <f:selectItems value="#{effectifCategorieCtrl.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
+                                <p:ajax update="grid_critere,datalist" listener="#{effectifCategorieCtrl.updateFiltre()}"/>
+                            </h:selectOneMenu>                                                
+                        </div>
+
+                        <p:separator/>
+
+                        <p:selectManyCheckbox id="grid_critere" value="#{effectifCategorieCtrl.selectedCategories}" layout="grid" columns="1" converter="categorieConverter">
+                            <f:selectItems value="#{effectifCategorieCtrl.categories}" var="t" itemLabel="#{t.nom}" itemValue="#{t}" />
+                            <p:ajax />
+                        </p:selectManyCheckbox>
+
+                        <p:separator />
+
+                        <p:commandButton value="#{langue['common.ajouter']}"
+                                         actionListener="#{effectifCategorieCtrl.addCategorieToTable()}"
+                                         update="datalist,grid_critere" icon="ui-icon-plus" />
+                        <p:separator />
+
+                        <p:dataTable id="datalist" value="#{effectifCategorieCtrl.effectifCategories}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="15"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                            <p:column class="hardBreak" style="width: 80%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.categorie}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.categorie.nom}"/> 
+                            </p:column>
+                            
+                            <p:column style="width: 10% ; text-align:center" headerText="#{langue['sous_criteres.point_max']}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.nombre}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.nombre}">                                             
+                                            <p:ajax update="datalist" listener="#{effectifCategorieCtrl.updateSaisie()}"  />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            
+                            <p:column style="width: 10%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="Action"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-trash">
+                                    <p:ajax update="datalist" event="click" listener="#{effectifCategorieCtrl.removeCategorie(item)}" />
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:columnGroup type="footer" id="footer_tab">
+                                <p:row>
+                                    <p:column style="text-align:right" footerText="Total" />                                                                          
+                                    <p:column style="text-align:center" footerText="#{effectifCategorieCtrl.effectif}"/>
+                                    <p:column style="text-align:center" footerText="/" /> 
+                                </p:row>
+                            </p:columnGroup>
+
+                        </p:dataTable>
+
+                        <p:separator/>
+
+                        <center>
+
+                            <p:commandButton value="#{langue['common.fermer']}" 
+                                             onclick="PF('EffectifCategorieCreateDialog').hide()"
+                                             icon="ui-icon-close"/>
+
+                            <p:commandButton icon="ui-icon-save" actionListener="#{effectifCategorieCtrl.save()}" value="#{langue['common.enregistrer']}" update="display,:EffectifCategorieListerForm:datalist,:EffectifCategorieListerForm:growl">
+                                <p:confirm header="#{langue['notification.confirmation']}" 
+                                           message="#{langue['notification.confirmation_enregistrement']}" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+
+                        </center>
+
+                    </h:panelGroup>
+
+                </div>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
