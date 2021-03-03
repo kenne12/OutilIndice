@@ -22,40 +22,40 @@ import javax.validation.constraints.NotNull;
  * @author USER
  */
 @Entity
-@Table(name = "effectifcategorie")
-public class EffectifCategorie implements Serializable {
+@Table(name = "effectifresponsabilite")
+public class EffectifResponsabilite implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @NotNull
     @Basic(optional = false)
-    @Column(name = "ideffectifcategorie")
-    private Long idEffectifCategorie;
+    @Column(name = "ideffectifresponsabilite")
+    private Long idEffectifResponsabilite;
 
     private int nombre;
 
-    @JoinColumn(name = "idcategorie", referencedColumnName = "idcategorie")
+    @JoinColumn(name = "idresponsabilite", referencedColumnName = "idresponsabilite")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Categorie categorie;
+    private Responsabilite responsabilite;
 
     @JoinColumn(name = "idstructure", referencedColumnName = "idstructure")
     @ManyToOne(fetch = FetchType.LAZY)
     private Structure structure;
 
-    public EffectifCategorie() {
+    public EffectifResponsabilite() {
     }
 
-    public EffectifCategorie(Long idEffectifCategorie) {
-        this.idEffectifCategorie = idEffectifCategorie;
+    public EffectifResponsabilite(Long idEffectifResponsabilite) {
+        this.idEffectifResponsabilite = idEffectifResponsabilite;
     }
 
-    public Long getIdEffectifCategorie() {
-        return idEffectifCategorie;
+    public Long getIdEffectifResponsabilite() {
+        return idEffectifResponsabilite;
     }
 
-    public void setIdEffectifCategorie(Long idEffectifCategorie) {
-        this.idEffectifCategorie = idEffectifCategorie;
+    public void setIdEffectifResponsabilite(Long idEffectifResponsabilite) {
+        this.idEffectifResponsabilite = idEffectifResponsabilite;
     }
 
     public int getNombre() {
@@ -74,18 +74,18 @@ public class EffectifCategorie implements Serializable {
         this.structure = structure;
     }
 
-    public Categorie getCategorie() {
-        return categorie;
+    public Responsabilite getResponsabilite() {
+        return responsabilite;
     }
 
-    public void setCategorie(Categorie categorie) {
-        this.categorie = categorie;
+    public void setResponsabilite(Responsabilite responsabilite) {
+        this.responsabilite = responsabilite;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.idEffectifCategorie);
+        hash = 79 * hash + Objects.hashCode(this.idEffectifResponsabilite);
         return hash;
     }
 
@@ -97,8 +97,8 @@ public class EffectifCategorie implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final EffectifCategorie other = (EffectifCategorie) obj;
-        if (!Objects.equals(this.idEffectifCategorie, other.idEffectifCategorie)) {
+        final EffectifResponsabilite other = (EffectifResponsabilite) obj;
+        if (!Objects.equals(this.idEffectifResponsabilite, other.idEffectifResponsabilite)) {
             return false;
         }
         return true;
@@ -106,7 +106,7 @@ public class EffectifCategorie implements Serializable {
 
     @Override
     public String toString() {
-        return "EffectifCategorie{" + "idEffectifCategorie=" + idEffectifCategorie + '}';
+        return "EffectifResponsabilite{" + "idEffectifResponsabilite=" + idEffectifResponsabilite + ", nombre=" + nombre + ", responsabilite=" + responsabilite + ", structure=" + structure + '}';
     }
 
 }

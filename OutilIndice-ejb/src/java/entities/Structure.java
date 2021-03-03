@@ -110,6 +110,9 @@ public class Structure implements Serializable {
     @OneToMany(mappedBy = "structure", fetch = FetchType.LAZY)
     private Collection<EffectifCategorie> effectifCategorieCollection;
 
+    @OneToMany(mappedBy = "structure", fetch = FetchType.LAZY)
+    private Collection<EffectifResponsabilite> effectifResponsabiliteCollection;
+
     public Structure() {
     }
 
@@ -281,6 +284,15 @@ public class Structure implements Serializable {
 
     public void setDepenseCollection(Collection<Depense> depenseCollection) {
         this.depenseCollection = depenseCollection;
+    }
+
+    @XmlTransient
+    public Collection<EffectifResponsabilite> getEffectifResponsabiliteCollection() {
+        return effectifResponsabiliteCollection;
+    }
+
+    public void setEffectifResponsabiliteCollection(Collection<EffectifResponsabilite> effectifResponsabiliteCollection) {
+        this.effectifResponsabiliteCollection = effectifResponsabiliteCollection;
     }
 
     public Institution getIdinstitution() {

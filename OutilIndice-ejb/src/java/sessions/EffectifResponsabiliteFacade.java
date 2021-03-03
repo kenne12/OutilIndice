@@ -5,7 +5,7 @@
  */
 package sessions;
 
-import entities.EffectifCategorie;
+import entities.EffectifResponsabilite;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,7 +17,7 @@ import javax.persistence.Query;
  * @author USER
  */
 @Stateless
-public class EffectifCategorieFacade extends AbstractFacade<EffectifCategorie> implements EffectifCategorieFacadeLocal {
+public class EffectifResponsabiliteFacade extends AbstractFacade<EffectifResponsabilite> implements EffectifResponsabiliteFacadeLocal {
 
     @PersistenceContext(unitName = "OutilIndice-ejbPU")
     private EntityManager em;
@@ -27,14 +27,14 @@ public class EffectifCategorieFacade extends AbstractFacade<EffectifCategorie> i
         return em;
     }
 
-    public EffectifCategorieFacade() {
-        super(EffectifCategorie.class);
+    public EffectifResponsabiliteFacade() {
+        super(EffectifResponsabilite.class);
     }
 
     @Override
     public Long nextId() {
         try {
-            Query query = em.createQuery("SELECT MAX(e.idEffectifCategorie) FROM EffectifCategorie e");
+            Query query = em.createQuery("SELECT MAX(e.idEffectifResponsabilite) FROM EffectifResponsabilite e");
             List listObj = query.getResultList();
             if (!listObj.isEmpty()) {
                 return ((Long) listObj.get(0)) + 1;
@@ -47,17 +47,17 @@ public class EffectifCategorieFacade extends AbstractFacade<EffectifCategorie> i
     }
 
     @Override
-    public List<EffectifCategorie> findByIdStructure(long idStructure) {
-        Query query = em.createQuery("SELECT e FROM EffectifCategorie e WHERE e.structure.idstructure=:idStructure");
+    public List<EffectifResponsabilite> findByIdStructure(long idStructure) {
+        Query query = em.createQuery("SELECT e FROM EffectifResponsabilite e WHERE e.structure.idstructure=:idStructure");
         query.setParameter("idStructure", idStructure);
         return query.getResultList();
     }
 
-    
     @Override
-    public void deleteByIdStructure(long idStructure){
-        Query query = em.createQuery("DELETE FROM EffectifCategorie e WHERE e.structure.idstructure=:idStructure");
+    public void deleteByIdStructure(long idStructure) {
+        Query query = em.createQuery("DELETE FROM EffectifResponsabilite e WHERE e.structure.idstructure=:idStructure");
         query.setParameter("idStructure", idStructure);
         query.executeUpdate();
     }
+
 }
