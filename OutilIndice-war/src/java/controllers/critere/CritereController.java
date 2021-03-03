@@ -8,6 +8,7 @@ package controllers.critere;
 import controllers.util.JsfUtil;
 import entities.Critere;
 import java.io.Serializable;
+import java.util.Objects;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -32,7 +33,10 @@ public class CritereController extends AbstractCritere implements Serializable {
             return;
         }
         critere = new Critere();
-        critere.setPoids(0d);
+        critere.setPoids(0.0);
+        critere.setScoreMoyen(0);
+        critere.setPointMax(0);
+        critere.setResultat(0.0);
         mode = "Create";
         RequestContext.getCurrentInstance().execute("PF('CritereCreateDialog').show()");
     }
@@ -43,10 +47,8 @@ public class CritereController extends AbstractCritere implements Serializable {
             return;
         }
         this.critere = c;
-        if (critere != null) {
-            mode = "Edit";
-            RequestContext.getCurrentInstance().execute("PF('CritereCreateDialog').show()");
-        }
+        mode = "Edit";
+        RequestContext.getCurrentInstance().execute("PF('CritereCreateDialog').show()");
     }
 
     public void forward() {
@@ -54,6 +56,21 @@ public class CritereController extends AbstractCritere implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().redirect(this.sc + "/Parametrage/critere/critere.html");
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void updateResultat() {
+        try {
+            critere.setResultat(0.0);
+            if (!Objects.equals(critere.getPointMax(), null)) {
+                if (!Objects.equals(critere.getScoreMoyen(), null)) {
+                    Double r = (critere.getPointMax() * critere.getScoreMoyen()) / 100.0;
+                    System.out.println(" " + Math.ceil(r));
+                    critere.setResultat(Math.ceil(r));
+                }
+            }
+        } catch (Exception e) {
+            critere.setResultat(0.0);
         }
     }
 

@@ -15,7 +15,7 @@
 
         <div class="row">
 
-            <div class="col-md-10">
+            <div class="col-md-12">
 
                 <div class="panel panel-success">
 
@@ -36,10 +36,13 @@
                             <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th style="width: 15%">#{langue['common.code']}</th>
-                                        <th style="width: 55%">#{langue['common.nom']}</th> 
-                                        <th style="width: 15%">#{langue['common.poids_par_default']}</th>
-                                        <th style="width: 15%">#{langue['common.actions']}</th>
+                                        <th style="width: 10%">#{langue['common.code']}</th>
+                                        <th style="width: 40%">#{langue['common.nom']}</th> 
+                                        <th style="width: 10%">#{langue['common.poids_par_default']}</th>
+                                        <th style="width: 10%">#{langue['common.point_max']}</th>
+                                        <th style="width: 10%">#{langue['common.score_moyen']}</th>
+                                        <th style="width: 10%">#{langue['common.resultat']}</th>
+                                        <th style="width: 10%">#{langue['common.actions']}</th>
                                     </tr>
                                 </thead>
 
@@ -48,8 +51,11 @@
                                         <tr>
                                             <td>#{item.code}</td>
                                             <td>#{item.nom}</td>
-                                            <td>#{item.poids}</td>
-                                            <td>                                        
+                                            <td style="text-align: center">#{item.poids}</td>
+                                            <td style="text-align: center">#{item.pointMax}</td>
+                                            <td style="text-align: center">#{item.scoreMoyen}</td>
+                                            <td style="text-align: center">#{item.resultat}</td>
+                                            <td style="text-align: center">                                        
                                                 <p:commandButton class="btn btn-danger btn-sm" icon="ui-icon-trash" 
                                                                  actionListener="#{critereController.delete(item)}"
                                                                  update="CritereListerForm:datalist,CritereListerForm:growl">
@@ -67,15 +73,10 @@
                                     </ui:repeat>
                                 </tbody>
                             </table>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
     </h:form>
 

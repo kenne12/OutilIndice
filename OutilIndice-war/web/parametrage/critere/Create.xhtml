@@ -38,29 +38,53 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue['common.point_max']}" for="p_max" />
+                                <h:inputText class="form-control" id="p_max" value="#{critereController.critere.pointMax}" required="true" requiredMessage="#{langue['common.valeur_requise']}" >
+                                    <p:ajax event="keyup" update="resultat" listener="#{critereController.updateResultat()}" />
+                                </h:inputText>
+                            </div>
+                        </div>
 
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue['common.score_moyen']}" for="score_moyen" />
+                                <h:inputText class="form-control" id="score_moyen" value="#{critereController.critere.scoreMoyen}" >
+                                    <p:ajax event="keyup" update="resultat" listener="#{critereController.updateResultat()}" />
+                                </h:inputText>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue['common.resultat']}" for="resultat" />
+                                <h:inputText class="form-control" id="resultat" value="#{critereController.critere.resultat}" required="true" requiredMessage="#{langue['common.valeur_requise']}" />
+                            </div>
+                        </div> 
+                    </div>
+                            
                     <p:separator/>
 
                     <center>
-
                         <p:commandButton value="#{langue['common.fermer']}" 
                                          onclick="PF('CritereCreateDialog').hide()"
                                          icon="ui-icon-close"/>
 
-                        <p:commandButton icon="ui-icon-save" actionListener="#{critereController.save()}" value="#{langue['common.enregistrer']}" update="display,:CritereListerForm:datalist,:CritereListerForm:growl,:CritereListerForm">
+                        <p:commandButton icon="ui-icon-data-base" actionListener="#{critereController.save()}" value="#{langue['common.enregistrer']}" update="display,:CritereListerForm:datalist,:CritereListerForm:growl,:CritereListerForm">
                             <p:confirm header="#{langue['notification.confirmation']}" 
                                        message="#{langue['notification.confirmation_enregistrement']}" 
                                        icon="ui-icon-alert"/>
                         </p:commandButton>
-
                     </center>
 
                 </h:panelGroup>
-
             </h:form>
-
         </p:dialog>
-
     </ui:composition>
 
 </html>
