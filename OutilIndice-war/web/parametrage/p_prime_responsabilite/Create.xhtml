@@ -29,7 +29,6 @@
                                              id="structure" value="#{primeResponsabiliteCtrl.structure}">
                                 <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
                                 <f:selectItems value="#{primeResponsabiliteCtrl.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
-                                <p:ajax update="grid_critere,datalist" listener="#{primeResponsabiliteCtrl.updateFiltre()}"/>
                             </h:selectOneMenu>                                                
                         </div>
 
@@ -46,18 +45,19 @@
                                          actionListener="#{primeResponsabiliteCtrl.addResponsabilityToTable()}"
                                          update="datalist,grid_critere" icon="ui-icon-plus" />
                         <p:separator />
-
+                        <h:outputText value="Max Point : #{primeResponsabiliteCtrl.totalPointMaxCritere}" style="font-size: 20px ; color: red" />
+                        
                         <p:dataTable id="datalist" value="#{primeResponsabiliteCtrl.critereresponsabilites}" var="item"                             
                                      paginator="true"
                                      editable="true"
                                      editMode="cell"
-                                     rows="15"
+                                     rows="#{primeResponsabiliteCtrl.critereresponsabilites.size()}"
                                      rowsPerPageTemplate="10,20,30,40,50"
                                      style="margin-top: 1%;font-size: 15px"
                                      rowIndexVar="index"
                                      emptyMessage="#{langue['common.tableau_vide']}">
 
-                            <p:column class="hardBreak" style="width: 80%;" >
+                            <p:column class="hardBreak" style="width: 60%;" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.reponsabilite}"/>
                                 </f:facet>
@@ -73,13 +73,29 @@
                                     </f:facet>
                                     <f:facet name="input">
                                         <p:inputText required="true" value="#{item.point}">                                             
-                                            <p:ajax event="keyup" />
+                                            <p:ajax update="datalist" listener="#{primeResponsabiliteCtrl.updateSaisieLine(index)}" />
                                         </p:inputText>
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
-
-                            <p:column style="width: 10%" >
+                            
+                            <p:column class="hardBreak" style="width: 10%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue['common.effectif']}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.nombre}"/> 
+                            </p:column>
+                            
+                            <p:column class="hardBreak" style="width: 10%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.total}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.total}">
+                                    <f:convertNumber />
+                                </h:outputText> 
+                            </p:column>
+                                     
+                            <p:column style="width: 10%;text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="Action"/>
                                 </f:facet>
@@ -87,13 +103,21 @@
                                     <p:ajax update="datalist,:ResponsabiliteCreateForm:grid_critere" event="click" listener="#{primeResponsabiliteCtrl.removeResponsability(item)}" />
                                 </p:commandButton>
                             </p:column>
+                            
+                            <p:columnGroup type="footer" id="footer_tab">
+                                <p:row>
+                                    <p:column colspan="2" style="text-align:right" footerText="Totaux" />                                                                          
+                                    <p:column style="text-align:center" footerText="#{primeResponsabiliteCtrl.totalEffectifs}"/>
+                                    <p:column style="text-align:center" footerText="#{primeResponsabiliteCtrl.totalPointSaisi}"/>
+                                    <p:column style="text-align:center" footerText="/" /> 
+                                </p:row>
+                            </p:columnGroup>
 
                         </p:dataTable>
 
                         <p:separator/>
 
                         <center>
-
                             <p:commandButton value="#{langue['common.fermer']}" 
                                              onclick="PF('ResponsabiliteCreateDialog').hide()"
                                              icon="ui-icon-close"/>
@@ -103,17 +127,11 @@
                                            message="#{langue['notification.confirmation_enregistrement']}" 
                                            icon="ui-icon-alert"/>
                             </p:commandButton>
-
                         </center>
 
                     </h:panelGroup>
-
                 </div>
-
             </h:form>
-
         </p:dialog>
-
     </ui:composition>
-
 </html>

@@ -25,6 +25,8 @@ public class Critereresponsabilite implements Serializable {
     @Basic(optional = false)
     private Long idcritereresponsabilite;
     private double point;
+    private int nombre;
+    private double total;
     private boolean responsabilite;
 
     @JoinColumn(name = "idresponsabilite", referencedColumnName = "idresponsabilite")
@@ -60,6 +62,22 @@ public class Critereresponsabilite implements Serializable {
 
     public void setPoint(double point) {
         this.point = point;
+    }
+
+    public int getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(int nombre) {
+        this.nombre = nombre;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
     }
 
     public boolean isResponsabilite() {

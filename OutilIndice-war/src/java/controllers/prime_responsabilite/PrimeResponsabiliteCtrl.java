@@ -8,7 +8,9 @@ package controllers.prime_responsabilite;
 import controllers.util.JsfUtil;
 import entities.Critere;
 import entities.Critereresponsabilite;
+import entities.EffectifResponsabilite;
 import entities.Responsabilite;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -22,7 +24,7 @@ import utils.SessionMBean;
  */
 @ManagedBean
 @SessionScoped
-public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl {
+public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl implements Serializable {
 
     /**
      * Creates a new instance of PrimeResponsabiliteCtrl
@@ -32,17 +34,28 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl {
 
     @PostConstruct
     private void init() {
-        structure = SessionMBean.getStructure();
         structures.clear();
         structures.add(SessionMBean.getStructure());
         listCriteres = critereresponsabiliteFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
         critereresponsabilite.setIdresponsabilite(new Responsabilite());
+        criterestructure = criterestructureFacadeLocal.findByIdStructureIdCritere(structure.getIdstructure(), 1);
+        if (criterestructure != null) {
+            totalPointMaxCritere = criterestructure.getResultat();
+        }
     }
 
-    public void prepareCreate() {
-        this.updateFiltre();
+    public void prepareCreate(String option) {
+        if (criterestructure == null) {
+            JsfUtil.addWarningMessage("Cette structure ne traite pas de la prime de responsabilité");
+            return;
+        }
         mode = "Create";
-        RequestContext.getCurrentInstance().execute("PF('ResponsabiliteCreateDialog').show()");
+
+        if (option.equals("1")) {
+            this.updateFiltre();
+        } else {
+            this.updateFiltre2();
+        }
     }
 
     public void prepareEdit(Critereresponsabilite cr) {
@@ -55,20 +68,46 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl {
         responsabilites.clear();
         selectedResponsabilites.clear();
         critereresponsabilites.clear();
-        if (structure.getIdstructure() != null && structure.getIdstructure() > 0) {
-            List<Critereresponsabilite> list = critereresponsabiliteFacadeLocal.findByIdStructure(structure.getIdstructure());
-            if (list.isEmpty() || list == null) {
-                responsabilites.addAll(responsabiliteFacadeLocal.findAll());
-            } else {
-                critereresponsabilites.addAll(list);
-                responsabilites.addAll(responsabiliteFacadeLocal.findAll());
-                for (Critereresponsabilite cr : list) {
-                    selectedResponsabilites.add(cr.getIdresponsabilite());
-                }
-                responsabilites.removeAll(selectedResponsabilites);
-                selectedResponsabilites.clear();
+        List<Critereresponsabilite> list = critereresponsabiliteFacadeLocal.findByIdStructure(structure.getIdstructure());
+        if (list.isEmpty() || list == null) {
+            responsabilites.addAll(responsabiliteFacadeLocal.findAll());
+        } else {
+            critereresponsabilites.addAll(list);
+            responsabilites.addAll(responsabiliteFacadeLocal.findAll());
+            for (Critereresponsabilite cr : list) {
+                selectedResponsabilites.add(cr.getIdresponsabilite());
             }
+            responsabilites.removeAll(selectedResponsabilites);
+            selectedResponsabilites.clear();
         }
+        RequestContext.getCurrentInstance().execute("PF('ResponsabiliteCreateDialog').show()");
+    }
+
+    public void updateFiltre2() {
+        critereresponsabilites.clear();
+        List<Critereresponsabilite> list = critereresponsabiliteFacadeLocal.findByIdStructure(structure.getIdstructure());
+        if (list.isEmpty()) {
+            effectifResponsabilites = effectifResponsabiliteFacadeLocal.findByIdStructure(structure.getIdstructure());
+            if (effectifResponsabilites.isEmpty()) {
+                JsfUtil.addWarningMessage("Veuillez définir les effectifs par responsabilité pour cette structure");
+                return;
+            }
+            for (EffectifResponsabilite efr : effectifResponsabilites) {
+                Critereresponsabilite cr = new Critereresponsabilite();
+                cr.setIdcritereresponsabilite(0l);
+                cr.setIdstructure(structure);
+                cr.setIdcritere(new Critere(1));
+                cr.setPoint(0d);
+                cr.setNombre(efr.getNombre());
+                cr.setIdresponsabilite(efr.getResponsabilite());
+                cr.setTotal(0);
+                cr.setResponsabilite(true);
+                critereresponsabilites.add(cr);
+            }
+        } else {
+            critereresponsabilites.addAll(list);
+        }
+        RequestContext.getCurrentInstance().execute("PF('ResponsabiliteCreateDialog').show()");
     }
 
     public void addResponsabilityToTable() {
@@ -118,10 +157,36 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl {
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }
 
+    public void updateSaisieLine(int index) {
+        try {
+            critereresponsabilites.get(index).setTotal(critereresponsabilites.get(index).getPoint() * critereresponsabilites.get(index).getNombre());
+            this.sommeDetail(critereresponsabilites);
+        } catch (Exception e) {
+            critereresponsabilites.get(index).setTotal(0);
+        }
+    }
+
+    public void sommeDetail(List<Critereresponsabilite> list) {
+        this.totalPointSaisi = 0;
+        this.totalEffectifs = 0;
+        for (Critereresponsabilite cr : list) {
+            totalEffectifs += cr.getNombre();
+            try {
+                totalPointSaisi += cr.getTotal();
+            } catch (Exception e) {
+            }
+        }
+    }
+
     public void save() {
         try {
             if (critereresponsabilites.isEmpty()) {
                 JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
+                return;
+            }
+            
+            if (totalPointSaisi>totalPointMaxCritere) {
+                JsfUtil.addErrorMessage("Le total saisi depasse le total point max possible");
                 return;
             }
 

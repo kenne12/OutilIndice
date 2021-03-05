@@ -263,10 +263,6 @@ public class LoginController implements Serializable {
         return showSessionPanel;
     }
 
-    public void setShowSessionPanel(boolean showSessionPanel) {
-        this.showSessionPanel = showSessionPanel;
-    }
-
     public String getFilename() {
         return filename;
     }

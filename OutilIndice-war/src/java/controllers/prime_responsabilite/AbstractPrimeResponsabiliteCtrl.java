@@ -6,15 +6,20 @@
 package controllers.prime_responsabilite;
 
 import entities.Critereresponsabilite;
+import entities.Criterestructure;
+import entities.EffectifResponsabilite;
 import entities.Responsabilite;
 import entities.Structure;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import sessions.CritereresponsabiliteFacadeLocal;
+import sessions.CriterestructureFacadeLocal;
+import sessions.EffectifResponsabiliteFacadeLocal;
 import sessions.ResponsabiliteFacadeLocal;
 import sessions.StructureFacadeLocal;
 import utils.Routine;
+import utils.SessionMBean;
 
 /**
  *
@@ -23,10 +28,18 @@ import utils.Routine;
 public class AbstractPrimeResponsabiliteCtrl {
 
     @EJB
+    protected CriterestructureFacadeLocal criterestructureFacadeLocal;
+    protected Criterestructure criterestructure = new Criterestructure();
+
+    @EJB
     protected CritereresponsabiliteFacadeLocal critereresponsabiliteFacadeLocal;
     protected Critereresponsabilite critereresponsabilite = new Critereresponsabilite();
     protected List<Critereresponsabilite> critereresponsabilites = new ArrayList<>();
     protected List<Critereresponsabilite> listCriteres = new ArrayList<>();
+
+    @EJB
+    protected EffectifResponsabiliteFacadeLocal effectifResponsabiliteFacadeLocal;
+    protected List<EffectifResponsabilite> effectifResponsabilites = new ArrayList<>();
 
     @EJB
     protected ResponsabiliteFacadeLocal responsabiliteFacadeLocal;
@@ -35,11 +48,14 @@ public class AbstractPrimeResponsabiliteCtrl {
 
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
-    protected Structure structure = new Structure();
+    protected Structure structure = SessionMBean.getStructure();
     protected List<Structure> structures = new ArrayList<>();
 
     protected Routine routine = new Routine();
     protected String mode = "";
+    protected double totalPointMaxCritere;
+    protected double totalPointSaisi;
+    protected int totalEffectifs;
 
     public Routine getRoutine() {
         return routine;
@@ -87,6 +103,22 @@ public class AbstractPrimeResponsabiliteCtrl {
 
     public void setCritereresponsabilite(Critereresponsabilite critereresponsabilite) {
         this.critereresponsabilite = critereresponsabilite;
+    }
+
+    public List<EffectifResponsabilite> getEffectifResponsabilites() {
+        return effectifResponsabilites;
+    }
+
+    public double getTotalPointMaxCritere() {
+        return totalPointMaxCritere;
+    }
+
+    public double getTotalPointSaisi() {
+        return totalPointSaisi;
+    }
+
+    public int getTotalEffectifs() {
+        return totalEffectifs;
     }
 
 }

@@ -18,11 +18,18 @@
                 <div class="panel panel-success">
                     <div style="color: white" class="panel-heading bg-success">
                         #{langue['responsabilite.liste_poste_responsabilite']}
+                         
                         <p:commandButton update=":ResponsabiliteCreateForm"
                                          icon="ui-icon-plus"
-                                         value="#{langue['common.ajouter']}"
+                                         value="#{langue['common.ajouter']} 2"
                                          style="float: right"
-                                         actionListener="#{primeResponsabiliteCtrl.prepareCreate()}"/>      
+                                         actionListener="#{primeResponsabiliteCtrl.prepareCreate('2')}"/>
+                        
+                        <p:commandButton update=":ResponsabiliteCreateForm"
+                                         icon="ui-icon-plus"
+                                         value="#{langue['common.ajouter']} 1"
+                                         style="float: right"
+                                         actionListener="#{primeResponsabiliteCtrl.prepareCreate('1')}"/>
                     </div>
 
                     <div class="panel-body">
@@ -33,7 +40,9 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 80%">#{langue.responsabilite}</th>
+                                        <th style="width: 10%">#{langue['common.effectif']}</th>
                                         <th style="width: 10%">#{langue.points}</th>
+                                        <th style="width: 10%">#{langue.total}</th>
                                         <th style="width: 10%;text-align: center">#{langue['common.actions']}</th>
                                     </tr>
                                 </thead>
@@ -42,10 +51,13 @@
                                     <ui:repeat value="#{primeResponsabiliteCtrl.listCriteres}" var="item">
                                         <tr>
                                             <td>#{item.idresponsabilite.nom}</td>
-                                            <td>#{item.point}</td>                                                                            
+                                            <td style="text-align: center">#{item.nombre}</td>
+                                            <td style="text-align: center"><h:outputText value="#{item.point}" > <f:convertNumber /> </h:outputText> </td>
+                                            <td style="text-align: center"><h:outputText value="#{item.total}"> <f:convertNumber />   </h:outputText></td>
                                             <td style="text-align: center">                                        
                                                 <p:commandButton icon="ui-icon-pencil" update=":ResponsabiliteEditForm"
                                                                  class="btn btn-success btn-sm"
+                                                                 disabled="true"
                                                                  actionListener="#{primeResponsabiliteCtrl.prepareEdit(item)}"/>
 
                                                 <p:commandButton icon="ui-icon-trash" update=":ResponsabiliteListerForm"
