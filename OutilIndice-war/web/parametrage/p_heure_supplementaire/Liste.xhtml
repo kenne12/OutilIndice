@@ -20,9 +20,16 @@
                         #{langue['heure_supp_p.liste_point_par_heure_sup']}
                         <p:commandButton update=":HeureSuppCreateForm"
                                          icon="ui-icon-plus"
-                                         value="#{langue['common.ajouter']}"
+                                         value="#{langue['common.ajouter']} 2"
                                          style="float: right"
-                                         actionListener="#{primeHeureSupplementaireCtrl.prepareCreate()}"/>      
+                                         actionListener="#{primeHeureSupplementaireCtrl.prepareCreate('2')}"/>
+                        
+                        <p:commandButton update=":HeureSuppCreateForm"
+                                         disabled="true"
+                                         icon="ui-icon-plus"
+                                         value="#{langue['common.ajouter']} 1"
+                                         style="float: right"
+                                         actionListener="#{primeHeureSupplementaireCtrl.prepareCreate('1')}"/>
                     </div>
 
                     <div class="panel-body">
@@ -32,13 +39,16 @@
                             <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th style="width: 40%">#{langue.categorie}</th>
-                                        <th style="width: 10%">#{langue.indice}</th>
+                                        <th style="width: 22%">#{langue.categorie}</th>
+                                        <th style="width: 8%">#{langue.indice}</th>
+                                        <th style="width: 6%">#{langue['common.effectif']}</th>
                                         <th style="width: 10%">#{langue.denominateur_jour}</th>
                                         <th style="width: 10%">#{langue.denominateur_nuit}</th>
                                         <th style="width: 10%">#{langue.point_journee}</th>
                                         <th style="width: 10%">#{langue.point_nuit}</th>
-                                        <th style="width: 10%;text-align: center">#{langue['common.actions']}</th>
+                                        <th style="width: 8%">#{langue.tot_jr}</th>
+                                        <th style="width: 8%">#{langue.tot_nuit}</th>
+                                        <th style="width: 5%;text-align: center">#{langue['common.actions']}</th>
                                     </tr>
                                 </thead>
 
@@ -47,12 +57,15 @@
                                         <tr>
                                             <td>#{item.idcategorie.nom}</td>
                                             <td>#{item.indice}</td>
+                                            <td>#{item.nombre}</td>
                                             <td>#{item.denominateurjournee}</td>
                                             <td>#{item.denominateurnuit}</td>
                                             <td>#{item.valeurjournee}</td>
                                             <td>#{item.valeurnuit}</td>
+                                            <td>#{item.total1}</td>
+                                            <td>#{item.total2}</td>
                                             <td style="text-align: center">                                        
-                                                <p:commandButton icon="ui-icon-pencil" update=":HeureSuppEditForm"
+                                                <p:commandButton disabled="true" icon="ui-icon-pencil" update=":HeureSuppEditForm"
                                                                  class="btn btn-success btn-sm"
                                                                  actionListener="#{primeHeureSupplementaireCtrl.prepareEdit(item)}"/>
 

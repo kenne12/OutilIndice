@@ -29,7 +29,6 @@
                                              id="structure" value="#{primeHeureSupplementaireCtrl.structure}">
                                 <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
                                 <f:selectItems value="#{primeHeureSupplementaireCtrl.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
-                                <p:ajax update="grid_critere,datalist" listener="#{primeHeureSupplementaireCtrl.updateFiltre()}"/>
                             </h:selectOneMenu>                                                
                         </div>
 
@@ -68,25 +67,27 @@
                                          actionListener="#{primeHeureSupplementaireCtrl.addCategoriesToTable()}"
                                          update="datalist,grid_critere" icon="ui-icon-plus" />
                         <p:separator />
+                        <h:outputText value="Max Point : #{primeHeureSupplementaireCtrl.totalPointMaxCritere}" style="font-size: 20px ; color: red" />
+                        
 
                         <p:dataTable id="datalist" value="#{primeHeureSupplementaireCtrl.parametragecriteres}" var="item"                             
                                      paginator="true"
                                      editable="true"
                                      editMode="cell"
-                                     rows="15"
+                                     rows="#{primeHeureSupplementaireCtrl.parametragecriteres.size()}"
                                      rowsPerPageTemplate="10,20,30,40,50"
                                      style="margin-top: 1%;font-size: 15px"
                                      rowIndexVar="index"
                                      emptyMessage="#{langue['common.tableau_vide']}">
 
-                            <p:column class="hardBreak" style="width: 40%;" >
+                            <p:column class="hardBreak" style="width: 22%;" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.categorie}"/>
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{item.idcategorie.nom}"/> 
                             </p:column>
 
-                            <p:column style="width: 10% ; text-align:center" headerText="#{langue.indice}">
+                            <p:column style="width: 8% ; text-align:center" headerText="#{langue.indice}">
                                 <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText value="#{item.indice}" >
@@ -99,6 +100,13 @@
                                         </p:inputText>
                                     </f:facet>
                                 </p:cellEditor>
+                            </p:column>
+                            
+                            <p:column class="hardBreak" style="width: 6%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue['common.effectif']}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.nombre}"/> 
                             </p:column>
 
                             <p:column style="width: 10% ; text-align:center" headerText="#{langue.denominateur_jour}">
@@ -131,18 +139,32 @@
                                 </p:cellEditor>
                             </p:column>
 
-                            <p:column class="hardBreak" style="width: 10%;" >
+                            <p:column class="hardBreak" style="width: 10%;text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.point_journee}"/>
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{item.valeurjournee}"/> 
                             </p:column>
 
-                            <p:column class="hardBreak" style="width: 10%;" >
+                            <p:column class="hardBreak" style="width: 10%;text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.point_nuit}"/>
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{item.valeurnuit}"/> 
+                            </p:column>
+                            
+                            <p:column class="hardBreak" style="width: 8%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.tot_jr}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.total1}"/> 
+                            </p:column>
+                            
+                            <p:column class="hardBreak" style="width: 8%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.tot_nuit}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.total2}"/> 
                             </p:column>
 
                             <p:column style="width: 5%;text-align: center" >
@@ -153,6 +175,17 @@
                                     <p:ajax update="datalist,:HeureSuppCreateForm:grid_critere" event="click" listener="#{primeHeureSupplementaireCtrl.removeCategory(item)}" />
                                 </p:commandButton>
                             </p:column>
+                            
+                            <p:columnGroup type="footer" id="footer_tab">
+                                <p:row>
+                                    <p:column colspan="2" style="text-align:right" footerText="Totaux" /> 
+                                    <p:column style="text-align:center" footerText="#{primeHeureSupplementaireCtrl.totalEffectif}"/>
+                                    <p:column colspan="4" style="text-align:right" footerText="" /> 
+                                    <p:column style="text-align:center" footerText="#{primeHeureSupplementaireCtrl.totalPointSaisiJ}"/>
+                                    <p:column style="text-align:center" footerText="#{primeHeureSupplementaireCtrl.totalPointSaisiN}"/>
+                                    <p:column style="text-align:center" footerText="/" /> 
+                                </p:row>
+                            </p:columnGroup>
 
                         </p:dataTable>
 

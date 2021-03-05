@@ -39,6 +39,9 @@ public class Parametragecritere implements Serializable {
     private boolean resultatquantitatifdept;
     private boolean performanceindividuelle;
     private boolean bonusrevenudept;
+    private int nombre;
+    private double total1;
+    private double total2;
     @JoinColumn(name = "idcategorie", referencedColumnName = "idcategorie")
     @ManyToOne(fetch = FetchType.LAZY)
     private Categorie idcategorie;
@@ -129,6 +132,30 @@ public class Parametragecritere implements Serializable {
 
     public void setDenominateurnuit(double denominateurnuit) {
         this.denominateurnuit = denominateurnuit;
+    }
+
+    public int getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(int nombre) {
+        this.nombre = nombre;
+    }
+
+    public double getTotal1() {
+        return total1;
+    }
+
+    public void setTotal1(double total1) {
+        this.total1 = total1;
+    }
+
+    public double getTotal2() {
+        return total2;
+    }
+
+    public void setTotal2(double total2) {
+        this.total2 = total2;
     }
 
     public boolean isHeuresupp() {
