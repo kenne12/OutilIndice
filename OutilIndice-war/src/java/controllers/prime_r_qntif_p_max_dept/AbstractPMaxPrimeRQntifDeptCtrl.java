@@ -6,21 +6,30 @@
 package controllers.prime_r_qntif_p_max_dept;
 
 import entities.Categorie;
+import entities.Criterestructure;
+import entities.EffectifCategorie;
 import entities.Parametragecritere;
 import entities.Structure;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import sessions.CategorieFacadeLocal;
+import sessions.CriterestructureFacadeLocal;
+import sessions.EffectifCategorieFacadeLocal;
 import sessions.ParametragecritereFacadeLocal;
 import sessions.StructureFacadeLocal;
 import utils.Routine;
+import utils.SessionMBean;
 
 /**
  *
  * @author USER
  */
 public class AbstractPMaxPrimeRQntifDeptCtrl {
+
+    @EJB
+    protected CriterestructureFacadeLocal criterestructureFacadeLocal;
+    protected Criterestructure criterestructure = new Criterestructure();
 
     @EJB
     protected ParametragecritereFacadeLocal parametragecritereFacadeLocal;
@@ -36,13 +45,21 @@ public class AbstractPMaxPrimeRQntifDeptCtrl {
 
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
-    protected Structure structure = new Structure();
+    protected Structure structure = SessionMBean.getStructure();
     protected List<Structure> structures = new ArrayList<>();
+
+    @EJB
+    protected EffectifCategorieFacadeLocal effectifCategorieFacadeLocal;
+    protected List<EffectifCategorie> effectifCategories = new ArrayList<>();
 
     protected Routine routine = new Routine();
     protected String mode = "";
 
     protected double denominateur = 5;
+
+    protected double totalPointMaxCritere;
+    protected int totalEffectif;
+    protected double totalPointSaisi;
 
     public Parametragecritere getParametragecritere() {
         return parametragecritere;
@@ -95,4 +112,17 @@ public class AbstractPMaxPrimeRQntifDeptCtrl {
     public void setDenominateur(double denominateur) {
         this.denominateur = denominateur;
     }
+
+    public double getTotalPointMaxCritere() {
+        return totalPointMaxCritere;
+    }
+
+    public int getTotalEffectif() {
+        return totalEffectif;
+    }
+
+    public double getTotalPointSaisi() {
+        return totalPointSaisi;
+    }
+
 }

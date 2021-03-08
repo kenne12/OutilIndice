@@ -23,14 +23,14 @@ import utils.SessionMBean;
  */
 @ManagedBean
 @SessionScoped
-public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements Serializable{
+public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements Serializable {
 
     /**
      * Creates a new instance of PrimeRQltifDeptCtrl
      */
     public PrimeRQltifDeptCtrl() {
     }
-    
+
     @PostConstruct
     private void init() {
         structure = SessionMBean.getStructure();
@@ -40,20 +40,24 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
         parametragecritere = new Parametragecritere();
         parametragecritere.setIdcategorie(new Categorie());
     }
-    
-    public void prepareCreate() {
+
+    public void prepareCreate(String option) {
         this.denominateur = 5;
-        this.updateFiltre();
         mode = "Create";
+        if (option.equals("1")) {
+            this.updateFiltre();
+        } else {
+
+        }
         RequestContext.getCurrentInstance().execute("PF('PrimeRQltifCreateDialog').show()");
     }
-    
+
     public void prepareEdit(Parametragecritere p) {
         this.parametragecritere = p;
         mode = "Edit";
         RequestContext.getCurrentInstance().execute("PF('PrimeRQltifEditDialog').show()");
     }
-    
+
     public void updateFiltre() {
         categories.clear();
         selectedCategories.clear();
@@ -73,7 +77,7 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
             }
         }
     }
-    
+
     public void addCategoriesToTable() {
         if (!selectedCategories.isEmpty()) {
             for (Categorie c : selectedCategories) {
@@ -103,7 +107,7 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
             categories.removeAll(selectedCategories);
         }
     }
-    
+
     public void removeCategory(Parametragecritere p) {
         if (p.getIdparametragecritere() != 0l) {
             parametragecritereFacadeLocal.remove(p);
@@ -121,7 +125,7 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
         }
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }
-    
+
     public void updateData(String mode) {
         int i = 0;
         for (Parametragecritere pc : parametragecriteres) {
@@ -131,7 +135,7 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
             i++;
         }
     }
-    
+
     public void updateDataLine(String mode) {
         try {
             parametragecritere.setPoint(parametragecritere.getIndice() / parametragecritere.getDenominateur());
@@ -139,14 +143,14 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
             parametragecritere.setPoint(0);
         }
     }
-    
+
     public void save() {
         try {
             if (parametragecriteres.isEmpty()) {
                 JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
                 return;
             }
-            
+
             for (Parametragecritere pc : parametragecriteres) {
                 if (pc.getIdparametragecritere() == 0l) {
                     pc.setIdparametragecritere(parametragecritereFacadeLocal.nextId());
@@ -157,7 +161,7 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
             }
             listParametres = parametragecritereFacadeLocal.findByIdStructurePrqd(SessionMBean.getStructure().getIdstructure(), 5, true);
             this.parametragecriteres.clear();
-            
+
             RequestContext.getCurrentInstance().execute("PF('PrimeRQltifCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
@@ -165,7 +169,7 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-    
+
     public void edit() {
         try {
             parametragecritereFacadeLocal.edit(parametragecritere);
@@ -179,7 +183,7 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-    
+
     public void delete(Parametragecritere p) {
         try {
             parametragecritereFacadeLocal.remove(p);

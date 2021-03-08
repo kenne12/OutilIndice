@@ -29,7 +29,6 @@
                                              id="structure" value="#{pMaxPrimeRQntifDeptCtrl.structure}">
                                 <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
                                 <f:selectItems value="#{pMaxPrimeRQntifDeptCtrl.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
-                                <p:ajax update="grid_critere,datalist" listener="#{pMaxPrimeRQntifDeptCtrl.updateFiltre()}"/>
                             </h:selectOneMenu>                                                
                         </div>
 
@@ -59,6 +58,8 @@
                                          actionListener="#{pMaxPrimeRQntifDeptCtrl.addCategoriesToTable()}"
                                          update="datalist,grid_critere" icon="ui-icon-plus" />
                         <p:separator />
+                        
+                        <h:outputText value="Max Point : #{pMaxPrimeRQntifDeptCtrl.totalPointMaxCritere}" style="font-size: 20px ; color: red" />
 
                         <p:dataTable id="datalist" value="#{pMaxPrimeRQntifDeptCtrl.parametragecriteres}" var="item"                             
                                      paginator="true"
@@ -70,7 +71,7 @@
                                      rowIndexVar="index"
                                      emptyMessage="#{langue['common.tableau_vide']}">
 
-                            <p:column class="hardBreak" style="width: 50%;" >
+                            <p:column class="hardBreak" style="width: 35%;" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.categorie}"/>
                                 </f:facet>
@@ -86,7 +87,7 @@
                                     </f:facet>
                                     <f:facet name="input">
                                         <p:inputText required="true" value="#{item.indice}">                                             
-                                            <p:ajax update="datalist" listener="#{primeHeureSupplementaireCtrl.updateData('')}" />
+                                            <p:ajax update="datalist" listener="#{pMaxPrimeRQntifDeptCtrl.updateData('')}" />
                                         </p:inputText>
                                     </f:facet>
                                 </p:cellEditor>
@@ -101,20 +102,34 @@
                                     </f:facet>
                                     <f:facet name="input">
                                         <p:inputText required="true" value="#{item.denominateur}">                                             
-                                            <p:ajax update="datalist" listener="#{primeHeureSupplementaireCtrl.updateData('')}" />
+                                            <p:ajax update="datalist" listener="#{pMaxPrimeRQntifDeptCtrl.updateData('')}" />
                                         </p:inputText>
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
-
-                            <p:column class="hardBreak" style="width: 10%;" >
+                            
+                            <p:column class="hardBreak" style="width: 10%;text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.point_max}"/>
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{item.point}"/> 
                             </p:column>
+                            
+                            <p:column class="hardBreak" style="width: 8%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue['common.effectif']}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.nombre}"/> 
+                            </p:column>
+                            
+                            <p:column class="hardBreak" style="width: 10%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.total}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.total1}"/> 
+                            </p:column>
 
-                            <p:column style="width: 10%;text-align: center" >
+                            <p:column style="width: 7%;text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="Action"/>
                                 </f:facet>
@@ -122,6 +137,15 @@
                                     <p:ajax update="datalist,:PrimeRQltifCreateForm:grid_critere" event="click" listener="#{pMaxPrimeRQntifDeptCtrl.removeCategory(item)}" />
                                 </p:commandButton>
                             </p:column>
+                            
+                            <p:columnGroup type="footer" id="footer_tab">
+                                <p:row>
+                                    <p:column colspan="4" style="text-align:right" footerText="Totaux" /> 
+                                    <p:column style="text-align:center" footerText="#{pMaxPrimeRQntifDeptCtrl.totalEffectif}"/>
+                                    <p:column style="text-align:center" footerText="#{pMaxPrimeRQntifDeptCtrl.totalPointSaisi}"/>
+                                    <p:column style="text-align:center" footerText="/" /> 
+                                </p:row>
+                            </p:columnGroup>
 
                         </p:dataTable>
 

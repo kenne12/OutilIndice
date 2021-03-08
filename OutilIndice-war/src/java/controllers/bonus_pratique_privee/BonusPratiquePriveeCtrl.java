@@ -41,7 +41,7 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
         parametragecritere = new Parametragecritere();
         parametragecritere.setIdcategorie(new Categorie());
 
-        criterestructure = criterestructureFacadeLocal.findByIdStructureIdCritere(structure.getIdstructure(), 2);
+        criterestructure = criterestructureFacadeLocal.findByIdStructureIdCritere(structure.getIdstructure(), 3);
         if (criterestructure != null) {
             totalPointMaxCritere = criterestructure.getResultat();
         }
