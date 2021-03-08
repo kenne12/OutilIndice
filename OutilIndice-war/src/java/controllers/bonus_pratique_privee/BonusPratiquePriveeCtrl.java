@@ -8,6 +8,7 @@ package controllers.bonus_pratique_privee;
 import controllers.util.JsfUtil;
 import entities.Categorie;
 import entities.Critere;
+import entities.EffectifCategorie;
 import entities.Parametragecritere;
 import java.io.Serializable;
 import java.util.List;
@@ -23,7 +24,7 @@ import utils.SessionMBean;
  */
 @ManagedBean
 @SessionScoped
-public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl implements Serializable{
+public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl implements Serializable {
 
     /**
      * Creates a new instance of BonusPratiquePriveeCtrl
@@ -39,19 +40,33 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
         listParametres = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
         parametragecritere = new Parametragecritere();
         parametragecritere.setIdcategorie(new Categorie());
+
+        criterestructure = criterestructureFacadeLocal.findByIdStructureIdCritere(structure.getIdstructure(), 2);
+        if (criterestructure != null) {
+            totalPointMaxCritere = criterestructure.getResultat();
+        }
     }
 
-    public void prepareCreate() {
-        this.updateFiltre();
+    public void prepareCreate(String option) {
+
+        if (criterestructure == null) {
+            JsfUtil.addWarningMessage("Cette structure ne traite pas du bonus d'heure supplementaire");
+            return;
+        }
+
         mode = "Create";
-        RequestContext.getCurrentInstance().execute("PF('HeureSuppCreateDialog').show()");
+        if (option.equals("1")) {
+            this.updateFiltre();
+        } else {
+            this.updateFiltre2();
+        }
     }
 
     public void prepareEdit(Parametragecritere p) {
         this.parametragecritere = p;
         if (structure != null) {
             mode = "Edit";
-            RequestContext.getCurrentInstance().execute("PF('HeureSuppEditDialog').show()");
+            RequestContext.getCurrentInstance().execute("PF('BonusPPriveeCreateDialog').show()");
         }
     }
 
@@ -59,19 +74,77 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
         categories.clear();
         selectedCategories.clear();
         parametragecriteres.clear();
-        if (structure.getIdstructure() != null && structure.getIdstructure() > 0) {
-            List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
-            if (list.isEmpty() || list == null) {
-                categories.addAll(categorieFacadeLocal.findAllRangeByCode());
-            } else {
-                parametragecriteres.addAll(list);
-                categories.addAll(categorieFacadeLocal.findAllRangeByCode());
-                for (Parametragecritere pc : list) {
-                    selectedCategories.add(pc.getIdcategorie());
-                }
-                categories.removeAll(selectedCategories);
-                selectedCategories.clear();
+
+        List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
+        if (list.isEmpty() || list == null) {
+            categories.addAll(categorieFacadeLocal.findAllRangeByCode());
+        } else {
+            parametragecriteres.addAll(list);
+            categories.addAll(categorieFacadeLocal.findAllRangeByCode());
+            for (Parametragecritere pc : list) {
+                selectedCategories.add(pc.getIdcategorie());
             }
+            categories.removeAll(selectedCategories);
+            selectedCategories.clear();
+        }
+    }
+
+    private void updateFiltre2() {
+        parametragecriteres.clear();
+        List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
+        if (list.isEmpty()) {
+
+            effectifCategories = effectifCategorieFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
+            if (effectifCategories.isEmpty()) {
+                JsfUtil.addWarningMessage("Veuillez définir les effectifs par catégorie pour cette structure");
+                return;
+            }
+            for (EffectifCategorie efc : effectifCategories) {
+                Parametragecritere pc = new Parametragecritere();
+                pc.setIdparametragecritere(0l);
+                pc.setIdstructure(structure);
+                pc.setIdcritere(new Critere(3));
+                pc.setIndice(efc.getCategorie().getIndice());
+                pc.setDenominateurjournee(0);
+                pc.setDenominateurnuit(0);
+                pc.setValeurjournee(0);
+                pc.setValeurnuit(0);
+                pc.setPoint(0d);
+                pc.setIdcategorie(efc.getCategorie());
+                pc.setHeuresupp(false);
+                pc.setHeuresupn(false);
+                pc.setPratiqueprivee(false);
+                pc.setPerformanceindividuelle(false);
+                pc.setResultatqualitatifdept(false);
+                pc.setBonusrevenudept(false);
+                pc.setPratiqueprivee(true);
+                pc.setNombre(efc.getNombre());
+                pc.setTotal1(0);
+                parametragecriteres.add(pc);
+            }
+        } else {
+            parametragecriteres.addAll(list);
+        }
+        this.sommeDetail(parametragecriteres);
+        RequestContext.getCurrentInstance().execute("PF('BonusPPriveeCreateDialog').show()");
+    }
+
+    public void updateSaisieLine(int index) {
+        try {
+            parametragecriteres.get(index).setTotal1(parametragecriteres.get(index).getPoint() * parametragecriteres.get(index).getNombre());
+            this.sommeDetail(parametragecriteres);
+        } catch (Exception e) {
+            parametragecriteres.get(index).setTotal1(0);
+        }
+    }
+
+    private void sommeDetail(List<Parametragecritere> list) {
+        this.totalPointSaisi = 0;
+        this.totalEffectif = 0;
+
+        for (Parametragecritere pc : list) {
+            totalEffectif += pc.getNombre();
+            totalPointSaisi += pc.getTotal1();
         }
     }
 
@@ -126,6 +199,11 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
                 return;
             }
 
+            if ((totalPointSaisi) > totalPointMaxCritere) {
+                JsfUtil.addErrorMessage("Le total saisi depasse le total point max possible");
+                return;
+            }
+
             for (Parametragecritere pc : parametragecriteres) {
                 if (pc.getIdparametragecritere() == 0l) {
                     pc.setIdparametragecritere(parametragecritereFacadeLocal.nextId());
@@ -137,7 +215,7 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
             listParametres = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
             this.parametragecriteres.clear();
 
-            RequestContext.getCurrentInstance().execute("PF('HeureSuppCreateDialog').hide()");
+            RequestContext.getCurrentInstance().execute("PF('BonusPPriveeCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -151,7 +229,7 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
             parametragecritere = new Parametragecritere();
             parametragecritere.setIdcategorie(new Categorie());
             listParametres = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
-            RequestContext.getCurrentInstance().execute("PF('HeureSuppEditDialog').hide()");
+            RequestContext.getCurrentInstance().execute("PF('BonusPPriveeCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();

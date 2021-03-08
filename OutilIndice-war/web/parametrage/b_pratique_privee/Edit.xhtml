@@ -6,14 +6,14 @@
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition>
-        <p:dialog id="HeureSuppEditDlg" 
-                  widgetVar="HeureSuppEditDialog" 
+        <p:dialog id="BonusPPriveeEditDlg" 
+                  widgetVar="BonusPPriveeEditDialog" 
                   modal="true" resizable="false" appendTo="@(body)" 
                   header="#{langue['bonus_pratique_privee.formulaire_edition']}"
                   closeOnEscape="true"
                   width="40%">
 
-            <h:form id="HeureSuppEditForm">
+            <h:form id="BonusPPriveeEditForm">
 
                 <h:panelGroup id="display" rendered="true">
 
@@ -39,10 +39,10 @@
 
                     <center>
                         <p:commandButton value="#{langue['common.fermer']}" 
-                                         onclick="PF('HeureSuppEditDialog').hide()"
+                                         onclick="PF('BonusPPriveeEditDialog').hide()"
                                          icon="ui-icon-close"/>
 
-                        <p:commandButton icon="ui-icon-save" actionListener="#{bonusPratiquePriveeCtrl.edit()}" value="#{langue['common.enregistrer']}" update="display,:HeureSuppListerForm:growl,:HeureSuppListerForm">
+                        <p:commandButton icon="ui-icon-save" actionListener="#{bonusPratiquePriveeCtrl.edit()}" value="#{langue['common.enregistrer']}" update="display,:BonusPPriveeListerForm:growl,:BonusPPriveeListerForm">
                             <p:confirm header="#{langue['notification.confirmation']}" 
                                        message="#{langue['notification.confirmation_enregistrement']}" 
                                        icon="ui-icon-alert"/>

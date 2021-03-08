@@ -7,7 +7,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:jsf="http://xmlns.jcp.org/jsf">
 
-    <h:form id="HeureSuppListerForm">
+    <h:form id="BonusPPriveeListerForm">
 
         <p:messages id="growl" closable="true">
             <p:effect type="pulsate" event="load" delay="50" />
@@ -18,11 +18,19 @@
                 <div class="panel panel-success">
                     <div style="color: white" class="panel-heading bg-success">
                         #{langue['bonus_pratique_privee.liste_point_categorie']}
-                        <p:commandButton update=":HeureSuppCreateForm"
+                       
+                        <p:commandButton update=":BonusPPriveeCreateForm"
                                          icon="ui-icon-plus"
-                                         value="#{langue['common.ajouter']}"
+                                         value="#{langue['common.ajouter']} 2"
                                          style="float: right"
-                                         actionListener="#{bonusPratiquePriveeCtrl.prepareCreate()}"/>      
+                                         actionListener="#{bonusPratiquePriveeCtrl.prepareCreate('2')}"/>
+                        
+                        <p:commandButton update=":BonusPPriveeCreateForm"
+                                         icon="ui-icon-plus"
+                                         disabled="true"
+                                         value="#{langue['common.ajouter']} 1"
+                                         style="float: right"
+                                         actionListener="#{bonusPratiquePriveeCtrl.prepareCreate('1')}"/>
                     </div>
 
                     <div class="panel-body">
@@ -32,8 +40,10 @@
                             <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th style="width: 80%">#{langue.categorie}</th>
+                                        <th style="width: 60%">#{langue.categorie}</th>
+                                        <th style="width: 10%">#{langue['common.effectif']}</th>
                                         <th style="width: 10%">#{langue.points}</th>
+                                        <th style="width: 10%">#{langue.total}</th>
                                         <th style="width: 10%;text-align: center">#{langue['common.actions']}</th>
                                     </tr>
                                 </thead>
@@ -42,13 +52,16 @@
                                     <ui:repeat value="#{bonusPratiquePriveeCtrl.listParametres}" var="item">
                                         <tr>
                                             <td>#{item.idcategorie.nom}</td>
-                                            <td>#{item.point}</td>
+                                            <td style="text-align: center">#{item.nombre}</td>
+                                            <td style="text-align: center"><h:outputText value="#{item.point}"> <f:convertNumber />  </h:outputText> </td>
+                                            <td style="text-align: center"><h:outputText value="#{item.total1}"><f:convertNumber />  </h:outputText> </td>
                                             <td style="text-align: center">                                        
-                                                <p:commandButton icon="ui-icon-pencil" update=":HeureSuppEditForm"
+                                                <p:commandButton icon="ui-icon-pencil" update=":BonusPPriveeEditForm"
                                                                  class="btn btn-success btn-sm"
+                                                                 disabled="true"
                                                                  actionListener="#{bonusPratiquePriveeCtrl.prepareEdit(item)}"/>
 
-                                                <p:commandButton icon="ui-icon-trash" update=":HeureSuppListerForm"
+                                                <p:commandButton icon="ui-icon-trash" update=":BonusPPriveeListerForm"
                                                                  class="btn btn-danger btn-sm"
                                                                  actionListener="#{bonusPratiquePriveeCtrl.delete(item)}">
                                                     <p:confirm header="#{langue['notification.confirm_delete_dialog_header']}"

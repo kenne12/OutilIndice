@@ -8,15 +8,15 @@
 
     <ui:composition>
 
-        <p:dialog id="HeureSuppCreateDlg" 
-                  widgetVar="HeureSuppCreateDialog" 
+        <p:dialog id="BonusPPriveeCreateDlg" 
+                  widgetVar="BonusPPriveeCreateDialog" 
                   modal="true" resizable="false" appendTo="@(body)" 
                   header="#{langue['bonus_pratique_privee.formulaire_creation']}"
                   closeOnEscape="true"
-                  width="50%"
+                  width="80%"
                   height="600">
 
-            <h:form id="HeureSuppCreateForm">
+            <h:form id="BonusPPriveeCreateForm">
 
                 <div class="col-md-12">
 
@@ -29,7 +29,6 @@
                                              id="structure" value="#{bonusPratiquePriveeCtrl.structure}">
                                 <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
                                 <f:selectItems value="#{bonusPratiquePriveeCtrl.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
-                                <p:ajax update="grid_critere,datalist" listener="#{bonusPratiquePriveeCtrl.updateFiltre()}"/>
                             </h:selectOneMenu>                                                
                         </div>
 
@@ -46,6 +45,9 @@
                                          actionListener="#{bonusPratiquePriveeCtrl.addCategoriesToTable()}"
                                          update="datalist,grid_critere" icon="ui-icon-plus" />
                         <p:separator />
+                        
+                        <h:outputText value="Max Point : #{bonusPratiquePriveeCtrl.totalPointMaxCritere}" style="font-size: 20px ; color: red" />
+                        
 
                         <p:dataTable id="datalist" value="#{bonusPratiquePriveeCtrl.parametragecriteres}" var="item"                             
                                      paginator="true"
@@ -57,14 +59,21 @@
                                      rowIndexVar="index"
                                      emptyMessage="#{langue['common.tableau_vide']}">
 
-                            <p:column class="hardBreak" style="width: 70%;" >
+                            <p:column class="hardBreak" style="width: 60%;" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.categorie}"/>
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{item.idcategorie.nom}"/> 
                             </p:column>
+                            
+                            <p:column class="hardBreak" style="width: 10%; text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue['common.effectif']}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.nombre}" /> 
+                            </p:column>
 
-                            <p:column style="width: 20% ; text-align:center" headerText="#{langue.points}">
+                            <p:column style="width: 10% ; text-align:center" headerText="#{langue.points}">
                                 <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText value="#{item.point}" >
@@ -73,20 +82,39 @@
                                     </f:facet>
                                     <f:facet name="input">
                                         <p:inputText required="true" value="#{item.point}">                                             
-                                            <p:ajax  />
+                                            <p:ajax update="datalist" listener="#{bonusPratiquePriveeCtrl.updateSaisieLine(index)}" />
                                         </p:inputText>
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
+                            
+                            <p:column class="hardBreak" style="width: 10%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.total}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.total1}">
+                                    <f:convertNumber />
+                                </h:outputText> 
+                            </p:column>
 
-                            <p:column style="width: 10%" >
+                            <p:column style="width: 10%;text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="Action"/>
                                 </f:facet>
                                 <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist,:HeureSuppCreateForm:grid_critere" event="click" listener="#{bonusPratiquePriveeCtrl.removeCategory(item)}" />
+                                    <p:ajax update="datalist,:BonusPPriveeCreateForm:grid_critere" event="click" listener="#{bonusPratiquePriveeCtrl.removeCategory(item)}" />
                                 </p:commandButton>
                             </p:column>
+                            
+                            <p:columnGroup type="footer" id="footer_tab">
+                                <p:row>
+                                    <p:column style="text-align:right" footerText="Totaux" /> 
+                                    <p:column style="text-align:center" footerText="#{bonusPratiquePriveeCtrl.totalEffectif}"/>
+                                    <p:column style="text-align:right" footerText="" /> 
+                                    <p:column style="text-align:center" footerText="#{bonusPratiquePriveeCtrl.totalPointSaisi}"/>
+                                    <p:column style="text-align:center" footerText="/" /> 
+                                </p:row>
+                            </p:columnGroup>
 
                         </p:dataTable>
 
@@ -94,10 +122,10 @@
 
                         <center>
                             <p:commandButton value="#{langue['common.fermer']}" 
-                                             onclick="PF('HeureSuppCreateDialog').hide()"
+                                             onclick="PF('BonusPPriveeCreateDialog').hide()"
                                              icon="ui-icon-close"/>
 
-                            <p:commandButton icon="ui-icon-save" actionListener="#{bonusPratiquePriveeCtrl.save()}" value="#{langue['common.enregistrer']}" update="display,:HeureSuppListerForm:datalist,:HeureSuppListerForm:growl,:HeureSuppListerForm">
+                            <p:commandButton icon="ui-icon-save" actionListener="#{bonusPratiquePriveeCtrl.save()}" value="#{langue['common.enregistrer']}" update="display,:BonusPPriveeListerForm:datalist,:BonusPPriveeListerForm:growl,:BonusPPriveeListerForm">
                                 <p:confirm header="#{langue['notification.confirmation']}" 
                                            message="#{langue['notification.confirmation_enregistrement']}" 
                                            icon="ui-icon-alert"/>
