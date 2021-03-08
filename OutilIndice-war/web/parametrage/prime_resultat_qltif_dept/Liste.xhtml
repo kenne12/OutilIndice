@@ -18,11 +18,19 @@
                 <div class="panel panel-success">
                     <div style="color: white" class="panel-heading bg-success">
                         #{langue['prime_resultat_qualitatif_dept.liste_point_max_categorie']}
+                                                
                         <p:commandButton update=":PrimeRQltifCreateForm"
                                          icon="ui-icon-plus"
-                                         value="#{langue['common.ajouter']}"
+                                         value="#{langue['common.ajouter']} 2"
                                          style="float: right"
-                                         actionListener="#{primeRQltifDeptCtrl.prepareCreate()}"/>      
+                                         actionListener="#{primeRQltifDeptCtrl.prepareCreate('2')}"/> 
+                        
+                        <p:commandButton update=":PrimeRQltifCreateForm"
+                                         icon="ui-icon-plus"
+                                         disabled="true"
+                                         value="#{langue['common.ajouter']} 1"
+                                         style="float: right"
+                                         actionListener="#{primeRQltifDeptCtrl.prepareCreate('1')}"/>                                                
                     </div>
 
                     <div class="panel-body">
@@ -32,10 +40,12 @@
                             <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th style="width: 60%">#{langue.categorie}</th>
+                                        <th style="width: 40%">#{langue.categorie}</th>
                                         <th style="width: 10%">#{langue.indice}</th>
                                         <th style="width: 10%">#{langue.denominateur}</th>
                                         <th style="width: 10%">#{langue.point_max}</th>
+                                        <th style="width: 10%">#{langue['common.effectif']}</th>
+                                        <th style="width: 10%">#{langue.total}</th>
                                         <th style="width: 10%;text-align: center">#{langue['common.actions']}</th>
                                     </tr>
                                 </thead>
@@ -47,9 +57,12 @@
                                             <td>#{item.indice}</td>
                                             <td>#{item.denominateur}</td>
                                             <td>#{item.point}</td>
+                                            <td>#{item.nombre}</td>
+                                            <td>#{item.total1}</td>
                                             <td style="text-align: center">                                        
                                                 <p:commandButton icon="ui-icon-pencil" update=":PrimeRQltifEditForm"
                                                                  class="btn btn-success btn-sm"
+                                                                 disabled="true"
                                                                  actionListener="#{primeRQltifDeptCtrl.prepareEdit(item)}"/>
 
                                                 <p:commandButton icon="ui-icon-trash" update=":PrimeRQltifListerForm"
