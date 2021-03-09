@@ -18,11 +18,19 @@
                 <div class="panel panel-success">
                     <div style="color: white" class="panel-heading bg-success">
                         #{langue['prime_performance_individuelle.liste_point_max_perf_in']}
+                        
                         <p:commandButton update=":PerformanceIndividuelleCreateForm"
                                          icon="ui-icon-plus"
-                                         value="#{langue['common.ajouter']}"
+                                         value="#{langue['common.ajouter']} 2"
                                          style="float: right"
-                                         actionListener="#{primePerfIndividuelCtrl.prepareCreate()}"/>      
+                                         actionListener="#{primePerfIndividuelCtrl.prepareCreate('2')}"/>
+                        
+                        <p:commandButton update=":PerformanceIndividuelleCreateForm"
+                                         icon="ui-icon-plus"
+                                         disabled="true"
+                                         value="#{langue['common.ajouter']} 1"
+                                         style="float: right"
+                                         actionListener="#{primePerfIndividuelCtrl.prepareCreate('1')}"/>      
                     </div>
 
                     <div class="panel-body">
@@ -32,10 +40,12 @@
                             <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th style="width: 60%">#{langue.categorie}</th>
+                                        <th style="width: 40%">#{langue.categorie}</th>
                                         <th style="width: 10%">#{langue.indice}</th>
-                                        <th style="width: 10%">#{langue.denominateur}</th>
+                                        <th style="width: 10%">#{langue.denom}</th>
                                         <th style="width: 10%">#{langue.point_max}</th>
+                                        <th style="width: 10%">#{langue['common.effectif']}</th>
+                                        <th style="width: 10%">#{langue.total}</th>
                                         <th style="width: 10%;text-align: center">#{langue['common.actions']}</th>
                                     </tr>
                                 </thead>
@@ -44,16 +54,20 @@
                                     <ui:repeat value="#{primePerfIndividuelCtrl.listParametres}" var="item">
                                         <tr>
                                             <td>#{item.idcategorie.nom}</td>
-                                            <td>#{item.indice}</td>
-                                            <td>#{item.denominateur}</td>
-                                            <td>#{item.point}</td>
+                                            <td style="text-align: center">#{item.indice}</td>
+                                            <td style="text-align: center">#{item.denominateur}</td>
+                                            <td style="text-align: center">#{item.point}</td>
+                                            <td style="text-align: center">#{item.nombre}</td>
+                                            <td style="text-align: center"><h:outputText value="#{item.total1}"><f:convertNumber /></h:outputText></td>
                                             <td style="text-align: center">                                        
                                                 <p:commandButton icon="ui-icon-pencil" update=":PerformanceIndividuelleEditForm"
                                                                  class="btn btn-success btn-sm"
+                                                                 disabled="true"
                                                                  actionListener="#{primePerfIndividuelCtrl.prepareEdit(item)}"/>
 
                                                 <p:commandButton icon="ui-icon-trash" update=":PerformanceIndividuelleListerForm"
                                                                  class="btn btn-danger btn-sm"
+                                                                 disabled="true"
                                                                  actionListener="#{primePerfIndividuelCtrl.delete(item)}">
                                                     <p:confirm header="#{langue['notification.confirm_delete_dialog_header']}"
                                                                message="#{langue['notification.confirm_delete_message']} ?"

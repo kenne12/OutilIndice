@@ -59,40 +59,36 @@
                                          actionListener="#{primePerfIndividuelCtrl.addCategoriesToTable()}"
                                          update="datalist,grid_critere" icon="ui-icon-plus" />
                         <p:separator />
+                        <h:outputText value="Max Point : #{primePerfIndividuelCtrl.totalPointMaxCritere}" style="font-size: 20px ; color: red" />
+
 
                         <p:dataTable id="datalist" value="#{primePerfIndividuelCtrl.parametragecriteres}" var="item"                             
                                      paginator="true"
                                      editable="true"
                                      editMode="cell"
-                                     rows="15"
+                                     rows="#{primePerfIndividuelCtrl.parametragecriteres.size()}"
                                      rowsPerPageTemplate="10,20,30,40,50"
                                      style="margin-top: 1%;font-size: 15px"
                                      rowIndexVar="index"
                                      emptyMessage="#{langue['common.tableau_vide']}">
 
-                            <p:column class="hardBreak" style="width: 50%;" >
+                            <p:column class="hardBreak" style="width: 40%;" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.categorie}"/>
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{item.idcategorie.nom}"/> 
                             </p:column>
 
-                            <p:column style="width: 10% ; text-align:center" headerText="#{langue.indice}">
-                                <p:cellEditor>
-                                    <f:facet name="output">
-                                        <h:outputText value="#{item.indice}" >
-                                            <f:convertNumber />
-                                        </h:outputText>
-                                    </f:facet>
-                                    <f:facet name="input">
-                                        <p:inputText required="true" value="#{item.indice}">                                             
-                                            <p:ajax update="datalist" listener="#{primeHeureSupplementaireCtrl.updateData('')}" />
-                                        </p:inputText>
-                                    </f:facet>
-                                </p:cellEditor>
+                            <p:column class="hardBreak" style="width: 10%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.indice}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.indice}" >
+                                    <f:convertNumber />
+                                </h:outputText> 
                             </p:column>
 
-                            <p:column style="width: 10% ; text-align:center" headerText="#{langue.denominateur}">
+                            <p:column style="width: 10% ; text-align:center" headerText="#{langue.denom}">
                                 <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText value="#{item.denominateur}" >
@@ -101,17 +97,33 @@
                                     </f:facet>
                                     <f:facet name="input">
                                         <p:inputText required="true" value="#{item.denominateur}">                                             
-                                            <p:ajax update="datalist" listener="#{primeHeureSupplementaireCtrl.updateData('')}" />
+                                            <p:ajax update="datalist" listener="#{primePerfIndividuelCtrl.updateDataLine(index)}" />
                                         </p:inputText>
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
 
-                            <p:column class="hardBreak" style="width: 10%;" >
+                            <p:column class="hardBreak" style="width: 10%;text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.point_max}"/>
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{item.point}"/> 
+                            </p:column>
+                            
+                            <p:column class="hardBreak" style="width: 10%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue['common.effectif']}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.nombre}"/> 
+                            </p:column>
+                            
+                            <p:column class="hardBreak" style="width: 10%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.total}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.total1}">
+                                    <f:convertNumber />
+                                </h:outputText> 
                             </p:column>
 
                             <p:column style="width: 10%;text-align: center" >
@@ -122,6 +134,15 @@
                                     <p:ajax update="datalist,:PerformanceIndividuelleCreateForm:grid_critere" event="click" listener="#{primePerfIndividuelCtrl.removeCategory(item)}" />
                                 </p:commandButton>
                             </p:column>
+                            
+                            <p:columnGroup type="footer" id="footer_tab">
+                                <p:row>
+                                    <p:column colspan="4" style="text-align:right" footerText="Totaux" /> 
+                                    <p:column style="text-align:center" footerText="#{primePerfIndividuelCtrl.totalEffectif}"/>
+                                    <p:column style="text-align:center" footerText="#{primePerfIndividuelCtrl.totalPointSaisi}"/>
+                                    <p:column style="text-align:center" footerText="/" /> 
+                                </p:row>
+                            </p:columnGroup>
 
                         </p:dataTable>
 
@@ -140,11 +161,8 @@
                         </center>
 
                     </h:panelGroup>
-
                 </div>
-
             </h:form>
-
         </p:dialog>
     </ui:composition>
 </html>
