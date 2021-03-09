@@ -46,7 +46,7 @@
                                 <div class="form-group">
                                     <label>#{langue.denominateur}</label>
                                     <h:inputText class="form-control" value="#{primeRQltifDeptCtrl.denominateur}" >
-                                        <p:ajax event="keyup" update="datalist" listener="#{primeRQltifDeptCtrl.updateData('')}" />
+                                        <p:ajax update="datalist" listener="#{primeRQltifDeptCtrl.updateData('')}" />
                                     </h:inputText>
                                 </div>
                             </div>
@@ -64,7 +64,7 @@
                                      paginator="true"
                                      editable="true"
                                      editMode="cell"
-                                     rows="15"
+                                     rows="#{primeRQltifDeptCtrl.parametragecriteres.size()}"
                                      rowsPerPageTemplate="10,20,30,40,50"
                                      style="margin-top: 1%;font-size: 15px"
                                      rowIndexVar="index"

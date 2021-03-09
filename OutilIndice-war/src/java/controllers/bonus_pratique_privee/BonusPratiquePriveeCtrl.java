@@ -33,8 +33,7 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
     }
 
     @PostConstruct
-    private void init() {
-        structure = SessionMBean.getStructure();
+    private void init() {        
         structures.clear();
         structures.add(SessionMBean.getStructure());
         listParametres = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
@@ -48,7 +47,6 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
     }
 
     public void prepareCreate(String option) {
-
         if (criterestructure == null) {
             JsfUtil.addWarningMessage("Cette structure ne traite pas du bonus d'heure supplementaire");
             return;

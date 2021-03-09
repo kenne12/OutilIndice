@@ -29,7 +29,6 @@
                                              id="structure" value="#{bonusRevenuDeptCtrl.structure}">
                                 <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
                                 <f:selectItems value="#{bonusRevenuDeptCtrl.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
-                                <p:ajax update="grid_critere,datalist" listener="#{bonusRevenuDeptCtrl.updateFiltre()}"/>
                             </h:selectOneMenu>                                                
                         </div>
 
@@ -47,7 +46,7 @@
                                 <div class="form-group">
                                     <label>#{langue.denominateur}</label>
                                     <h:inputText class="form-control" value="#{bonusRevenuDeptCtrl.denominateur}" >
-                                        <p:ajax event="keyup" update="datalist" listener="#{bonusRevenuDeptCtrl.updateData('')}" />
+                                        <p:ajax update="datalist" listener="#{bonusRevenuDeptCtrl.updateData('')}" />
                                     </h:inputText>
                                 </div>
                             </div>
@@ -60,39 +59,35 @@
                                          update="datalist,grid_critere" icon="ui-icon-plus" />
                         <p:separator />
 
+                        <h:outputText value="Max Point : #{bonusRevenuDeptCtrl.totalPointMaxCritere}" style="font-size: 20px ; color: red" />
+
                         <p:dataTable id="datalist" value="#{bonusRevenuDeptCtrl.parametragecriteres}" var="item"                             
                                      paginator="true"
                                      editable="true"
                                      editMode="cell"
-                                     rows="15"
+                                     rows="#{bonusRevenuDeptCtrl.parametragecriteres.size()}"
                                      rowsPerPageTemplate="10,20,30,40,50"
                                      style="margin-top: 1%;font-size: 15px"
                                      rowIndexVar="index"
                                      emptyMessage="#{langue['common.tableau_vide']}">
 
-                            <p:column class="hardBreak" style="width: 50%;" >
+                            <p:column class="hardBreak" style="width: 40%;" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.categorie}"/>
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{item.idcategorie.nom}"/> 
                             </p:column>
 
-                            <p:column style="width: 10% ; text-align:center" headerText="#{langue.indice}">
-                                <p:cellEditor>
-                                    <f:facet name="output">
-                                        <h:outputText value="#{item.indice}" >
-                                            <f:convertNumber />
-                                        </h:outputText>
-                                    </f:facet>
-                                    <f:facet name="input">
-                                        <p:inputText required="true" value="#{item.indice}">                                             
-                                            <p:ajax update="datalist" listener="#{bonusRevenuDeptCtrl.updateData2('')}" />
-                                        </p:inputText>
-                                    </f:facet>
-                                </p:cellEditor>
+                            <p:column class="hardBreak" style="width: 10%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.indice}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.indice}">
+                                    <f:convertNumber />
+                                </h:outputText> 
                             </p:column>
 
-                            <p:column style="width: 10% ; text-align:center" headerText="#{langue.denominateur}">
+                            <p:column style="width: 10%; text-align:center" headerText="#{langue.denom}">
                                 <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText value="#{item.denominateur}" >
@@ -101,7 +96,7 @@
                                     </f:facet>
                                     <f:facet name="input">
                                         <p:inputText required="true" value="#{item.denominateur}">                                             
-                                            <p:ajax update="datalist" listener="#{bonusRevenuDeptCtrl.updateData2('')}" />
+                                            <p:ajax update="datalist" listener="#{bonusRevenuDeptCtrl.updateDataLine(index)}" />
                                         </p:inputText>
                                     </f:facet>
                                 </p:cellEditor>
@@ -114,6 +109,22 @@
                                 <h:outputText class="hardBreak" value="#{item.point}"/> 
                             </p:column>
 
+                            <p:column class="hardBreak" style="width: 10%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue['common.effectif']}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.nombre}"/> 
+                            </p:column>
+
+                            <p:column class="hardBreak" style="width: 10%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.total}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.total1}">
+                                    <f:convertNumber />
+                                </h:outputText> 
+                            </p:column>
+
                             <p:column style="width: 10%;text-align: center">
                                 <f:facet name="header">
                                     <h:outputText value="Action"/>
@@ -122,6 +133,15 @@
                                     <p:ajax update="datalist,:BonusRevenuDeptCreateForm:grid_critere" event="click" listener="#{bonusRevenuDeptCtrl.removeCategory(item)}" />
                                 </p:commandButton>
                             </p:column>
+
+                            <p:columnGroup type="footer" id="footer_tab">
+                                <p:row>
+                                    <p:column colspan="4" style="text-align:right" footerText="Totaux" /> 
+                                    <p:column style="text-align:center" footerText="#{bonusRevenuDeptCtrl.totalEffectif}"/>
+                                    <p:column style="text-align:center" footerText="#{bonusRevenuDeptCtrl.totalPointSaisi}"/>
+                                    <p:column style="text-align:center" footerText="/" /> 
+                                </p:row>
+                            </p:columnGroup>
 
                         </p:dataTable>
 
@@ -138,11 +158,8 @@
                                            icon="ui-icon-alert"/>
                             </p:commandButton>
                         </center>
-
                     </h:panelGroup>
-
                 </div>
-
             </h:form>
 
         </p:dialog>
