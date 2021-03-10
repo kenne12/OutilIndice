@@ -15,6 +15,7 @@ import sessions.SousperiodeFacadeLocal;
 import sessions.SousrubriquerecetteFacadeLocal;
 import sessions.StructureFacadeLocal;
 import utils.Routine;
+import utils.SessionMBean;
 
 public class AbstractRecetteController {
 
@@ -25,8 +26,7 @@ public class AbstractRecetteController {
 
     @EJB
     protected PeriodeFacadeLocal periodeFacadeLocal;
-    protected Periode periode = new Periode();
-    protected List<Periode> periodes = new ArrayList<>();
+    protected Periode periode = SessionMBean.getPeriode();
 
     @EJB
     protected SousperiodeFacadeLocal sousperiodeFacadeLocal;
@@ -40,7 +40,7 @@ public class AbstractRecetteController {
 
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
-    protected Structure structure = new Structure();
+    protected Structure structure = SessionMBean.getStructure();
     protected List<Structure> structures = new ArrayList<>();
 
     protected Routine routine = new Routine();
@@ -131,14 +131,8 @@ public class AbstractRecetteController {
         this.periode = periode;
     }
 
-    public List<Periode> getPeriodes() {
-        periodes = periodeFacadeLocal.findAllRange();
-        return periodes;
-    }
-
     public List<Sousrubriquerecette> getSousrubriquerecettes() {
-        
-        
+
         return sousrubriquerecettes;
     }
 

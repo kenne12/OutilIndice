@@ -21,20 +21,7 @@
             <h:form id="RecetteCreerForm">
                 <h:panelGroup id="display">
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>#{langue.periode}</label>
-                                <h:selectOneMenu id="type_structure" class="form-control" 
-                                                 value="#{recetteController.periode.idperiode}"
-                                                 required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
-                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                                    <f:selectItems value="#{recetteController.periodes}" var="p" itemLabel="#{p.nom}" itemValue="#{p.idperiode}" />
-                                    <p:ajax update="datalist_1,grid_,add_btn" listener="#{recetteController.updateData()}" />
-                                </h:selectOneMenu>
-                            </div>
-                        </div>
-
+                    <div class="row">                        
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>#{langue.sous_periode}</label>

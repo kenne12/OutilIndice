@@ -10,7 +10,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 import utils.JsfUtil;
-import utils.SessionMBean;
 import utils.Utilitaires;
 
 @ManagedBean
@@ -19,27 +18,21 @@ public class RecetteController extends AbstractRecetteController implements Seri
 
     @PostConstruct
     private void init() {
-        structure = SessionMBean.getStructure();
-        periode = SessionMBean.getPeriode();
+
     }
 
     private void initRecette() {
         try {
             recettes.clear();
             selectedSousrubriquerecettes.clear();
-            if (structure.getIdstructure() != null) {
-                if (periode.getIdperiode() != null) {
-                    if (sousperiode.getIdsousperiode() != null) {
-                        recettes = recetteFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
-                        montant = this.sommeRecette(recettes);
-                        total = montant;
-                        pourcentage = this.sommePourcentage(recettes);
+            if (sousperiode.getIdsousperiode() != null) {
+                recettes = recetteFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
+                this.sommeData(recettes);
+                total = montant;
 
-                        if (!recettes.isEmpty()) {
-                            for (Recette r : recettes) {
-                                selectedSousrubriquerecettes.add(r.getIdsousrubriquerecette());
-                            }
-                        }
+                if (!recettes.isEmpty()) {
+                    for (Recette r : recettes) {
+                        selectedSousrubriquerecettes.add(r.getIdsousrubriquerecette());
                     }
                 }
             }
@@ -64,71 +57,59 @@ public class RecetteController extends AbstractRecetteController implements Seri
     public void updateData() {
         recettes.clear();
         selectedSousrubriquerecettes.clear();
-        if (structure.getIdstructure() != null) {
-            if (periode.getIdperiode() != null) {
-                if (sousperiode.getIdsousperiode() != null) {
 
-                    sousrubriquerecettes.clear();
-                    sousrubriquerecettes = sousrubriquerecetteFacadeLocal.findAllRangeByCode();
+        if (sousperiode.getIdsousperiode() != null) {
+            sousrubriquerecettes.clear();
+            sousrubriquerecettes = sousrubriquerecetteFacadeLocal.findAllRangeByCode();
 
-                    recettes = recetteFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
+            recettes = recetteFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
 
-                    if (!recettes.isEmpty()) {
-                        for (Recette r : recettes) {
-                            selectedSousrubriquerecettes.add(r.getIdsousrubriquerecette());
-                        }
-                        sousrubriquerecettes.removeAll(selectedSousrubriquerecettes);
-                    }
+            if (!recettes.isEmpty()) {
+                for (Recette r : recettes) {
+                    selectedSousrubriquerecettes.add(r.getIdsousrubriquerecette());
                 }
+                sousrubriquerecettes.removeAll(selectedSousrubriquerecettes);
             }
         }
+        sommeData(recettes);
     }
 
-    private double sommeRecette(List<Recette> list) {
+    private void sommeData(List<Recette> list) {
+        this.total = 0;
+        this.pourcentage = 0;
         if (list.isEmpty()) {
-            return 0;
+            return;
         }
-        double somme = 0;
+
         for (Recette r : list) {
             try {
                 if (r.getMontant() != null) {
-                    somme += r.getMontant();
+                    total += r.getMontant();
                 }
             } catch (Exception e) {
             }
-        }
-        return somme;
-    }
 
-    private double sommePourcentage(List<Recette> list) {
-        if (list.isEmpty()) {
-            return 0;
-        }
-        double somme = 0;
-        for (Recette r : list) {
             try {
                 if (r.getPourcentage() != null) {
-                    somme += r.getPourcentage();
+                    pourcentage += r.getPourcentage();
                 }
             } catch (Exception e) {
             }
         }
-        return somme;
     }
 
     public void updateMode() {
-        montant = this.sommeRecette(recettes);
-        total = montant;
-        pourcentage = sommePourcentage(recettes);
+        this.sommeData(recettes);
     }
 
     public void updateAmount() {
         int i = 0;
+        this.sommeData(recettes);
         for (Recette r : recettes) {
             if (calculAuto) {
                 r.setPourcentage(0d);
                 if (r.getMontant() != null && r.getMontant() > 0) {
-                    r.setPourcentage((r.getMontant() / sommeRecette(recettes)) * 100);
+                    r.setPourcentage((r.getMontant() / total) * 100);
                 }
                 recettes.set(i, r);
             } else {
@@ -139,8 +120,7 @@ public class RecetteController extends AbstractRecetteController implements Seri
             }
             i++;
         }
-        total = this.sommeRecette(recettes);
-        pourcentage = sommePourcentage(recettes);
+        this.sommeData(recettes);
     }
 
     public void addSubRubricToList() {
@@ -199,14 +179,9 @@ public class RecetteController extends AbstractRecetteController implements Seri
     public void recherche() {
         try {
             recettes.clear();
-            if (structure.getIdstructure() != null) {
-                if (periode.getIdperiode() != null) {
-                    if (sousperiode.getIdsousperiode() != null) {
-                        recettes = recetteFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
-                        total = this.sommeRecette(recettes);
-                        pourcentage = this.sommePourcentage(recettes);
-                    }
-                }
+            if (sousperiode.getIdsousperiode() != null) {
+                recettes = recetteFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
+                this.sommeData(recettes);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -215,7 +190,8 @@ public class RecetteController extends AbstractRecetteController implements Seri
 
     public void create() {
         try {
-            int res = (int) sommePourcentage(recettes);
+            this.sommeData(recettes);
+            int res = (int) pourcentage;
             if (res < 99 || res > 101) {
                 signalError("notification.veuillez_corriger_la_saisie");
                 return;

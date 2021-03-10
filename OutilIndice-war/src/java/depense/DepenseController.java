@@ -19,8 +19,7 @@ public class DepenseController extends AbstractDepenseController implements Seri
 
     @PostConstruct
     private void init() {
-        structure = SessionMBean.getStructure();
-        periode = SessionMBean.getPeriode();
+
     }
 
     private void initDepense() {
@@ -28,28 +27,25 @@ public class DepenseController extends AbstractDepenseController implements Seri
             depenses.clear();
             sousrubriquedepenses.clear();
             selectedSousrubriquedepenses.clear();
-            if (structure.getIdstructure() != null) {
-                if (periode.getIdperiode() != null) {
-                    if (sousperiode.getIdsousperiode() != null) {
 
-                        sousrubriquedepenses = sousrubriquedepenseFacadeLocal.findAllEtatPrime(false);
-                        sousrubriquedepenses.addAll(sousrubriquedepenseFacadeLocal.findAllEtatPrime(true));
+            if (sousperiode.getIdsousperiode() != null) {
+                sousrubriquedepenses = sousrubriquedepenseFacadeLocal.findAllEtatPrime(false);
+                sousrubriquedepenses.addAll(sousrubriquedepenseFacadeLocal.findAllEtatPrime(true));
 
-                        depenses = depenseFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
-                        total = this.sommeDepense(depenses);
-                        pourcentage = this.sommePourcentage(depenses);
+                depenses = depenseFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
+                total = this.sommeDepense(depenses);
+                pourcentage = this.sommePourcentage(depenses);
 
-                        List<Recette> listRecette = recetteFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
-                        montant = this.sommeRecette(listRecette);
+                List<Recette> listRecette = recetteFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
+                montant = this.sommeRecette(listRecette);
 
-                        if (!depenses.isEmpty()) {
-                            for (Depense d : depenses) {
-                                selectedSousrubriquedepenses.add(d.getIdsousrubriquedepense());
-                            }
-                        }
+                if (!depenses.isEmpty()) {
+                    for (Depense d : depenses) {
+                        selectedSousrubriquedepenses.add(d.getIdsousrubriquedepense());
                     }
                 }
             }
+            this.sommeData(depenses);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,19 +66,15 @@ public class DepenseController extends AbstractDepenseController implements Seri
 
     public void updateData() {
         depenses.clear();
-        if (structure.getIdstructure() != null) {
-            if (periode.getIdperiode() != null) {
-                if (sousperiode.getIdsousperiode() != null) {
-                    depenses = depenseFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
-                    total = this.sommeDepense(depenses);
+        if (sousperiode.getIdsousperiode() != null) {
+            depenses = depenseFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
+            this.sommeData(depenses);
 
-                    List<Recette> listRecette = recetteFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
-                    this.montant = this.sommeRecette(listRecette);
+            List<Recette> listRecette = recetteFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
+            this.montant = this.sommeRecette(listRecette);
 
-                    sousrubriquedepenses = sousrubriquedepenseFacadeLocal.findAllEtatPrime(false);
-                    sousrubriquedepenses.addAll(sousrubriquedepenseFacadeLocal.findAllEtatPrime(true));
-                }
-            }
+            sousrubriquedepenses = sousrubriquedepenseFacadeLocal.findAllEtatPrime(false);
+            sousrubriquedepenses.addAll(sousrubriquedepenseFacadeLocal.findAllEtatPrime(true));
         }
     }
 
@@ -102,6 +94,29 @@ public class DepenseController extends AbstractDepenseController implements Seri
                 } else {
                     return false;
                 }
+            }
+        }
+    }
+
+    private void sommeData(List<Depense> list) {
+        this.total = 0;
+        this.pourcentage = 0;
+        if (list.isEmpty()) {
+            return;
+        }
+        for (Depense d : list) {
+            try {
+                if (d.getMontant() != null) {
+                    total += d.getMontant();
+                }
+            } catch (Exception e) {
+            }
+
+            try {
+                if (d.getPourcentage() != null) {
+                    pourcentage += d.getPourcentage();
+                }
+            } catch (Exception e) {
             }
         }
     }

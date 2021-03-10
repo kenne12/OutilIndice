@@ -20,40 +20,8 @@
 
             <h:form id="DepenseCreerForm">
                 <h:panelGroup id="display">
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>#{langue.structure}</label>
-                                        <h:selectOneMenu id="institution" class="form-control" 
-                                                         value="#{depenseController.structure.idstructure}"
-                                                         required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
-                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                                            <f:selectItems value="#{depenseController.structures}" var="st" itemLabel="#{st.nom}" itemValue="#{st.idstructure}" />
-                                            <p:ajax update="datalist_1,grid_,add_btn,montant" listener="#{depenseController.updateData()}" />
-                                        </h:selectOneMenu>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>#{langue.periode}</label>
-                                <h:selectOneMenu id="type_structure" class="form-control" 
-                                                 value="#{depenseController.periode.idperiode}"
-                                                 required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
-                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                                    <f:selectItems value="#{depenseController.periodes}" var="p" itemLabel="#{p.nom}" itemValue="#{p.idperiode}" />
-                                    <p:ajax update="datalist_1,grid_,add_btn,montant" listener="#{depenseController.updateData()}" />
-                                </h:selectOneMenu>
-                            </div>
-                        </div>
-
+                   
+                    <div class="row">                        
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>#{langue.sous_periode}</label>

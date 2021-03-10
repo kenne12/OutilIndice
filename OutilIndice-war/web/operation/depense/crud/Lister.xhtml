@@ -10,20 +10,7 @@
 
     <h:form id="search_form">
 
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label>#{langue.structure}</label>
-                    <h:selectOneMenu id="institution" class="form-control" 
-                                     value="#{depenseController.structure.idstructure}"
-                                     required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
-                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                        <f:selectItems value="#{depenseController.structures}" var="st" itemLabel="#{st.nom}" itemValue="#{st.idstructure}" />
-                        <p:ajax update=":DepenseListerForm:datalist" listener="#{depenseController.updateData()}" />
-                    </h:selectOneMenu>
-                </div>
-            </div>
-            
+        <div class="row">                        
             <div class="col-md-2">
                 <div class="form-group">
                     <label>#{langue.sous_periode}</label>
@@ -42,7 +29,6 @@
                                  actionListener="#{depenseController.recherche()}" />                
             </div>
         </div>
-
     </h:form>
 
     <h:form id="DepenseListerForm">

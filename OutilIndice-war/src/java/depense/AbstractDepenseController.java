@@ -17,6 +17,7 @@ import sessions.SousperiodeFacadeLocal;
 import sessions.SousrubriquedepenseFacadeLocal;
 import sessions.StructureFacadeLocal;
 import utils.Routine;
+import utils.SessionMBean;
 
 public class AbstractDepenseController {
 
@@ -32,13 +33,11 @@ public class AbstractDepenseController {
 
     @EJB
     protected RecetteFacadeLocal recetteFacadeLocal;
-
     protected List<Recette> recettes = new ArrayList<>();
 
     @EJB
     protected PeriodeFacadeLocal periodeFacadeLocal;
-    protected Periode periode = new Periode();
-    protected List<Periode> periodes = new ArrayList<>();
+    protected Periode periode = SessionMBean.getPeriode();
 
     @EJB
     protected SousperiodeFacadeLocal sousperiodeFacadeLocal;
@@ -47,7 +46,7 @@ public class AbstractDepenseController {
 
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
-    protected Structure structure = new Structure();
+    protected Structure structure = SessionMBean.getStructure();
     protected List<Structure> structures = new ArrayList<>();
 
     protected Routine routine = new Routine();
@@ -137,11 +136,6 @@ public class AbstractDepenseController {
         this.periode = periode;
     }
 
-    public List<Periode> getPeriodes() {
-        periodes = periodeFacadeLocal.findAllRange();
-        return periodes;
-    }
-
     public List<Recette> getRecettes() {
         return recettes;
     }
@@ -199,7 +193,7 @@ public class AbstractDepenseController {
         this.depenses = depenses;
     }
 
-    public List<Sousrubriquedepense> getSousrubriquedepenses() {   
+    public List<Sousrubriquedepense> getSousrubriquedepenses() {
         return sousrubriquedepenses;
     }
 

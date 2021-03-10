@@ -31,7 +31,6 @@ public class Utilitaires {
 
     private static final ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
     public static final String path = servletContext.getRealPath("");
-    public static final String repertoireParDefaultNotesTrim = "rapport/notes/trimestriel";
     public static final String chemin = servletContext.getContextPath();
 
     public static void saveOperation(MouchardFacadeLocal mouchardFacadeLocal, String action, Utilisateur utilisateur) {
