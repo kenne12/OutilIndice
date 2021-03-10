@@ -29,7 +29,6 @@
                                              id="structure" value="#{primePerfIndividuelCtrl.structure}">
                                 <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
                                 <f:selectItems value="#{primePerfIndividuelCtrl.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
-                                <p:ajax update="grid_critere,datalist" listener="#{primePerfIndividuelCtrl.updateFiltre()}"/>
                             </h:selectOneMenu>                                                
                         </div>
 

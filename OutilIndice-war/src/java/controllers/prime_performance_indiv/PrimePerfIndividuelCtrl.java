@@ -17,6 +17,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
 import utils.SessionMBean;
+import utils.Utilitaires;
 
 /**
  *
@@ -40,7 +41,7 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
         parametragecritere = new Parametragecritere();
         parametragecritere.setIdcategorie(new Categorie());
         
-        criterestructure = criterestructureFacadeLocal.findByIdStructureIdCritere(structure.getIdstructure(), 7);
+        criterestructure = Utilitaires.findCritereSInSession(7);
         if (criterestructure != null) {
             totalPointMaxCritere = criterestructure.getResultat();
         }

@@ -1,5 +1,7 @@
 package utils;
 
+import entities.Critere;
+import entities.Criterestructure;
 import entities.Mouchard;
 
 import entities.Utilisateur;
@@ -12,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -181,7 +184,7 @@ public class Utilitaires {
 
     public static Double arrondiNDecimales(double x, int n) {
         double pow = Math.pow(10.0D, n);
-        return Double.valueOf(Math.floor(x * pow) / pow);
+        return (Math.floor(x * pow) / pow);
     }
 
     public static String formatPrenomMaj(String prenom) {
@@ -205,7 +208,7 @@ public class Utilitaires {
         if (SessionMBean.getAccess().isEmpty()) {
             return false;
         }
-        if (SessionMBean.getAccess().contains(Long.valueOf(1L))) {
+        if (SessionMBean.getAccess().contains(1L)) {
             return true;
         }
         if (SessionMBean.getAccess().contains(menu)) {
@@ -214,67 +217,44 @@ public class Utilitaires {
         return false;
     }
 
-    public static boolean isDayClosed() {
-        /* 252 */ return false;
-    }
-
-    public static void permuteDate(Date date1, Date date2) {
-    }
-
-    public static boolean checkBenefice(double prix_achat, double prix_vente) {
-        if (prix_vente >= prix_achat) {
-            return true;
-        }
-        return false;
-    }
-
-    public static String genererCodeDemande(String code, Long nextPayement) {
-        if (nextPayement < 10L) /* 269 */ {
-            code = code + "00000" + nextPayement.toString();
-        } else if ((nextPayement >= 10L) && (nextPayement < 100L)) /* 271 */ {
-            code = code + "0000" + nextPayement.toString();
-        } else if ((nextPayement >= 100L) && (nextPayement < 1000L)) /* 273 */ {
-            code = code + "000" + nextPayement.toString();
-        } else if ((nextPayement >= 1000L) && (nextPayement < 10000L)) /* 275 */ {
-            code = code + "00" + nextPayement.toString();
-        } else if ((nextPayement >= 10000L) && (nextPayement < 100000L)) /* 277 */ {
-            code = code + "0" + nextPayement.toString();
-        } else if ((nextPayement >= 100000L) && (nextPayement < 1000000L)) {
-            code = code + "" + nextPayement.toString();
-        }
-        return code;
-    }
-
-    public static String genererCodeStock(String code, Long nextPayement) {
-        if (nextPayement < 10L) {
-            code = code + "000" + nextPayement.toString();
-        } else if ((nextPayement >= 10L) && (nextPayement < 100L)) {
-            code = code + "00" + nextPayement.toString();
-        } else if ((nextPayement >= 100L) && (nextPayement < 1000L)) {
-            code = code + "0" + nextPayement.toString();
-        } else {
-            code = code + "" + nextPayement.toString();
-        }
-        return code;
-    }
-
-    public static String genererCodeInventaire(String code, Long nextPayement) {
-        if (nextPayement < 10L) {
-            code = code + "00" + nextPayement.toString();
-        } else if ((nextPayement >= 10L) && (nextPayement < 100L)) {
-            code = code + "0" + nextPayement.toString();
-        } else {
-            code = code + "" + nextPayement.toString();
-        }
-        return code;
-    }
-
     public static Integer duration(Date date1, Date date2) {
         DateTime dateDebut = new DateTime("" + (date1.getYear() + 1900) + "-" + (date1.getMonth() + 1) + "-" + date1.getDate() + "");
         DateTime dateFin = new DateTime("" + (date2.getYear() + 1900) + "-" + (date2.getMonth() + 1) + "-" + date2.getDate() + "");
 
-        Integer nbjr = Integer.valueOf(Days.daysBetween(dateDebut, dateFin).getDays());
+        Integer nbjr = Days.daysBetween(dateDebut, dateFin).getDays();
         return nbjr;
+    }
+
+    public static Criterestructure findCritereSInSession(int idCritere) {
+        List<Criterestructure> list = SessionMBean.getCritereStructures();
+        if (list.isEmpty()) {
+            return null;
+        }
+
+        Criterestructure result = null;
+        for (Criterestructure c : list) {
+            if (c.getCritere().getIdcritere().equals(idCritere)) {
+                result = c;
+                break;
+            }
+        }
+        return result;
+    }
+    
+    public static Critere findCritereInSession(int idCritere) {
+        List<Criterestructure> list = SessionMBean.getCritereStructures();
+        if (list.isEmpty()) {
+            return null;
+        }
+
+        Critere result = null;
+        for (Criterestructure c : list) {
+            if (c.getCritere().getIdcritere().equals(idCritere)) {
+                result = c.getCritere();
+                break;
+            }
+        }
+        return result;
     }
 
 }

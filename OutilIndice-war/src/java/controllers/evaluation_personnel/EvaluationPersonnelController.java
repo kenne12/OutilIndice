@@ -41,6 +41,7 @@ import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
 import utils.MappingResultat;
 import utils.SessionMBean;
+import utils.Utilitaires;
 
 /**
  *
@@ -936,15 +937,15 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
     }
 
     private void checkCritere() {
-        criter1 = criteres.contains(new Critere(1));
-        criter2 = criteres.contains(new Critere(2));
-        criter3 = criteres.contains(new Critere(3));
-        criter4 = criteres.contains(new Critere(4));
-        criter5 = criteres.contains(new Critere(5));
-        criter6 = criteres.contains(new Critere(6));
-        criter7 = criteres.contains(new Critere(7));
-        criter8 = criteres.contains(new Critere(8));
-        criter9 = criteres.contains(new Critere(9));
-        criter10 = criteres.contains(new Critere(10));
+        criter1 = Utilitaires.findCritereInSession(1) != null;
+        criter2 = Utilitaires.findCritereInSession(2) != null;
+        criter3 = Utilitaires.findCritereInSession(3) != null;
+        criter4 = Utilitaires.findCritereInSession(4) != null;
+        criter5 = Utilitaires.findCritereInSession(5) != null;
+        criter6 = Utilitaires.findCritereInSession(6) != null;
+        criter7 = Utilitaires.findCritereInSession(7) != null;
+        criter8 = Utilitaires.findCritereInSession(8) != null;
+        criter9 = Utilitaires.findCritereInSession(9) != null;
+        criter10 = Utilitaires.findCritereInSession(10) != null;
     }
 }

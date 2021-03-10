@@ -17,6 +17,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
 import utils.SessionMBean;
+import utils.Utilitaires;
 
 /**
  *
@@ -38,7 +39,8 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl imp
         structures.add(SessionMBean.getStructure());
         listCriteres = critereresponsabiliteFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
         critereresponsabilite.setIdresponsabilite(new Responsabilite());
-        criterestructure = criterestructureFacadeLocal.findByIdStructureIdCritere(structure.getIdstructure(), 1);
+        
+        criterestructure = Utilitaires.findCritereSInSession(1);
         if (criterestructure != null) {
             totalPointMaxCritere = criterestructure.getResultat();
         }

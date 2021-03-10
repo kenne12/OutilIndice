@@ -17,6 +17,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
 import utils.SessionMBean;
+import utils.Utilitaires;
 
 /**
  *
@@ -41,7 +42,7 @@ public class PMaxPrimeRQntifDeptCtrl extends AbstractPMaxPrimeRQntifDeptCtrl imp
         parametragecritere = new Parametragecritere();
         parametragecritere.setIdcategorie(new Categorie());
 
-        criterestructure = criterestructureFacadeLocal.findByIdStructureIdCritere(structure.getIdstructure(), 4);
+        criterestructure = Utilitaires.findCritereSInSession(4);
         if (criterestructure != null) {
             totalPointMaxCritere = criterestructure.getResultat();
         }

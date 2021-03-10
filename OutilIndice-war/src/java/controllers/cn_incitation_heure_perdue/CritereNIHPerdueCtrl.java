@@ -17,6 +17,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
 import utils.SessionMBean;
+import utils.Utilitaires;
 
 /**
  *
@@ -40,7 +41,7 @@ public class CritereNIHPerdueCtrl extends AbstratCritereNIHPerdueCtrl implements
         parametragecritere = new Parametragecritere();
         parametragecritere.setIdcategorie(new Categorie());
 
-        criterestructure = criterestructureFacadeLocal.findByIdStructureIdCritere(structure.getIdstructure(), 8);
+        criterestructure = Utilitaires.findCritereSInSession(8);
         if (criterestructure != null) {
             totalPointMaxCritere = criterestructure.getResultat();
         }
