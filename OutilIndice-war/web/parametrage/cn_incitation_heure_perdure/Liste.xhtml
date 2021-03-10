@@ -18,11 +18,19 @@
                 <div class="panel panel-success">
                     <div style="color: white" class="panel-heading bg-success">
                         #{langue['critere_negatif_negatif_heure_perdu.liste_point_par_heure_sup']}
+                        
                         <p:commandButton update=":HeurePerdueCreateForm"
                                          icon="ui-icon-plus"
-                                         value="#{langue['common.ajouter']}"
+                                         value="#{langue['common.ajouter']} 2"
                                          style="float: right"
-                                         actionListener="#{critereNIHPerdueCtrl.prepareCreate()}"/>      
+                                         actionListener="#{critereNIHPerdueCtrl.prepareCreate('2')}"/>
+                        
+                        <p:commandButton update=":HeurePerdueCreateForm"
+                                         icon="ui-icon-plus"
+                                         disabled="true"
+                                         value="#{langue['common.ajouter']} 1"
+                                         style="float: right"
+                                         actionListener="#{critereNIHPerdueCtrl.prepareCreate('1')}"/>      
                     </div>
 
                     <div class="panel-body">
@@ -32,32 +40,40 @@
                             <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th style="width: 40%">#{langue.categorie}</th>
-                                        <th style="width: 10%">#{langue.indice}</th>
+                                        <th style="width: 22%">#{langue.categorie}</th>
+                                        <th style="width: 8%">#{langue.indice}</th>
+                                        <th style="width: 6%">#{langue['common.effectif']}</th>
                                         <th style="width: 10%">#{langue.denominateur_jour}</th>
                                         <th style="width: 10%">#{langue.denominateur_nuit}</th>
                                         <th style="width: 10%">#{langue.point_journee}</th>
                                         <th style="width: 10%">#{langue.point_nuit}</th>
-                                        <th style="width: 10%;text-align: center">#{langue['common.actions']}</th>
+                                        <th style="width: 8%">#{langue.tot_jr}</th>
+                                        <th style="width: 8%">#{langue.tot_nuit}</th>
+                                        <th style="width: 5%;text-align: center">#{langue['common.actions']}</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
                                     <ui:repeat value="#{critereNIHPerdueCtrl.listParametres}" var="item">
-                                        <tr>
+                                        <tr>                                            
                                             <td>#{item.idcategorie.nom}</td>
                                             <td>#{item.indice}</td>
+                                            <td>#{item.nombre}</td>
                                             <td>#{item.denominateurjournee}</td>
                                             <td>#{item.denominateurnuit}</td>
                                             <td>#{item.valeurjournee}</td>
                                             <td>#{item.valeurnuit}</td>
+                                            <td>#{item.total1}</td>
+                                            <td>#{item.total2}</td>                                            
                                             <td style="text-align: center">                                        
                                                 <p:commandButton icon="ui-icon-pencil" update=":HeurePerdueEditForm"
                                                                  class="btn btn-success btn-sm"
+                                                                 disabled="true"
                                                                  actionListener="#{critereNIHPerdueCtrl.prepareEdit(item)}"/>
 
                                                 <p:commandButton icon="ui-icon-trash" update=":HeurePerdueListerForm"
                                                                  class="btn btn-danger btn-sm"
+                                                                 disabled="true"
                                                                  actionListener="#{critereNIHPerdueCtrl.delete(item)}">
                                                     <p:confirm header="#{langue['notification.confirm_delete_dialog_header']}"
                                                                message="#{langue['notification.confirm_delete_message']} ?"
