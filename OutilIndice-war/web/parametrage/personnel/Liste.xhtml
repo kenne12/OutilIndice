@@ -33,12 +33,12 @@
                             <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th style="width: 10%">#{langue['common.matricule']}</th>
-                                        <th style="width: 25%">#{langue['common.nom']} #{langue['common.prenom']}</th>
+                                        <th style="width: 5%">#{langue['common.matricule']}</th>
+                                        <th style="width: 20%">#{langue['common.nom']} #{langue['common.prenom']}</th>
                                         <th style="width: 25%">#{langue.service}</th>
                                         <th style="width: 15%">#{langue.categorie}</th>
-                                        <th style="width: 5%">#{langue['common.etat']}</th>
-                                        <th style="width: 10%">#{langue.date_embauche}</th>
+                                        <th style="width: 20%">#{langue.responsabilite}</th>
+                                        <th style="width: 5%">#{langue['common.etat']}</th>                                        
                                         <th style="width: 10%">#{langue['common.actions']}</th>
                                     </tr>
                                 </thead>
@@ -50,8 +50,8 @@
                                             <td>#{item.nom} #{item.prenom}</td>
                                             <td>#{item.idservice.nom}</td>
                                             <td>#{item.idcategorie.nom}</td>
-                                            <td><h:selectBooleanCheckbox value="#{item.etat}" disabled="true" /></td>
-                                            <td><h:outputLabel value="#{item.dateembauche}" ><f:convertDateTime pattern="yyyy/MM/dd" /></h:outputLabel> </td>                                    
+                                            <td>#{item.idresponsabilite.nom}</td>
+                                            <td style="text-align: center"><h:selectBooleanCheckbox value="#{item.etat}" disabled="true" /></td>                                                                                
                                             <td>                                        
                                                 <p:commandButton class="btn btn-danger btn-sm" icon="ui-icon-trash" 
                                                                  actionListener="#{personnelController.delete(item)}"

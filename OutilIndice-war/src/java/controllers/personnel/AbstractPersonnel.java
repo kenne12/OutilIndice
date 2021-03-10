@@ -7,13 +7,14 @@ package controllers.personnel;
 
 import entities.Categorie;
 import entities.Personnel;
+import entities.Responsabilite;
 import entities.Service;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.faces.context.FacesContext;
 import sessions.CategorieFacadeLocal;
 import sessions.PersonnelFacadeLocal;
+import sessions.ResponsabiliteFacadeLocal;
 import sessions.ServiceFacadeLocal;
 import utils.Routine;
 import utils.SessionMBean;
@@ -31,17 +32,17 @@ public class AbstractPersonnel {
 
     @EJB
     protected ServiceFacadeLocal serviceFacadeLocal;
-
     protected List<Service> services = new ArrayList<>();
 
     @EJB
     protected CategorieFacadeLocal categorieFacadeLocal;
-
     protected List<Categorie> categories = new ArrayList<>();
 
-    protected Routine routine = new Routine();
+    @EJB
+    protected ResponsabiliteFacadeLocal responsabiliteFacadeLocal;
+    protected List<Responsabilite> responsabilites = new ArrayList<>();
 
-    String sc = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+    protected Routine routine = new Routine();
 
     protected String mode = "";
 
@@ -80,8 +81,9 @@ public class AbstractPersonnel {
         return categories;
     }
 
-    public void setCategories(List<Categorie> categories) {
-        this.categories = categories;
+    public List<Responsabilite> getResponsabilites() {
+        responsabilites = responsabiliteFacadeLocal.findAll();
+        return responsabilites;
     }
 
 }

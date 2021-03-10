@@ -165,10 +165,11 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
             if (sousperiode.getIdsousperiode() > 0) {
                 personnel = personnelFacadeLocal.find(personnel.getIdpersonnel());
 
-                note = new Note(0l);
                 note = noteFacadeLocal.findByIdPersonnel(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
                 if (note != null) {
                     this.loadSavedData();
+                } else {
+                    note = new Note(0l);
                 }
                 // idCritere = 7
                 if (criter7) {
