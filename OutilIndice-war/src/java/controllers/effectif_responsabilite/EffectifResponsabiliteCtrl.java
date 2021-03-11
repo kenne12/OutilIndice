@@ -8,6 +8,7 @@ package controllers.effectif_responsabilite;
 import controllers.util.JsfUtil;
 import entities.Responsabilite;
 import entities.EffectifResponsabilite;
+import entities.Personnel;
 import entities.Structure;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,9 +41,8 @@ public class EffectifResponsabiliteCtrl extends AbstractEffectifResponsabiliteCt
     }
 
     public void prepareCreate() {
-        structure = SessionMBean.getStructure();
-        this.updateFiltre();
         mode = "Create";
+        this.updateFiltre();
         RequestContext.getCurrentInstance().execute("PF('EffectifResponsabiliteCreateDialog').show()");
     }
 
@@ -78,20 +78,33 @@ public class EffectifResponsabiliteCtrl extends AbstractEffectifResponsabiliteCt
     public void addResponsabiliteToTable() {
         if (!selectedResponsabilites.isEmpty()) {
             List<Responsabilite> list = new ArrayList<>();
-            for (Responsabilite c : selectedResponsabilites) {
-                if (!checkResponsabiliteInTable(c)) {
+            List<Personnel> personnels = personnelFacadeLocal.findByIdStructure(structure.getIdstructure(), true);
+            for (Responsabilite r : selectedResponsabilites) {
+                if (!checkResponsabiliteInTable(r)) {
+
+                    List<Personnel> listPr = new ArrayList<>();
+                    for (Personnel p : personnels) {
+                        if (p.getIdresponsabilite().getIdresponsabilite().equals(r.getIdresponsabilite())) {
+                            listPr.add(p);
+                        }
+                    }
+
                     EffectifResponsabilite cs = new EffectifResponsabilite();
                     cs.setIdEffectifResponsabilite(0l);
                     cs.setStructure(structure);
-                    cs.setResponsabilite(c);
-                    cs.setNombre(0);
+                    cs.setResponsabilite(r);
+                    cs.setNombre(listPr.size());
                     effectifResponsabilites.add(cs);
-                    list.add(c);
+                    list.add(r);
+
+                    if (!listPr.isEmpty()) {
+                        personnels.removeAll(listPr);
+                    }
                 }
             }
 
             this.responsabilites.removeAll(list);
-            this.selectedResponsabilites.removeAll(list);
+            this.selectedResponsabilites.clear();
             this.sommeData();
         }
     }
@@ -164,8 +177,6 @@ public class EffectifResponsabiliteCtrl extends AbstractEffectifResponsabiliteCt
             });
 
             this.effectifResponsabilites.clear();
-            this.structure = new Structure();
-
             RequestContext.getCurrentInstance().execute("PF('EffectifResponsabiliteCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {

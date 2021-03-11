@@ -83,7 +83,6 @@ public class EffectifCategorieCtrl extends AbstractEffectifCategorieCtrl impleme
             for (Categorie c : selectedCategories) {
                 if (!checkCategorieInTable(c)) {
                     List<Personnel> listPc = new ArrayList<>();
-
                     for (Personnel p : personnels) {
                         if (p.getIdcategorie().getIdcategorie().equals(c.getIdcategorie())) {
                             listPc.add(p);

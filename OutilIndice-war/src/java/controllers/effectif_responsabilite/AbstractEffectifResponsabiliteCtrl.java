@@ -13,8 +13,10 @@ import java.util.List;
 import javax.ejb.EJB;
 import sessions.ResponsabiliteFacadeLocal;
 import sessions.EffectifResponsabiliteFacadeLocal;
+import sessions.PersonnelFacadeLocal;
 import sessions.StructureFacadeLocal;
 import utils.Routine;
+import utils.SessionMBean;
 
 /**
  *
@@ -35,8 +37,11 @@ public class AbstractEffectifResponsabiliteCtrl {
 
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
-    protected Structure structure = new Structure();
+    protected Structure structure = SessionMBean.getStructure();
     protected List<Structure> structures = new ArrayList<>();
+
+    @EJB
+    protected PersonnelFacadeLocal personnelFacadeLocal;
 
     protected Routine routine = new Routine();
     protected double effectif = 0;
