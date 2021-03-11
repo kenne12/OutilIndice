@@ -28,8 +28,7 @@
                         <thead>
                             <tr>
                                 <th style="width:10%">#{langue['common.code']}</th>
-                                <th style="width:40%">#{langue['common.nom']}</th>                                
-                                <th style="width:40%">#{langue.structure}</th>                                                                
+                                <th style="width:40%">#{langue['common.nom']}</th>                                                                                               
                                 <th style="width:10%">#{langue['common.action']}</th>
                             </tr>
                         </thead>
@@ -37,8 +36,7 @@
                             <ui:repeat value="#{serviceController.services}" var="item">
                                 <tr class="odd gradeX">
                                     <td>#{item.code}</td>
-                                    <td>#{item.nom}</td>                                    
-                                    <td>#{item.idstructure.nom}</td>                                                                      
+                                    <td>#{item.nom}</td>                                                                                                                                              
                                     <th style="text-align: center"> 
                                         <p:commandButton class="btn btn-success btn-sm" icon="ui-icon-pencil">
                                             <p:ajax event="click" listener="#{serviceController.prepareEdit(item)}" update=":ServiceCreerForm,:notify1"/>

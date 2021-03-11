@@ -266,7 +266,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                 if (criter4) {
                     parametragecriterePrqn = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 4, personnel.getIdcategorie().getIdcategorie());
                     if (parametragecriterePrqn != null) {
-                        cibleRqntifs = cibleFacadeLocal.findByIdSousPeriode(personnel.getIdservice().getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 4);
+                        cibleRqntifs = cibleFacadeLocal.findByIdSousPeriode(structure.getIdstructure(), personnel.getIdservice().getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 4);
                         if (!cibleRqntifs.isEmpty()) {
                             evaluationrqntifdepts = evaluationrqntifdeptFacadeLocal.findByIdPersonnel(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 4);
                             if (evaluationrqntifdepts.isEmpty()) {

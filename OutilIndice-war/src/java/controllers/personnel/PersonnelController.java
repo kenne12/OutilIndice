@@ -94,6 +94,7 @@ public class PersonnelController extends AbstractPersonnel implements Serializab
             if ("Create".equals(mode)) {
                 personnel.setIdpersonnel(personnelFacadeLocal.nextVal());
                 personnel.setDateembauche(new Date());
+                personnel.setStructure(SessionMBean.getStructure());
                 personnelFacadeLocal.create(personnel);
                 this.initPersonnel();
                 RequestContext.getCurrentInstance().execute("PF('PersonnelCreateDialog').hide()");

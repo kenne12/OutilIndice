@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -46,6 +47,9 @@ public class Criterestructure implements Serializable {
     @JoinColumn(name = "idstructure", referencedColumnName = "idstructure", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Structure structure;
+
+    @Transient
+    private boolean created;
 
     public Criterestructure() {
     }
@@ -112,6 +116,14 @@ public class Criterestructure implements Serializable {
 
     public void setStructure(Structure structure) {
         this.structure = structure;
+    }
+
+    public boolean isCreated() {
+        return created;
+    }
+
+    public void setCreated(boolean created) {
+        this.created = created;
     }
 
     @Override

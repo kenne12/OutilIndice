@@ -9,16 +9,14 @@
 
     <h:form id="search_form">
         <div class="row">            
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label>#{langue.sous_periode}</label>
-                    <h:selectOneMenu id="type_sousperiode" class="form-control" value="#{recetteController.sousperiode.idsousperiode}"
-                                     required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
-                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                        <f:selectItems value="#{recetteController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
-                        <p:ajax update=":RecetteListerForm:datalist" listener="#{recetteController.updateData()}" />
-                    </h:selectOneMenu>
-                </div>
+            <div class="form-group col-md-2">
+                <label>#{langue.sous_periode}</label>
+                <h:selectOneMenu id="type_sousperiode" class="form-control" value="#{recetteController.sousperiode.idsousperiode}"
+                                 required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                    <f:selectItems value="#{recetteController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
+                    <p:ajax update=":RecetteListerForm:datalist" listener="#{recetteController.updateData()}" />
+                </h:selectOneMenu>
             </div>
 
             <div class="col-md-2">               
@@ -34,7 +32,6 @@
         </p:messages>
 
         <br/>
-
 
         <div class="row">
             <div class="col-md-10">

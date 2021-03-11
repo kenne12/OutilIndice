@@ -52,7 +52,7 @@
                                             <td>#{item.idcategorie.nom}</td>
                                             <td>#{item.idresponsabilite.nom}</td>
                                             <td style="text-align: center"><h:selectBooleanCheckbox value="#{item.etat}" disabled="true" /></td>                                                                                
-                                            <td>                                        
+                                            <td style="text-align: center">                                        
                                                 <p:commandButton class="btn btn-danger btn-sm" icon="ui-icon-trash" 
                                                                  actionListener="#{personnelController.delete(item)}"
                                                                  update="PersonnelListerForm:datalist,PersonnelListerForm:growl,:notify1">

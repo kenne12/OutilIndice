@@ -25,7 +25,7 @@ import utils.SessionMBean;
  */
 @ManagedBean
 @SessionScoped
-public class PrimeQntifDeptCtrl extends AbstractPrimeQntifDeptCtrl implements Serializable{
+public class PrimeQntifDeptCtrl extends AbstractPrimeQntifDeptCtrl implements Serializable {
 
     /**
      * Creates a new instance of PrimeQntifDeptCtrl
@@ -35,7 +35,6 @@ public class PrimeQntifDeptCtrl extends AbstractPrimeQntifDeptCtrl implements Se
 
     @PostConstruct
     private void init() {
-        structure = SessionMBean.getStructure();
         structures.clear();
         structures.add(SessionMBean.getStructure());
         cible = new Cible();
@@ -62,10 +61,10 @@ public class PrimeQntifDeptCtrl extends AbstractPrimeQntifDeptCtrl implements Se
         indicateurs.clear();
         selectedIndicateurs.clear();
         cibles.clear();
-
+        totalCible = 0;
         if (service.getIdservice() != null && service.getIdservice() > 0) {
             if (sousperiode.getIdsousperiode() != null && sousperiode.getIdsousperiode() > 0) {
-                List<Cible> list = cibleFacadeLocal.findByIdSousPeriode(service.getIdservice(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 4);
+                List<Cible> list = cibleFacadeLocal.findByIdSousPeriode(service.getIdservice(), service.getIdservice(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 4);
                 if (list.isEmpty() || list == null) {
                     indicateurs.addAll(indicateurFacadeLocal.findAll());
                 } else {
@@ -78,9 +77,25 @@ public class PrimeQntifDeptCtrl extends AbstractPrimeQntifDeptCtrl implements Se
 
                     indicateurs.removeAll(selectedIndicateurs);
                     selectedIndicateurs.clear();
+                    this.sommeDetail(list);
                 }
             }
         }
+    }
+
+    public double sommeDetail(List<Cible> cibles) {
+        this.totalCible = 0;
+        if (cibles.isEmpty()) {
+            return totalCible;
+        }
+        for (Cible c : cibles) {
+            this.totalCible += c.getValeurcible();
+        }
+        return totalCible;
+    }
+
+    public void updateSasie() {
+        this.sommeDetail(cibles);
     }
 
     public void addIndicatorToTable() {
@@ -107,7 +122,7 @@ public class PrimeQntifDeptCtrl extends AbstractPrimeQntifDeptCtrl implements Se
         if (c.getIdcible() != 0l) {
             cibleFacadeLocal.remove(c);
             cibles.remove(c);
-            listCibles = cibleFacadeLocal.findByIdSousPeriode(service.getIdservice(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 4);
+            listCibles = cibleFacadeLocal.findByIdSousPeriode(structure.getIdstructure(), service.getIdservice(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 4);
             indicateurs.add(c.getIdindicateur());
         } else {
             int conteur = 0;
@@ -127,7 +142,7 @@ public class PrimeQntifDeptCtrl extends AbstractPrimeQntifDeptCtrl implements Se
         listCibles.clear();
         if (service.getIdservice() != null) {
             if (sousperiode.getIdsousperiode() != null) {
-                listCibles = cibleFacadeLocal.findByIdSousPeriode(service.getIdservice(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 4);
+                listCibles = cibleFacadeLocal.findByIdSousPeriode(structure.getIdstructure(), service.getIdservice(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 4);
             }
         }
     }
@@ -147,7 +162,7 @@ public class PrimeQntifDeptCtrl extends AbstractPrimeQntifDeptCtrl implements Se
                     cibleFacadeLocal.edit(c);
                 }
             }
-            listCibles = cibleFacadeLocal.findByIdSousPeriode(service.getIdservice(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 4);
+            listCibles = cibleFacadeLocal.findByIdSousPeriode(structure.getIdstructure(), service.getIdservice(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 4);
             this.cibles.clear();
             cible = new Cible();
             cible.setIdindicateur(new Indicateur());
@@ -162,7 +177,7 @@ public class PrimeQntifDeptCtrl extends AbstractPrimeQntifDeptCtrl implements Se
     public void edit() {
         try {
             cibleFacadeLocal.edit(cible);
-            listCibles = cibleFacadeLocal.findByIdSousPeriode(cible.getIdservice().getIdservice(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 4);
+            listCibles = cibleFacadeLocal.findByIdSousPeriode(structure.getIdstructure(), cible.getIdservice().getIdservice(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 4);
             cible = new Cible();
             cible.setIdindicateur(new Indicateur());
             RequestContext.getCurrentInstance().execute("PF('PrimeRQntifEditDialog').hide()");
@@ -176,7 +191,7 @@ public class PrimeQntifDeptCtrl extends AbstractPrimeQntifDeptCtrl implements Se
     public void delete(Cible c) {
         try {
             cibleFacadeLocal.remove(c);
-            listCibles = cibleFacadeLocal.findByIdSousPeriode(c.getIdservice().getIdservice(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 4);
+            listCibles = cibleFacadeLocal.findByIdSousPeriode(structure.getIdstructure(), c.getIdservice().getIdservice(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 4);
             cible = new Cible();
             cible.setIdindicateur(new Indicateur());
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));

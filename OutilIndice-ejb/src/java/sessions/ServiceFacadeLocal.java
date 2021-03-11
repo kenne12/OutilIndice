@@ -32,6 +32,6 @@ public interface ServiceFacadeLocal {
 
     Long nextVal();
 
-    List<Service> findByIdStructure(long idStructure);
+    List<Service> findAllOrderByCode();
 
 }

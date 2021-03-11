@@ -12,6 +12,7 @@ import entities.CriterestructurePK;
 import entities.Souscritere;
 import entities.Structure;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -27,24 +28,23 @@ import utils.SessionMBean;
 @ManagedBean
 @SessionScoped
 public class CritereStrController extends AbstractCritereStr implements Serializable {
-
+    
     public CritereStrController() {
-
+        
     }
-
+    
     @PostConstruct
     private void init() {
         structures.clear();
         structures.add(SessionMBean.getStructure());
     }
-
+    
     public void prepareCreate() {
-        structure = SessionMBean.getStructure();
         this.updateFiltre();
         mode = "Create";
         RequestContext.getCurrentInstance().execute("PF('CritereCreateDialog').show()");
     }
-
+    
     public void prepareEdit(Structure s) {
         this.structure = s;
         if (structure != null) {
@@ -53,7 +53,7 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
             RequestContext.getCurrentInstance().execute("PF('CritereCreateDialog').show()");
         }
     }
-
+    
     public void updateFiltre() {
         criteres.clear();
         selectedCriteres.clear();
@@ -69,13 +69,17 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
                 }
                 criteres.removeAll(selectedCriteres);
                 criterestructures.addAll(list);
+                for (int i = 0; i < criterestructures.size(); i++) {
+                    criterestructures.get(i).setCreated(true);
+                }
             }
         }
         score = this.sommeCritere();
     }
-
+    
     public void addCritereToTable() {
         if (!selectedCriteres.isEmpty()) {
+            List<Critere> list = new ArrayList();
             for (Critere c : selectedCriteres) {
                 if (!checkCritereInTable(c)) {
                     Criterestructure cs = new Criterestructure();
@@ -85,13 +89,17 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
                     cs.setPointMax(c.getPointMax());
                     cs.setScoreMoyen(c.getScoreMoyen());
                     cs.setResultat(c.getResultat());
+                    cs.setCreated(false);
                     criterestructures.add(cs);
+                    list.add(c);
                 }
             }
+            criteres.removeAll(list);
+            selectedCriteres.clear();
         }
         score = this.sommeCritere();
     }
-
+    
     private boolean checkCritereInTable(Critere c) {
         boolean result = false;
         for (Criterestructure cs : criterestructures) {
@@ -102,25 +110,19 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
         }
         return result;
     }
-
-    public void removeCritere(Criterestructure item) {
-        if (item.getCritere() != null) {
+    
+    public void removeCritere(int index, Criterestructure item) {
+        if (item.isCreated()) {
             criterestructureFacadeLocal.remove(item);
             criterestructures.remove(item);
         } else {
-            int conteur = 0;
-            for (Criterestructure cs : criterestructures) {
-                if (item.getCritere().getIdcritere().equals(cs.getCritere().getIdcritere())) {
-                    break;
-                }
-                conteur++;
-            }
-            criterestructures.remove(conteur);
+            criterestructures.remove(index);
         }
+        criteres.add(item.getCritere());
         score = this.sommeCritere();
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }
-
+    
     public String returnCritere(Structure s) {
         String resultat = "";
         if (s.getCriterestructureCollection() != null) {
@@ -136,7 +138,7 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
         }
         return resultat;
     }
-
+    
     @Transactional
     public void save() {
         try {
@@ -144,12 +146,12 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
                 JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
                 return;
             }
-
+            
             if (this.sommeCritere() > scoreMax) {
                 JsfUtil.addErrorMessage(routine.localizeMessage("notification.erreur_poids"));
                 return;
             }
-
+            
             criterestructures.forEach(cs -> {
                 Criterestructure obj = criterestructureFacadeLocal.findByIdStructureIdCritere(structure.getIdstructure(), cs.getCritere().getIdcritere());
                 if (obj == null) {
@@ -160,10 +162,8 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
                     criterestructureFacadeLocal.edit(cs);
                 }
             });
-
-            this.criterestructures.clear();
-            this.structure = new Structure();
-
+            
+            this.criterestructures.clear();            
             RequestContext.getCurrentInstance().execute("PF('CritereCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
@@ -171,7 +171,7 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-
+    
     public void delete(Souscritere sc) {
         try {
             if (sc != null) {
@@ -186,7 +186,7 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-
+    
     private double sommeCritere() {
         this.pointMax = 0;
         if (criterestructures.isEmpty()) {
@@ -201,5 +201,5 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
         this.pointMax = pointMax;
         return resultat;
     }
-
+    
 }

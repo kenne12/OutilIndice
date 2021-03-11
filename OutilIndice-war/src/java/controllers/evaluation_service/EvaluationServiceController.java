@@ -59,7 +59,7 @@ public class EvaluationServiceController extends AbstractEvaluationService imple
         score = 0;
         mode = "Create";
         message = "";
-        services = serviceFacadeLocal.findByIdStructure(structure.getIdstructure());
+        services = serviceFacadeLocal.findAllOrderByCode();
         RequestContext.getCurrentInstance().execute("PF('EvaluationCreateDialog').show()");
     }
 
@@ -98,36 +98,7 @@ public class EvaluationServiceController extends AbstractEvaluationService imple
     }
 
     public void updateFiltre() {
-        /*criterestructures.clear();
-         if (structure.getIdstructure() != null && structure.getIdstructure() > 0) {
-         if (categorie.getIdcategorie() != null && categorie.getIdcategorie() > 0) {
 
-         List<Criterestructure> list = criterestructureFacadeLocal.findByIdStructure(structure.getIdstructure());
-         if (list.isEmpty()) {
-         JsfUtil.addErrorMessage("Veuillez définir les criteres pour cette structure");
-         return;
-         }
-
-         criterestructures.addAll(list);
-         listDetailsc = detailscFacadeLocal.findByIdStructure(structure.getIdstructure(), categorie.getIdcategorie());
-
-         List<Souscritere> listTransfert = new ArrayList<>();
-         for (Detailsc dsc : listDetailsc) {
-         listTransfert.add(dsc.getIdsouscritere());
-         }
-
-         List<Souscritere> listAll = new ArrayList<>();
-         for (Criterestructure cs : criterestructures) {
-         listAll.addAll(souscritereFacadeLocal.findByIdCritere(cs.getCritere().getIdcritere()));
-         }
-
-         souscriteres.addAll(listAll);
-         if (!listTransfert.isEmpty()) {
-         souscriteres.removeAll(listTransfert);
-         }
-         }
-         }
-         score = this.sommeCritere();*/
     }
 
     public void updateEvaluationData() {
@@ -139,7 +110,7 @@ public class EvaluationServiceController extends AbstractEvaluationService imple
             if (sousperiode.getIdsousperiode() > 0) {
                 service = serviceFacadeLocal.find(service.getIdservice());
 
-                List<Souscritereservice> listSousCritereService = souscritereserviceFacadeLocal.findByIdService(service.getIdservice());
+                List<Souscritereservice> listSousCritereService = souscritereserviceFacadeLocal.findByIdService(structure.getIdstructure(), service.getIdservice());
 
                 if (listSousCritereService.isEmpty()) {
                     JsfUtil.addErrorMessage("Veuillez définir les sous - critère d'évaluation pour ce service");

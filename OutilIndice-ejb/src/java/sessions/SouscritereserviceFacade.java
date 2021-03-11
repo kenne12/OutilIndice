@@ -30,7 +30,7 @@ public class SouscritereserviceFacade extends AbstractFacade<Souscritereservice>
     public SouscritereserviceFacade() {
         super(Souscritereservice.class);
     }
-    
+
     @Override
     public Long nextId() {
         try {
@@ -47,16 +47,16 @@ public class SouscritereserviceFacade extends AbstractFacade<Souscritereservice>
     }
 
     @Override
-    public List<Souscritereservice> findByIdService(long idService) {
-        Query query = em.createQuery("SELECT s FROM Souscritereservice s WHERE s.idservice.idservice=:idService ORDER BY s.idsouscritere.code");
-        query.setParameter("idService", idService);
+    public List<Souscritereservice> findByIdService(long idStructure, long idService) {
+        Query query = em.createQuery("SELECT s FROM Souscritereservice s WHERE s.structure.idstructure=:idStructure AND s.idservice.idservice=:idService ORDER BY s.idsouscritere.code");
+        query.setParameter("idService", idService).setParameter("idStructure", idStructure);
         return query.getResultList();
     }
 
     @Override
-    public List<Souscritereservice> findByIdServiceIdCritere(long idService, int idCritere) {
-        Query query = em.createQuery("SELECT s FROM Souscritereservice s WHERE s.idservice.idservice=:idService AND s.idsouscritere.idcritere.idcritere=:idCritere ORDER BY s.idsouscritere.code");
-        query.setParameter("idService", idService).setParameter("idCritere", idCritere);
+    public List<Souscritereservice> findByIdServiceIdCritere(long idStructure, long idService, int idCritere) {
+        Query query = em.createQuery("SELECT s FROM Souscritereservice s WHERE s.structure.idstructure=:idStructure AND s.idservice.idservice=:idService AND s.idsouscritere.idcritere.idcritere=:idCritere ORDER BY s.idsouscritere.code");
+        query.setParameter("idService", idService).setParameter("idCritere", idCritere).setParameter("idStructure", idStructure);
         return query.getResultList();
     }
 

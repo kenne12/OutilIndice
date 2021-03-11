@@ -9,6 +9,7 @@ import controllers.util.JsfUtil;
 import entities.Critere;
 import entities.Critereservice;
 import entities.CritereservicePK;
+import entities.Criterestructure;
 import entities.Service;
 import entities.Souscritere;
 import entities.Souscritereservice;
@@ -21,6 +22,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
 import utils.SessionMBean;
+import utils.Utilitaires;
 
 /**
  *
@@ -29,27 +31,32 @@ import utils.SessionMBean;
 @ManagedBean
 @SessionScoped
 public class SousCritereServiceController extends AbstractSousCritereService implements Serializable {
-
+    
     @PostConstruct
     private void init() {
         structures.clear();
         structures.add(SessionMBean.getStructure());
-        structure = SessionMBean.getStructure();
         this.initDetailSCData();
     }
-
+    
     private void initDetailSCData() {
         listDetail.clear();
         for (int i = 0; i < 4; i++) {
             listDetail.add(0);
         }
     }
-
+    
     public SousCritereServiceController() {
-
+        
     }
-
+    
     public void prepareCreate() {
+        Criterestructure criterestructure = Utilitaires.findCritereSInSession(5);
+        if (criterestructure == null) {
+            JsfUtil.addWarningMessage("La prime de resultat qualitatif de departement de fait pas partie des critères de cette structure");
+            return;
+        }
+        
         criteres.clear();
         souscriteres.clear();
         selectedSouscriteres.clear();
@@ -60,7 +67,7 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
         message = "";
         RequestContext.getCurrentInstance().execute("PF('CritereCreateDialog').show()");
     }
-
+    
     public void prepareDuplicate() {
         this.initDetailSCData();
         idServiceDestination = 0;
@@ -70,7 +77,7 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
         souscritereservicesTemp.clear();
         RequestContext.getCurrentInstance().execute("PF('DuplicationCritereCreateDialog').show()");
     }
-
+    
     public void prepareEdit(Service s) {
         this.service = s;
         if (service != null) {
@@ -82,7 +89,7 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
             RequestContext.getCurrentInstance().execute("PF('CritereCreateDialog').show()");
         }
     }
-
+    
     public void updateFiltreDuplication() {
         if (idService != 0) {
             critereservicesTemp.clear();
@@ -92,27 +99,27 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
                 JsfUtil.addErrorMessage("Veuillez définir les criteres pour ce service");
                 return;
             }
-
+            
             listDetail.set(0, list.size());
             critereservicesTemp.addAll(list);
-            souscritereservicesTemp = souscritereserviceFacadeLocal.findByIdService(idService);
-
+            souscritereservicesTemp = souscritereserviceFacadeLocal.findByIdService(structure.getIdstructure(), idService);
+            
             listDetail.set(1, souscritereservicesTemp.size());
         }
-
+        
         if (idServiceDestination != 0) {
-
+            
             if (idServiceDestination == idService) {
                 JsfUtil.addErrorMessage("Le service source et celui de destination sont identiques");
                 return;
             }
-
+            
             List<Critereservice> list = critereserviceFacadeLocal.findByIdService(idServiceDestination);
             listDetail.set(2, list.size());
-
-            List<Souscritereservice> listDetailDest = souscritereserviceFacadeLocal.findByIdService(idServiceDestination);
+            
+            List<Souscritereservice> listDetailDest = souscritereserviceFacadeLocal.findByIdService(structure.getIdstructure(), idServiceDestination);
             listDetail.set(3, listDetailDest.size());
-
+            
             if (listDetailDest.isEmpty()) {
                 if (!souscritereservicesTemp.isEmpty()) {
                     souscritereservices.clear();
@@ -120,27 +127,27 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
                         Souscritereservice obj = new Souscritereservice();
                         obj.setIdsouscritereservice(0l);
                         obj.setIdsouscritere(ssc.getIdsouscritere());
-
+                        
                         obj.setIdservice(new Service(idServiceDestination));
                         obj.setPointmax(ssc.getPointmax());
                         obj.setDetail(ssc.getDetail());
                         souscritereservices.add(obj);
                     }
                 }
-
+                
                 if (!list.isEmpty()) {
                     souscritereservicesTemp.removeAll(list);
                 }
-
+                
                 if (!critereservicesTemp.isEmpty()) {
                     critereservices.clear();
                     for (Critereservice cs : critereservicesTemp) {
                         CritereservicePK scPk = new CritereservicePK(idServiceDestination, cs.getCritere().getIdcritere());
-
+                        
                         Critereservice obj = new Critereservice();
                         obj.setCritereservicePK(scPk);
                         obj.setService(serviceFacadeLocal.find(idServiceDestination));
-
+                        
                         obj.setCritere(cs.getCritere());
                         obj.setPoids(cs.getPoids());
                         obj.setPointmax(cs.getPointmax());
@@ -148,25 +155,25 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
                     }
                 }
             }
-
+            
         }
         score = this.sommeCritere();
     }
-
+    
     public void updateFiltre() {
         souscriteres.clear();
         critereservices.clear();
         souscritereservices.clear();
         selectedSouscriteres.clear();
-
+        
         if (service.getIdservice() != null && service.getIdservice() > 0) {
-            souscritereservices = souscritereserviceFacadeLocal.findByIdServiceIdCritere(service.getIdservice(), 5);
+            souscritereservices = souscritereserviceFacadeLocal.findByIdServiceIdCritere(structure.getIdstructure(), service.getIdservice(), 5);
             if (!souscritereservices.isEmpty()) {
                 List<Souscritere> list = new ArrayList<>();
                 for (Souscritereservice scs : souscritereservices) {
                     list.add(scs.getIdsouscritere());
                 }
-
+                
                 souscriteres = souscritereFacadeLocal.findByIdCritere(5);
                 if (!souscriteres.isEmpty()) {
                     souscriteres.removeAll(list);
@@ -175,10 +182,10 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
                 souscriteres = souscritereFacadeLocal.findByIdCritere(5);
             }
         }
-
+        
         score = this.sommeCritere();
     }
-
+    
     public void updateFiltreSc() {
         souscriteres.clear();
         if (critereservice.getCritere().getIdcritere() != null && critereservice.getCritere().getIdcritere() > 0) {
@@ -191,7 +198,7 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
         }
         score = this.sommeCritere();
     }
-
+    
     public void addSousCritereToTable() {
         if (!selectedSouscriteres.isEmpty()) {
             for (Souscritere sc : selectedSouscriteres) {
@@ -201,7 +208,7 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
                     obj.setIdservice(service);
                     obj.setIdsouscritere(sc);
                     obj.setDetail(sc.getDetail());
-                    obj.setPointmax( sc.getPointmax());
+                    obj.setPointmax(sc.getPointmax());
                     souscritereservices.add(obj);
                 }
             }
@@ -211,7 +218,7 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
         }
         
     }
-
+    
     private boolean checkCritereInTable(Souscritere sc) {
         boolean result = false;
         for (Souscritereservice scs : souscritereservices) {
@@ -222,12 +229,12 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
         }
         return result;
     }
-
+    
     public void prepareEditDetail(Souscritereservice item) {
         this.souscritereservice = item;
         RequestContext.getCurrentInstance().execute("PF('DetailEditDialog').show()");
     }
-
+    
     public void removeCritere(Souscritereservice item) {
         if (item.getIdsouscritereservice() != 0 && item.getIdsouscritereservice() != null) {
             souscritereserviceFacadeLocal.remove(item);
@@ -245,7 +252,7 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
         score = this.sommeCritere();
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }
-
+    
     private boolean verifyQuantite() {
         boolean result = false;
         for (Critereservice sc : critereservices) {
@@ -255,7 +262,7 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
                     pointMax += scs.getPointmax();
                 }
             }
-
+            
             if (pointMax > sc.getPointmax()) {
                 message = "L'ensemble des sous critère de : " + sc.getCritere().getNom() + " Sont supérieur au poid max : " + sc.getPointmax();
                 result = true;
@@ -264,7 +271,7 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
         }
         return result;
     }
-
+    
     public void editDetail() {
         if (souscritereservice.getIdsouscritereservice() != null && souscritereservice.getIdsouscritereservice() > 0) {
             int i = 0;
@@ -287,12 +294,12 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
         }
         RequestContext.getCurrentInstance().execute("PF('DetailEditDialog').hide()");
     }
-
+    
     public String returnCritere(Service s) {
         String resultat = "";
-
+        
         if (s.getSouscritereserviceCollection() != null) {
-            s.setSouscritereserviceCollection(souscritereserviceFacadeLocal.findByIdService(s.getIdservice()));
+            s.setSouscritereserviceCollection(souscritereserviceFacadeLocal.findByIdService(structure.getIdstructure(), s.getIdservice()));
         }
         int i = 0;
         for (Souscritereservice d : s.getSouscritereserviceCollection()) {
@@ -305,19 +312,19 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
         }
         return resultat;
     }
-
+    
     public void duplicate() {
         try {
             if (critereservices.isEmpty()) {
                 JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
                 return;
             }
-
+            
             if (this.verifyQuantite()) {
                 JsfUtil.addErrorMessage(message);
                 return;
             }
-
+            
             for (Critereservice cs : critereservices) {
                 Critereservice csTemp = critereserviceFacadeLocal.findByIdServiceIdCritere(idServiceDestination, cs.getCritere().getIdcritere());
                 if (csTemp == null) {
@@ -328,18 +335,18 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
                     critereserviceFacadeLocal.create(csTemp);
                 }
             }
-
+            
             souscritereservices.forEach(ssc -> {
                 ssc.setIdsouscritereservice(souscritereserviceFacadeLocal.nextId());
                 souscritereserviceFacadeLocal.create(ssc);
             });
-
+            
             this.souscritereservices.clear();
             critereservices.clear();
             critereservicesTemp.clear();
             this.souscritereservicesTemp.clear();
             this.initDetailSCData();
-
+            
             RequestContext.getCurrentInstance().execute("PF('DuplicationCritereCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
@@ -347,26 +354,27 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-
+    
     public void save() {
         try {
             if (souscritereservices.isEmpty()) {
                 JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
                 return;
             }
-
+            
             souscritereservices.forEach(scs -> {
                 if (scs.getIdsouscritereservice() == 0l) {
                     scs.setIdsouscritereservice(souscritereserviceFacadeLocal.nextId());
+                    scs.setStructure(structure);
                     souscritereserviceFacadeLocal.create(scs);
                 } else {
                     souscritereserviceFacadeLocal.edit(scs);
                 }
             });
-
+            
             this.souscritereservices.clear();
             critereservices.clear();
-
+            
             RequestContext.getCurrentInstance().execute("PF('CritereCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
@@ -374,7 +382,7 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-
+    
     public void delete(Souscritere sc) {
         try {
             if (sc != null) {
@@ -388,7 +396,7 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-
+    
     private double sommeCritere() {
         if (souscritereservices.isEmpty()) {
             return 0;
@@ -399,5 +407,5 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
         }
         return resultat;
     }
-
+    
 }

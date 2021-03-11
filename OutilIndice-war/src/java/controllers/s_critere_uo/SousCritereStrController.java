@@ -6,6 +6,7 @@
 package controllers.s_critere_uo;
 
 import controllers.util.JsfUtil;
+import entities.Criterestructure;
 import entities.Detailsc;
 import entities.Souscritere;
 import entities.Structure;
@@ -18,6 +19,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
 import utils.SessionMBean;
+import utils.Utilitaires;
 
 /**
  *
@@ -47,6 +49,11 @@ public class SousCritereStrController extends AbstractSousCritereStr implements 
     }
 
     public void prepareCreate() {
+        Criterestructure criterestructure = Utilitaires.findCritereSInSession(7);
+        if (criterestructure == null) {
+            JsfUtil.addWarningMessage("La prime de performance individuelle ne fait pas partie des critères de cette structure");
+            return;
+        }
         souscriteres.clear();
         selectedSouscriteres.clear();
         listDetailsc.clear();

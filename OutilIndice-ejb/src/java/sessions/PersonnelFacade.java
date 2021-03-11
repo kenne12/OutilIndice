@@ -45,21 +45,21 @@ public class PersonnelFacade extends AbstractFacade<Personnel> implements Person
 
     @Override
     public List<Personnel> findByIdStructure(long idInstitution) {
-        Query query = em.createQuery("SELECT p FROM Personnel p WHERE p.idservice.idstructure.idstructure=:idStructure  ORDER BY p.nom , p.prenom");
+        Query query = em.createQuery("SELECT p FROM Personnel p WHERE p.structure.idstructure=:idStructure ORDER BY p.nom , p.prenom");
         query.setParameter("idStructure", idInstitution);
         return query.getResultList();
     }
 
     @Override
     public List<Personnel> findByIdStructure(long idInstitution, boolean etat) {
-        Query query = em.createQuery("SELECT p FROM Personnel p WHERE p.idservice.idstructure.idstructure=:idStructure AND p.etat=:etat ORDER BY p.nom , p.prenom");
+        Query query = em.createQuery("SELECT p FROM Personnel p WHERE p.structure.idstructure=:idStructure AND p.etat=:etat ORDER BY p.nom , p.prenom");
         query.setParameter("idStructure", idInstitution).setParameter("etat", etat);
         return query.getResultList();
     }
 
     @Override
     public Long nextVal(long idStructure) {
-        Query query = this.em.createQuery("SELECT COUNT(p.idpersonnel) FROM Personnel p WHERE p.idservice.idstructure.idstructure=:idStructure");
+        Query query = this.em.createQuery("SELECT COUNT(p.idpersonnel) FROM Personnel p WHERE p.structure.idstructure=:idStructure");
         query.setParameter("idStructure", idStructure);
         Long result = (Long) query.getSingleResult();
         if (result == null) {

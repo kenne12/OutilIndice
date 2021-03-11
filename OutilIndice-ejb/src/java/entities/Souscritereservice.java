@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Souscritereservice.findByDetail", query = "SELECT s FROM Souscritereservice s WHERE s.detail = :detail"),
     @NamedQuery(name = "Souscritereservice.findByPointmax", query = "SELECT s FROM Souscritereservice s WHERE s.pointmax = :pointmax")})
 public class Souscritereservice implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -50,6 +51,9 @@ public class Souscritereservice implements Serializable {
     @JoinColumn(name = "idsouscritere", referencedColumnName = "idsouscritere")
     @ManyToOne(fetch = FetchType.LAZY)
     private Souscritere idsouscritere;
+    @JoinColumn(name = "idstructure", referencedColumnName = "idstructure")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Structure structure;
 
     public Souscritereservice() {
     }
@@ -107,6 +111,14 @@ public class Souscritereservice implements Serializable {
         this.idsouscritere = idsouscritere;
     }
 
+    public Structure getStructure() {
+        return structure;
+    }
+
+    public void setStructure(Structure structure) {
+        this.structure = structure;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -131,5 +143,5 @@ public class Souscritereservice implements Serializable {
     public String toString() {
         return "entities.Souscritereservice[ idsouscritereservice=" + idsouscritereservice + " ]";
     }
-    
+
 }

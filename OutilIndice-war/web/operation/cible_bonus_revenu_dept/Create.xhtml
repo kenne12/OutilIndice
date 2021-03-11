@@ -32,41 +32,24 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <p:outputLabel value="#{langue.indicateur}" for="indicateur" />
-                                    <h:selectOneMenu converter="indicateurConverter" class="form-control"                                                      
-                                                     id="indicateur" value="#{cibleBonusRDeptCtrl.indicateur}">
-                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                                        <f:selectItems value="#{cibleBonusRDeptCtrl.indicateurs}" var="ind" itemLabel="#{ind.nom}" itemValue="#{ind}" />
-                                        <p:ajax  />
-                                    </h:selectOneMenu>
-                                </div>
+                            <div class="form-group col-md-6">
+                                <p:outputLabel value="#{langue.indicateur}" for="indicateur" />
+                                <h:selectOneMenu converter="indicateurConverter" class="form-control"                                                      
+                                                 id="indicateur" value="#{cibleBonusRDeptCtrl.indicateur}">
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                    <f:selectItems value="#{cibleBonusRDeptCtrl.indicateurs}" var="ind" itemLabel="#{ind.nom}" itemValue="#{ind}" />
+                                    <p:ajax  />
+                                </h:selectOneMenu>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <p:outputLabel value="#{langue.periode}" for="periode" />
-                                    <h:selectOneMenu disabled="true" converter="periodeConverter" class="form-control"                                                      
-                                                     id="periode" value="#{cibleBonusRDeptCtrl.periode}">
-                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                                        <f:selectItems value="#{cibleBonusRDeptCtrl.periodes}" var="prd" itemLabel="#{prd.nom}" itemValue="#{prd}" />
-                                    </h:selectOneMenu>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <p:outputLabel value="#{langue.sous_periode}" for="sous_periode" />
-                                    <h:selectOneMenu converter="sousperiodeConverter" class="form-control"                                                      
-                                                     id="sous_periode" value="#{cibleBonusRDeptCtrl.sousperiode}">
-                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                                        <f:selectItems value="#{cibleBonusRDeptCtrl.sousperiodes}" var="sprd" itemLabel="#{sprd.nom}" itemValue="#{sprd}" />
-                                        <p:ajax update="grid_critere,datalist" listener="#{cibleBonusRDeptCtrl.updateFiltre()}"/>
-                                    </h:selectOneMenu>
-                                </div>
+                            <div class="form-group col-md-6">
+                                <p:outputLabel value="#{langue.sous_periode}" for="sous_periode" />
+                                <h:selectOneMenu converter="sousperiodeConverter" class="form-control"                                                      
+                                                 id="sous_periode" value="#{cibleBonusRDeptCtrl.sousperiode}">
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                    <f:selectItems value="#{cibleBonusRDeptCtrl.sousperiodes}" var="sprd" itemLabel="#{sprd.nom}" itemValue="#{sprd}" />
+                                    <p:ajax update="grid_critere,datalist" listener="#{cibleBonusRDeptCtrl.updateFiltre()}"/>
+                                </h:selectOneMenu>
                             </div>
                         </div>
 
@@ -110,7 +93,7 @@
                                     </f:facet>
                                     <f:facet name="input">
                                         <p:inputText required="true" value="#{item.valeurcible}">                                             
-                                            <p:ajax  />
+                                            <p:ajax update="datalist" listener="#{cibleBonusRDeptCtrl.updateSasie()}"  />
                                         </p:inputText>
                                     </f:facet>
                                 </p:cellEditor>
@@ -124,6 +107,14 @@
                                     <p:ajax update="datalist,:CibleBonusRDeptCreateForm:grid_critere" event="click" listener="#{cibleBonusRDeptCtrl.removeIndicator(item)}" />
                                 </p:commandButton>
                             </p:column>
+                            
+                            <p:columnGroup type="footer" id="footer_tab">
+                                <p:row>
+                                    <p:column style="text-align:right" footerText="Total" />                                                                          
+                                    <p:column style="text-align:center" footerText="#{cibleBonusRDeptCtrl.totalCible}"/>
+                                    <p:column  style="text-align:center" footerText="/" /> 
+                                </p:row>
+                            </p:columnGroup>
 
                         </p:dataTable>
 

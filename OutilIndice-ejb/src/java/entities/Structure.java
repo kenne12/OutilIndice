@@ -104,14 +104,18 @@ public class Structure implements Serializable {
     private Typestructure idtypestructure;
     @OneToMany(mappedBy = "idstructure", fetch = FetchType.LAZY)
     private Collection<Recette> recetteCollection;
-    @OneToMany(mappedBy = "idstructure", fetch = FetchType.LAZY)
-    private Collection<Service> serviceCollection;
 
     @OneToMany(mappedBy = "structure", fetch = FetchType.LAZY)
     private Collection<EffectifCategorie> effectifCategorieCollection;
 
     @OneToMany(mappedBy = "structure", fetch = FetchType.LAZY)
     private Collection<EffectifResponsabilite> effectifResponsabiliteCollection;
+
+    @OneToMany(mappedBy = "structure", fetch = FetchType.LAZY)
+    private Collection<Personnel> personnelCollection;
+
+    @OneToMany(mappedBy = "structure", fetch = FetchType.LAZY)
+    private Collection<Souscritereservice> sousCritereServiceCollection;
 
     public Structure() {
     }
@@ -329,12 +333,21 @@ public class Structure implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Service> getServiceCollection() {
-        return serviceCollection;
+    public Collection<Personnel> getPersonnelCollection() {
+        return personnelCollection;
     }
 
-    public void setServiceCollection(Collection<Service> serviceCollection) {
-        this.serviceCollection = serviceCollection;
+    public void setPersonnelCollection(Collection<Personnel> personnelCollection) {
+        this.personnelCollection = personnelCollection;
+    }
+
+    @XmlTransient
+    public Collection<Souscritereservice> getSousCritereServiceCollection() {
+        return sousCritereServiceCollection;
+    }
+
+    public void setSousCritereServiceCollection(Collection<Souscritereservice> sousCritereServiceCollection) {
+        this.sousCritereServiceCollection = sousCritereServiceCollection;
     }
 
     @Override

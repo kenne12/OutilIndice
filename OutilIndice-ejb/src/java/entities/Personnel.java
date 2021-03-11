@@ -60,6 +60,9 @@ public class Personnel implements Serializable {
     @JoinColumn(name = "idresponsabilite", referencedColumnName = "idresponsabilite")
     @ManyToOne(fetch = FetchType.LAZY)
     private Responsabilite idresponsabilite;
+    @JoinColumn(name = "idstructure", referencedColumnName = "idstructure")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Structure structure;
 
     public Personnel() {
     }
@@ -138,6 +141,14 @@ public class Personnel implements Serializable {
 
     public void setIdservice(Service idservice) {
         this.idservice = idservice;
+    }
+
+    public Structure getStructure() {
+        return structure;
+    }
+
+    public void setStructure(Structure structure) {
+        this.structure = structure;
     }
 
     @Override

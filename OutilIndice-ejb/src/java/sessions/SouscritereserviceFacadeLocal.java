@@ -32,8 +32,8 @@ public interface SouscritereserviceFacadeLocal {
 
     Long nextId();
 
-    List<Souscritereservice> findByIdService(long idService);
+    List<Souscritereservice> findByIdService(long idStructure, long idService);
 
-    List<Souscritereservice> findByIdServiceIdCritere(long idService, int idCritere);
+    List<Souscritereservice> findByIdServiceIdCritere(long idStructure, long idService, int idCritere);
 
 }

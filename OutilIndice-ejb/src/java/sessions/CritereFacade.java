@@ -45,7 +45,7 @@ public class CritereFacade extends AbstractFacade<Critere> implements CritereFac
 
     @Override
     public List<Critere> findAllRangeByCode() {
-        Query query = em.createQuery("SELECT c FROM Critere c ORDER BY c.code");
+        Query query = em.createQuery("SELECT c FROM Critere c ORDER BY c.idcritere");
         return query.getResultList();
     }
 }

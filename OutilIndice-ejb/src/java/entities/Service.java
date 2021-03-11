@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Service.findByNom", query = "SELECT s FROM Service s WHERE s.nom = :nom"),
     @NamedQuery(name = "Service.findByCode", query = "SELECT s FROM Service s WHERE s.code = :code")})
 public class Service implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -47,9 +48,6 @@ public class Service implements Serializable {
     private Collection<Critereservice> critereserviceCollection;
     @OneToMany(mappedBy = "idservice", fetch = FetchType.LAZY)
     private Collection<Souscritereservice> souscritereserviceCollection;
-    @JoinColumn(name = "idstructure", referencedColumnName = "idstructure")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Structure idstructure;
     @OneToMany(mappedBy = "idservice", fetch = FetchType.LAZY)
     private Collection<Personnel> personnelCollection;
 
@@ -102,14 +100,6 @@ public class Service implements Serializable {
         this.souscritereserviceCollection = souscritereserviceCollection;
     }
 
-    public Structure getIdstructure() {
-        return idstructure;
-    }
-
-    public void setIdstructure(Structure idstructure) {
-        this.idstructure = idstructure;
-    }
-
     @XmlTransient
     public Collection<Personnel> getPersonnelCollection() {
         return personnelCollection;
@@ -143,5 +133,5 @@ public class Service implements Serializable {
     public String toString() {
         return "entities.Service[ idservice=" + idservice + " ]";
     }
-    
+
 }

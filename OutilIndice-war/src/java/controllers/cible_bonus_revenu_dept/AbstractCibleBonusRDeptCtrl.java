@@ -60,6 +60,8 @@ public class AbstractCibleBonusRDeptCtrl {
     protected Structure structure = new Structure();
     protected List<Structure> structures = new ArrayList<>();
 
+    protected double totalCible;
+
     protected Routine routine = new Routine();
     protected String mode = "";
 
@@ -144,6 +146,14 @@ public class AbstractCibleBonusRDeptCtrl {
 
     public void setIndicateur(Indicateur indicateur) {
         this.indicateur = indicateur;
+    }
+
+    public double getTotalCible() {
+        return totalCible;
+    }
+
+    public void setTotalCible(double totalCible) {
+        this.totalCible = totalCible;
     }
 
 }

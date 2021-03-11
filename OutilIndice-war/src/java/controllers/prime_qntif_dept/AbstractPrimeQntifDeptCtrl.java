@@ -57,8 +57,10 @@ public class AbstractPrimeQntifDeptCtrl {
 
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
-    protected Structure structure = new Structure();
+    protected Structure structure = SessionMBean.getStructure();
     protected List<Structure> structures = new ArrayList<>();
+
+    protected double totalCible;
 
     protected Routine routine = new Routine();
     protected String mode = "";
@@ -121,7 +123,7 @@ public class AbstractPrimeQntifDeptCtrl {
     }
 
     public List<Service> getServices() {
-        services = serviceFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
+        services = serviceFacadeLocal.findAllOrderByCode();
         return services;
     }
 
@@ -145,4 +147,9 @@ public class AbstractPrimeQntifDeptCtrl {
         sousperiodes = sousperiodeFacadeLocal.findAllRangeCode();
         return sousperiodes;
     }
+
+    public double getTotalCible() {
+        return totalCible;
+    }
+
 }

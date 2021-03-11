@@ -44,9 +44,8 @@ public class ServiceFacade extends AbstractFacade<Service> implements ServiceFac
     }
 
     @Override
-    public List<Service> findByIdStructure(long idStructure) {
-        Query query = em.createQuery("SELECT s FROM Service s WHERE s.idstructure.idstructure=:idStructure ORDER BY s.code");
-        query.setParameter("idStructure", idStructure);
+    public List<Service> findAllOrderByCode() {
+        Query query = em.createQuery("SELECT s FROM Service s ORDER BY s.code");
         return query.getResultList();
     }
 

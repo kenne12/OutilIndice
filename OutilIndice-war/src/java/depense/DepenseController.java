@@ -256,14 +256,9 @@ public class DepenseController extends AbstractDepenseController implements Seri
     public void recherche() {
         try {
             depenses.clear();
-            if (structure.getIdstructure() != null) {
-                if (periode.getIdperiode() != null) {
-                    if (sousperiode.getIdsousperiode() != null) {
-                        depenses = depenseFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
-                        total = this.sommeDepense(depenses);
-                        pourcentage = this.sommePourcentage(depenses);
-                    }
-                }
+            if (sousperiode.getIdsousperiode() != null) {
+                depenses = depenseFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
+                this.sommeData(depenses);
             }
         } catch (Exception e) {
             e.printStackTrace();

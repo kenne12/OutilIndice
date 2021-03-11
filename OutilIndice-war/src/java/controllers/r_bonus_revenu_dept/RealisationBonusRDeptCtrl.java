@@ -95,7 +95,7 @@ public class RealisationBonusRDeptCtrl extends AbstractRealisationBonusRDeptCtrl
                     cibleFacadeLocal.edit(c);
                 }
             }
-            listCibles = cibleFacadeLocal.findByIdSousPeriode(SessionMBean.getStructure().getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 6);
+            listCibles = cibleFacadeLocal.findByIdStructureSousPeriode(SessionMBean.getStructure().getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 6);
             this.cibles.clear();
             cible = new Cible();
             cible.setIdservice(new Service());

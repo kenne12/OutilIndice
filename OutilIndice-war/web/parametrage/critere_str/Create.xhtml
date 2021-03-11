@@ -44,14 +44,14 @@
 
                         <p:commandButton value="#{langue['common.ajouter']}"
                                          actionListener="#{critereStrController.addCritereToTable()}"
-                                         update="datalist" icon="ui-icon-plus" />
+                                         update="datalist,grid_critere" icon="ui-icon-plus" />
                         <p:separator />
 
                         <p:dataTable id="datalist" value="#{critereStrController.criterestructures}" var="item"                             
                                      paginator="true"
                                      editable="true"
                                      editMode="cell"
-                                     rows="15"
+                                     rows="#{critereStrController.criterestructures.size()}"
                                      rowsPerPageTemplate="10,20,30,40,50"
                                      style="margin-top: 1%;font-size: 15px"
                                      rowIndexVar="index"
@@ -100,7 +100,7 @@
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
-                            
+
                             <p:column style="width: 10% ; text-align:center" headerText="#{langue['common.score_moy']}">
                                 <p:cellEditor>
                                     <f:facet name="output">
@@ -115,7 +115,7 @@
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
-                            
+
                             <p:column style="width: 10% ; text-align:center" headerText="#{langue['common.resultat']}">
                                 <p:cellEditor>
                                     <f:facet name="output">
@@ -136,7 +136,7 @@
                                     <h:outputText value="Action"/>
                                 </f:facet>
                                 <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist" event="click" listener="#{critereStrController.removeCritere(item)}" />
+                                    <p:ajax update="datalist,:CritereCreateForm:grid_critere" event="click" listener="#{critereStrController.removeCritere(index,item)}" />
                                 </p:commandButton>
                             </p:column>
 

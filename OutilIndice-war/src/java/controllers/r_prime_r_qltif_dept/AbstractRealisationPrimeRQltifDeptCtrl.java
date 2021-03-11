@@ -90,7 +90,7 @@ public class AbstractRealisationPrimeRQltifDeptCtrl {
     }
 
     public List<Service> getServices() {
-        services = serviceFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
+        services = serviceFacadeLocal.findAllOrderByCode();
         return services;
     }
 

@@ -58,7 +58,7 @@ public class AbstractSousCritereService {
 
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
-    protected Structure structure = new Structure();
+    protected final Structure structure = SessionMBean.getStructure();
     protected List<Structure> structures = new ArrayList<>();
 
     protected Routine routine = new Routine();
@@ -93,10 +93,6 @@ public class AbstractSousCritereService {
 
     public Structure getStructure() {
         return structure;
-    }
-
-    public void setStructure(Structure structure) {
-        this.structure = structure;
     }
 
     public List<Structure> getStructures() {
@@ -160,7 +156,7 @@ public class AbstractSousCritereService {
     }
 
     public List<Service> getServices() {
-        services = serviceFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
+        services = serviceFacadeLocal.findAllOrderByCode();
         return services;
     }
 

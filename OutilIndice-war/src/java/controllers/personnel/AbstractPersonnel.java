@@ -68,7 +68,7 @@ public class AbstractPersonnel {
     }
 
     public List<Service> getServices() {
-        services = serviceFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
+        services = serviceFacadeLocal.findAll();
         return services;
     }
 
