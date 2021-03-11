@@ -44,16 +44,16 @@ public class PersonnelFacade extends AbstractFacade<Personnel> implements Person
     }
 
     @Override
-    public List<Personnel> findByIdStructure(long idInstitution) {
+    public List<Personnel> findByIdStructure(long idStructure) {
         Query query = em.createQuery("SELECT p FROM Personnel p WHERE p.structure.idstructure=:idStructure ORDER BY p.nom , p.prenom");
-        query.setParameter("idStructure", idInstitution);
+        query.setParameter("idStructure", idStructure);
         return query.getResultList();
     }
 
     @Override
-    public List<Personnel> findByIdStructure(long idInstitution, boolean etat) {
+    public List<Personnel> findByIdStructure(long idStructure, boolean etat) {
         Query query = em.createQuery("SELECT p FROM Personnel p WHERE p.structure.idstructure=:idStructure AND p.etat=:etat ORDER BY p.nom , p.prenom");
-        query.setParameter("idStructure", idInstitution).setParameter("etat", etat);
+        query.setParameter("idStructure", idStructure).setParameter("etat", etat);
         return query.getResultList();
     }
 

@@ -7,6 +7,7 @@ package controllers.effectif_categorie;
 
 import entities.Categorie;
 import entities.EffectifCategorie;
+import entities.Personnel;
 
 import entities.Structure;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import sessions.CategorieFacadeLocal;
 import sessions.EffectifCategorieFacadeLocal;
+import sessions.PersonnelFacadeLocal;
 
 import sessions.StructureFacadeLocal;
 import utils.Routine;
@@ -40,6 +42,9 @@ public class AbstractEffectifCategorieCtrl {
     protected StructureFacadeLocal structureFacadeLocal;
     protected Structure structure = new Structure();
     protected List<Structure> structures = new ArrayList<>();
+
+    @EJB
+    protected PersonnelFacadeLocal personnelFacadeLocal;
 
     protected Routine routine = new Routine();
     protected double effectif = 0;

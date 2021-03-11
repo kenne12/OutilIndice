@@ -8,6 +8,7 @@ package controllers.effectif_categorie;
 import controllers.util.JsfUtil;
 import entities.Categorie;
 import entities.EffectifCategorie;
+import entities.Personnel;
 import entities.Structure;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -78,15 +79,28 @@ public class EffectifCategorieCtrl extends AbstractEffectifCategorieCtrl impleme
     public void addCategorieToTable() {
         if (!selectedCategories.isEmpty()) {
             List<Categorie> list = new ArrayList<>();
+            List<Personnel> personnels = personnelFacadeLocal.findByIdStructure(structure.getIdstructure(), true);
             for (Categorie c : selectedCategories) {
                 if (!checkCategorieInTable(c)) {
+                    List<Personnel> listPc = new ArrayList<>();
+
+                    for (Personnel p : personnels) {
+                        if (p.getIdcategorie().getIdcategorie().equals(c.getIdcategorie())) {
+                            listPc.add(p);
+                        }
+                    }
+
                     EffectifCategorie cs = new EffectifCategorie();
                     cs.setIdEffectifCategorie(0l);
                     cs.setStructure(structure);
                     cs.setCategorie(c);
-                    cs.setNombre(0);
+                    cs.setNombre(listPc.size());
                     effectifCategories.add(cs);
                     list.add(c);
+
+                    if (!listPc.isEmpty()) {
+                        personnels.removeAll(listPc);
+                    }
                 }
             }
 

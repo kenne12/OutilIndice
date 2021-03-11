@@ -32,9 +32,9 @@ public interface PersonnelFacadeLocal {
 
     Long nextVal();
 
-    List<Personnel> findByIdStructure(long idInstitution);
+    List<Personnel> findByIdStructure(long idStructure);
 
-    List<Personnel> findByIdStructure(long idInstitution, boolean etat);
+    List<Personnel> findByIdStructure(long idStructure, boolean etat);
 
     Long nextVal(long idStructure);
 
