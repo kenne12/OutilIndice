@@ -290,7 +290,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                 if (criter5) {
                     parametragecriterePrq = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 5, personnel.getIdcategorie().getIdcategorie());
                     if (parametragecriterePrq != null) {
-                        evaluationRPrimeQltifDept = evaluationRPrimeQltifDeptFacadeLocal.findByIdService(personnel.getIdservice().getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 5);
+                        evaluationRPrimeQltifDept = evaluationRPrimeQltifDeptFacadeLocal.findByIdService(structure.getIdstructure(), personnel.getIdservice().getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 5);
                         if (evaluationRPrimeQltifDept != null) {
                             evaluationRPrimeQltifPersonnel = evaluationRPrimeQltifPersonnelFacadeLocal.findByIdPersonnel(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
                             if (evaluationRPrimeQltifPersonnel == null) {
@@ -312,7 +312,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                 if (criter6) {
                     parametragecritereBrd = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 6, personnel.getIdcategorie().getIdcategorie());
                     if (parametragecritereBrd != null) {
-                        cibleBrd = cibleFacadeLocal.findByIdSousPeriodeOneLine(personnel.getIdservice().getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 6);
+                        cibleBrd = cibleFacadeLocal.findByIdSousPeriodeOneLine(structure.getIdstructure(), personnel.getIdservice().getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 6);
                         if (cibleBrd != null) {
                             evaluationBonusRDeptPersonnel = evaluationBonusRDeptPersonnelFacadeLocal.findByIdPersonnel(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
                             if (evaluationBonusRDeptPersonnel == null) {
@@ -351,7 +351,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
 
                 // idCritere = 9
                 if (criter9) {
-                    evaluationPenaliteDept = evaluationPenaliteDeptFacadeLocal.findByIdService(personnel.getIdservice().getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
+                    evaluationPenaliteDept = evaluationPenaliteDeptFacadeLocal.findByIdService(structure.getIdstructure(), personnel.getIdservice().getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
                     if (evaluationPenaliteDept != null) {
                         note.setPenaliteDepartement(evaluationPenaliteDept.getValeur());
                         note.setPointPenaliteDepartement((totalPIncitationPositif * evaluationPenaliteDept.getValeur()) / 100);

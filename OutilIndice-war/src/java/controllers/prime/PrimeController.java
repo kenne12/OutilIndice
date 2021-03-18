@@ -122,10 +122,7 @@ public class PrimeController extends AbstractPrimeController implements Serializ
                 this.primes.addAll(listPrimes);
                 return;
             }
-
-            double poidPersonnel = 75;
-            double poidService = 25;
-
+       
             double pointTotal = 0;
             for (Note n : notes) {
                 Prime prime = new Prime();
@@ -136,9 +133,9 @@ public class PrimeController extends AbstractPrimeController implements Serializ
                 prime.setIdsousperiode(sousperiode);
                 prime.setNotepersonnelle(n.getTotalPoint());
                 prime.setMontantglobal(montantPrime);
-                //double point = ((n.getNotepersonnelle() * poidPersonnel) / 100) + ((n.getNoteservice() * poidService) / 100);
-                //prime.setPoint(point);
-                //pointTotal += point;
+               
+                prime.setPoint(n.getTotalPoint());
+                pointTotal += n.getTotalPoint();
                 this.primes.add(prime);
             }
 

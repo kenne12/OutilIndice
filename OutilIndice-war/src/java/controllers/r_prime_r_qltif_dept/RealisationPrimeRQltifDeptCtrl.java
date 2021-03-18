@@ -66,8 +66,9 @@ public class RealisationPrimeRQltifDeptCtrl extends AbstractRealisationPrimeRQlt
             if (service.getIdservice() != null && service.getIdservice() > 0) {
 
                 souscritereservices.addAll(souscritereserviceFacadeLocal.findByIdServiceIdCritere(structure.getIdstructure(), service.getIdservice(), 5));
+
                 if (mode.equals("Create")) {
-                    evaluationRPrimeQltifDept = evaluationRPrimeQltifDeptFacadeLocal.findByIdService(service.getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 5);
+                    evaluationRPrimeQltifDept = evaluationRPrimeQltifDeptFacadeLocal.findByIdService(structure.getIdstructure(), service.getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 5);
                 }
                 if (evaluationRPrimeQltifDept != null) {
                     lignePrimeQualiteDepts = lignePrimeQualiteDeptFacadeLocal.findByIdEvaluation(evaluationRPrimeQltifDept.getIdevaluationrprimeqltifdept());
@@ -179,6 +180,7 @@ public class RealisationPrimeRQltifDeptCtrl extends AbstractRealisationPrimeRQlt
 
             if (evaluationRPrimeQltifDept.getIdevaluationrprimeqltifdept() == 0) {
                 evaluationRPrimeQltifDept.setIdevaluationrprimeqltifdept(evaluationRPrimeQltifDeptFacadeLocal.nextId());
+                evaluationRPrimeQltifDept.setStructure(structure);
                 evaluationRPrimeQltifDeptFacadeLocal.create(evaluationRPrimeQltifDept);
             } else {
                 evaluationRPrimeQltifDeptFacadeLocal.edit(evaluationRPrimeQltifDept);

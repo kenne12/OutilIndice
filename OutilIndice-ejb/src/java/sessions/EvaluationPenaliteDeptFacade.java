@@ -48,15 +48,15 @@ public class EvaluationPenaliteDeptFacade extends AbstractFacade<EvaluationPenal
 
     @Override
     public List<EvaluationPenaliteDept> findByIdStructure(long idStructure, int idPeriode, int idSousPeriode) {
-        Query query = em.createQuery("SELECT e FROM EvaluationPenaliteDept e WHERE e.idservice.idstructure.idstructure=:idStructure AND e.idperiode.idperiode=:idPeriode AND e.idsousperiode.idsousperiode=:idSousPeriode ORDER BY e.idservice.nom");
+        Query query = em.createQuery("SELECT e FROM EvaluationPenaliteDept e WHERE e.structure.idstructure=:idStructure AND e.idperiode.idperiode=:idPeriode AND e.idsousperiode.idsousperiode=:idSousPeriode ORDER BY e.idservice.nom");
         query.setParameter("idStructure", idStructure).setParameter("idPeriode", idPeriode).setParameter("idSousPeriode", idSousPeriode);
         return query.getResultList();
     }
 
     @Override
-    public EvaluationPenaliteDept findByIdService(long idService, int idPeriode, int idSousPeriode) {
-        Query query = em.createQuery("SELECT e FROM EvaluationPenaliteDept e WHERE e.idservice.idservice=:idService AND e.idperiode.idperiode=:idPeriode AND e.idsousperiode.idsousperiode=:idSousPeriode ORDER BY e.idservice.nom");
-        query.setParameter("idService", idService).setParameter("idPeriode", idPeriode).setParameter("idSousPeriode", idSousPeriode);
+    public EvaluationPenaliteDept findByIdService(long idStructure, long idService, int idPeriode, int idSousPeriode) {
+        Query query = em.createQuery("SELECT e FROM EvaluationPenaliteDept e WHERE e.structure.idstructure=:idStructure AND e.idservice.idservice=:idService AND e.idperiode.idperiode=:idPeriode AND e.idsousperiode.idsousperiode=:idSousPeriode ORDER BY e.idservice.nom");
+        query.setParameter("idService", idService).setParameter("idPeriode", idPeriode).setParameter("idSousPeriode", idSousPeriode).setParameter("idStructure", idStructure);
         List list = query.getResultList();
         if (!list.isEmpty()) {
             return (EvaluationPenaliteDept) list.get(0);

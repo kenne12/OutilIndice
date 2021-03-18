@@ -48,15 +48,15 @@ public class EvaluationRPrimeQltifDeptFacade extends AbstractFacade<EvaluationRP
 
     @Override
     public List<EvaluationRPrimeQltifDept> findByIdStructureSousPeriode(long idStructure, int idPeriode, int idSousPeriode, int idCritere) {
-        Query query = em.createQuery("SELECT e FROM EvaluationRPrimeQltifDept e WHERE e.idservice.idstructure.idstructure=:idStructure AND e.idperiode.idperiode=:idPeriode AND e.idsousperiode.idsousperiode=:idSousPeriode AND e.idcritere.idcritere=:idCritere ORDER BY e.idservice.nom");
+        Query query = em.createQuery("SELECT e FROM EvaluationRPrimeQltifDept e WHERE e.structure.idstructure   =:idStructure AND e.idperiode.idperiode=:idPeriode AND e.idsousperiode.idsousperiode=:idSousPeriode AND e.idcritere.idcritere=:idCritere ORDER BY e.idservice.nom");
         query.setParameter("idStructure", idStructure).setParameter("idPeriode", idPeriode).setParameter("idSousPeriode", idSousPeriode).setParameter("idCritere", idCritere);
         return query.getResultList();
     }
 
     @Override
-    public EvaluationRPrimeQltifDept findByIdService(long idService, int idPeriode, int idSousPeriode, int idCritere) {
-        Query query = em.createQuery("SELECT e FROM EvaluationRPrimeQltifDept e WHERE e.idservice.idservice=:idService AND e.idperiode.idperiode=:idPeriode AND e.idsousperiode.idsousperiode=:idSousPeriode AND e.idcritere.idcritere=:idCritere ORDER BY e.idservice.nom");
-        query.setParameter("idService", idService).setParameter("idPeriode", idPeriode).setParameter("idSousPeriode", idSousPeriode).setParameter("idCritere", idCritere);
+    public EvaluationRPrimeQltifDept findByIdService(long idStructure, long idService, int idPeriode, int idSousPeriode, int idCritere) {
+        Query query = em.createQuery("SELECT e FROM EvaluationRPrimeQltifDept e WHERE e.structure.idstructure=:idStructure  AND e.idservice.idservice=:idService AND e.idperiode.idperiode=:idPeriode AND e.idsousperiode.idsousperiode=:idSousPeriode AND e.idcritere.idcritere=:idCritere ORDER BY e.idservice.nom");
+        query.setParameter("idService", idService).setParameter("idPeriode", idPeriode).setParameter("idSousPeriode", idSousPeriode).setParameter("idCritere", idCritere).setParameter("idStructure", idStructure);
         List list = query.getResultList();
         if (!list.isEmpty()) {
             return (EvaluationRPrimeQltifDept) list.get(0);

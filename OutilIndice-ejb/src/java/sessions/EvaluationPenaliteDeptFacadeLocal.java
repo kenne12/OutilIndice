@@ -34,6 +34,6 @@ public interface EvaluationPenaliteDeptFacadeLocal {
 
     List<EvaluationPenaliteDept> findByIdStructure(long idStructure, int idPeriode, int idSousPeriode);
 
-    EvaluationPenaliteDept findByIdService(long idService, int idPeriode, int idSousPeriode);
+    EvaluationPenaliteDept findByIdService(long idStructure, long idService, int idPeriode, int idSousPeriode);
 
 }

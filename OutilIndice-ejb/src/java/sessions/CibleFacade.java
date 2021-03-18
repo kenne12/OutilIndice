@@ -61,8 +61,8 @@ public class CibleFacade extends AbstractFacade<Cible> implements CibleFacadeLoc
     }
 
     @Override
-    public Cible findByIdSousPeriodeOneLine(long idService, int idPeriode, int idSousPeriode, int idCritere) {
-        Query query = em.createQuery("SELECT c FROM Cible c WHERE c.idservice.idservice=:idService AND c.idperiode.idperiode=:idPeriode AND c.idsousperiode.idsousperiode=:idSousPeriode AND c.idcritere.idcritere=:idCritere ORDER BY c.idindicateur.nom");
+    public Cible findByIdSousPeriodeOneLine(long idStructure,long idService, int idPeriode, int idSousPeriode, int idCritere) {
+        Query query = em.createQuery("SELECT c FROM Cible c WHERE c.idstructure.idstructure=:idStructure AND c.idservice.idservice=:idService AND c.idperiode.idperiode=:idPeriode AND c.idsousperiode.idsousperiode=:idSousPeriode AND c.idcritere.idcritere=:idCritere ORDER BY c.idindicateur.nom");
         query.setParameter("idService", idService).setParameter("idPeriode", idPeriode).setParameter("idSousPeriode", idSousPeriode).setParameter("idCritere", idCritere);
         List list = query.getResultList();
         if (!list.isEmpty()) {

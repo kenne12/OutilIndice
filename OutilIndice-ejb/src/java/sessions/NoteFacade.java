@@ -58,15 +58,15 @@ public class NoteFacade extends AbstractFacade<Note> implements NoteFacadeLocal 
     }
 
     @Override
-    public List<Note> findByIdService(long idService, int idPeriode, int idSousPeriode) {
-        Query query = em.createQuery("SELECT n FROM Note n WHERE n.idpersonnel.idservice.idservice=:idService AND n.idperiode.idperiode=:idPeriode AND n.idsousperiode.idsousperiode=:idSousPeriode");
-        query.setParameter("idService", idService).setParameter("idPeriode", idPeriode).setParameter("idSousPeriode", idSousPeriode);
+    public List<Note> findByIdService(long idStructure, long idService, int idPeriode, int idSousPeriode) {
+        Query query = em.createQuery("SELECT n FROM Note n WHERE n.idpersonnel.structure.idstructure=:idStructure AND n.idpersonnel.idservice.idservice=:idService AND n.idperiode.idperiode=:idPeriode AND n.idsousperiode.idsousperiode=:idSousPeriode");
+        query.setParameter("idService", idService).setParameter("idPeriode", idPeriode).setParameter("idSousPeriode", idSousPeriode).setParameter("idStructure", idStructure);
         return query.getResultList();
     }
-    
+
     @Override
     public List<Note> findByIdSousPeriode(long idStructure, int idPeriode, int idSousPeriode) {
-        Query query = em.createQuery("SELECT n FROM Note n WHERE n.idpersonnel.idservice.idstructure.idstructure=:idStructure AND n.idperiode.idperiode=:idPeriode AND n.idsousperiode.idsousperiode=:idSousPeriode");
+        Query query = em.createQuery("SELECT n FROM Note n WHERE n.idpersonnel.structure.idstructure=:idStructure AND n.idperiode.idperiode=:idPeriode AND n.idsousperiode.idsousperiode=:idSousPeriode");
         query.setParameter("idStructure", idStructure).setParameter("idPeriode", idPeriode).setParameter("idSousPeriode", idSousPeriode);
         return query.getResultList();
     }

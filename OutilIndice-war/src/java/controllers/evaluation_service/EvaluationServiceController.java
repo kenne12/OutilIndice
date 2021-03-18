@@ -292,7 +292,7 @@ public class EvaluationServiceController extends AbstractEvaluationService imple
             noteserviceFacadeLocal.edit(n);
         }
 
-        List<Note> listNote = noteFacadeLocal.findByIdService(idService, SessionMBean.getPeriode().getIdperiode(), idSousPeriode);
+        List<Note> listNote = noteFacadeLocal.findByIdService(structure.getIdstructure(), idService, SessionMBean.getPeriode().getIdperiode(), idSousPeriode);
         if (!listNote.isEmpty()) {
             for (Note nTemp : listNote) {
                 noteFacadeLocal.edit(nTemp);

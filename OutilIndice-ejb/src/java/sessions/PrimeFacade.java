@@ -48,7 +48,7 @@ public class PrimeFacade extends AbstractFacade<Prime> implements PrimeFacadeLoc
 
     @Override
     public List<Prime> findByIdSousPeriode(long idStructure, int idPeriode, int idSousPeriode) {
-        Query query = em.createQuery("SELECT p FROM Prime p WHERE p.idnote.idpersonnel.idservice.idstructure.idstructure=:idStructure AND p.idperiode.idperiode=:idPeriode AND p.idsousperiode.idsousperiode=:idSousPeriode ORDER BY p.montant");
+        Query query = em.createQuery("SELECT p FROM Prime p WHERE p.idnote.idpersonnel.structure.idstructure=:idStructure AND p.idperiode.idperiode=:idPeriode AND p.idsousperiode.idsousperiode=:idSousPeriode ORDER BY p.montant");
         query.setParameter("idStructure", idStructure).setParameter("idPeriode", idPeriode).setParameter("idSousPeriode", idSousPeriode);
         return query.getResultList();
     }

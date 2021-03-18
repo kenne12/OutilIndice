@@ -93,20 +93,6 @@
 
                             <p:column class="hardBreak" style="width: 8%;text-align: center" >
                                 <f:facet name="header">
-                                    <h:outputText value="#{langue.note_personel}"/>
-                                </f:facet>
-                                <h:outputText class="hardBreak" value="#{item.notepersonnelle}"/> 
-                            </p:column>
-
-                            <p:column class="hardBreak" style="width: 8%;text-align: center" >
-                                <f:facet name="header">
-                                    <h:outputText value="#{langue.note_service}"/>
-                                </f:facet>
-                                <h:outputText class="hardBreak" value="#{item.noteservice}"/> 
-                            </p:column>
-
-                            <p:column class="hardBreak" style="width: 8%;text-align: center" >
-                                <f:facet name="header">
                                     <h:outputText value="#{langue.points}"/>
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{item.point}">
@@ -152,7 +138,8 @@
                                 <p:row>
                                     <p:column style="text-align:right" footerText="Totaux" />                                                                          
                                     <p:column style="text-align:center" footerText="#{primeController.score}"/>  
-                                    <p:column colspan="4" style="text-align:center" footerText=" / " /> 
+                                    <p:column style="text-align:center" footerText=" / " /> 
+                                    <p:column colspan="2" style="text-align:center" footerText=" / " /> 
                                 </p:row>
                             </p:columnGroup>
 

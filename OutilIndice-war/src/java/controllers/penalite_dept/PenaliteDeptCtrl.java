@@ -63,7 +63,7 @@ public class PenaliteDeptCtrl extends AbstractPenaliteDeptCtrl {
         if (sousperiode.getIdsousperiode() != null && sousperiode.getIdsousperiode() > 0) {
             if (service.getIdservice() != null && service.getIdservice() > 0) {
                 if (mode.equals("Create")) {
-                    evaluationPenaliteDept = evaluationPenaliteDeptFacadeLocal.findByIdService(service.getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
+                    evaluationPenaliteDept = evaluationPenaliteDeptFacadeLocal.findByIdService(structure.getIdstructure(), service.getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
                 }
 
                 if (evaluationPenaliteDept != null) {
@@ -177,6 +177,7 @@ public class PenaliteDeptCtrl extends AbstractPenaliteDeptCtrl {
             this.calculTotal();
             if (evaluationPenaliteDept.getIdevaluationpenalitedept() == 0) {
                 evaluationPenaliteDept.setIdevaluationpenalitedept(evaluationPenaliteDeptFacadeLocal.nextId());
+                evaluationPenaliteDept.setStructure(structure);
                 evaluationPenaliteDeptFacadeLocal.create(evaluationPenaliteDept);
             } else {
                 evaluationPenaliteDeptFacadeLocal.edit(evaluationPenaliteDept);

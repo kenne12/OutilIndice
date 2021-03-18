@@ -41,6 +41,9 @@ public class EvaluationRPrimeQltifDept implements Serializable {
     @JoinColumn(name = "idcritere", referencedColumnName = "idcritere")
     @ManyToOne(fetch = FetchType.LAZY)
     private Critere idcritere;
+    @JoinColumn(name = "idstructure", referencedColumnName = "idstructure")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Structure structure;
 
     public EvaluationRPrimeQltifDept() {
     }
@@ -111,6 +114,14 @@ public class EvaluationRPrimeQltifDept implements Serializable {
 
     public void setIdcritere(Critere idcritere) {
         this.idcritere = idcritere;
+    }
+
+    public Structure getStructure() {
+        return structure;
+    }
+
+    public void setStructure(Structure structure) {
+        this.structure = structure;
     }
 
     @Override

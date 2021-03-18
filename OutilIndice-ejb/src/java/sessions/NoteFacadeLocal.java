@@ -34,7 +34,7 @@ public interface NoteFacadeLocal {
 
     Note findByIdPersonnel(long idPersonnel, int idPeriode, int idSousPeriode);
 
-    List<Note> findByIdService(long idService, int idPeriode, int idSousPeriode);
+    List<Note> findByIdService(long idStructure, long idService, int idPeriode, int idSousPeriode);
 
     List<Note> findByIdSousPeriode(long idStructure, int idPeriode, int idSousPeriode);
 

@@ -37,6 +37,10 @@ public class EvaluationPenaliteDept implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Sousperiode idsousperiode;
 
+    @JoinColumn(name = "idstructure", referencedColumnName = "idstructure")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Structure structure;
+
     public EvaluationPenaliteDept() {
     }
 
@@ -82,6 +86,14 @@ public class EvaluationPenaliteDept implements Serializable {
 
     public void setIdservice(Service idservice) {
         this.idservice = idservice;
+    }
+
+    public Structure getStructure() {
+        return structure;
+    }
+
+    public void setStructure(Structure structure) {
+        this.structure = structure;
     }
 
     @Override

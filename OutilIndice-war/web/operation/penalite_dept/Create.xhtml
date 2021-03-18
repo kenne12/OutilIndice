@@ -22,15 +22,6 @@
 
                     <h:panelGroup id="display">
 
-                        <div class="form-group">
-                            <p:outputLabel value="#{langue.structure}" for="structure" />
-                            <h:selectOneMenu disabled="true" converter="structureConverter" class="form-control"                                              
-                                             id="structure" value="#{penaliteDeptCtrl.structure}">
-                                <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                                <f:selectItems value="#{penaliteDeptCtrl.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
-                            </h:selectOneMenu>                                                
-                        </div>
-
                         <div class="row">            
                             <div class="col-md-6">
                                 <div class="form-group">

@@ -34,6 +34,6 @@ public interface EvaluationRPrimeQltifDeptFacadeLocal {
 
     List<EvaluationRPrimeQltifDept> findByIdStructureSousPeriode(long idStructure, int idPeriode, int idSousPeriode, int idCritere);
 
-    EvaluationRPrimeQltifDept findByIdService(long idService, int idPeriode, int idSousPeriode, int idCritere);
+    EvaluationRPrimeQltifDept findByIdService(long idStructure, long idService, int idPeriode, int idSousPeriode, int idCritere);
 
 }
