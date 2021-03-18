@@ -30,6 +30,8 @@ public class ParametragePenalite implements Serializable {
     private Integer idParametragePenalite;
 
     private int pourcentage;
+    @Column(length = 300)
+    private String detail;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idpenalite", referencedColumnName = "idpenalite")
@@ -68,6 +70,14 @@ public class ParametragePenalite implements Serializable {
 
     public void setPourcentage(int pourcentage) {
         this.pourcentage = pourcentage;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
     public Penalite getPenalite() {

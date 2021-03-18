@@ -29,5 +29,9 @@ public interface ParametragePenaliteFacadeLocal {
     List<ParametragePenalite> findRange(int[] range);
 
     int count();
-    
+
+    Integer nextId();
+
+    List<ParametragePenalite> findByIdServiceIdCritere(long idStructure, long idService, int idCritere);
+
 }

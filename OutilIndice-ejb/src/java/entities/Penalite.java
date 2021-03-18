@@ -8,6 +8,7 @@ package entities;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -22,6 +23,8 @@ public class Penalite implements Serializable {
     @Basic(optional = false)
     private Integer idpenalite;
     private String nom;
+    @Column(length = 300)
+    private String detail;
     private int pourcentage;
     private boolean personnel;
     private boolean service;
@@ -43,6 +46,14 @@ public class Penalite implements Serializable {
 
     public String getNom() {
         return nom;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
     public int getPourcentage() {
