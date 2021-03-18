@@ -34,4 +34,6 @@ public interface ParametragePenaliteFacadeLocal {
 
     List<ParametragePenalite> findByIdServiceIdCritere(long idStructure, long idService, int idCritere);
 
+    List<ParametragePenalite> findByIdStructureIdCritere(long idStructure, int idCritere);
+
 }

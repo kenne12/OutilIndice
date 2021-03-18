@@ -53,5 +53,12 @@ public class ParametragePenaliteFacade extends AbstractFacade<ParametragePenalit
         query.setParameter("idStructure", idStructure).setParameter("idService", idService).setParameter("idCritere", idCritere);
         return query.getResultList();
     }
+    
+    @Override
+    public List<ParametragePenalite> findByIdStructureIdCritere(long idStructure, int idCritere){
+        Query query = em.createQuery("SELECT p FROM ParametragePenalite p WHERE p.structure.idstructure=:idStructure AND p.critere.idcritere=:idCritere");
+        query.setParameter("idStructure", idStructure).setParameter("idCritere", idCritere);
+        return query.getResultList();
+    }
 
 }

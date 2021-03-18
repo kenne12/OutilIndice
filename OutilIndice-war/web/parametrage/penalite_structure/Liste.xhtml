@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <h:form id="PenaliteListerForm">
+
+        <p:messages id="growl" closable="true">
+            <p:effect type="pulsate" event="load" delay="50" />
+        </p:messages>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-success">
+                    <div style="color: white" class="panel-heading bg-success">
+                        #{langue['penalite_personnel.liste']}
+                         
+                        <p:commandButton update=":PenaliteCreateForm"
+                                         icon="ui-icon-plus"
+                                         value="#{langue['common.ajouter']} 2"
+                                         style="float: right"
+                                         actionListener="#{penaliteStructureController.prepareCreate('2')}"/>
+                        
+                        <p:commandButton update=":PenaliteCreateForm"
+                                         icon="ui-icon-plus"
+                                         disabled="true"
+                                         value="#{langue['common.ajouter']} 1"
+                                         style="float: right"
+                                         actionListener="#{penaliteStructureController.prepareCreate('1')}"/>
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div class="table-responsive">
+
+                            <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 30%">#{langue.penalite}</th>
+                                        <th style="width: 10%">#{langue.pourcentage}</th>
+                                        <th style="width: 50%">#{langue.detail}</th>
+                                        <th style="width: 10%;text-align: center">#{langue['common.actions']}</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <ui:repeat value="#{penaliteStructureController.listParametragePenalites}" var="item">
+                                        <tr>
+                                            <td>#{item.penalite.nom}</td>
+                                            <td style="text-align: center">#{item.pourcentage}</td>
+                                            <td>#{item.detail}</td>
+                                            <td style="text-align: center">                                        
+                                                <p:commandButton icon="ui-icon-pencil" update=":PenaliteEditForm"
+                                                                 class="btn btn-success btn-sm"
+                                                                 disabled="true"
+                                                                 actionListener="#{penaliteStructureController.prepareEdit(item)}"/>
+
+                                                <p:commandButton icon="ui-icon-trash" update=":PenaliteListerForm"
+                                                                 class="btn btn-danger btn-sm"
+                                                                 actionListener="#{penaliteStructureController.delete(item)}">
+                                                    <p:confirm header="#{langue['notification.confirm_delete_dialog_header']}"
+                                                               message="#{langue['notification.confirm_delete_message']} ?"
+                                                               icon="ui-icon-alert"/>
+                                                </p:commandButton>
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:form>
+
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+    <p:dialog id="notify1" widgetVar="NotifyDialog1" height="400" width="700" resizable="true" responsive="true" modal="true" style="text-align: center; font-size: 14px; font-family: Cambria;">
+        <f:facet name="header">
+            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{penaliteStructureController.routine.titleNotify}" />
+        </f:facet>
+        <h:form id="NotifyForm1">
+            <h:graphicImage id="nt_img" url="#{penaliteStructureController.routine.iconMessage}" style="cursor:pointer" />
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+
+            <h:outputText id="nt_msg" value="#{penaliteStructureController.routine.message}"/>
+
+            <hr size="3" style="background-color: cornflowerblue; margin-top: 5%;"/>
+
+            <p:commandButton style="font-family: Cambria; font-size: 14px;" value="#{langue['common.fermer']}" onclick="PF('NotifyDialog1').hide()" type="button" immediate="true"/>
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+        </h:form>
+    </p:dialog>
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+</ui:composition>
