@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controllers.penalite;
+package controllers.penalite_dpt;
 
 import controllers.util.JsfUtil;
 import entities.Penalite;
 import java.io.Serializable;
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
@@ -24,11 +23,6 @@ public class PenaliteDeptController extends AbstractPenaliteDeptController imple
 
     public PenaliteDeptController() {
 
-    }
-
-    @PostConstruct
-    private void init() {
-        
     }
 
     public void load() {
