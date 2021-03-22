@@ -23,26 +23,22 @@
                     <h:panelGroup id="display">
 
                         <div class="row">            
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <p:outputLabel value="#{langue.service}" for="service" />
-                                    <h:selectOneMenu converter="serviceConverter" class="form-control" id="service" value="#{penaliteDeptCtrl.service}">            
-                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                                        <f:selectItems value="#{penaliteDeptCtrl.services}" var="srv" itemLabel="#{srv.nom}" itemValue="#{srv}" />
-                                        <p:ajax update="datalist,grid_critere" listener="#{penaliteDeptCtrl.updateFiltre()}"/>
-                                    </h:selectOneMenu>
-                                </div>
+                            <div class="form-group col-md-6">
+                                <p:outputLabel value="#{langue.service}" for="service" />
+                                <h:selectOneMenu converter="serviceConverter" class="form-control" id="service" value="#{penaliteDeptCtrl.service}">            
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                    <f:selectItems value="#{penaliteDeptCtrl.services}" var="srv" itemLabel="#{srv.nom}" itemValue="#{srv}" />
+                                    <p:ajax update="datalist,grid_critere" listener="#{penaliteDeptCtrl.updateFiltre()}"/>
+                                </h:selectOneMenu>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <p:outputLabel value="#{langue.sous_periode}" for="sous_periode" />
-                                    <h:selectOneMenu converter="sousperiodeConverter" class="form-control" id="sous_periode" value="#{penaliteDeptCtrl.sousperiode}">                                                                                                  
-                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                                        <f:selectItems value="#{penaliteDeptCtrl.sousperiodes}" var="sprd" itemLabel="#{sprd.nom}" itemValue="#{sprd}" />
-                                        <p:ajax update="datalist,grid_critere" listener="#{penaliteDeptCtrl.updateFiltre()}"/>
-                                    </h:selectOneMenu>
-                                </div>
+                            <div class="form-group col-md-6">
+                                <p:outputLabel value="#{langue.sous_periode}" for="sous_periode" />
+                                <h:selectOneMenu converter="sousperiodeConverter" class="form-control" id="sous_periode" value="#{penaliteDeptCtrl.sousperiode}">                                                                                                  
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                    <f:selectItems value="#{penaliteDeptCtrl.sousperiodes}" var="sprd" itemLabel="#{sprd.nom}" itemValue="#{sprd}" />
+                                    <p:ajax update="datalist,grid_critere" listener="#{penaliteDeptCtrl.updateFiltre()}"/>
+                                </h:selectOneMenu>
                             </div>                 
                         </div> 
 

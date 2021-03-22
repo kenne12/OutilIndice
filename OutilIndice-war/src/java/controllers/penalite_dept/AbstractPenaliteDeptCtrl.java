@@ -16,6 +16,8 @@ import java.util.List;
 import javax.ejb.EJB;
 import sessions.EvaluationPenaliteDeptFacadeLocal;
 import sessions.LignePenaliteDeptFacadeLocal;
+import sessions.ParametragePenaliteFacadeLocal;
+import sessions.ParametragecritereFacadeLocal;
 import sessions.PenaliteFacadeLocal;
 import sessions.ServiceFacadeLocal;
 import sessions.SousperiodeFacadeLocal;
@@ -33,6 +35,9 @@ public class AbstractPenaliteDeptCtrl {
     protected EvaluationPenaliteDeptFacadeLocal evaluationPenaliteDeptFacadeLocal;
     protected EvaluationPenaliteDept evaluationPenaliteDept = new EvaluationPenaliteDept();
     protected List<EvaluationPenaliteDept> evaluationPenaliteDepts = new ArrayList<>();
+
+    @EJB
+    protected ParametragePenaliteFacadeLocal parametragePenaliteFacadeLocal;
 
     @EJB
     protected PenaliteFacadeLocal penaliteFacadeLocal;

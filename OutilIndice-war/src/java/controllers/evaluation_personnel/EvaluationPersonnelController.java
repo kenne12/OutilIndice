@@ -24,6 +24,7 @@ import entities.Evaluationresponsabilite;
 import entities.Evaluationrqntifdept;
 import entities.LignePenalitePersonnel;
 import entities.Note;
+import entities.ParametragePenalite;
 import entities.Parametragecritere;
 import entities.Penalite;
 import entities.Periode;
@@ -154,6 +155,17 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
         this.pointPi = note.getPointPIndiv();
         totalPIncitationNegatif = note.getIncitationNegatif();
         totalPIncitationPositif = note.getIncitationPositif();
+    }
+
+    private List<Penalite> extractPenaliteInParam(List<ParametragePenalite> list) {
+        if (list.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<Penalite> listPenalite = new ArrayList<>();
+        for (ParametragePenalite p : list) {
+            listPenalite.add(p.getPenalite());
+        }
+        return listPenalite;
     }
 
     public void updateEvaluationData() {
@@ -370,7 +382,10 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                     } else {
                         evaluationPenalitePersonnel = new EvaluationPenalitePersonnel(0l);
                         evaluationPenalitePersonnel.setCible(0);
-                        penalites = penaliteFacadeLocal.findAllPersonnel();
+
+                        List<ParametragePenalite> parametragePenalites = parametragePenaliteFacadeLocal.findByIdStructureIdCritere(structure.getIdstructure(), 10);
+                        penalites = this.extractPenaliteInParam(parametragePenalites);
+
                         int sommeCible = 0;
                         for (Penalite p : penalites) {
                             LignePenalitePersonnel lpp = new LignePenalitePersonnel();

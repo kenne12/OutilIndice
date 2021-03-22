@@ -8,9 +8,13 @@ package controllers.penalite_dept;
 import controllers.util.JsfUtil;
 import entities.EvaluationPenaliteDept;
 import entities.LignePenaliteDept;
+import entities.ParametragePenalite;
 import entities.Penalite;
 import entities.Service;
 import entities.Sousperiode;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -23,7 +27,7 @@ import utils.SessionMBean;
  */
 @ManagedBean
 @SessionScoped
-public class PenaliteDeptCtrl extends AbstractPenaliteDeptCtrl {
+public class PenaliteDeptCtrl extends AbstractPenaliteDeptCtrl implements Serializable {
 
     /**
      * Creates a new instance of PenaliteDeptCtrl
@@ -56,6 +60,17 @@ public class PenaliteDeptCtrl extends AbstractPenaliteDeptCtrl {
         RequestContext.getCurrentInstance().execute("PF('PenaliteDeptCreateDialog').show()");
     }
 
+    private List<Penalite> extractPenaliteInParam(List<ParametragePenalite> list) {
+        if (list.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<Penalite> listPenalite = new ArrayList<>();
+        for (ParametragePenalite p : list) {
+            listPenalite.add(p.getPenalite());
+        }
+        return listPenalite;
+    }
+
     public void updateFiltre() {
         penalites.clear();
         selectedPenalites.clear();
@@ -68,7 +83,9 @@ public class PenaliteDeptCtrl extends AbstractPenaliteDeptCtrl {
 
                 if (evaluationPenaliteDept != null) {
                     lignePenaliteDepts = lignePenaliteDeptFacadeLocal.findByIdEvaluationPenaliteDept(evaluationPenaliteDept.getIdevaluationpenalitedept());
-                    penalites = penaliteFacadeLocal.findAllService();
+
+                    List<ParametragePenalite> parametragePenalites = parametragePenaliteFacadeLocal.findByIdServiceIdCritere(structure.getIdstructure(), service.getIdservice(), 9);
+                    penalites = this.extractPenaliteInParam(parametragePenalites);
                     if (!lignePenaliteDepts.isEmpty()) {
                         for (LignePenaliteDept lpd : lignePenaliteDepts) {
                             selectedPenalites.add(lpd.getIdpenalite());
@@ -94,7 +111,10 @@ public class PenaliteDeptCtrl extends AbstractPenaliteDeptCtrl {
                     evaluationPenaliteDept.setIdservice(service);
                     evaluationPenaliteDept.setIdperiode(SessionMBean.getPeriode());
                     evaluationPenaliteDept.setIdsousperiode(sousperiode);
-                    penalites = penaliteFacadeLocal.findAllService();
+
+                    List<ParametragePenalite> parametragePenalites = parametragePenaliteFacadeLocal.findByIdServiceIdCritere(structure.getIdstructure(), service.getIdservice(), 9);
+                    penalites = this.extractPenaliteInParam(parametragePenalites);
+
                     if (!penalites.isEmpty()) {
                         for (Penalite p : penalites) {
                             LignePenaliteDept lpd = new LignePenaliteDept();

@@ -47,6 +47,7 @@ import sessions.EvaluationresponsabiliteFacadeLocal;
 import sessions.EvaluationrqntifdeptFacadeLocal;
 import sessions.LignePenalitePersonnelFacadeLocal;
 import sessions.NoteFacadeLocal;
+import sessions.ParametragePenaliteFacadeLocal;
 import sessions.ParametragecritereFacadeLocal;
 import sessions.PenaliteFacadeLocal;
 import sessions.PersonnelFacadeLocal;
@@ -134,6 +135,9 @@ public class AbstractEvaluationPersonnel {
     @EJB
     protected LignePenalitePersonnelFacadeLocal lignePenalitePersonnelFacadeLocal;
     protected List<LignePenalitePersonnel> lignePenalitePersonnels = new ArrayList<>();
+    
+    @EJB
+    protected ParametragePenaliteFacadeLocal parametragePenaliteFacadeLocal;
 
     @EJB
     protected PenaliteFacadeLocal penaliteFacadeLocal;
