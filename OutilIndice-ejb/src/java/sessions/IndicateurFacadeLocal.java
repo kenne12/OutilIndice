@@ -29,7 +29,9 @@ public interface IndicateurFacadeLocal {
     List<Indicateur> findRange(int[] range);
 
     int count();
-    
+
+    Integer nextVal();
+
     List<Indicateur> findAllRangeCode();
-    
+
 }

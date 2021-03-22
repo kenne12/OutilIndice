@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="IndicateurCreateDlg" 
+                  widgetVar="IndicateurCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['indicateur.formulaire_creation']}"
+                  closeOnEscape="true"
+                  width="30%">
+
+            <h:form id="IndicateurCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+
+                    <div class="form-group">
+                        <p:outputLabel value="#{langue['common.nom']}" for="nom" />
+                        <h:inputTextarea rows="3" class="form-control" id="nom" value="#{indicateurController.indicateur.nom}" required="true" requiredMessage="#{langue['common.valeur_requise']}"  />
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue['common.code']}" for="code" />
+                                <h:inputText class="form-control" id="code" value="#{indicateurController.indicateur.code}" required="true" requiredMessage="#{langue['common.valeur_requise']}" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <p:separator/>
+
+                    <center>
+                        <p:commandButton value="#{langue['common.fermer']}" 
+                                         onclick="PF('IndicateurCreateDialog').hide()"
+                                         icon="ui-icon-close"/>
+
+                        <p:commandButton icon="ui-icon-data-base" actionListener="#{indicateurController.save()}" value="#{langue['common.enregistrer']}" update="display,:IndicateurListerForm:datalist,:IndicateurListerForm:growl,:IndicateurListerForm">
+                            <p:confirm header="#{langue['notification.confirmation']}" 
+                                       message="#{langue['notification.confirmation_enregistrement']}" 
+                                       icon="ui-icon-alert"/>
+                        </p:commandButton>
+                    </center>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+
+</html>

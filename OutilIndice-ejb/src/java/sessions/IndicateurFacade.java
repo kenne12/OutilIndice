@@ -32,6 +32,18 @@ public class IndicateurFacade extends AbstractFacade<Indicateur> implements Indi
     }
 
     @Override
+    public Integer nextVal() {
+        Query query = this.em.createQuery("SELECT MAX(i.idindicateur) FROM Indicateur i");
+        Integer result = (Integer) query.getSingleResult();
+        if (result == null) {
+            result = 1;
+        } else {
+            result = result + 1;
+        }
+        return result;
+    }
+
+    @Override
     public List<Indicateur> findAllRangeCode() {
         Query query = em.createQuery("SELECT i FROM Indicateur i ORDER BY i.code");
         return query.getResultList();
