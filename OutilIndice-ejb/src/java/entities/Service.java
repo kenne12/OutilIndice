@@ -48,6 +48,8 @@ public class Service implements Serializable {
     private Collection<Souscritereservice> souscritereserviceCollection;
     @OneToMany(mappedBy = "idservice", fetch = FetchType.LAZY)
     private Collection<Personnel> personnelCollection;
+    @OneToMany(mappedBy = "service", fetch = FetchType.LAZY)
+    private Collection<IndicateurQteService> indicateurQteServiceCollection;
 
     public Service() {
     }
@@ -105,6 +107,15 @@ public class Service implements Serializable {
 
     public void setPersonnelCollection(Collection<Personnel> personnelCollection) {
         this.personnelCollection = personnelCollection;
+    }
+
+    @XmlTransient
+    public Collection<IndicateurQteService> getIndicateurQteServiceCollection() {
+        return indicateurQteServiceCollection;
+    }
+
+    public void setIndicateurQteServiceCollection(Collection<IndicateurQteService> indicateurQteServiceCollection) {
+        this.indicateurQteServiceCollection = indicateurQteServiceCollection;
     }
 
     @Override

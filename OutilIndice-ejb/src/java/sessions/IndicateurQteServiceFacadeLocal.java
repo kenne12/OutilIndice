@@ -29,5 +29,9 @@ public interface IndicateurQteServiceFacadeLocal {
     List<IndicateurQteService> findRange(int[] range);
 
     int count();
-    
+
+    Long nextId();
+
+    List<IndicateurQteService> findByIdService(long idStructure, long idService);
+
 }

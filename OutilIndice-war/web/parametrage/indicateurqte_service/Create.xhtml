@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="CritereCreateDlg" 
+                  widgetVar="CritereCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['indicateurqte_service.formulaire_creation']}"
+                  closeOnEscape="true"
+                  width="70%"
+                  height="600">
+
+            <h:form id="CritereCreateForm">
+
+                <p:outputLabel style="color: red ; font-size: 17px" id="error_msg" value="#{indicateurQteServiceController.message}" />
+
+                <div class="col-md-12">
+
+                    <h:panelGroup id="display">
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.service}" for="service" />
+                                    <h:selectOneMenu disabled="#{indicateurQteServiceController.mode.equals('Edit')}" class="form-control"
+                                                     id="service" value="#{indicateurQteServiceController.service.idservice}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                        <f:selectItems value="#{indicateurQteServiceController.services}" var="s" itemLabel="#{s.nom}" itemValue="#{s.idservice}" />
+                                        <p:ajax update="grid_critere,datalist" listener="#{indicateurQteServiceController.updateFiltre()}"/>
+                                    </h:selectOneMenu>                                                
+                                </div>
+                            </div>
+                        </div>
+
+                        <p:separator/>
+
+                        <p:selectManyCheckbox id="grid_critere" value="#{indicateurQteServiceController.selectedindicateurs}" layout="grid" columns="1" converter="indicateurConverter">
+                            <f:selectItems value="#{indicateurQteServiceController.indicateurs}" var="t" itemLabel="#{t.code} - #{t.nom}" itemValue="#{t}" />
+                            <p:ajax />
+                        </p:selectManyCheckbox>
+
+                        <p:separator />
+
+                        <p:commandButton                            
+                            value="#{langue['common.ajouter']}"
+                            actionListener="#{indicateurQteServiceController.addIndicateurToTable()}"
+                            update="datalist,grid_critere" icon="ui-icon-plus" />
+
+                        <p:separator />
+
+                        <p:dataTable id="datalist" value="#{indicateurQteServiceController.indicateurQteServices}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="#{indicateurQteServiceController.indicateurQteServices.size()}"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                            <p:column class="hardBreak" style="width: 90%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.sous_critere}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.indicateur.code} - #{item.indicateur.nom}"/> 
+                            </p:column>
+
+                            <p:column style="width: 10%" >
+                                <f:facet name="header">
+                                    <h:outputText value="Action"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-trash">
+                                    <p:ajax update="datalist" event="click" listener="#{indicateurQteServiceController.removeCritere(item)}" />
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:separator/>
+
+                        <center>
+                            <p:commandButton value="#{langue['common.fermer']}" 
+                                             onclick="PF('CritereCreateDialog').hide()"
+                                             icon="ui-icon-close"/>
+
+                            <p:commandButton icon="ui-icon-save" actionListener="#{indicateurQteServiceController.save()}" value="#{langue['common.enregistrer']}" 
+                                             update="display,:CritereListerForm:datalist,:CritereListerForm:growl,error_msg">
+                                <p:confirm header="#{langue['notification.confirmation']}" 
+                                           message="#{langue['notification.confirmation_enregistrement']}" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+                        </center>
+
+                    </h:panelGroup>
+
+                </div>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+
+</html>

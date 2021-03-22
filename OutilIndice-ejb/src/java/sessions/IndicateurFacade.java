@@ -6,9 +6,11 @@
 package sessions;
 
 import entities.Indicateur;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -16,6 +18,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class IndicateurFacade extends AbstractFacade<Indicateur> implements IndicateurFacadeLocal {
+
     @PersistenceContext(unitName = "OutilIndice-ejbPU")
     private EntityManager em;
 
@@ -27,5 +30,11 @@ public class IndicateurFacade extends AbstractFacade<Indicateur> implements Indi
     public IndicateurFacade() {
         super(Indicateur.class);
     }
-    
+
+    @Override
+    public List<Indicateur> findAllRangeCode() {
+        Query query = em.createQuery("SELECT i FROM Indicateur i ORDER BY i.code");
+        return query.getResultList();
+    }
+
 }
