@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PenaliteCreateDlg" 
+                  widgetVar="PenaliteCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['indicateur.formulaire_creation']}"
+                  closeOnEscape="true"
+                  width="60%">
+
+            <h:form id="PenaliteCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+
+                    <div class="form-group">
+                        <p:outputLabel value="#{langue['common.nom']}" for="nom" />
+                        <h:inputTextarea rows="3" class="form-control" id="nom" value="#{penaliteDeptController.penalite.nom}" required="true" requiredMessage="#{langue['common.valeur_requise']}"  />
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue['common.code']}" for="code" />
+                                <h:inputText class="form-control" id="code" value="#{penaliteDeptController.penalite.code}" required="true" requiredMessage="#{langue['common.valeur_requise']}" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <p:outputLabel value="#{langue.pourcentage}" for="pourcentage" />
+                                <h:inputText class="form-control" id="pourcentage" value="#{penaliteDeptController.penalite.pourcentage}" required="true" requiredMessage="#{langue['common.valeur_requise']}" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <p:outputLabel value="#{langue.detail}" for="detail" />
+                        <h:inputTextarea rows="3" class="form-control" id="detail" value="#{penaliteDeptController.penalite.detail}" required="true" requiredMessage="#{langue['common.valeur_requise']}"  />
+                    </div>
+
+                    <p:separator/>
+
+                    <center>
+                        <p:commandButton value="#{langue['common.fermer']}" 
+                                         onclick="PF('PenaliteCreateDialog').hide()"
+                                         icon="ui-icon-close"/>
+
+                        <p:commandButton icon="ui-icon-data-base" actionListener="#{penaliteDeptController.save()}" value="#{langue['common.enregistrer']}" update="display,:PenaliteListerForm:datalist,:PenaliteListerForm:growl,:PenaliteListerForm">
+                            <p:confirm header="#{langue['notification.confirmation']}" 
+                                       message="#{langue['notification.confirmation_enregistrement']}" 
+                                       icon="ui-icon-alert"/>
+                        </p:commandButton>
+                    </center>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+
+</html>

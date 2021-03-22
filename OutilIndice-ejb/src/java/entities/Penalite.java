@@ -25,6 +25,8 @@ public class Penalite implements Serializable {
     private String nom;
     @Column(length = 300)
     private String detail;
+    @Column(length = 20)
+    private String code;
     private int pourcentage;
     private boolean personnel;
     private boolean service;
@@ -54,6 +56,14 @@ public class Penalite implements Serializable {
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public int getPourcentage() {

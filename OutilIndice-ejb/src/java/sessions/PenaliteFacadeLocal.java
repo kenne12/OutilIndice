@@ -32,6 +32,8 @@ public interface PenaliteFacadeLocal {
 
     Integer nextVal();
 
+    Integer nextValService(String option);
+
     List<Penalite> findAllService();
 
     List<Penalite> findAllPersonnel();

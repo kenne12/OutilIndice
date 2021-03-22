@@ -44,14 +44,31 @@ public class PenaliteFacade extends AbstractFacade<Penalite> implements Penalite
     }
 
     @Override
+    public Integer nextValService(String option) {
+        Query query;
+        if (option.equals("service")) {
+            query = this.em.createQuery("SELECT MAX(p.idpenalite) FROM Penalite p WHERE p.service = true");
+        } else {
+            query = this.em.createQuery("SELECT MAX(p.idpenalite) FROM Penalite p WHERE p.personnel = true");
+        }
+        Integer result = (Integer) query.getSingleResult();
+        if (result == null) {
+            result = 1;
+        } else {
+            result = result + 1;
+        }
+        return result;
+    }
+
+    @Override
     public List<Penalite> findAllService() {
-        Query query = em.createQuery("SELECT p FROM Penalite p WHERE p.service=true ORDER BY p.pourcentage");
+        Query query = em.createQuery("SELECT p FROM Penalite p WHERE p.service=true ORDER BY p.code");
         return query.getResultList();
     }
 
     @Override
     public List<Penalite> findAllPersonnel() {
-        Query query = em.createQuery("SELECT p FROM Penalite p WHERE p.personnel=true ORDER BY p.pourcentage");
+        Query query = em.createQuery("SELECT p FROM Penalite p WHERE p.personnel=true ORDER BY p.code");
         return query.getResultList();
     }
 
