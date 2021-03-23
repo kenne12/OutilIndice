@@ -29,5 +29,9 @@ public interface TypeSousPeriodeFacadeLocal {
     List<TypeSousPeriode> findRange(int[] range);
 
     int count();
-    
+
+    Integer nextId();
+
+    List<TypeSousPeriode> findAllOrderByCode();
+
 }

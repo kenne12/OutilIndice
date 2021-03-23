@@ -8,15 +8,15 @@
 
     <ui:composition>
 
-        <p:dialog id="TypestructureServiceCreateDlg" 
-                  widgetVar="TypestructureServiceCreateDialog" 
+        <p:dialog id="TypestructureTspCreateDlg" 
+                  widgetVar="TypestructureTspCreateDialog" 
                   modal="true" resizable="false" appendTo="@(body)" 
-                  header="#{langue['typestructure_service.formulaire_creation']}"
+                  header="#{langue['typestructure_tsp.formulaire_creation']}"
                   closeOnEscape="true"
                   width="60%"
                   height="600">
 
-            <h:form id="TypestructureServiceCreateForm">
+            <h:form id="TypestructureTspCreateForm">
 
                 <div class="col-md-12">
 
@@ -24,23 +24,23 @@
 
                         <p:separator/>
 
-                        <p:selectManyCheckbox id="grid_critere" value="#{typestructureServiceCtrl.selectedServices}" layout="grid" columns="1" converter="serviceConverter">
-                            <f:selectItems value="#{typestructureServiceCtrl.services}" var="s" itemLabel="#{s.nom}" itemValue="#{s}" />
+                        <p:selectManyCheckbox id="grid_critere" value="#{typestructureTypeSPCtrl.selectedTypeSousPeriodes}" layout="grid" columns="1" converter="typeSpConverter">
+                            <f:selectItems value="#{typestructureTypeSPCtrl.typeSousPeriodes}" var="s" itemLabel="#{s.nom}" itemValue="#{s}" />
                             <p:ajax />
                         </p:selectManyCheckbox>
 
                         <p:separator />
 
                         <p:commandButton value="#{langue['common.ajouter']}"
-                                         actionListener="#{typestructureServiceCtrl.addServiceToTable()}"
+                                         actionListener="#{typestructureTypeSPCtrl.addTypeSousPeriodeToTable()}"
                                          update="datalist,grid_critere" icon="ui-icon-plus" />
                         <p:separator />
 
-                        <p:dataTable id="datalist" value="#{typestructureServiceCtrl.typestructureServices}" var="item"                             
+                        <p:dataTable id="datalist" value="#{typestructureTypeSPCtrl.typestructureTypeSousperiodes}" var="item"                             
                                      paginator="true"
                                      editable="true"
                                      editMode="cell"
-                                     rows="#{typestructureServiceCtrl.typestructureServices.size()}"
+                                     rows="#{typestructureTypeSPCtrl.typestructureTypeSousperiodes.size()}"
                                      rowsPerPageTemplate="10,20,30,40,50"
                                      style="margin-top: 1%;font-size: 15px"
                                      rowIndexVar="index"
@@ -51,7 +51,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{langue['common.nom']}"/>
                                 </f:facet>
-                                <h:outputText class="hardBreak" value="#{item.service.code} #{item.service.nom}"/> 
+                                <h:outputText class="hardBreak" value="#{item.typeSousPeriode.code} #{item.typeSousPeriode.nom}"/> 
                             </p:column>
 
                             <p:column style="width: 10%" >
@@ -59,7 +59,7 @@
                                     <h:outputText value="Action"/>
                                 </f:facet>
                                 <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist,:TypestructureServiceCreateForm:grid_critere" event="click" listener="#{typestructureServiceCtrl.removeService(index,item)}" />
+                                    <p:ajax update="datalist,:TypestructureTspCreateForm:grid_critere" event="click" listener="#{typestructureTypeSPCtrl.removeTypeSousPeriode(index,item)}" />
                                 </p:commandButton>
                             </p:column>
 
@@ -70,10 +70,10 @@
                         <center>
 
                             <p:commandButton value="#{langue['common.fermer']}" 
-                                             onclick="PF('TypestructureServiceCreateDialog').hide()"
+                                             onclick="PF('TypestructureTspCreateDialog').hide()"
                                              icon="ui-icon-close"/>
 
-                            <p:commandButton icon="ui-icon-save" actionListener="#{typestructureServiceCtrl.save()}" value="#{langue['common.enregistrer']}" update="display,:TypestructureServiceListerForm:datalist,:TypestructureServiceListerForm:growl">
+                            <p:commandButton icon="ui-icon-save" actionListener="#{typestructureTypeSPCtrl.save()}" value="#{langue['common.enregistrer']}" update="display,:TypestructureTspListerForm:datalist,:TypestructureTspListerForm:growl">
                                 <p:confirm header="#{langue['notification.confirmation']}" 
                                            message="#{langue['notification.confirmation_enregistrement']}" 
                                            icon="ui-icon-alert"/>
@@ -84,11 +84,7 @@
                     </h:panelGroup>
 
                 </div>
-
             </h:form>
-
         </p:dialog>
-
     </ui:composition>
-
 </html>

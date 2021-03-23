@@ -29,5 +29,9 @@ public interface TypestructureTypeSousperiodeFacadeLocal {
     List<TypestructureTypeSousperiode> findRange(int[] range);
 
     int count();
-    
+
+    Integer nextId();
+
+    List<TypestructureTypeSousperiode> findByIdTypestructure(long idTypeStructure);
+
 }

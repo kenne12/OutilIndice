@@ -6,9 +6,11 @@
 package sessions;
 
 import entities.TypeSousPeriode;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -16,6 +18,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class TypeSousPeriodeFacade extends AbstractFacade<TypeSousPeriode> implements TypeSousPeriodeFacadeLocal {
+
     @PersistenceContext(unitName = "OutilIndice-ejbPU")
     private EntityManager em;
 
@@ -28,4 +31,25 @@ public class TypeSousPeriodeFacade extends AbstractFacade<TypeSousPeriode> imple
         super(TypeSousPeriode.class);
     }
     
+    @Override
+    public Integer nextId() {
+        try {
+            Query query = em.createQuery("SELECT MAX(t.idTypeSousperiode) FROM TypeSousPeriode t");
+            List listObj = query.getResultList();
+            if (!listObj.isEmpty()) {
+                return ((Integer) listObj.get(0)) + 1;
+            } else {
+                return 1 + 1;
+            }
+        } catch (Exception e) {
+            return 1;
+        }
+    }
+
+    @Override
+    public List<TypeSousPeriode> findAllOrderByCode() {
+        Query query = em.createQuery("SELECT t FROM TypeSousPeriode t ORDER BY t.code");
+        return query.getResultList();
+    }
+
 }

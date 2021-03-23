@@ -7,7 +7,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:jsf="http://xmlns.jcp.org/jsf">
 
-    <h:form id="TypestructureServiceListerForm">
+    <h:form id="TypestructureTspListerForm">
 
         <p:messages id="growl" closable="true">
             <p:effect type="pulsate" event="load" delay="50" />
@@ -17,14 +17,14 @@
             <div class="col-md-12">
                 <div class="panel panel-success">
                     <div style="color: white" class="panel-heading bg-success">
-                        #{langue['typestructure_service.list']}
+                        #{langue['typestructure_tsp.list']}
 
-                        <p:commandButton update=":TypestructureServiceCreateForm"
+                        <p:commandButton update=":TypestructureTspCreateForm"
                                          icon="ui-icon-plus"
                                          value="#{langue['common.ajouter']}"
                                          style="float: right"
                                          disabled="true"
-                                         actionListener="#{typestructureServiceCtrl.prepareCreate()}"/>      
+                                         actionListener="#{typestructureTypeSPCtrl.prepareCreate()}"/>      
                     </div>
 
                     <div class="panel-body">
@@ -35,20 +35,20 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 25%">#{langue.type_structure}</th>
-                                        <th style="width: 65%">#{langue.service}</th>
+                                        <th style="width: 65%">#{langue.periode}</th>
                                         <th style="width: 10%">#{langue['common.actions']}</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    <ui:repeat value="#{typestructureServiceCtrl.typestructures}" var="item">
+                                    <ui:repeat value="#{typestructureTypeSPCtrl.typestructures}" var="item">
                                         <tr>
                                             <td>#{item.nom}</td>
-                                            <td>#{typestructureServiceCtrl.returnService(item)}</td>                                   
+                                            <td>#{typestructureTypeSPCtrl.returnTypeSousPeriode(item)}</td>                                   
                                             <td style="text-align: center">                                        
-                                                <p:commandButton icon="ui-icon-pencil" update=":TypestructureServiceCreateForm"
+                                                <p:commandButton icon="ui-icon-pencil" update=":TypestructureTspCreateForm"
                                                                  class="btn btn-success btn-sm"
-                                                                 actionListener="#{typestructureServiceCtrl.prepareEdit(item)}"/>
+                                                                 actionListener="#{typestructureTypeSPCtrl.prepareEdit(item)}"/>
                                             </td>
                                         </tr>
                                     </ui:repeat>
@@ -65,14 +65,14 @@
 
     <p:dialog id="notify1" widgetVar="NotifyDialog1" height="400" width="700" resizable="true" responsive="true" modal="true" style="text-align: center; font-size: 14px; font-family: Cambria;">
         <f:facet name="header">
-            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{typestructureServiceCtrl.routine.titleNotify}" />
+            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{typestructureTypeSPCtrl.routine.titleNotify}" />
         </f:facet>
         <h:form id="NotifyForm1">
-            <h:graphicImage id="nt_img" url="#{typestructureServiceCtrl.routine.iconMessage}" style="cursor:pointer" />
+            <h:graphicImage id="nt_img" url="#{typestructureTypeSPCtrl.routine.iconMessage}" style="cursor:pointer" />
 
             <hr size="3" style="background-color: cornflowerblue;"/>
 
-            <h:outputText id="nt_msg" value="#{typestructureServiceCtrl.routine.message}"/>
+            <h:outputText id="nt_msg" value="#{typestructureTypeSPCtrl.routine.message}"/>
 
             <hr size="3" style="background-color: cornflowerblue; margin-top: 5%;"/>
 
