@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -43,6 +45,11 @@ public class Sousperiode implements Serializable {
     @Size(max = 254)
     private String code;
     private Integer numero;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idtypesousperiode", referencedColumnName = "idtypesousperiode")
+    private TypeSousPeriode typeSousPeriode;
+
     @OneToMany(mappedBy = "idsousperiode", fetch = FetchType.LAZY)
     private Collection<Note> noteCollection;
     @OneToMany(mappedBy = "idsousperiode", fetch = FetchType.LAZY)
@@ -114,6 +121,14 @@ public class Sousperiode implements Serializable {
 
     public void setRecetteCollection(Collection<Recette> recetteCollection) {
         this.recetteCollection = recetteCollection;
+    }
+
+    public TypeSousPeriode getTypeSousPeriode() {
+        return typeSousPeriode;
+    }
+
+    public void setTypeSousPeriode(TypeSousPeriode typeSousPeriode) {
+        this.typeSousPeriode = typeSousPeriode;
     }
 
     @Override
