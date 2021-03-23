@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="TypestructureServiceCreateDlg" 
+                  widgetVar="TypestructureServiceCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['critere_structure.formulaire_creation']}"
+                  closeOnEscape="true"
+                  width="60%"
+                  height="600">
+
+            <h:form id="TypestructureServiceCreateForm">
+
+                <div class="col-md-12">
+
+                    <h:panelGroup id="display">
+
+                        <p:separator/>
+
+                        <p:selectManyCheckbox id="grid_critere" value="#{typestructureServiceCtrl.selectedServices}" layout="grid" columns="1" converter="serviceConverter">
+                            <f:selectItems value="#{typestructureServiceCtrl.services}" var="s" itemLabel="#{s.nom}" itemValue="#{s}" />
+                            <p:ajax />
+                        </p:selectManyCheckbox>
+
+                        <p:separator />
+
+                        <p:commandButton value="#{langue['common.ajouter']}"
+                                         actionListener="#{typestructureServiceCtrl.addServiceToTable()}"
+                                         update="datalist,grid_critere" icon="ui-icon-plus" />
+                        <p:separator />
+
+                        <p:dataTable id="datalist" value="#{typestructureServiceCtrl.typestructureServices}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="#{typestructureServiceCtrl.typestructureServices.size()}"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                           
+                            <p:column class="hardBreak" style="width: 90%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue['common.nom']}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.service.code} #{item.service.nom}"/> 
+                            </p:column>
+
+                            <p:column style="width: 10%" >
+                                <f:facet name="header">
+                                    <h:outputText value="Action"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-trash">
+                                    <p:ajax update="datalist,:TypestructureServiceCreateForm:grid_critere" event="click" listener="#{typestructureServiceCtrl.removeService(index,item)}" />
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:separator/>
+
+                        <center>
+
+                            <p:commandButton value="#{langue['common.fermer']}" 
+                                             onclick="PF('TypestructureServiceCreateDialog').hide()"
+                                             icon="ui-icon-close"/>
+
+                            <p:commandButton icon="ui-icon-save" actionListener="#{typestructureServiceCtrl.save()}" value="#{langue['common.enregistrer']}" update="display,:TypestructureServiceListerForm:datalist,:TypestructureServiceListerForm:growl">
+                                <p:confirm header="#{langue['notification.confirmation']}" 
+                                           message="#{langue['notification.confirmation_enregistrement']}" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+
+                        </center>
+
+                    </h:panelGroup>
+
+                </div>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

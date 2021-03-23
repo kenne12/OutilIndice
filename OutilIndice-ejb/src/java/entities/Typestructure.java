@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Typestructure.findByNom", query = "SELECT t FROM Typestructure t WHERE t.nom = :nom"),
     @NamedQuery(name = "Typestructure.findByEtat", query = "SELECT t FROM Typestructure t WHERE t.etat = :etat")})
 public class Typestructure implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -42,6 +43,9 @@ public class Typestructure implements Serializable {
     private String etat;
     @OneToMany(mappedBy = "idtypestructure", fetch = FetchType.LAZY)
     private Collection<Structure> structureCollection;
+
+    @OneToMany(mappedBy = "typestructure", fetch = FetchType.LAZY)
+    private Collection<TypestructureService> typestructureCollection;
 
     public Typestructure() {
     }
@@ -83,6 +87,15 @@ public class Typestructure implements Serializable {
         this.structureCollection = structureCollection;
     }
 
+    @XmlTransient
+    public Collection<TypestructureService> getTypestructureCollection() {
+        return typestructureCollection;
+    }
+
+    public void setTypestructureCollection(Collection<TypestructureService> typestructureCollection) {
+        this.typestructureCollection = typestructureCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -107,5 +120,5 @@ public class Typestructure implements Serializable {
     public String toString() {
         return "entities.Typestructure[ idtypestructure=" + idtypestructure + " ]";
     }
-    
+
 }
