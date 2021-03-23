@@ -40,7 +40,6 @@ public class PenaliteIndivController extends AbstractPenaliteIndivController imp
         penalite.setService(false);
         penalite.setPersonnel(true);
         penalite.setCode("00" + penaliteFacadeLocal.nextValService("service"));
-
         RequestContext.getCurrentInstance().execute("PF('PenaliteCreateDialog').show()");
     }
 

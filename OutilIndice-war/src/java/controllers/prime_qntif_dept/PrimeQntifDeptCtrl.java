@@ -9,6 +9,7 @@ import controllers.util.JsfUtil;
 import entities.Cible;
 import entities.Critere;
 import entities.Indicateur;
+import entities.IndicateurQteService;
 import entities.Service;
 import entities.Sousperiode;
 import java.io.Serializable;
@@ -65,12 +66,15 @@ public class PrimeQntifDeptCtrl extends AbstractPrimeQntifDeptCtrl implements Se
         if (service.getIdservice() != null && service.getIdservice() > 0) {
             if (sousperiode.getIdsousperiode() != null && sousperiode.getIdsousperiode() > 0) {
                 List<Cible> list = cibleFacadeLocal.findByIdSousPeriode(service.getIdservice(), service.getIdservice(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 4);
-                if (list.isEmpty() || list == null) {
-                    indicateurs.addAll(indicateurFacadeLocal.findAll());
-                } else {
-                    cibles.addAll(list);
-                    indicateurs.addAll(indicateurFacadeLocal.findAll());
 
+                List<IndicateurQteService> listIndicateur = indicateurQteServiceFacadeLocal.findByIdService(structure.getIdstructure(), service.getIdservice());
+
+                for (IndicateurQteService i : listIndicateur) {
+                    indicateurs.add(i.getIndicateur());
+                }
+
+                if (!list.isEmpty()) {
+                    cibles.addAll(list);
                     for (Cible c : list) {
                         selectedIndicateurs.add(c.getIdindicateur());
                     }

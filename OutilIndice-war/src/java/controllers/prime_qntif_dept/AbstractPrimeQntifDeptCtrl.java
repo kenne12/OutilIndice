@@ -16,6 +16,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import sessions.CibleFacadeLocal;
 import sessions.IndicateurFacadeLocal;
+import sessions.IndicateurQteServiceFacadeLocal;
 import sessions.PeriodeFacadeLocal;
 import sessions.ServiceFacadeLocal;
 import sessions.SousperiodeFacadeLocal;
@@ -34,6 +35,9 @@ public class AbstractPrimeQntifDeptCtrl {
     protected Cible cible = new Cible();
     protected List<Cible> cibles = new ArrayList<>();
     protected List<Cible> listCibles = new ArrayList<>();
+
+    @EJB
+    protected IndicateurQteServiceFacadeLocal indicateurQteServiceFacadeLocal;
 
     @EJB
     protected IndicateurFacadeLocal indicateurFacadeLocal;
