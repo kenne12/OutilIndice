@@ -6,6 +6,7 @@
 package controllers.login;
 
 import controllers.util.JsfUtil;
+import entities.Categorie;
 import entities.Critere;
 import entities.Criterestructure;
 import utils.SessionMBean;
@@ -16,79 +17,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import sessions.UtilisateurFacadeLocal;
 import utils.ShaHash;
 import entities.Menu;
 import entities.Periode;
 import entities.Privilege;
+import entities.Service;
 import entities.Structure;
+import entities.TypeSousPeriode;
+import entities.TypestructureCategorie;
+import entities.TypestructureService;
+import entities.TypestructureTypeSousperiode;
 import entities.Utilisateurstructure;
 import org.primefaces.context.RequestContext;
-import sessions.CriterestructureFacadeLocal;
-import sessions.MenuFacadeLocal;
-import sessions.PeriodeFacadeLocal;
-import sessions.PrivilegeFacadeLocal;
-import sessions.StructureFacadeLocal;
-import sessions.UtilisateurstructureFacadeLocal;
 import utils.Routine;
 
 @ManagedBean
 @SessionScoped
-public class LoginController implements Serializable {
-
-    @EJB
-    protected CriterestructureFacadeLocal criterestructureFacadeLocal;
-
-    @EJB
-    private MenuFacadeLocal menuBFacadeLocal;
-
-    @EJB
-    private UtilisateurFacadeLocal utilisateurFacade;
-    private Utilisateur utilisateur = new Utilisateur();
-
-    @EJB
-    private PrivilegeFacadeLocal privilegeFacadeLocal;
-
-    @EJB
-    private StructureFacadeLocal structureFacadeLocal;
-    private Structure structure = new Structure();
-    private List<Structure> structures = new ArrayList<>();
-
-    @EJB
-    UtilisateurstructureFacadeLocal utilisateurstructureFacadeLocal;
-
-    private String confirmPassword = "";
-
-    private String filename = "logo.jpeg";
-    private String filenameInstitution = "logo1.png";
-
-    private boolean showSessionPanel = true;
-    private Routine routine = new Routine();
-
-    String sc = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-
-    @EJB
-    private PeriodeFacadeLocal periodeFacadeLocal;
-    private Periode periode = new Periode();
-    private List<Periode> periodes = new ArrayList<>();
-
-    //@EJB
-    //private ParametrageFacadeLocal parametrageFacadeLocal;
-    private String language = "fr";
+public class LoginController extends AbstractLoginController implements Serializable {
 
     public LoginController() {
 
     }
 
+    String sc = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+
     public void login() {
         try {
-
             Utilisateur usr = utilisateurFacade.login(utilisateur.getLogin(), new ShaHash().hash(utilisateur.getPassword()));
 
             if (usr != null) {
@@ -144,46 +103,68 @@ public class LoginController implements Serializable {
 
                 FacesContext.getCurrentInstance().getExternalContext().redirect(sc + "/index.html");
             } else {
-                System.err.println("echec d'authentification");
                 utilisateur = new Utilisateur();
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Login et mot de passe incorrets", "Please enter correct username and Password"));
             }
-
         } catch (Exception e) {
             e.printStackTrace();
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, e);
             JsfUtil.addErrorMessage("Echec de l'opération");
             utilisateur = new Utilisateur();
         }
     }
 
     public void initSession() {
+        HttpSession session = SessionMBean.getSession();
         try {
-            HttpSession session = SessionMBean.getSession();
-            try {
-                //filename = institution.getPhoto();
-                //filenameInstitution = institution.getPhotoInstitutionMere();
-                structure = structureFacadeLocal.find(structure.getIdstructure());
-                session.setAttribute("structure", structure);
+            structure = structureFacadeLocal.find(structure.getIdstructure());
+            session.setAttribute("structure", structure);
 
-                periode = periodeFacadeLocal.find(periode.getIdperiode());
-                session.setAttribute("periode", periode);
+            periode = periodeFacadeLocal.find(periode.getIdperiode());
+            session.setAttribute("periode", periode);
 
-                List<Criterestructure> list = criterestructureFacadeLocal.findByIdStructure(structure.getIdstructure());
-                session.setAttribute("criterestructures", list);
-                List<Critere> criteres = new ArrayList<>();
-                if (!list.isEmpty()) {
-                    for (Criterestructure c : list) {
-                        criteres.add(c.getCritere());
-                    }
-                }
-                session.setAttribute("criteres", criteres);
-            } catch (Exception e) {
+            List<Criterestructure> list = criterestructureFacadeLocal.findByIdStructure(structure.getIdstructure());
+            session.setAttribute("criterestructures", list);
+            List<Critere> criteres = new ArrayList<>();
+            if (!list.isEmpty()) {
+                list.forEach(c -> {
+                    criteres.add(c.getCritere());
+                });
             }
+            session.setAttribute("criteres", criteres);
+
+            List<TypestructureCategorie> typestructureCategories = typestructureCategorieFacadeLocal.findByIdTypestructure(structure.getIdtypestructure().getIdtypestructure());
+            List<Categorie> categories = new ArrayList<>();
+            if (!typestructureCategories.isEmpty()) {
+                typestructureCategories.forEach(tsc -> {
+                    categories.add(tsc.getCategorie());
+                });
+            }
+            session.setAttribute("categories", categories);
+            session.setAttribute("ts_categories", typestructureCategories);
+
+            List<TypestructureService> typestructureServices = typestructureServiceFacadeLocal.findByIdTypestructure(structure.getIdtypestructure().getIdtypestructure());
+            List<Service> services = new ArrayList<>();
+
+            typestructureServices.forEach(tss -> {
+                services.add(tss.getService());
+            });
+
+            session.setAttribute("services", services);
+            session.setAttribute("ts_services", typestructureServices);
+
+            List<TypestructureTypeSousperiode> typestructureTypeSousperiodes = typestructureTypeSousperiodeFacadeLocal.findByIdTypestructure(structure.getIdtypestructure().getIdtypestructure());
+            List<TypeSousPeriode> typeSousPeriodes = new ArrayList<>();
+            typestructureTypeSousperiodes.forEach(tsp -> {
+                typeSousPeriodes.add(tsp.getTypeSousPeriode());
+            });
+            
+            session.setAttribute("type_sousperiodes", typeSousPeriodes);
+            session.setAttribute("ts_sousperiodes", typestructureTypeSousperiodes);
+
             showSessionPanel = false;
         } catch (Exception e) {
-            e.printStackTrace();
             showSessionPanel = true;
+            JsfUtil.addErrorMessage("Exception");
         }
     }
 
@@ -263,14 +244,6 @@ public class LoginController implements Serializable {
         return showSessionPanel;
     }
 
-    public String getFilename() {
-        return filename;
-    }
-
-    public String getFilenameInstitution() {
-        return filenameInstitution;
-    }
-
     public String getConfirmPassword() {
         return confirmPassword;
     }
@@ -295,10 +268,6 @@ public class LoginController implements Serializable {
         return periodes;
     }
 
-    public void setPeriodes(List<Periode> periodes) {
-        this.periodes = periodes;
-    }
-
     public Structure getStructure() {
         return structure;
     }
@@ -309,10 +278,6 @@ public class LoginController implements Serializable {
 
     public List<Structure> getStructures() {
         return structures;
-    }
-
-    public void setStructures(List<Structure> structures) {
-        this.structures = structures;
     }
 
 }

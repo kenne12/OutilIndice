@@ -26,24 +26,24 @@ public class JsfUtil {
     }
 
     public static void addErrorMessage(String msg) {
-        /*  29 */ FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg);
-        /*  30 */ FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-        /*  31 */ FacesContext.getCurrentInstance().validationFailed();
+        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg);
+        FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+        FacesContext.getCurrentInstance().validationFailed();
     }
 
     public static void addSuccessMessage(String msg) {
-        /*  36 */ FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg);
-        /*  37 */ FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg);
+        FacesContext.getCurrentInstance().addMessage(null, facesMsg);
     }
 
     public static void addWarningMessage(String msg) {
-        /*  41 */ FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, msg, msg);
-        /*  42 */ FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, msg, msg);
+        FacesContext.getCurrentInstance().addMessage(null, facesMsg);
     }
 
     public static void addFatalErrorMessage(String msg) {
-        /*  46 */ FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_FATAL, msg, msg);
-        /*  47 */ FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_FATAL, msg, msg);
+        FacesContext.getCurrentInstance().addMessage(null, facesMsg);
     }
 
     public static Throwable getRootCause(Throwable cause) {
@@ -71,27 +71,24 @@ public class JsfUtil {
                 }
                 return true;
             }
-
         }
-
         return false;
     }
 
     public static String getComponentMessages(String clientComponent, String defaultMessage) {
-        /*  80 */ FacesContext fc = FacesContext.getCurrentInstance();
-        /*  81 */ UIComponent component = UIComponent.getCurrentComponent(fc).findComponent(clientComponent);
-        /*  82 */ if ((component instanceof UIInput)) {
-            /*  83 */ UIInput inputComponent = (UIInput) component;
-            /*  84 */ if (inputComponent.isValid()) {
-                /*  85 */ return defaultMessage;
+        FacesContext fc = FacesContext.getCurrentInstance();
+        UIComponent component = UIComponent.getCurrentComponent(fc).findComponent(clientComponent);
+        if ((component instanceof UIInput)) {
+            UIInput inputComponent = (UIInput) component;
+            if (inputComponent.isValid()) {
+                return defaultMessage;
             }
-            /*  87 */ Iterator iter = fc.getMessages(inputComponent.getClientId());
-            /*  88 */ if (iter.hasNext()) {
-                /*  89 */ return ((FacesMessage) iter.next()).getDetail();
+            Iterator iter = fc.getMessages(inputComponent.getClientId());
+            if (iter.hasNext()) {
+                return ((FacesMessage) iter.next()).getDetail();
             }
         }
-
-        /*  93 */ return "";
+        return "";
     }
 
     public static String formaterStringMoney(Long valeur) {
@@ -132,7 +129,6 @@ public class JsfUtil {
                 result = result + ' ';
             }
         }
-
         return result;
     }
 
@@ -153,7 +149,6 @@ public class JsfUtil {
                 result = result + ' ';
             }
         }
-
         return result;
     }
 

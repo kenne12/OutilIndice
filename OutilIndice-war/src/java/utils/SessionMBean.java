@@ -1,9 +1,12 @@
 package utils;
 
+import entities.Categorie;
 import entities.Critere;
 import entities.Criterestructure;
 import entities.Periode;
+import entities.Service;
 import entities.Structure;
+import entities.TypeSousPeriode;
 import entities.Utilisateur;
 import java.util.List;
 import javax.faces.context.FacesContext;
@@ -66,6 +69,30 @@ public class SessionMBean {
         HttpSession session = getSession();
         if (session != null) {
             return (List<Critere>) session.getAttribute("criteres");
+        }
+        return null;
+    }
+
+    public static List<Service> getServices() {
+        HttpSession session = getSession();
+        if (session != null) {
+            return (List<Service>) session.getAttribute("services");
+        }
+        return null;
+    }
+
+    public static List<Categorie> getCategories() {
+        HttpSession session = getSession();
+        if (session != null) {
+            return (List<Categorie>) session.getAttribute("categories");
+        }
+        return null;
+    }
+    
+    public static List<TypeSousPeriode> getTypeSousPeriodes() {
+        HttpSession session = getSession();
+        if (session != null) {
+            return (List<TypeSousPeriode>) session.getAttribute("type_sousperiodes");
         }
         return null;
     }
