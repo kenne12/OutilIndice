@@ -53,6 +53,9 @@ public class Typestructure implements Serializable {
     @OneToMany(mappedBy = "typestructure", fetch = FetchType.LAZY)
     private Collection<TypestructureCategorie> typestructureCategorieCollection;
 
+    @OneToMany(mappedBy = "typestructure", fetch = FetchType.LAZY)
+    private Collection<TypestructureResponsabilite> typestructureResponsabiliteCollection;
+
     public Typestructure() {
     }
 
@@ -118,6 +121,15 @@ public class Typestructure implements Serializable {
 
     public void setTypestructureCategorieCollection(Collection<TypestructureCategorie> typestructureCategorieCollection) {
         this.typestructureCategorieCollection = typestructureCategorieCollection;
+    }
+
+    @XmlTransient
+    public Collection<TypestructureResponsabilite> getTypestructureResponsabiliteCollection() {
+        return typestructureResponsabiliteCollection;
+    }
+
+    public void setTypestructureResponsabiliteCollection(Collection<TypestructureResponsabilite> typestructureResponsabiliteCollection) {
+        this.typestructureResponsabiliteCollection = typestructureResponsabiliteCollection;
     }
 
     @Override

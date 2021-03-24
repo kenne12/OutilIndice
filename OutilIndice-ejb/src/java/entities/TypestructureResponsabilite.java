@@ -34,7 +34,7 @@ public class TypestructureResponsabilite implements Serializable {
     private Typestructure typestructure;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idresponsabilite", referencedColumnName = "ididresponsabilite")
+    @JoinColumn(name = "idresponsabilite", referencedColumnName = "idresponsabilite")
     private Responsabilite responsabilite;
 
     public TypestructureResponsabilite() {
