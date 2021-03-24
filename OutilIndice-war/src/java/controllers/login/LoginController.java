@@ -26,10 +26,12 @@ import utils.ShaHash;
 import entities.Menu;
 import entities.Periode;
 import entities.Privilege;
+import entities.Responsabilite;
 import entities.Service;
 import entities.Structure;
 import entities.TypeSousPeriode;
 import entities.TypestructureCategorie;
+import entities.TypestructureResponsabilite;
 import entities.TypestructureService;
 import entities.TypestructureTypeSousperiode;
 import entities.Utilisateurstructure;
@@ -157,9 +159,18 @@ public class LoginController extends AbstractLoginController implements Serializ
             typestructureTypeSousperiodes.forEach(tsp -> {
                 typeSousPeriodes.add(tsp.getTypeSousPeriode());
             });
-            
+
             session.setAttribute("type_sousperiodes", typeSousPeriodes);
             session.setAttribute("ts_sousperiodes", typestructureTypeSousperiodes);
+
+            List<TypestructureResponsabilite> typestructureResponsabilites = typestructureResponsabiliteFacadeLocal.findByIdTypestructure(structure.getIdtypestructure().getIdtypestructure());
+            List<Responsabilite> responsabilites = new ArrayList<>();
+            typestructureResponsabilites.forEach(tsr -> {
+                responsabilites.add(tsr.getResponsabilite());
+            });
+
+            session.setAttribute("responsabilites", responsabilites);
+            session.setAttribute("ts_responsabilites", typestructureResponsabilites);
 
             showSessionPanel = false;
         } catch (Exception e) {

@@ -17,6 +17,7 @@ import sessions.PeriodeFacadeLocal;
 import sessions.PrivilegeFacadeLocal;
 import sessions.StructureFacadeLocal;
 import sessions.TypestructureCategorieFacadeLocal;
+import sessions.TypestructureResponsabiliteFacadeLocal;
 import sessions.TypestructureServiceFacadeLocal;
 import sessions.TypestructureTypeSousperiodeFacadeLocal;
 import sessions.UtilisateurFacadeLocal;
@@ -63,6 +64,9 @@ public class AbstractLoginController {
 
     @EJB
     protected TypestructureTypeSousperiodeFacadeLocal typestructureTypeSousperiodeFacadeLocal;
+    
+    @EJB
+    protected TypestructureResponsabiliteFacadeLocal typestructureResponsabiliteFacadeLocal;
 
     protected String language = "fr";
 

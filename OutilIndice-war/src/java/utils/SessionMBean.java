@@ -4,6 +4,7 @@ import entities.Categorie;
 import entities.Critere;
 import entities.Criterestructure;
 import entities.Periode;
+import entities.Responsabilite;
 import entities.Service;
 import entities.Structure;
 import entities.TypeSousPeriode;
@@ -88,11 +89,19 @@ public class SessionMBean {
         }
         return null;
     }
-    
+
     public static List<TypeSousPeriode> getTypeSousPeriodes() {
         HttpSession session = getSession();
         if (session != null) {
             return (List<TypeSousPeriode>) session.getAttribute("type_sousperiodes");
+        }
+        return null;
+    }
+
+    public static List<Responsabilite> getResponsabilites() {
+        HttpSession session = getSession();
+        if (session != null) {
+            return (List<Responsabilite>) session.getAttribute("responsabilites");
         }
         return null;
     }
