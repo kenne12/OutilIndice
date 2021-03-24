@@ -29,5 +29,9 @@ public interface TypestructureCategorieFacadeLocal {
     List<TypestructureCategorie> findRange(int[] range);
 
     int count();
-    
+
+    Integer nextId();
+
+    List<TypestructureCategorie> findByIdTypestructure(long idTypeStructure);
+
 }

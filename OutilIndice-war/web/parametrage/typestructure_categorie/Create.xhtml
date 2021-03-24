@@ -8,15 +8,15 @@
 
     <ui:composition>
 
-        <p:dialog id="TypestructureTspCreateDlg" 
-                  widgetVar="TypestructureTspCreateDialog" 
+        <p:dialog id="TypestructureCategorieCreateDlg" 
+                  widgetVar="TypestructureCategorieCreateDialog" 
                   modal="true" resizable="false" appendTo="@(body)" 
-                  header="#{langue['typestructure_tsp.formulaire_creation']}"
+                  header="#{langue['typestructure_categorie.formulaire_creation']}"
                   closeOnEscape="true"
                   width="60%"
                   height="600">
 
-            <h:form id="TypestructureTspCreateForm">
+            <h:form id="TypestructureCategorieCreateForm">
 
                 <div class="col-md-12">
 
@@ -24,23 +24,23 @@
 
                         <p:separator/>
 
-                        <p:selectManyCheckbox id="grid_critere" value="#{typestructureTypeSPCtrl.selectedTypeSousPeriodes}" layout="grid" columns="1" converter="typeSpConverter">
-                            <f:selectItems value="#{typestructureTypeSPCtrl.typeSousPeriodes}" var="s" itemLabel="#{s.nom}" itemValue="#{s}" />
+                        <p:selectManyCheckbox id="grid_critere" value="#{typestructureCategorieCtrl.selectedCategories}" layout="grid" columns="1" converter="categorieConverter">
+                            <f:selectItems value="#{typestructureCategorieCtrl.categories}" var="c" itemLabel="#{c.nom}" itemValue="#{c}" />
                             <p:ajax />
                         </p:selectManyCheckbox>
 
                         <p:separator />
 
                         <p:commandButton value="#{langue['common.ajouter']}"
-                                         actionListener="#{typestructureTypeSPCtrl.addTypeSousPeriodeToTable()}"
+                                         actionListener="#{typestructureCategorieCtrl.addCategorieToTable()}"
                                          update="datalist,grid_critere" icon="ui-icon-plus" />
                         <p:separator />
 
-                        <p:dataTable id="datalist" value="#{typestructureTypeSPCtrl.typestructureTypeSousperiodes}" var="item"                             
+                        <p:dataTable id="datalist" value="#{typestructureCategorieCtrl.typestructureCategories}" var="item"                             
                                      paginator="true"
                                      editable="true"
                                      editMode="cell"
-                                     rows="#{typestructureTypeSPCtrl.typestructureTypeSousperiodes.size()}"
+                                     rows="#{typestructureCategorieCtrl.typestructureCategories.size()}"
                                      rowsPerPageTemplate="10,20,30,40,50"
                                      style="margin-top: 1%;font-size: 15px"
                                      rowIndexVar="index"
@@ -51,15 +51,15 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{langue['common.nom']}"/>
                                 </f:facet>
-                                <h:outputText class="hardBreak" value="#{item.typeSousPeriode.code} #{item.typeSousPeriode.nom}"/> 
+                                <h:outputText class="hardBreak" value="#{item.categorie.code} #{item.categorie.nom}"/> 
                             </p:column>
 
-                            <p:column style="width: 10%;text-align: center">
+                            <p:column style="width: 10%;text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="Action"/>
                                 </f:facet>
                                 <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist,:TypestructureTspCreateForm:grid_critere" event="click" listener="#{typestructureTypeSPCtrl.removeTypeSousPeriode(index,item)}" />
+                                    <p:ajax update="datalist,:TypestructureCategorieCreateForm:grid_critere" event="click" listener="#{typestructureCategorieCtrl.removeCategorie(index,item)}" />
                                 </p:commandButton>
                             </p:column>
 
@@ -70,10 +70,10 @@
                         <center>
 
                             <p:commandButton value="#{langue['common.fermer']}" 
-                                             onclick="PF('TypestructureTspCreateDialog').hide()"
+                                             onclick="PF('TypestructureCategorieCreateDialog').hide()"
                                              icon="ui-icon-close"/>
 
-                            <p:commandButton icon="ui-icon-save" actionListener="#{typestructureTypeSPCtrl.save()}" value="#{langue['common.enregistrer']}" update="display,:TypestructureTspListerForm:datalist,:TypestructureTspListerForm:growl">
+                            <p:commandButton icon="ui-icon-save" actionListener="#{typestructureCategorieCtrl.save()}" value="#{langue['common.enregistrer']}" update="display,:TypestructureCategorieListerForm:datalist,:TypestructureCategorieListerForm:growl">
                                 <p:confirm header="#{langue['notification.confirmation']}" 
                                            message="#{langue['notification.confirmation_enregistrement']}" 
                                            icon="ui-icon-alert"/>
@@ -84,7 +84,11 @@
                     </h:panelGroup>
 
                 </div>
+
             </h:form>
+
         </p:dialog>
+
     </ui:composition>
+
 </html>

@@ -66,11 +66,7 @@ public class TypestructureServiceCtrl extends AbstractTypestructServiceCtrl impl
             List<Service> list = new ArrayList();
             for (Service s : selectedServices) {
                 if (!checkServiceInTable(s)) {
-                    TypestructureService ts = new TypestructureService();
-                    ts.setIdTypestructureService(0);
-                    ts.setService(s);
-                    ts.setTypestructure(typestructure);
-                    typestructureServices.add(ts);
+                    typestructureServices.add(new TypestructureService(0, typestructure, s));
                     list.add(s);
                 }
             }

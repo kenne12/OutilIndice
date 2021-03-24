@@ -50,6 +50,9 @@ public class Typestructure implements Serializable {
     @OneToMany(mappedBy = "typestructure", fetch = FetchType.LAZY)
     private Collection<TypestructureTypeSousperiode> typestructureTypeSousperiodeCollection;
 
+    @OneToMany(mappedBy = "typestructure", fetch = FetchType.LAZY)
+    private Collection<TypestructureCategorie> typestructureCategorieCollection;
+
     public Typestructure() {
     }
 
@@ -90,6 +93,7 @@ public class Typestructure implements Serializable {
         this.structureCollection = structureCollection;
     }
 
+    @XmlTransient
     public Collection<TypestructureService> getTypestructureServiceCollection() {
         return typestructureServiceCollection;
     }
@@ -98,12 +102,22 @@ public class Typestructure implements Serializable {
         this.typestructureServiceCollection = typestructureServiceCollection;
     }
 
+    @XmlTransient
     public Collection<TypestructureTypeSousperiode> getTypestructureTypeSousperiodeCollection() {
         return typestructureTypeSousperiodeCollection;
     }
 
     public void setTypestructureTypeSousperiodeCollection(Collection<TypestructureTypeSousperiode> typestructureTypeSousperiodeCollection) {
         this.typestructureTypeSousperiodeCollection = typestructureTypeSousperiodeCollection;
+    }
+
+    @XmlTransient
+    public Collection<TypestructureCategorie> getTypestructureCategorieCollection() {
+        return typestructureCategorieCollection;
+    }
+
+    public void setTypestructureCategorieCollection(Collection<TypestructureCategorie> typestructureCategorieCollection) {
+        this.typestructureCategorieCollection = typestructureCategorieCollection;
     }
 
     @Override

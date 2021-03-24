@@ -48,7 +48,7 @@ public class TypestructureTypeSousperiodeFacade extends AbstractFacade<Typestruc
 
     @Override
     public List<TypestructureTypeSousperiode> findByIdTypestructure(long idTypeStructure) {
-        Query query = em.createQuery("SELECT t FROM TypestructureTypeSousperiode t WHERE t.typestructure.idtypestructure=:idTypeStructure");
+        Query query = em.createQuery("SELECT t FROM TypestructureTypeSousperiode t WHERE t.typestructure.idtypestructure=:idTypeStructure ORDER BY t.typeSousPeriode.code");
         query.setParameter("idTypeStructure", idTypeStructure);
         return query.getResultList();
     }

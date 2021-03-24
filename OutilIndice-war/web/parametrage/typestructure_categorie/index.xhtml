@@ -1,0 +1,25 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/template/template.xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="contenu" >
+        <h3 class="page-header">#{langue['typestructure_categorie.gestion']}</h3>
+        <ui:include src="Liste.xhtml" />
+        <ui:include src="Create.xhtml" />
+    </ui:define>
+
+    <ui:define name="scriptCollapse">
+        <script>
+            var el = document.getElementById("parametrage");
+            el.setAttribute("class", "sub-menu active");
+
+            var el_1 = document.getElementById("typestructure_service");
+            el_1.setAttribute("class", "sub-menu active");
+
+            $('#datalist').dataTable();
+        </script>
+    </ui:define>
+</ui:composition>

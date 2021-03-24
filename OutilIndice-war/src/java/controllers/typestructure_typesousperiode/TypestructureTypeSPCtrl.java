@@ -64,14 +64,10 @@ public class TypestructureTypeSPCtrl extends AbstractTypestructureTypeSPCtrl imp
     public void addTypeSousPeriodeToTable() {
         if (!selectedTypeSousPeriodes.isEmpty()) {
             List<TypeSousPeriode> list = new ArrayList();
-            for (TypeSousPeriode s : selectedTypeSousPeriodes) {
-                if (!checkTypeSousPeriodeInTable(s)) {
-                    TypestructureTypeSousperiode ts = new TypestructureTypeSousperiode();
-                    ts.setIdTypestructureTypesousperiode(0);
-                    ts.setTypeSousPeriode(s);
-                    ts.setTypestructure(typestructure);
-                    typestructureTypeSousperiodes.add(ts);
-                    list.add(s);
+            for (TypeSousPeriode t : selectedTypeSousPeriodes) {
+                if (!checkTypeSousPeriodeInTable(t)) {                    
+                    typestructureTypeSousperiodes.add(new TypestructureTypeSousperiode(0, typestructure, t));
+                    list.add(t);
                 }
             }
             typeSousPeriodes.removeAll(list);

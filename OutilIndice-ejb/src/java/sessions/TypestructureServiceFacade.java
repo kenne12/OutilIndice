@@ -48,7 +48,7 @@ public class TypestructureServiceFacade extends AbstractFacade<TypestructureServ
 
     @Override
     public List<TypestructureService> findByIdTypestructure(long idTypeStructure) {
-        Query query = em.createQuery("SELECT t FROM TypestructureService t WHERE t.typestructure.idtypestructure=:idTypeStructure");
+        Query query = em.createQuery("SELECT t FROM TypestructureService t WHERE t.typestructure.idtypestructure=:idTypeStructure ORDER BY t.service.code");
         query.setParameter("idTypeStructure", idTypeStructure);
         return query.getResultList();
     }
