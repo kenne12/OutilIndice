@@ -28,12 +28,10 @@ public class AbstractStructureController {
 
     @EJB
     protected TypestructureFacadeLocal typestructureFacadeLocal;
-    protected Typestructure typestructure = new Typestructure();
     protected List<Typestructure> typestructures = new ArrayList<>();
 
     @EJB
     protected StatutstructureFacadeLocal statutstructureFacadeLocal;
-    protected Statutstructure statutstructure = new Statutstructure();
     protected List<Statutstructure> statutstructures = new ArrayList<>();
 
     protected Routine routine = new Routine();
@@ -148,14 +146,6 @@ public class AbstractStructureController {
         this.statutstructures = statutstructures;
     }
 
-    public Typestructure getTypestructure() {
-        return typestructure;
-    }
-
-    public void setTypestructure(Typestructure typestructure) {
-        this.typestructure = typestructure;
-    }
-
     public List<Typestructure> getTypestructures() {
         typestructures = typestructureFacadeLocal.findAll();
         return typestructures;
@@ -163,14 +153,6 @@ public class AbstractStructureController {
 
     public void setTypestructures(List<Typestructure> typestructures) {
         this.typestructures = typestructures;
-    }
-
-    public Statutstructure getStatutstructure() {
-        return statutstructure;
-    }
-
-    public void setStatutstructure(Statutstructure statutstructure) {
-        this.statutstructure = statutstructure;
     }
 
 }

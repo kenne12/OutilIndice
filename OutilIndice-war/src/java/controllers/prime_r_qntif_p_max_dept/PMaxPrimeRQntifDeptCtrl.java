@@ -70,11 +70,9 @@ public class PMaxPrimeRQntifDeptCtrl extends AbstractPMaxPrimeRQntifDeptCtrl imp
         parametragecriteres.clear();
 
         List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructureIdCritere(SessionMBean.getStructure().getIdstructure(), 4);
-        if (list.isEmpty() || list == null) {
-            categories.addAll(categorieFacadeLocal.findAllRangeByCode());
-        } else {
+        categories.addAll(SessionMBean.getCategories());
+        if (!list.isEmpty()) {
             parametragecriteres.addAll(list);
-            categories.addAll(categorieFacadeLocal.findAllRangeByCode());
             for (Parametragecritere pc : list) {
                 selectedCategories.add(pc.getIdcategorie());
             }
@@ -96,8 +94,7 @@ public class PMaxPrimeRQntifDeptCtrl extends AbstractPMaxPrimeRQntifDeptCtrl imp
             }
 
             for (EffectifCategorie efc : effectifCategories) {
-                Parametragecritere pc = new Parametragecritere();
-                pc.setIdparametragecritere(0l);
+                Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
                 pc.setIdcritere(new Critere(4));
                 pc.setIndice(efc.getCategorie().getIndice());
@@ -142,8 +139,7 @@ public class PMaxPrimeRQntifDeptCtrl extends AbstractPMaxPrimeRQntifDeptCtrl imp
     public void addCategoriesToTable() {
         if (!selectedCategories.isEmpty()) {
             for (Categorie c : selectedCategories) {
-                Parametragecritere pc = new Parametragecritere();
-                pc.setIdparametragecritere(0l);
+                Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
                 pc.setIdcritere(new Critere(4));
                 pc.setIndice(c.getIndice());
@@ -212,7 +208,7 @@ public class PMaxPrimeRQntifDeptCtrl extends AbstractPMaxPrimeRQntifDeptCtrl imp
         } catch (Exception e) {
             parametragecritere.setPoint(0);
             parametragecritere.setTotal1(0);
-        }     
+        }
         this.sommeDetail(parametragecriteres);
     }
 
@@ -271,5 +267,4 @@ public class PMaxPrimeRQntifDeptCtrl extends AbstractPMaxPrimeRQntifDeptCtrl imp
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-
 }

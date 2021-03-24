@@ -12,6 +12,7 @@ import entities.LignePrimeQualiteDept;
 import entities.Service;
 import entities.Souscritereservice;
 import entities.Sousperiode;
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -24,7 +25,7 @@ import utils.SessionMBean;
  */
 @ManagedBean
 @SessionScoped
-public class RealisationPrimeRQltifDeptCtrl extends AbstractRealisationPrimeRQltifDeptCtrl {
+public class RealisationPrimeRQltifDeptCtrl extends AbstractRealisationPrimeRQltifDeptCtrl implements Serializable {
 
     /**
      * Creates a new instance of RealisationPrimeRQltifDeptCtrl
@@ -37,6 +38,7 @@ public class RealisationPrimeRQltifDeptCtrl extends AbstractRealisationPrimeRQlt
         structures.clear();
         structures.add(SessionMBean.getStructure());
         evaluationRPrimeQltifDept = new EvaluationRPrimeQltifDept();
+        services = SessionMBean.getServices();
     }
 
     public void prepareCreate() {
@@ -78,8 +80,7 @@ public class RealisationPrimeRQltifDeptCtrl extends AbstractRealisationPrimeRQlt
                     souscritereservices.removeAll(selectedSouscritereservices);
                     selectedSouscritereservices.clear();
                 } else {
-                    evaluationRPrimeQltifDept = new EvaluationRPrimeQltifDept();
-                    evaluationRPrimeQltifDept.setIdevaluationrprimeqltifdept(0l);
+                    evaluationRPrimeQltifDept = new EvaluationRPrimeQltifDept(0l);
                     evaluationRPrimeQltifDept.setIdservice(service);
                     evaluationRPrimeQltifDept.setIdperiode(SessionMBean.getPeriode());
                     evaluationRPrimeQltifDept.setIdsousperiode(sousperiode);
@@ -93,8 +94,7 @@ public class RealisationPrimeRQltifDeptCtrl extends AbstractRealisationPrimeRQlt
         if (!selectedSouscritereservices.isEmpty()) {
 
             for (Souscritereservice s : selectedSouscritereservices) {
-                LignePrimeQualiteDept lpq = new LignePrimeQualiteDept();
-                lpq.setIdligneprimequalitedept(0l);
+                LignePrimeQualiteDept lpq = new LignePrimeQualiteDept(0l);
                 lpq.setIdsouscritereservice(s);
                 lpq.setValeurCible(s.getPointmax());
                 lpq.setValeurRealisee(0);

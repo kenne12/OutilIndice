@@ -93,8 +93,7 @@ public class AbstractPenaliteService {
         this.service = service;
     }
 
-    public List<Service> getServices() {
-        services = serviceFacadeLocal.findAllOrderByCode();
+    public List<Service> getServices() {        
         return services;
     }
 

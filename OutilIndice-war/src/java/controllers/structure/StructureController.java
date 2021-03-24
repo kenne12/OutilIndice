@@ -107,12 +107,14 @@ public class StructureController extends AbstractStructureController implements 
                 //Utilitaires.saveOperation(this.mouchardFacadeLocal, "Enregistrement de l'structure : " + this.structure.getNom() + " " + this.structure.getPrenom(), SessionMBean.getUserAccount());
                 this.initStructure();
 
-                this.modifier = this.detail = this.supprimer = true;
+                modifier = detail = supprimer = true;
                 RequestContext.getCurrentInstance().execute("PF('StructureCreerDialog').hide()");
                 signalSuccess();
-            } else if (this.structure != null) {
-                this.structureFacadeLocal.edit(this.structure);
-                this.modifier = this.detail = this.supprimer = true;
+            } else if (structure != null) {
+                structure.setIdstatutstructure(statutstructureFacadeLocal.find(structure.getIdstatutstructure().getIdstatutstructure()));
+                structure.setIdtypestructure(typestructureFacadeLocal.find(structure.getIdtypestructure().getIdtypestructure()));
+                structureFacadeLocal.edit(structure);
+                detail = supprimer = modifier = true;
                 RequestContext.getCurrentInstance().execute("PF('StructureCreerDialog').hide()");
                 signalSuccess();
             } else {
@@ -144,7 +146,6 @@ public class StructureController extends AbstractStructureController implements 
 
     public void delete(Structure item) {
         try {
-
             structure = item;
 
             /*if (!Utilitaires.isAccess(4L)) {

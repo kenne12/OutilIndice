@@ -65,11 +65,9 @@ public class CibleBonusRDeptCtrl extends AbstractCibleBonusRDeptCtrl implements 
 
         if (sousperiode.getIdsousperiode() != null && sousperiode.getIdsousperiode() > 0) {
             List<Cible> list = cibleFacadeLocal.findByIdStructureSousPeriode(SessionMBean.getStructure().getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 6);
-            if (list.isEmpty() || list == null) {
-                services.addAll(serviceFacadeLocal.findAllOrderByCode());
-            } else {
+            services.addAll(SessionMBean.getServices());
+            if (!list.isEmpty()) {
                 cibles.addAll(list);
-                services.addAll(serviceFacadeLocal.findAllOrderByCode());
 
                 for (Cible c : list) {
                     selectedServices.add(c.getIdservice());
@@ -85,8 +83,7 @@ public class CibleBonusRDeptCtrl extends AbstractCibleBonusRDeptCtrl implements 
     public void addServiceToTable() {
         if (!selectedServices.isEmpty()) {
             for (Service s : selectedServices) {
-                Cible c = new Cible();
-                c.setIdcible(0l);
+                Cible c = new Cible(0l);
                 c.setIdcritere(new Critere(6));
                 c.setIdstructure(structure);
                 c.setIdperiode(periode);
@@ -160,7 +157,7 @@ public class CibleBonusRDeptCtrl extends AbstractCibleBonusRDeptCtrl implements 
                     cibleFacadeLocal.edit(c);
                 }
             }
-            listCibles = cibleFacadeLocal.findByIdStructureSousPeriode(SessionMBean.getStructure().getIdstructure() , periode.getIdperiode(), sousperiode.getIdsousperiode(), 6);
+            listCibles = cibleFacadeLocal.findByIdStructureSousPeriode(SessionMBean.getStructure().getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 6);
             this.cibles.clear();
             cible = new Cible();
             cible.setIdservice(new Service());

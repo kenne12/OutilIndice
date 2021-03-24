@@ -75,11 +75,9 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
         selectedCategories.clear();
         parametragecriteres.clear();
         List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
-        if (list.isEmpty() || list == null) {
-            categories.addAll(categorieFacadeLocal.findAllRangeByCode());
-        } else {
+        categories.addAll(SessionMBean.getCategories());
+        if (!list.isEmpty()) {
             parametragecriteres.addAll(list);
-            categories.addAll(categorieFacadeLocal.findAllRangeByCode());
             for (Parametragecritere pc : list) {
                 selectedCategories.add(pc.getIdcategorie());
             }
@@ -100,8 +98,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
                 return;
             }
             for (EffectifCategorie efc : effectifCategories) {
-                Parametragecritere pc = new Parametragecritere();
-                pc.setIdparametragecritere(0l);
+                Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
                 pc.setIdcritere(new Critere(2));
                 pc.setIndice(efc.getCategorie().getIndice());
@@ -132,8 +129,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
     public void addCategoriesToTable() {
         if (!selectedCategories.isEmpty()) {
             for (Categorie c : selectedCategories) {
-                Parametragecritere pc = new Parametragecritere();
-                pc.setIdparametragecritere(0l);
+                Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
                 pc.setIdcritere(new Critere(2));
                 pc.setIndice(c.getIndice());
@@ -148,10 +144,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
                 pc.setPratiqueprivee(false);
                 pc.setPerformanceindividuelle(false);
                 pc.setResultatqualitatifdept(false);
-                pc.setBonusrevenudept(false);
-                /*pc.setNombre(efc.getNombre());
-                 pc.setTotal1(pc.getValeurjournee() * efc.getNombre());
-                 pc.setTotal2(pc.getValeurnuit() * efc.getNombre());*/
+                pc.setBonusrevenudept(false);                
                 parametragecriteres.add(pc);
             }
             categories.removeAll(selectedCategories);

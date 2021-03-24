@@ -34,7 +34,7 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
     }
 
     @PostConstruct
-    private void init() {        
+    private void init() {
         structures.clear();
         structures.add(SessionMBean.getStructure());
         listParametres = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
@@ -75,11 +75,9 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
         parametragecriteres.clear();
 
         List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
-        if (list.isEmpty() || list == null) {
-            categories.addAll(categorieFacadeLocal.findAllRangeByCode());
-        } else {
+        categories.addAll(SessionMBean.getCategories());
+        if (!list.isEmpty()) {
             parametragecriteres.addAll(list);
-            categories.addAll(categorieFacadeLocal.findAllRangeByCode());
             for (Parametragecritere pc : list) {
                 selectedCategories.add(pc.getIdcategorie());
             }
@@ -99,8 +97,7 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
                 return;
             }
             for (EffectifCategorie efc : effectifCategories) {
-                Parametragecritere pc = new Parametragecritere();
-                pc.setIdparametragecritere(0l);
+                Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
                 pc.setIdcritere(new Critere(3));
                 pc.setIndice(efc.getCategorie().getIndice());
@@ -150,8 +147,7 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
     public void addCategoriesToTable() {
         if (!selectedCategories.isEmpty()) {
             for (Categorie c : selectedCategories) {
-                Parametragecritere pc = new Parametragecritere();
-                pc.setIdparametragecritere(0l);
+                Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
                 pc.setIdcritere(new Critere(3));
                 pc.setIndice(c.getIndice());
@@ -246,5 +242,4 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-
 }

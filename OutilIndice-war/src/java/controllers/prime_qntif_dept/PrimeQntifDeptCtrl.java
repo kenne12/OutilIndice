@@ -40,6 +40,7 @@ public class PrimeQntifDeptCtrl extends AbstractPrimeQntifDeptCtrl implements Se
         structures.add(SessionMBean.getStructure());
         cible = new Cible();
         cible.setIdindicateur(new Indicateur());
+        services = SessionMBean.getServices();
     }
 
     public void prepareCreate() {

@@ -67,8 +67,7 @@ public class AbstractPersonnel {
         return personnels;
     }
 
-    public List<Service> getServices() {
-        services = serviceFacadeLocal.findAll();
+    public List<Service> getServices() { 
         return services;
     }
 
@@ -76,8 +75,7 @@ public class AbstractPersonnel {
         this.services = services;
     }
 
-    public List<Categorie> getCategories() {
-        categories = categorieFacadeLocal.findAllRangeByCode();
+    public List<Categorie> getCategories() {        
         return categories;
     }
 

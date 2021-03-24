@@ -68,11 +68,9 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
         selectedCategories.clear();
         parametragecriteres.clear();
         List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructurePrqd(SessionMBean.getStructure().getIdstructure(), 5, true);
-        if (list.isEmpty() || list == null) {
-            categories.addAll(categorieFacadeLocal.findAllRangeByCode());
-        } else {
+        categories.addAll(SessionMBean.getCategories());
+        if (!list.isEmpty()) {
             parametragecriteres.addAll(list);
-            categories.addAll(categorieFacadeLocal.findAllRangeByCode());
             for (Parametragecritere pc : list) {
                 selectedCategories.add(pc.getIdcategorie());
             }
@@ -94,8 +92,7 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
             }
 
             for (EffectifCategorie efc : effectifCategories) {
-                Parametragecritere pc = new Parametragecritere();
-                pc.setIdparametragecritere(0l);
+                Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
                 pc.setIdcritere(new Critere(5));
                 pc.setIndice(efc.getCategorie().getIndice());
@@ -140,8 +137,7 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
     public void addCategoriesToTable() {
         if (!selectedCategories.isEmpty()) {
             for (Categorie c : selectedCategories) {
-                Parametragecritere pc = new Parametragecritere();
-                pc.setIdparametragecritere(0l);
+                Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
                 pc.setIdcritere(new Critere(5));
                 pc.setIndice(c.getIndice());

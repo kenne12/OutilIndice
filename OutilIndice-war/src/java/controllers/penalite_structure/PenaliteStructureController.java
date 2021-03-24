@@ -35,12 +35,11 @@ public class PenaliteStructureController extends AbstractPenaliteStructure imple
     public PenaliteStructureController() {
     }
 
-    
     @PostConstruct
-    private void init(){
+    private void init() {
         listParametragePenalites = parametragePenaliteFacadeLocal.findByIdStructureIdCritere(structure.getIdstructure(), 10);
     }
-    
+
     public void prepareCreate(String option) {
         Criterestructure criterestructure = Utilitaires.findCritereSInSession(10);
         if (criterestructure == null) {
@@ -60,7 +59,6 @@ public class PenaliteStructureController extends AbstractPenaliteStructure imple
     public void prepareEdit(ParametragePenalite p) {
         this.parametragePenalite = p;
         mode = "Edit";
-        //this.updateFiltre();
         RequestContext.getCurrentInstance().execute("PF('CritereCreateDialog').show()");
     }
 
@@ -69,18 +67,16 @@ public class PenaliteStructureController extends AbstractPenaliteStructure imple
         parametragePenalites.clear();
         selectedPenalites.clear();
         parametragePenalites = parametragePenaliteFacadeLocal.findByIdStructureIdCritere(structure.getIdstructure(), 10);
+        penalites = penaliteFacadeLocal.findAllPersonnel();
         if (!parametragePenalites.isEmpty()) {
             List<Penalite> list = new ArrayList<>();
             for (ParametragePenalite scs : parametragePenalites) {
                 list.add(scs.getPenalite());
             }
 
-            penalites = penaliteFacadeLocal.findAllPersonnel();
             if (!penalites.isEmpty()) {
                 penalites.removeAll(list);
             }
-        } else {
-            penalites = penaliteFacadeLocal.findAllPersonnel();
         }
         total = this.sommePenalites();
         RequestContext.getCurrentInstance().execute("PF('PenaliteCreateDialog').show()");
@@ -90,8 +86,7 @@ public class PenaliteStructureController extends AbstractPenaliteStructure imple
         if (!selectedPenalites.isEmpty()) {
             for (Penalite p : selectedPenalites) {
                 if (!checkPenaliteInTable(p)) {
-                    ParametragePenalite obj = new ParametragePenalite();
-                    obj.setIdParametragePenalite(0);
+                    ParametragePenalite obj = new ParametragePenalite(0);
                     obj.setStructure(structure);
                     obj.setDetail(p.getDetail());
                     obj.setPenalite(p);

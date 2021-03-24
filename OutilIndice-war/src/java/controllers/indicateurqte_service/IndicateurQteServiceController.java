@@ -18,6 +18,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
+import utils.SessionMBean;
 import utils.Utilitaires;
 
 /**
@@ -34,7 +35,7 @@ public class IndicateurQteServiceController extends AbstractIndicateurQteService
 
     @PostConstruct
     private void init() {
-
+        services = SessionMBean.getServices();
     }
 
     public void prepareCreate() {
@@ -85,8 +86,7 @@ public class IndicateurQteServiceController extends AbstractIndicateurQteService
         if (!selectedindicateurs.isEmpty()) {
             for (Indicateur i : selectedindicateurs) {
                 if (!checkCritereInTable(i)) {
-                    IndicateurQteService obj = new IndicateurQteService();
-                    obj.setIdIndicateurQteService(0l);
+                    IndicateurQteService obj = new IndicateurQteService(0l);
                     obj.setService(service);
                     obj.setIndicateur(i);
                     obj.setStructure(structure);

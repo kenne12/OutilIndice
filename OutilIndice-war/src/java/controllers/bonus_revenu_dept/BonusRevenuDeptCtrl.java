@@ -68,11 +68,9 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
         selectedCategories.clear();
         parametragecriteres.clear();
         List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructureBrd(SessionMBean.getStructure().getIdstructure(), 6, true);
-        if (list.isEmpty()) {
-            categories.addAll(categorieFacadeLocal.findAllRangeByCode());
-        } else {
+        categories.addAll(SessionMBean.getCategories());
+        if (!list.isEmpty()) {
             parametragecriteres.addAll(list);
-            categories.addAll(categorieFacadeLocal.findAllRangeByCode());
             for (Parametragecritere pc : list) {
                 selectedCategories.add(pc.getIdcategorie());
             }
@@ -93,8 +91,7 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
                 return;
             }
             for (EffectifCategorie efc : effectifCategories) {
-                Parametragecritere pc = new Parametragecritere();
-                pc.setIdparametragecritere(0l);
+                Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
                 pc.setIdcritere(new Critere(6));
                 pc.setIndice(efc.getCategorie().getIndice());
@@ -139,8 +136,7 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
     public void addCategoriesToTable() {
         if (!selectedCategories.isEmpty()) {
             for (Categorie c : selectedCategories) {
-                Parametragecritere pc = new Parametragecritere();
-                pc.setIdparametragecritere(0l);
+                Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
                 pc.setIdcritere(new Critere(6));
                 pc.setIndice(c.getIndice());

@@ -156,7 +156,6 @@ public class AbstractSousCritereService {
     }
 
     public List<Service> getServices() {
-        services = serviceFacadeLocal.findAllOrderByCode();
         return services;
     }
 

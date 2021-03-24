@@ -62,10 +62,8 @@ public class EffectifCategorieCtrl extends AbstractEffectifCategorieCtrl impleme
         effectifCategories.clear();
         if (structure.getIdstructure() != null && structure.getIdstructure() > 0) {
             List<EffectifCategorie> list = effectifCategorieFacadeLocal.findByIdStructure(structure.getIdstructure());
-            if (list.isEmpty() || list == null) {
-                categories.addAll(categorieFacadeLocal.findAllRangeByCode());
-            } else {
-                categories.addAll(categorieFacadeLocal.findAllRangeByCode());
+            categories.addAll(SessionMBean.getCategories());
+            if (!list.isEmpty()) {
                 for (EffectifCategorie cs : list) {
                     selectedCategories.add(cs.getCategorie());
                 }
@@ -89,8 +87,7 @@ public class EffectifCategorieCtrl extends AbstractEffectifCategorieCtrl impleme
                         }
                     }
 
-                    EffectifCategorie cs = new EffectifCategorie();
-                    cs.setIdEffectifCategorie(0l);
+                    EffectifCategorie cs = new EffectifCategorie(0l);
                     cs.setStructure(structure);
                     cs.setCategorie(c);
                     cs.setNombre(listPc.size());
@@ -210,5 +207,4 @@ public class EffectifCategorieCtrl extends AbstractEffectifCategorieCtrl impleme
     public void updateSaisie() {
         this.sommeData();
     }
-
 }

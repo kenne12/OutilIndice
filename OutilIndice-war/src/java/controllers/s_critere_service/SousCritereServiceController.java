@@ -39,7 +39,8 @@ public class SousCritereServiceController extends AbstractSousCritereService imp
     @PostConstruct
     private void init() {
         structures.clear();
-        structures.add(SessionMBean.getStructure());
+        structures.add(SessionMBean.getStructure());        
+        services = SessionMBean.getServices();        
         this.initDetailSCData();
     }
 

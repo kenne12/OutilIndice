@@ -23,7 +23,7 @@
 
             <h:panelGrid style="margin: auto;" columns="2">
                 <p:commandButton  onclick="PF('DeconnectionDialog').hide()" style="margin-right: 75%; font-family: Cambria; font-size: 14px; color: red;" value="#{langue.annuler}" />
-                <p:commandButton actionListener="#{loginBean.deconnexion()}" style="font-family: Cambria; font-size: 14px;" value="#{langue.valider}" />
+                <p:commandButton actionListener="#{loginController.logout()}" style="font-family: Cambria; font-size: 14px;" value="#{langue.valider}" />
             </h:panelGrid>
 
             <hr size="3" style="background-color: cornflowerblue;"/>

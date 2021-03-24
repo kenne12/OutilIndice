@@ -90,7 +90,6 @@ public class AbstractRealisationPrimeRQltifDeptCtrl {
     }
 
     public List<Service> getServices() {
-        services = serviceFacadeLocal.findAllOrderByCode();
         return services;
     }
 

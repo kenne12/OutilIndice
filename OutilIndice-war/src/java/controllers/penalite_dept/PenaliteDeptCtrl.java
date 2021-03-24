@@ -39,6 +39,7 @@ public class PenaliteDeptCtrl extends AbstractPenaliteDeptCtrl implements Serial
     private void init() {
         structures.clear();
         structures.add(SessionMBean.getStructure());
+        services = SessionMBean.getServices();
     }
 
     public void prepareCreate() {
@@ -106,8 +107,7 @@ public class PenaliteDeptCtrl extends AbstractPenaliteDeptCtrl implements Serial
                         }
                     }
                 } else {
-                    evaluationPenaliteDept = new EvaluationPenaliteDept();
-                    evaluationPenaliteDept.setIdevaluationpenalitedept(0l);
+                    evaluationPenaliteDept = new EvaluationPenaliteDept(0l);
                     evaluationPenaliteDept.setIdservice(service);
                     evaluationPenaliteDept.setIdperiode(SessionMBean.getPeriode());
                     evaluationPenaliteDept.setIdsousperiode(sousperiode);
@@ -117,8 +117,7 @@ public class PenaliteDeptCtrl extends AbstractPenaliteDeptCtrl implements Serial
 
                     if (!penalites.isEmpty()) {
                         for (Penalite p : penalites) {
-                            LignePenaliteDept lpd = new LignePenaliteDept();
-                            lpd.setIdlignepenalitedept(0l);
+                            LignePenaliteDept lpd = new LignePenaliteDept(0l);
                             lpd.setEtat(false);
                             lpd.setValeur(0);
                             lpd.setIdpenalite(p);
@@ -160,8 +159,7 @@ public class PenaliteDeptCtrl extends AbstractPenaliteDeptCtrl implements Serial
     public void addPenaliteToTable() {
         if (!selectedPenalites.isEmpty()) {
             for (Penalite p : selectedPenalites) {
-                LignePenaliteDept lpd = new LignePenaliteDept();
-                lpd.setIdlignepenalitedept(0l);
+                LignePenaliteDept lpd = new LignePenaliteDept(0l);
                 lpd.setEtat(false);
                 lpd.setIdpenalite(p);
                 lpd.setValeur(0);

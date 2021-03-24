@@ -40,7 +40,7 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
         listParametres = parametragecritereFacadeLocal.findByIdStructurePpi(SessionMBean.getStructure().getIdstructure(), 7, true);
         parametragecritere = new Parametragecritere();
         parametragecritere.setIdcategorie(new Categorie());
-        
+
         criterestructure = Utilitaires.findCritereSInSession(7);
         if (criterestructure != null) {
             totalPointMaxCritere = criterestructure.getResultat();
@@ -69,8 +69,7 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
             }
 
             for (EffectifCategorie efc : effectifCategories) {
-                Parametragecritere pc = new Parametragecritere();
-                pc.setIdparametragecritere(0l);
+                Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
                 pc.setIdcritere(new Critere(7));
                 pc.setIndice(efc.getCategorie().getIndice());
@@ -124,11 +123,9 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
         parametragecriteres.clear();
 
         List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructurePpi(SessionMBean.getStructure().getIdstructure(), 7, true);
-        if (list.isEmpty()) {
-            categories.addAll(categorieFacadeLocal.findAllRangeByCode());
-        } else {
+        categories.addAll(SessionMBean.getCategories());
+        if (!list.isEmpty()) {
             parametragecriteres.addAll(list);
-            categories.addAll(categorieFacadeLocal.findAllRangeByCode());
             for (Parametragecritere pc : list) {
                 selectedCategories.add(pc.getIdcategorie());
             }
@@ -141,8 +138,7 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
     public void addCategoriesToTable() {
         if (!selectedCategories.isEmpty()) {
             for (Categorie c : selectedCategories) {
-                Parametragecritere pc = new Parametragecritere();
-                pc.setIdparametragecritere(0l);
+                Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
                 pc.setIdcritere(new Critere(7));
                 pc.setIndice(c.getIndice());

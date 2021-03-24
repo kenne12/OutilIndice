@@ -75,11 +75,9 @@ public class CritereNIHPerdueCtrl extends AbstratCritereNIHPerdueCtrl implements
         selectedCategories.clear();
         parametragecriteres.clear();
         List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructureHp(SessionMBean.getStructure().getIdstructure(), 8, true);
-        if (list.isEmpty() || list == null) {
-            categories.addAll(categorieFacadeLocal.findAllRangeByCode());
-        } else {
+        categories.addAll(categorieFacadeLocal.findAllRangeByCode());
+        if (!list.isEmpty()) {
             parametragecriteres.addAll(list);
-            categories.addAll(categorieFacadeLocal.findAllRangeByCode());
             for (Parametragecritere pc : list) {
                 selectedCategories.add(pc.getIdcategorie());
             }
@@ -99,8 +97,7 @@ public class CritereNIHPerdueCtrl extends AbstratCritereNIHPerdueCtrl implements
                 return;
             }
             for (EffectifCategorie efc : effectifCategories) {
-                Parametragecritere pc = new Parametragecritere();
-                pc.setIdparametragecritere(0l);
+                Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
                 pc.setIdcritere(new Critere(8));
                 pc.setIndice(efc.getCategorie().getIndice());
@@ -143,8 +140,7 @@ public class CritereNIHPerdueCtrl extends AbstratCritereNIHPerdueCtrl implements
     public void addCategoriesToTable() {
         if (!selectedCategories.isEmpty()) {
             for (Categorie c : selectedCategories) {
-                Parametragecritere pc = new Parametragecritere();
-                pc.setIdparametragecritere(0l);
+                Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
                 pc.setIdcritere(new Critere(8));
                 pc.setIndice(c.getIndice());

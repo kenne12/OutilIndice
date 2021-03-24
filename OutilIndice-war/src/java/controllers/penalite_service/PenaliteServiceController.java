@@ -15,9 +15,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
+import utils.SessionMBean;
 import utils.Utilitaires;
 
 /**
@@ -34,8 +36,9 @@ public class PenaliteServiceController extends AbstractPenaliteService implement
     public PenaliteServiceController() {
     }
 
+    @PostConstruct
     private void init() {
-
+        services = SessionMBean.getServices();
     }
 
     public void prepareCreate() {
@@ -44,6 +47,7 @@ public class PenaliteServiceController extends AbstractPenaliteService implement
             JsfUtil.addWarningMessage("La prime de resultat qualitatif de departement de fait pas partie des critères de cette structure");
             return;
         }
+
         penalites.clear();
         selectedPenalites.clear();
         total = 0;
@@ -63,32 +67,17 @@ public class PenaliteServiceController extends AbstractPenaliteService implement
         parametragePenalites.clear();
         selectedPenalites.clear();
         parametragePenalites = parametragePenaliteFacadeLocal.findByIdServiceIdCritere(structure.getIdstructure(), service.getIdservice(), 9);
+        penalites = penaliteFacadeLocal.findAllService();
         if (!parametragePenalites.isEmpty()) {
             List<Penalite> list = new ArrayList<>();
             for (ParametragePenalite scs : parametragePenalites) {
                 list.add(scs.getPenalite());
             }
 
-            penalites = penaliteFacadeLocal.findAllService();
             if (!penalites.isEmpty()) {
                 penalites.removeAll(list);
             }
-        } else {
-            penalites = penaliteFacadeLocal.findAllService();
         }
-        total = this.sommePenalites();
-    }
-
-    public void updateFiltreSc() {
-        penalites.clear();
-        /*if (critereservice.getCritere().getIdcritere() != null && critereservice.getCritere().getIdcritere() > 0) {
-         List<Penalite> list = penaliteFacadeLocal.findAllService();
-         if (list.isEmpty()) {
-         JsfUtil.addErrorMessage("Veuillez définir les sous - criteres pour cette service");
-         return;
-         }
-         penalites.addAll(list);
-         }*/
         total = this.sommePenalites();
     }
 
@@ -96,8 +85,7 @@ public class PenaliteServiceController extends AbstractPenaliteService implement
         if (!selectedPenalites.isEmpty()) {
             for (Penalite p : selectedPenalites) {
                 if (!checkCritereInTable(p)) {
-                    ParametragePenalite obj = new ParametragePenalite();
-                    obj.setIdParametragePenalite(0);
+                    ParametragePenalite obj = new ParametragePenalite(0);
                     obj.setService(service);
                     obj.setDetail(p.getDetail());
                     obj.setPenalite(p);
