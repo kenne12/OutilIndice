@@ -126,8 +126,7 @@ public class AbstractPrimeQntifDeptCtrl {
         return periodes;
     }
 
-    public List<Service> getServices() {
-        services = serviceFacadeLocal.findAllOrderByCode();
+    public List<Service> getServices() {        
         return services;
     }
 
