@@ -40,11 +40,8 @@ public class CritereNIHPerdueCtrl extends AbstratCritereNIHPerdueCtrl implements
         listParametres = parametragecritereFacadeLocal.findByIdStructureHp(SessionMBean.getStructure().getIdstructure(), 8, true);
         parametragecritere = new Parametragecritere();
         parametragecritere.setIdcategorie(new Categorie());
-
         criterestructure = Utilitaires.findCritereSInSession(8);
-        if (criterestructure != null) {
-            totalPointMaxCritere = criterestructure.getResultat();
-        }
+        totalPointMaxCritere = criterestructure.getResultat();
     }
 
     public void prepareCreate(String option) {

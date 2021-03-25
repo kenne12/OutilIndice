@@ -36,6 +36,7 @@ public class PersonnelController extends AbstractPersonnel implements Serializab
         this.initPersonnel();
         services = SessionMBean.getServices();
         categories = SessionMBean.getCategories();
+        responsabilites = SessionMBean.getResponsabilites();
     }
 
     private void initPersonnel() {

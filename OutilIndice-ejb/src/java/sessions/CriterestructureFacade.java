@@ -32,7 +32,7 @@ public class CriterestructureFacade extends AbstractFacade<Criterestructure> imp
     
     @Override
     public List<Criterestructure> findByIdStructure(Long idstructure) {
-        Query query = em.createQuery("SELECT c FROM Criterestructure c WHERE c.structure.idstructure=:idStructure ORDER BY c.critere.code");
+        Query query = em.createQuery("SELECT c FROM Criterestructure c WHERE c.structure.idstructure=:idStructure ORDER BY c.critere.idcritere");
         query.setParameter("idStructure", idstructure);
         return query.getResultList();
     }

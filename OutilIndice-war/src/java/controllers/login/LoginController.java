@@ -35,8 +35,10 @@ import entities.TypestructureResponsabilite;
 import entities.TypestructureService;
 import entities.TypestructureTypeSousperiode;
 import entities.Utilisateurstructure;
+import java.util.Map;
 import org.primefaces.context.RequestContext;
 import utils.Routine;
+import utils.Utilitaires;
 
 @ManagedBean
 @SessionScoped
@@ -172,11 +174,55 @@ public class LoginController extends AbstractLoginController implements Serializ
             session.setAttribute("responsabilites", responsabilites);
             session.setAttribute("ts_responsabilites", typestructureResponsabilites);
 
+            this.getDetail();
+
             showSessionPanel = false;
         } catch (Exception e) {
             showSessionPanel = true;
             JsfUtil.addErrorMessage("Exception");
         }
+    }
+
+    private void getDetail() {
+        Map map = Utilitaires.findAllDetailCritereInSession(1);
+        critere1 = (String) map.get("display_string");
+        critere1_numero = (String) map.get("order");
+
+        map = Utilitaires.findAllDetailCritereInSession(2);
+        critere2 = (String) map.get("display_string");
+        critere2_numero = (String) map.get("order");
+
+        map = Utilitaires.findAllDetailCritereInSession(3);
+        critere3 = (String) map.get("display_string");
+        critere3_numero = (String) map.get("order");
+
+        map = Utilitaires.findAllDetailCritereInSession(4);
+        critere4 = (String) map.get("display_string");
+        critere4_numero = (String) map.get("order");
+
+        map = Utilitaires.findAllDetailCritereInSession(5);
+        critere5 = (String) map.get("display_string");
+        critere5_numero = (String) map.get("order");
+
+        map = Utilitaires.findAllDetailCritereInSession(6);
+        critere6 = (String) map.get("display_string");
+        critere6_numero = (String) map.get("order");
+
+        map = Utilitaires.findAllDetailCritereInSession(7);
+        critere7 = (String) map.get("display_string");
+        critere7_numero = (String) map.get("order");
+
+        map = Utilitaires.findAllDetailCritereInSession(8);
+        critere8 = (String) map.get("display_string");
+        critere8_numero = (String) map.get("order");
+
+        map = Utilitaires.findAllDetailCritereInSession(9);
+        critere9 = (String) map.get("display_string");
+        critere9_numero = (String) map.get("order");
+
+        map = Utilitaires.findAllDetailCritereInSession(10);
+        critere10 = (String) map.get("display_string");
+        critere10_numero = (String) map.get("order");
     }
 
     public void updateCompte() {

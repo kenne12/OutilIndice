@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -239,7 +241,7 @@ public class Utilitaires {
         }
         return result;
     }
-    
+
     public static Critere findCritereInSession(int idCritere) {
         List<Criterestructure> list = SessionMBean.getCritereStructures();
         if (list.isEmpty()) {
@@ -254,6 +256,51 @@ public class Utilitaires {
             }
         }
         return result;
+    }
+
+    public static String findOrderCritereInSession(int idCritere) {
+        List<Criterestructure> list = SessionMBean.getCritereStructures();
+        if (list.isEmpty()) {
+            return "";
+        }
+        String result = "";
+        int i = 0;
+        for (Criterestructure c : list) {
+            if (c.getCritere().getIdcritere().equals(idCritere)) {
+                result = "" + (i + 1);
+                break;
+            }
+            i++;
+        }
+        return result;
+    }
+
+    public static Map findAllDetailCritereInSession(int idCritere) {
+        Map map = new HashMap<>();
+        List<Criterestructure> list = SessionMBean.getCritereStructures();
+        map.put("order", "");
+        map.put("critere", null);
+        map.put("s_critere", null);
+        map.put("display_string", "none");
+        map.put("display_boolean", false);
+
+        if (list.isEmpty()) {
+            return map;
+        }
+
+        int i = 0;
+        for (Criterestructure c : list) {
+            if (c.getCritere().getIdcritere().equals(idCritere)) {
+                map.put("order", "" + (i + 1));
+                map.put("critere", c.getCritere());
+                map.put("s_critere", c);
+                map.put("display_string", "block");
+                map.put("display_boolean", true);
+                break;
+            }
+            i++;
+        }
+        return map;
     }
 
 }

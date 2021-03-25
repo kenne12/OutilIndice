@@ -79,8 +79,7 @@ public class AbstractPersonnel {
         return categories;
     }
 
-    public List<Responsabilite> getResponsabilites() {
-        responsabilites = responsabiliteFacadeLocal.findAll();
+    public List<Responsabilite> getResponsabilites() {       
         return responsabilites;
     }
 

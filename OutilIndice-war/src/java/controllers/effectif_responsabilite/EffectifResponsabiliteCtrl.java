@@ -61,10 +61,8 @@ public class EffectifResponsabiliteCtrl extends AbstractEffectifResponsabiliteCt
         effectifResponsabilites.clear();
         if (structure.getIdstructure() != null && structure.getIdstructure() > 0) {
             List<EffectifResponsabilite> list = effectifResponsabiliteFacadeLocal.findByIdStructure(structure.getIdstructure());
-            if (list.isEmpty() || list == null) {
-                responsabilites.addAll(responsabiliteFacadeLocal.findAll());
-            } else {
-                responsabilites.addAll(responsabiliteFacadeLocal.findAll());
+            responsabilites.addAll(SessionMBean.getResponsabilites());
+            if (!list.isEmpty()) {
                 for (EffectifResponsabilite cs : list) {
                     selectedResponsabilites.add(cs.getResponsabilite());
                 }
@@ -89,8 +87,7 @@ public class EffectifResponsabiliteCtrl extends AbstractEffectifResponsabiliteCt
                         }
                     }
 
-                    EffectifResponsabilite cs = new EffectifResponsabilite();
-                    cs.setIdEffectifResponsabilite(0l);
+                    EffectifResponsabilite cs = new EffectifResponsabilite(0l);
                     cs.setStructure(structure);
                     cs.setResponsabilite(r);
                     cs.setNombre(listPr.size());

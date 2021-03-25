@@ -185,11 +185,9 @@ public class SousCritereStrController extends AbstractSousCritereStr implements 
             List<Souscritere> adds = new ArrayList<>();
             for (Souscritere sc : selectedSouscriteres) {
                 if (!checkCritereInTable(sc)) {
-                    Detailsc dcs = new Detailsc();
-                    dcs.setIddetailsc(0l);
+                    Detailsc dcs = new Detailsc(0l);
                     dcs.setIdstructure(structure);
                     dcs.setIdsouscritere(sc);
-
                     dcs.setPointMax((double) sc.getPointmax());
                     dcs.setDetail(sc.getDetail());
                     listDetailsc.add(dcs);
