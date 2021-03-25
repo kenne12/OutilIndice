@@ -6,6 +6,7 @@ import entities.Recette;
 import entities.Sousperiode;
 import entities.Sousrubriquedepense;
 import entities.Structure;
+import entities.TypeSousPeriode;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -16,6 +17,7 @@ import sessions.RecetteFacadeLocal;
 import sessions.SousperiodeFacadeLocal;
 import sessions.SousrubriquedepenseFacadeLocal;
 import sessions.StructureFacadeLocal;
+import sessions.TypeSousPeriodeFacadeLocal;
 import utils.Routine;
 import utils.SessionMBean;
 
@@ -47,7 +49,11 @@ public class AbstractDepenseController {
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
     protected Structure structure = SessionMBean.getStructure();
-    protected List<Structure> structures = new ArrayList<>();
+
+    @EJB
+    protected TypeSousPeriodeFacadeLocal typeSousPeriodeFacadeLocal;
+    protected TypeSousPeriode typeSousPeriode = new TypeSousPeriode();
+    protected List<TypeSousPeriode> typeSousPeriodes = new ArrayList<>();
 
     protected Routine routine = new Routine();
 
@@ -59,53 +65,7 @@ public class AbstractDepenseController {
     protected double total = 0;
     protected double pourcentage = 0;
 
-    protected Boolean detail = true;
-    protected Boolean modifier = true;
-    protected Boolean consulter = true;
-    protected Boolean imprimer = true;
-    protected Boolean supprimer = true;
-
     protected String mode = "";
-
-    public Boolean getDetail() {
-        return this.detail;
-    }
-
-    public void setDetail(Boolean detail) {
-        this.detail = detail;
-    }
-
-    public Boolean getModifier() {
-        return this.modifier;
-    }
-
-    public void setModifier(Boolean modifier) {
-        this.modifier = modifier;
-    }
-
-    public Boolean getConsulter() {
-        return this.consulter;
-    }
-
-    public void setConsulter(Boolean consulter) {
-        this.consulter = consulter;
-    }
-
-    public Boolean getImprimer() {
-        return this.imprimer;
-    }
-
-    public void setImprimer(Boolean imprimer) {
-        this.imprimer = imprimer;
-    }
-
-    public Boolean getSupprimer() {
-        return this.supprimer;
-    }
-
-    public void setSupprimer(Boolean supprimer) {
-        this.supprimer = supprimer;
-    }
 
     public Structure getStructure() {
         return structure;
@@ -121,11 +81,6 @@ public class AbstractDepenseController {
 
     public String getMode() {
         return this.mode;
-    }
-
-    public List<Structure> getStructures() {
-        structures = structureFacadeLocal.findAll();
-        return structures;
     }
 
     public Periode getPeriode() {
@@ -149,7 +104,6 @@ public class AbstractDepenseController {
     }
 
     public List<Sousperiode> getSousperiodes() {
-        sousperiodes = sousperiodeFacadeLocal.findAllRangeCode();
         return sousperiodes;
     }
 
@@ -203,6 +157,18 @@ public class AbstractDepenseController {
 
     public void setSelectedSousrubriquedepenses(List<Sousrubriquedepense> selectedSousrubriquedepenses) {
         this.selectedSousrubriquedepenses = selectedSousrubriquedepenses;
+    }
+
+    public TypeSousPeriode getTypeSousPeriode() {
+        return typeSousPeriode;
+    }
+
+    public void setTypeSousPeriode(TypeSousPeriode typeSousPeriode) {
+        this.typeSousPeriode = typeSousPeriode;
+    }
+
+    public List<TypeSousPeriode> getTypeSousPeriodes() {
+        return typeSousPeriodes;
     }
 
 }

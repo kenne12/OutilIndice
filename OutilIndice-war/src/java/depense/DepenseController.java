@@ -2,6 +2,7 @@ package depense;
 
 import entities.Depense;
 import entities.Recette;
+import entities.Sousperiode;
 import entities.Sousrubriquedepense;
 import java.io.Serializable;
 import java.util.List;
@@ -19,7 +20,7 @@ public class DepenseController extends AbstractDepenseController implements Seri
 
     @PostConstruct
     private void init() {
-
+        typeSousPeriodes = SessionMBean.getTypeSousPeriodes();
     }
 
     private void initDepense() {
@@ -61,6 +62,21 @@ public class DepenseController extends AbstractDepenseController implements Seri
             RequestContext.getCurrentInstance().execute("PF('DepenseCreerDialog').show()");
         } catch (Exception e) {
             signalException(e);
+        }
+    }
+
+    public void updateSousPeriode(String option) {
+        sousperiodes.clear();
+        sousperiode = new Sousperiode(0);
+
+        if (option.equals("2")) {
+            sousrubriquedepenses.clear();
+            recettes.clear();
+            depenses.clear();
+        }
+
+        if (typeSousPeriode.getIdTypeSousperiode() != 0) {
+            sousperiodes = sousperiodeFacadeLocal.findIdTypeSousPeriode(typeSousPeriode.getIdTypeSousperiode());
         }
     }
 
@@ -227,8 +243,7 @@ public class DepenseController extends AbstractDepenseController implements Seri
         try {
             for (Sousrubriquedepense srd : selectedSousrubriquedepenses) {
                 if (!checkSubRubricInList(srd, depenses)) {
-                    Depense d = new Depense();
-                    d.setIddepense(0l);
+                    Depense d = new Depense(0l);
                     d.setIdperiode(periode);
                     d.setIdsousperiode(sousperiode);
                     d.setIdsousrubriquedepense(srd);
@@ -236,7 +251,9 @@ public class DepenseController extends AbstractDepenseController implements Seri
                     d.setPourcentage(0d);
                     depenses.add(d);
                 }
-            }
+            }            
+            sousrubriquedepenses.removeAll(selectedSousrubriquedepenses);
+            selectedSousrubriquedepenses.clear();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -251,6 +268,18 @@ public class DepenseController extends AbstractDepenseController implements Seri
             }
         }
         return result;
+    }
+    
+    public void removeSubRubric(int index, Depense item) { 
+        Depense dTemp = depenses.get(index);
+        
+        if (dTemp.getIddepense() != 0) {
+            depenses.remove(index);
+            sousrubriquedepenses.add(item.getIdsousrubriquedepense());
+        } else {
+            depenses.remove(index);
+            sousrubriquedepenses.add(dTemp.getIdsousrubriquedepense());
+        }
     }
 
     public void recherche() {
@@ -285,7 +314,6 @@ public class DepenseController extends AbstractDepenseController implements Seri
             }
             depenses = depenseFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
             Utilitaires.saveOperation(this.mouchardFacadeLocal, "Enregistrement des depense de la structure : " + this.structure.getNom(), SessionMBean.getUserAccount());
-            modifier = detail = supprimer = true;
             RequestContext.getCurrentInstance().execute("PF('DepenseCreerDialog').hide()");
             signalSuccess();
         } catch (Exception e) {
@@ -300,9 +328,7 @@ public class DepenseController extends AbstractDepenseController implements Seri
                     signalError("acces_refuse");
                     return;
                 }
-
                 this.structureFacadeLocal.remove(this.structure);
-                //Utilitaires.saveOperation(this.mouchardFacadeLocal, "Suppresion de l'structure : " + this.structure.getNom() + " " + this.structure.getPrenom(), SessionMBean.getUserAccount());
                 signalSuccess();
             } else {
                 signalError("not_row_selected");

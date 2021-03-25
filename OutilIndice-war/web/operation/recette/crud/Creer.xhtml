@@ -63,7 +63,7 @@
                             <p:commandButton id="add_btn" value="#{langue['crud.ajouter']}"
                                              disabled="#{recetteController.sousrubriquerecettes.size()==0}"
                                              actionListener="#{recetteController.addSubRubricToList()}" 
-                                             update="datalist_1,grid_" />
+                                             update="datalist_1,grid_,add_btn" />
                         </div>                      
                     </div>
 
@@ -96,7 +96,7 @@
                                          paginator="true"
                                          editable="true"
                                          editMode="cell"
-                                         rows="15"
+                                         rows="#{recetteController.recettes.size()}"
                                          rowsPerPageTemplate="10,20,30,40,50"
                                          style="width: 98%;margin-left: 1%;margin-top: 1%;font-size: 15px"
                                          rowIndexVar="index"
@@ -146,7 +146,7 @@
                                         <h:outputText value="Action"/>
                                     </f:facet>
                                     <p:commandButton icon="ui-icon-trash">
-                                        <p:ajax update="datalist_1,:RecetteCreerForm:grid_" event="click" listener="#{recetteController.removeSubRubric(item)}" />
+                                        <p:ajax update="datalist_1,:RecetteCreerForm:grid_,:RecetteCreerForm:add_btn" event="click" listener="#{recetteController.removeSubRubric(index , item)}" />
                                     </p:commandButton>  
                                 </p:column>
 

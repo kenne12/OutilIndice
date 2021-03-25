@@ -8,25 +8,28 @@
                 xmlns:jsf="http://xmlns.jcp.org/jsf">
 
 
-    <h:form id="search_form">
+    <h:form id="search_form" class="form-inline">
 
-        <div class="row">                        
-            <div class="form-group col-md-2">
-                <label>#{langue.sous_periode}</label>
-                <h:selectOneMenu id="type_sousperiode" class="form-control" value="#{depenseController.sousperiode.idsousperiode}"           
-                                 required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
-                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                    <f:selectItems value="#{depenseController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
-                    <p:ajax update=":DepenseListerForm:datalist" listener="#{depenseController.updateData()}" />
-                </h:selectOneMenu>
-            </div>
+        <label>#{langue.periodicite}&nbsp;</label>
+        <h:selectOneMenu id="type_sousperiode" class="form-control" value="#{depenseController.typeSousPeriode.idTypeSousperiode}"
+                         required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+            <f:selectItems value="#{depenseController.typeSousPeriodes}" var="tsp" itemLabel="#{tsp.nom}" itemValue="#{tsp.idTypeSousperiode}" />
+            <p:ajax update="search_form" listener="#{depenseController.updateSousPeriode('1')}" />
+        </h:selectOneMenu>&nbsp;
 
-            <div class="col-md-2">               
-                <p:commandButton value="#{langue['common.chercher']}" 
-                                 update=":DepenseListerForm" 
-                                 actionListener="#{depenseController.recherche()}" />                
-            </div>
-        </div>
+        <label>&nbsp;#{langue.sous_periode}&nbsp;</label>
+        <h:selectOneMenu id="sousperiode" class="form-control" value="#{depenseController.sousperiode.idsousperiode}"           
+                         required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+            <f:selectItems value="#{depenseController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
+            <p:ajax update=":DepenseListerForm:datalist" listener="#{depenseController.updateData()}" />
+        </h:selectOneMenu>&nbsp;
+
+        <p:commandButton value="#{langue['common.chercher']}" 
+                         update=":DepenseListerForm" 
+                         actionListener="#{depenseController.recherche()}" />                
+
     </h:form>
 
     <h:form id="DepenseListerForm">

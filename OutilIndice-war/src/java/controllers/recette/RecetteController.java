@@ -141,7 +141,6 @@ public class RecetteController extends AbstractRecetteController implements Seri
 
     public void addSubRubricToList() {
         try {
-            List<Sousrubriquerecette> list = new ArrayList<>();
             for (Sousrubriquerecette srr : selectedSousrubriquerecettes) {
                 if (!checkSubRubricInList(srr, recettes)) {
                     Recette r = new Recette();
@@ -152,32 +151,24 @@ public class RecetteController extends AbstractRecetteController implements Seri
                     r.setMontant(0d);
                     r.setPourcentage(0d);
                     recettes.add(r);
-                    list.add(srr);
                 }
             }
-            if (!list.isEmpty()) {
-                sousrubriquerecettes.removeAll(list);
-                selectedSousrubriquerecettes.removeAll(list);
-            }
+            sousrubriquerecettes.removeAll(selectedSousrubriquerecettes);
+            selectedSousrubriquerecettes.clear();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void removeSubRubric(Recette item) {
-        if (item.getIdrecette() != 0) {
-            recettes.remove(item);
+    public void removeSubRubric(int index, Recette item) { 
+        Recette rTemp = recettes.get(index);
+        
+        if (rTemp.getIdrecette() != 0) {
+            recettes.remove(index);
             sousrubriquerecettes.add(item.getIdsousrubriquerecette());
         } else {
-            int i = 0;
-            for (Recette r : this.recettes) {
-                if (r.getIdsousrubriquerecette().equals(item.getIdsousrubriquerecette())) {
-                    break;
-                }
-                i++;
-            }
-            sousrubriquerecettes.add(this.recettes.get(i).getIdsousrubriquerecette());
-            recettes.remove(i);
+            recettes.remove(index);
+            sousrubriquerecettes.add(rTemp.getIdsousrubriquerecette());
         }
     }
 
