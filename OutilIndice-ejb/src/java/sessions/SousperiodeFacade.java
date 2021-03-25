@@ -49,4 +49,11 @@ public class SousperiodeFacade extends AbstractFacade<Sousperiode> implements So
         return query.getResultList();
     }
 
+    @Override
+    public List<Sousperiode> findIdTypeSousPeriode(int idType) {
+        Query query = em.createQuery("SELECT s FROM Sousperiode s WHERE s.typeSousPeriode.idTypeSousperiode=:idType ORDER BY s.code");
+        query.setParameter("idType", idType);
+        return query.getResultList();
+    }
+
 }

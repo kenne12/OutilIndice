@@ -21,16 +21,29 @@
             <h:form id="RecetteCreerForm">
                 <h:panelGroup id="display">
 
-                    <div class="row">                        
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>#{langue.periodicite}</label>
+                                <h:selectOneMenu id="type_sousperiode" class="form-control" 
+                                                 value="#{recetteController.typeSousPeriode.idTypeSousperiode}"
+                                                 required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                    <f:selectItems value="#{recetteController.typeSousPeriodes}" var="tsp" itemLabel="#{tsp.nom}" itemValue="#{tsp.idTypeSousperiode}" />
+                                    <p:ajax update="display,datalist_1,grid_,add_btn,sousperiode" listener="#{recetteController.updateSousPeriode('2')}" />
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>#{langue.sous_periode}</label>
-                                <h:selectOneMenu id="type_sousperiode" class="form-control" 
+                                <h:selectOneMenu id="sousperiode" class="form-control" 
                                                  value="#{recetteController.sousperiode.idsousperiode}"
                                                  required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
                                     <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
                                     <f:selectItems value="#{recetteController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
-                                    <p:ajax update="datalist_1,grid_,add_btn" listener="#{recetteController.updateData()}" />
+                                    <p:ajax update="display,datalist_1,grid_,add_btn" listener="#{recetteController.updateData()}" />
                                 </h:selectOneMenu>
                             </div>
                         </div>
@@ -47,7 +60,8 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <p:commandButton id="add_btn" value="#{langue['crud.ajouter']}" 
+                            <p:commandButton id="add_btn" value="#{langue['crud.ajouter']}"
+                                             disabled="#{recetteController.sousrubriquerecettes.size()==0}"
                                              actionListener="#{recetteController.addSubRubricToList()}" 
                                              update="datalist_1,grid_" />
                         </div>                      
@@ -127,7 +141,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column style="width: 10%" >
+                                <p:column style="width: 10%;text-align: center" >
                                     <f:facet name="header">
                                         <h:outputText value="Action"/>
                                     </f:facet>
@@ -153,11 +167,13 @@
                     <p:separator />
 
                     <div class="row">
-                        <div class="col-md-10">
-                            <p:commandButton value="#{langue['common.annuler']}" oncomplete="PF('RecetteCreerDialog').hide()" icon="ui-icon-close"/>
-                            <p:commandButton actionListener="#{recetteController.create()}" value="#{langue['crud.enregistrer']}" 
-                                             update="display,:RecetteListerForm,:notify1,:search_form" 
-                                             onclick="PF('AjaxNotifyDialog').show()" icon="ui-icon-check"/>
+                        <div class="col-md-12">
+                            <center>
+                                <p:commandButton value="#{langue['common.annuler']}" oncomplete="PF('RecetteCreerDialog').hide()" icon="ui-icon-close"/>
+                                <p:commandButton actionListener="#{recetteController.create()}" value="#{langue['crud.enregistrer']}" 
+                                                 update="display,:RecetteListerForm,:notify1,:search_form" 
+                                                 onclick="PF('AjaxNotifyDialog').show()" icon="ui-icon-check"/>
+                            </center>
                         </div>
                     </div>
 

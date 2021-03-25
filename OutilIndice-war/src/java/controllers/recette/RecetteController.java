@@ -1,6 +1,7 @@
 package controllers.recette;
 
 import entities.Recette;
+import entities.Sousperiode;
 import entities.Sousrubriquerecette;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 import utils.JsfUtil;
+import utils.SessionMBean;
 import utils.Utilitaires;
 
 @ManagedBean
@@ -18,7 +20,7 @@ public class RecetteController extends AbstractRecetteController implements Seri
 
     @PostConstruct
     private void init() {
-
+        typeSousPeriodes = SessionMBean.getTypeSousPeriodes();
     }
 
     private void initRecette() {
@@ -51,6 +53,20 @@ public class RecetteController extends AbstractRecetteController implements Seri
             RequestContext.getCurrentInstance().execute("PF('RecetteCreerDialog').show()");
         } catch (Exception e) {
             signalException(e);
+        }
+    }
+
+    public void updateSousPeriode(String option) {
+        sousperiodes.clear();
+        sousperiode = new Sousperiode(0);
+
+        if (option.equals("2")) {
+            sousrubriquerecettes.clear();
+            recettes.clear();
+        }
+
+        if (typeSousPeriode.getIdTypeSousperiode() != 0) {
+            sousperiodes = sousperiodeFacadeLocal.findIdTypeSousPeriode(typeSousPeriode.getIdTypeSousperiode());
         }
     }
 
@@ -209,8 +225,6 @@ public class RecetteController extends AbstractRecetteController implements Seri
                 }
             }
             recettes = recetteFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
-            //Utilitaires.saveOperation(this.mouchardFacadeLocal, "Enregistrement de l'structure : " + this.structure.getNom() + " " + this.structure.getPrenom(), SessionMBean.getUserAccount());
-            modifier = detail = supprimer = true;
             RequestContext.getCurrentInstance().execute("PF('RecetteCreerDialog').hide()");
             signalSuccess();
         } catch (Exception e) {
@@ -225,9 +239,7 @@ public class RecetteController extends AbstractRecetteController implements Seri
                     signalError("acces_refuse");
                     return;
                 }
-
                 this.structureFacadeLocal.remove(this.structure);
-                //Utilitaires.saveOperation(this.mouchardFacadeLocal, "Suppresion de l'structure : " + this.structure.getNom() + " " + this.structure.getPrenom(), SessionMBean.getUserAccount());
                 signalSuccess();
             } else {
                 signalError("not_row_selected");

@@ -7,22 +7,24 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:jsf="http://xmlns.jcp.org/jsf">
 
-    <h:form id="search_form">
-        <div class="row">            
-            <div class="form-group col-md-2">
-                <label>#{langue.sous_periode}</label>
-                <h:selectOneMenu id="type_sousperiode" class="form-control" value="#{recetteController.sousperiode.idsousperiode}"
-                                 required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
-                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                    <f:selectItems value="#{recetteController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
-                    <p:ajax update=":RecetteListerForm:datalist" listener="#{recetteController.updateData()}" />
-                </h:selectOneMenu>
-            </div>
-
-            <div class="col-md-2">               
-                <p:commandButton value="#{langue['common.chercher']}" update=":RecetteListerForm"  actionListener="#{recetteController.recherche()}" />                
-            </div>
-        </div>
+    <h:form id="search_form" class="form-inline">
+        
+        <label>#{langue.periodicite}&nbsp;</label>
+        <h:selectOneMenu id="type_sousperiode" class="form-control" value="#{recetteController.typeSousPeriode.idTypeSousperiode}"
+                         required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+            <f:selectItems value="#{recetteController.typeSousPeriodes}" var="tsp" itemLabel="#{tsp.nom}" itemValue="#{tsp.idTypeSousperiode}" />
+            <p:ajax update="search_form" listener="#{recetteController.updateSousPeriode('1')}" />
+        </h:selectOneMenu>&nbsp;
+        
+        <label>#{langue.sous_periode}&nbsp;</label>
+        <h:selectOneMenu id="sousperiode" class="form-control" value="#{recetteController.sousperiode.idsousperiode}"
+                         required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+            <f:selectItems value="#{recetteController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
+            <p:ajax update=":RecetteListerForm:datalist" listener="#{recetteController.updateData()}" />
+        </h:selectOneMenu>&nbsp;
+        <p:commandButton value="#{langue['common.chercher']}" update=":RecetteListerForm"  actionListener="#{recetteController.recherche()}" />                
     </h:form>
 
     <h:form id="RecetteListerForm">

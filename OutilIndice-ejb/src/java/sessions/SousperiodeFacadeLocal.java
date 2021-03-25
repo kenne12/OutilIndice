@@ -34,4 +34,6 @@ public interface SousperiodeFacadeLocal {
 
     List<Sousperiode> findAllRangeCode();
 
+    List<Sousperiode> findIdTypeSousPeriode(int idType);
+
 }
