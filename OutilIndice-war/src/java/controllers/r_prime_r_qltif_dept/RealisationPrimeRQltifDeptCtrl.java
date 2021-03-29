@@ -39,6 +39,7 @@ public class RealisationPrimeRQltifDeptCtrl extends AbstractRealisationPrimeRQlt
         structures.add(SessionMBean.getStructure());
         evaluationRPrimeQltifDept = new EvaluationRPrimeQltifDept();
         services = SessionMBean.getServices();
+        typeSousPeriodes = SessionMBean.getTypeSousPeriodes();
     }
 
     public void prepareCreate() {
@@ -90,7 +91,7 @@ public class RealisationPrimeRQltifDeptCtrl extends AbstractRealisationPrimeRQlt
         }
     }
 
-    public void addSousCritereToTable() {
+    public void addServiceToTable() {
         if (!selectedSouscritereservices.isEmpty()) {
 
             for (Souscritereservice s : selectedSouscritereservices) {
@@ -107,22 +108,18 @@ public class RealisationPrimeRQltifDeptCtrl extends AbstractRealisationPrimeRQlt
         }
     }
 
-    public void removeSousCritere(LignePrimeQualiteDept l) {
-        if (l.getIdligneprimequalitedept() != 0l) {
-            lignePrimeQualiteDeptFacadeLocal.remove(l);
-            lignePrimeQualiteDepts.remove(l);
+    public void removeSousCritere(int index) {
+        LignePrimeQualiteDept lTemp = lignePrimeQualiteDepts.get(index);
+
+        if (lTemp.getIdligneprimequalitedept() != 0l) {
+            lignePrimeQualiteDeptFacadeLocal.remove(lTemp);
+            lignePrimeQualiteDepts.remove(index);
             evaluationRPrimeQltifDepts = evaluationRPrimeQltifDeptFacadeLocal.findByIdStructureSousPeriode(SessionMBean.getStructure().getIdstructure(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 5);
-            souscritereservices.add(l.getIdsouscritereservice());
+            souscritereservices.add(lTemp.getIdsouscritereservice());
         } else {
-            int conteur = 0;
-            for (LignePrimeQualiteDept lpq : lignePrimeQualiteDepts) {
-                if (lpq.getIdsouscritereservice().getIdsouscritereservice().equals(l.getIdsouscritereservice().getIdsouscritereservice())) {
-                    break;
-                }
-                conteur++;
-            }
-            lignePrimeQualiteDepts.remove(conteur);
-            souscritereservices.add(l.getIdsouscritereservice());
+
+            lignePrimeQualiteDepts.remove(index);
+            souscritereservices.add(lTemp.getIdsouscritereservice());
         }
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }
@@ -161,6 +158,24 @@ public class RealisationPrimeRQltifDeptCtrl extends AbstractRealisationPrimeRQlt
             if (sommeRatio > 0) {
                 evaluationRPrimeQltifDept.setPourcentage(sommeRatio / lignePrimeQualiteDepts.size());
             }
+        }
+    }
+
+    public void updateSousPeriode(String option) {
+        sousperiodes.clear();
+        sousperiode = new Sousperiode(0);
+
+        if (option.equals("2")) {
+            souscritereservices.clear();
+            lignePrimeQualiteDepts.clear();
+        }
+
+        if (option.equals("1")) {
+            evaluationRPrimeQltifDepts.clear();
+        }
+
+        if (typeSousPeriode.getIdTypeSousperiode() != 0) {
+            sousperiodes = sousperiodeFacadeLocal.findIdTypeSousPeriode(typeSousPeriode.getIdTypeSousperiode());
         }
     }
 
