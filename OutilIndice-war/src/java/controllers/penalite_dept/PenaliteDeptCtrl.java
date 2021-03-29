@@ -12,6 +12,7 @@ import entities.ParametragePenalite;
 import entities.Penalite;
 import entities.Service;
 import entities.Sousperiode;
+import entities.TypeSousPeriode;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,14 +38,14 @@ public class PenaliteDeptCtrl extends AbstractPenaliteDeptCtrl implements Serial
 
     @PostConstruct
     private void init() {
-        structures.clear();
-        structures.add(SessionMBean.getStructure());
         services = SessionMBean.getServices();
+        typeSousPeriodes = SessionMBean.getTypeSousPeriodes();
     }
 
     public void prepareCreate() {
         mode = "Create";
         sousperiode = new Sousperiode();
+        typeSousPeriode = new TypeSousPeriode(0);
         service = new Service();
         lignePenaliteDepts.clear();
         evaluationPenaliteDept = new EvaluationPenaliteDept();
@@ -96,8 +97,7 @@ public class PenaliteDeptCtrl extends AbstractPenaliteDeptCtrl implements Serial
                     } else {
                         if (!penalites.isEmpty()) {
                             for (Penalite p : penalites) {
-                                LignePenaliteDept lpd = new LignePenaliteDept();
-                                lpd.setIdlignepenalitedept(0l);
+                                LignePenaliteDept lpd = new LignePenaliteDept(0l);
                                 lpd.setEtat(false);
                                 lpd.setValeur(0);
                                 lpd.setIdpenalite(p);
@@ -145,6 +145,24 @@ public class PenaliteDeptCtrl extends AbstractPenaliteDeptCtrl implements Serial
         }
     }
 
+    public void updateSousPeriode(String option) {
+        sousperiodes.clear();
+        sousperiode = new Sousperiode(0);
+
+        if (option.equals("2")) {
+            penalites.clear();
+            lignePenaliteDepts.clear();
+        }
+
+        if (option.equals("1")) {
+            evaluationPenaliteDepts.clear();
+        }
+
+        if (typeSousPeriode.getIdTypeSousperiode() != 0) {
+            sousperiodes = sousperiodeFacadeLocal.findIdTypeSousPeriode(typeSousPeriode.getIdTypeSousperiode());
+        }
+    }
+
     public void searchData() {
         try {
             evaluationPenaliteDepts.clear();
@@ -170,23 +188,13 @@ public class PenaliteDeptCtrl extends AbstractPenaliteDeptCtrl implements Serial
         }
     }
 
-    public void removeService(LignePenaliteDept l) {
+    public void removePenalite(int index) {
+        LignePenaliteDept l = lignePenaliteDepts.get(index);
         if (l.getIdlignepenalitedept() != 0l) {
-            lignePenaliteDepts.remove(l);
             lignePenaliteDeptFacadeLocal.remove(l);
-            //listEvaluationPenaliteDepts = evaluationPenaliteDeptFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
-            penalites.add(l.getIdpenalite());
-        } else {
-            int conteur = 0;
-            for (LignePenaliteDept lpd : lignePenaliteDepts) {
-                if (lpd.getIdpenalite().getIdpenalite().equals(l.getIdpenalite().getIdpenalite())) {
-                    break;
-                }
-                conteur++;
-            }
-            lignePenaliteDepts.remove(conteur);
-            penalites.add(l.getIdpenalite());
         }
+        lignePenaliteDepts.remove(index);
+        penalites.add(l.getIdpenalite());
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }
 

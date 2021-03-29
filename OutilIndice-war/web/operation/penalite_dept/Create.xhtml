@@ -23,7 +23,7 @@
                     <h:panelGroup id="display">
 
                         <div class="row">            
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
                                 <p:outputLabel value="#{langue.service}" for="service" />
                                 <h:selectOneMenu converter="serviceConverter" class="form-control" id="service" value="#{penaliteDeptCtrl.service}">            
                                     <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
@@ -31,13 +31,23 @@
                                     <p:ajax update="datalist,grid_critere" listener="#{penaliteDeptCtrl.updateFiltre()}"/>
                                 </h:selectOneMenu>
                             </div>
+                            
+                            <div class="form-group col-md-4">
+                                <label>#{langue.periodicite}</label>
+                                <h:selectOneMenu id="type_sousperiode" class="form-control" value="#{penaliteDeptCtrl.typeSousPeriode.idTypeSousperiode}"               
+                                                 required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                    <f:selectItems value="#{penaliteDeptCtrl.typeSousPeriodes}" var="tsp" itemLabel="#{tsp.nom}" itemValue="#{tsp.idTypeSousperiode}" />
+                                    <p:ajax update="display,grid_critere,add_btn,sous_periode" listener="#{penaliteDeptCtrl.updateSousPeriode('2')}" />
+                                </h:selectOneMenu>
+                            </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
                                 <p:outputLabel value="#{langue.sous_periode}" for="sous_periode" />
                                 <h:selectOneMenu converter="sousperiodeConverter" class="form-control" id="sous_periode" value="#{penaliteDeptCtrl.sousperiode}">                                                                                                  
                                     <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
                                     <f:selectItems value="#{penaliteDeptCtrl.sousperiodes}" var="sprd" itemLabel="#{sprd.nom}" itemValue="#{sprd}" />
-                                    <p:ajax update="datalist,grid_critere" listener="#{penaliteDeptCtrl.updateFiltre()}"/>
+                                    <p:ajax update="datalist,grid_critere,add_btn" listener="#{penaliteDeptCtrl.updateFiltre()}"/>
                                 </h:selectOneMenu>
                             </div>                 
                         </div> 
@@ -52,6 +62,8 @@
                         <p:separator />
 
                         <p:commandButton value="#{langue['common.ajouter']}"
+                                         id="add_btn"
+                                         disabled="#{penaliteDeptCtrl.penalites.size() == 0}"
                                          actionListener="#{penaliteDeptCtrl.addPenaliteToTable()}"
                                          update="datalist,grid_critere" icon="ui-icon-plus" />
                         <p:separator />
@@ -60,7 +72,7 @@
                                      paginator="true"
                                      editable="true"
                                      editMode="cell"
-                                     rows="15"
+                                     rows="#{penaliteDeptCtrl.lignePenaliteDepts.size()}"
                                      rowsPerPageTemplate="10,20,30,40,50"
                                      style="margin-top: 1%;font-size: 15px"
                                      rowIndexVar="index"
@@ -94,7 +106,7 @@
                                     <h:outputText value="Action"/>
                                 </f:facet>
                                 <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist,:PenaliteDeptCreateForm:grid_critere" event="click" listener="#{penaliteDeptCtrl.removeService(item)}" />
+                                    <p:ajax update="datalist,:PenaliteDeptCreateForm:grid_critere,:PenaliteDeptCreateForm:add_btn" event="click" listener="#{penaliteDeptCtrl.removePenalite(index)}" />
                                 </p:commandButton>
                             </p:column>
 
