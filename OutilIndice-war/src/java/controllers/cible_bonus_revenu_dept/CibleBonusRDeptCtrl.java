@@ -36,10 +36,9 @@ public class CibleBonusRDeptCtrl extends AbstractCibleBonusRDeptCtrl implements 
     @PostConstruct
     private void init() {
         structure = SessionMBean.getStructure();
-        structures.clear();
-        structures.add(SessionMBean.getStructure());
         cible = new Cible();
         cible.setIdservice(new Service());
+        typeSousPeriodes = SessionMBean.getTypeSousPeriodes();
     }
 
     public void prepareCreate() {
@@ -48,6 +47,8 @@ public class CibleBonusRDeptCtrl extends AbstractCibleBonusRDeptCtrl implements 
         cible = new Cible();
         cible.setIdservice(new Service());
         cibles.clear();
+        selectedServices.clear();
+        services.clear();
         RequestContext.getCurrentInstance().execute("PF('CibleBonusRDeptCreateDialog').show()");
     }
 
@@ -80,6 +81,24 @@ public class CibleBonusRDeptCtrl extends AbstractCibleBonusRDeptCtrl implements 
         }
     }
 
+    public void updateSousPeriode(String option) {
+        sousperiodes.clear();
+        sousperiode = new Sousperiode(0);
+
+        if (option.equals("2")) {
+            services.clear();
+            cibles.clear();
+        }
+
+        if (option.equals("1")) {
+            listCibles.clear();
+        }
+
+        if (typeSousPeriode.getIdTypeSousperiode() != 0) {
+            sousperiodes = sousperiodeFacadeLocal.findIdTypeSousPeriode(typeSousPeriode.getIdTypeSousperiode());
+        }
+    }
+
     public void addServiceToTable() {
         if (!selectedServices.isEmpty()) {
             for (Service s : selectedServices) {
@@ -96,25 +115,20 @@ public class CibleBonusRDeptCtrl extends AbstractCibleBonusRDeptCtrl implements 
                 cibles.add(c);
             }
             services.removeAll(selectedServices);
+            selectedServices.clear();
         }
     }
 
-    public void removeIndicator(Cible c) {
-        if (c.getIdcible() != 0l) {
-            cibleFacadeLocal.remove(c);
-            cibles.remove(c);
+    public void removeIndicator(int index, Cible c) {
+        Cible cibleTemp = cibles.get(index);
+        if (cibleTemp.getIdcible() != 0l) {
+            cibleFacadeLocal.remove(cibleTemp);
+            cibles.remove(index);
             listCibles = cibleFacadeLocal.findByIdStructureSousPeriode(SessionMBean.getStructure().getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 6);
-            services.add(c.getIdservice());
+            services.add(cibleTemp.getIdservice());
         } else {
-            int conteur = 0;
-            for (Cible cible : cibles) {
-                if (cible.getIdservice().getIdservice().equals(c.getIdservice().getIdservice())) {
-                    break;
-                }
-                conteur++;
-            }
-            cibles.remove(conteur);
-            services.add(c.getIdservice());
+            cibles.remove(index);
+            services.add(cibleTemp.getIdservice());
         }
         this.sommeDetail(cibles);
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));

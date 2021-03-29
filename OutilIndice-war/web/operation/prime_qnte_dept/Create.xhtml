@@ -22,17 +22,8 @@
 
                     <h:panelGroup id="display">
 
-                        <div class="form-group">
-                            <p:outputLabel value="#{langue.structure}" for="structure" />
-                            <h:selectOneMenu disabled="true" converter="structureConverter" class="form-control"                                              
-                                             id="structure" value="#{primeQntifDeptCtrl.structure}">
-                                <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                                <f:selectItems value="#{primeQntifDeptCtrl.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
-                            </h:selectOneMenu>                                                
-                        </div>
-
                         <div class="row">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
                                 <p:outputLabel value="#{langue.service}" for="service" />
                                 <h:selectOneMenu converter="serviceConverter" class="form-control"                                                      
                                                  id="service" value="#{primeQntifDeptCtrl.service}">
@@ -42,13 +33,24 @@
                                 </h:selectOneMenu>
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
+                                <label>#{langue.periodicite}</label>
+                                <h:selectOneMenu id="type_sousperiode" class="form-control" 
+                                                 value="#{primeQntifDeptCtrl.typeSousPeriode.idTypeSousperiode}"
+                                                 required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                    <f:selectItems value="#{primeQntifDeptCtrl.typeSousPeriodes}" var="tsp" itemLabel="#{tsp.nom}" itemValue="#{tsp.idTypeSousperiode}" />
+                                    <p:ajax update="display,grid_critere,add_btn,sous_periode" listener="#{primeQntifDeptCtrl.updateSousPeriode('2')}" />
+                                </h:selectOneMenu>
+                            </div>
+
+                            <div class="form-group col-md-4">
                                 <p:outputLabel value="#{langue.sous_periode}" for="sous_periode" />
                                 <h:selectOneMenu converter="sousperiodeConverter" class="form-control"                                                      
                                                  id="sous_periode" value="#{primeQntifDeptCtrl.sousperiode}">
                                     <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
                                     <f:selectItems value="#{primeQntifDeptCtrl.sousperiodes}" var="sprd" itemLabel="#{sprd.nom}" itemValue="#{sprd}" />
-                                    <p:ajax update="grid_critere,datalist" listener="#{primeQntifDeptCtrl.updateFiltre()}"/>
+                                    <p:ajax update="grid_critere,datalist,add_btn" listener="#{primeQntifDeptCtrl.updateFiltre()}"/>
                                 </h:selectOneMenu>
                             </div>
                         </div>
@@ -63,6 +65,8 @@
                         <p:separator />
 
                         <p:commandButton value="#{langue['common.ajouter']}"
+                                         id="add_btn"
+                                         disabled="#{primeQntifDeptCtrl.indicateurs.size() == 0}"
                                          actionListener="#{primeQntifDeptCtrl.addIndicatorToTable()}"
                                          update="datalist,grid_critere" icon="ui-icon-plus" />
                         <p:separator />
@@ -104,7 +108,7 @@
                                     <h:outputText value="Action"/>
                                 </f:facet>
                                 <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist,:PrimeRQntifCreateForm:grid_critere" event="click" listener="#{primeQntifDeptCtrl.removeIndicator(item)}" />
+                                    <p:ajax update="datalist,:PrimeRQntifCreateForm:grid_critere" event="click" listener="#{primeQntifDeptCtrl.removeIndicator(index , item)}" />
                                 </p:commandButton>
                             </p:column>
 

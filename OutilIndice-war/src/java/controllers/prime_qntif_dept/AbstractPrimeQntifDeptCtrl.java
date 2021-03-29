@@ -11,6 +11,7 @@ import entities.Periode;
 import entities.Service;
 import entities.Sousperiode;
 import entities.Structure;
+import entities.TypeSousPeriode;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -21,6 +22,7 @@ import sessions.PeriodeFacadeLocal;
 import sessions.ServiceFacadeLocal;
 import sessions.SousperiodeFacadeLocal;
 import sessions.StructureFacadeLocal;
+import sessions.TypeSousPeriodeFacadeLocal;
 import utils.Routine;
 import utils.SessionMBean;
 
@@ -62,7 +64,11 @@ public class AbstractPrimeQntifDeptCtrl {
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
     protected Structure structure = SessionMBean.getStructure();
-    protected List<Structure> structures = new ArrayList<>();
+
+    @EJB
+    protected TypeSousPeriodeFacadeLocal typeSousPeriodeFacadeLocal;
+    protected TypeSousPeriode typeSousPeriode = new TypeSousPeriode();
+    protected List<TypeSousPeriode> typeSousPeriodes = new ArrayList<>();
 
     protected double totalCible;
 
@@ -75,10 +81,6 @@ public class AbstractPrimeQntifDeptCtrl {
 
     public void setStructure(Structure structure) {
         this.structure = structure;
-    }
-
-    public List<Structure> getStructures() {
-        return structures;
     }
 
     public Routine getRoutine() {
@@ -126,7 +128,7 @@ public class AbstractPrimeQntifDeptCtrl {
         return periodes;
     }
 
-    public List<Service> getServices() {        
+    public List<Service> getServices() {
         return services;
     }
 
@@ -147,12 +149,23 @@ public class AbstractPrimeQntifDeptCtrl {
     }
 
     public List<Sousperiode> getSousperiodes() {
-        sousperiodes = sousperiodeFacadeLocal.findAllRangeCode();
         return sousperiodes;
     }
 
     public double getTotalCible() {
         return totalCible;
+    }
+
+    public TypeSousPeriode getTypeSousPeriode() {
+        return typeSousPeriode;
+    }
+
+    public void setTypeSousPeriode(TypeSousPeriode typeSousPeriode) {
+        this.typeSousPeriode = typeSousPeriode;
+    }
+
+    public List<TypeSousPeriode> getTypeSousPeriodes() {
+        return typeSousPeriodes;
     }
 
 }

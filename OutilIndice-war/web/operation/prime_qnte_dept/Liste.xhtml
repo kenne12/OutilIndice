@@ -8,41 +8,43 @@
                 xmlns:jsf="http://xmlns.jcp.org/jsf">
 
 
-    <h:form id="search_form">
-        <div class="row">
+    <h:form id="search_form" class="form-inline">
 
-            <div class="form-group col-md-4">
-                <label>#{langue.service}</label>
-                <h:selectOneMenu id="service" class="form-control" value="#{primeQntifDeptCtrl.service.idservice}"                                     
-                                 required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
-                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                    <f:selectItems value="#{primeQntifDeptCtrl.services}" var="svc" itemLabel="#{svc.nom}" itemValue="#{svc.idservice}" />
-                    <p:ajax listener="#{primeQntifDeptCtrl.searchData()}" />
-                </h:selectOneMenu>
-            </div>
+        <label>#{langue.service}&nbsp;</label>
+        <h:selectOneMenu id="service" class="form-control" value="#{primeQntifDeptCtrl.service.idservice}"                                     
+                         required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+            <f:selectItems value="#{primeQntifDeptCtrl.services}" var="svc" itemLabel="#{svc.nom}" itemValue="#{svc.idservice}" />
+            <p:ajax listener="#{primeQntifDeptCtrl.searchData()}" />
+        </h:selectOneMenu>
+        
+        <label>#{langue.periodicite}&nbsp;</label>
+        <h:selectOneMenu id="type_sousperiode" class="form-control" value="#{primeQntifDeptCtrl.typeSousPeriode.idTypeSousperiode}"
+                         required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+            <f:selectItems value="#{primeQntifDeptCtrl.typeSousPeriodes}" var="tsp" itemLabel="#{tsp.nom}" itemValue="#{tsp.idTypeSousperiode}" />
+            <p:ajax update="search_form" listener="#{primeQntifDeptCtrl.updateSousPeriode('1')}" />
+        </h:selectOneMenu>&nbsp;
 
-            <div class="form-group col-md-2">
-                <label>#{langue.sous_periode}</label>
-                <h:selectOneMenu id="sous_periode" class="form-control" value="#{primeQntifDeptCtrl.sousperiode.idsousperiode}"                                     
-                                 required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
-                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                    <f:selectItems value="#{primeQntifDeptCtrl.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
-                    <p:ajax listener="#{primeQntifDeptCtrl.searchData()}" />
-                </h:selectOneMenu>
-            </div>
+        <label>&nbsp;#{langue.sous_periode}&nbsp;</label>
+        <h:selectOneMenu id="sous_periode" class="form-control" value="#{primeQntifDeptCtrl.sousperiode.idsousperiode}"                                     
+                         required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+            <f:selectItems value="#{primeQntifDeptCtrl.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
+            <p:ajax listener="#{primeQntifDeptCtrl.searchData()}" />
+        </h:selectOneMenu>&nbsp;
 
-            <div class="col-md-1 ">
-                <p:commandButton class="mt-3" value="#{langue['common.chercher']}" update=":PrimeRQntifListerForm"  actionListener="#{primeQntifDeptCtrl.searchData()}" />
-            </div>                           
-        </div>
+        <p:commandButton class="mt-3" value="#{langue['common.chercher']}" update=":PrimeRQntifListerForm"  actionListener="#{primeQntifDeptCtrl.searchData()}" />
+
     </h:form>
-
 
     <h:form id="PrimeRQntifListerForm">
 
         <p:messages id="growl" closable="true">
             <p:effect type="pulsate" event="load" delay="50" />
         </p:messages>
+        
+        <br/>
 
         <div class="row">
             <div class="col-md-12">
@@ -73,7 +75,7 @@
                                     <ui:repeat value="#{primeQntifDeptCtrl.listCibles}" var="item">
                                         <tr>
                                             <td>#{item.idindicateur.nom}</td>
-                                            <td>#{item.valeurcible}</td>
+                                            <td style="text-align: center"><h:outputText value="#{item.valeurcible}"> <f:convertNumber />  </h:outputText></td>
                                             <td style="text-align: center">                                        
                                                 <p:commandButton icon="ui-icon-pencil" update=":PrimeRQntifEditForm"
                                                                  class="btn btn-success btn-sm"

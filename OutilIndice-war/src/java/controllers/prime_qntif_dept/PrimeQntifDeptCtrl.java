@@ -36,11 +36,10 @@ public class PrimeQntifDeptCtrl extends AbstractPrimeQntifDeptCtrl implements Se
 
     @PostConstruct
     private void init() {
-        structures.clear();
-        structures.add(SessionMBean.getStructure());
         cible = new Cible();
         cible.setIdindicateur(new Indicateur());
         services = SessionMBean.getServices();
+        typeSousPeriodes = SessionMBean.getTypeSousPeriodes();
     }
 
     public void prepareCreate() {
@@ -106,8 +105,7 @@ public class PrimeQntifDeptCtrl extends AbstractPrimeQntifDeptCtrl implements Se
     public void addIndicatorToTable() {
         if (!selectedIndicateurs.isEmpty()) {
             for (Indicateur i : selectedIndicateurs) {
-                Cible c = new Cible();
-                c.setIdcible(0l);
+                Cible c = new Cible(0l);
                 c.setIdcritere(new Critere(4));
                 c.setIdstructure(structure);
                 c.setIdperiode(periode);
@@ -120,27 +118,41 @@ public class PrimeQntifDeptCtrl extends AbstractPrimeQntifDeptCtrl implements Se
                 cibles.add(c);
             }
             indicateurs.removeAll(selectedIndicateurs);
+            selectedIndicateurs.clear();
         }
     }
 
-    public void removeIndicator(Cible c) {
-        if (c.getIdcible() != 0l) {
+    public void removeIndicator(int index, Cible c) {
+        Cible cibleTemp = cibles.get(index);
+        if (cibleTemp.getIdcible() != 0l) {
             cibleFacadeLocal.remove(c);
-            cibles.remove(c);
+            cibles.remove(cibleTemp);
             listCibles = cibleFacadeLocal.findByIdSousPeriode(structure.getIdstructure(), service.getIdservice(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 4);
-            indicateurs.add(c.getIdindicateur());
+            indicateurs.add(cibleTemp.getIdindicateur());
         } else {
-            int conteur = 0;
-            for (Cible cible : cibles) {
-                if (cible.getIdindicateur().getIdindicateur().equals(c.getIdindicateur().getIdindicateur())) {
-                    break;
-                }
-                conteur++;
-            }
-            cibles.remove(conteur);
-            indicateurs.add(c.getIdindicateur());
+
+            cibles.remove(index);
+            indicateurs.add(cibleTemp.getIdindicateur());
         }
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
+    }
+
+    public void updateSousPeriode(String option) {
+        sousperiodes.clear();
+        sousperiode = new Sousperiode(0);
+
+        if (option.equals("2")) {
+            indicateurs.clear();
+            cibles.clear();
+        }
+
+        if (option.equals("1")) {
+            listCibles.clear();
+        }
+
+        if (typeSousPeriode.getIdTypeSousperiode() != 0) {
+            sousperiodes = sousperiodeFacadeLocal.findIdTypeSousPeriode(typeSousPeriode.getIdTypeSousperiode());
+        }
     }
 
     public void searchData() {
