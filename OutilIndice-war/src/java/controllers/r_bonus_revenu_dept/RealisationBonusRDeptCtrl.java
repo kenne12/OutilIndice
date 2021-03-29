@@ -10,6 +10,7 @@ import entities.Cible;
 import entities.Indicateur;
 import entities.Service;
 import entities.Sousperiode;
+import entities.TypeSousPeriode;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -42,6 +43,7 @@ public class RealisationBonusRDeptCtrl extends AbstractRealisationBonusRDeptCtrl
     public void prepareCreate() {
         mode = "Create";
         sousperiode = new Sousperiode();
+        typeSousPeriode = new TypeSousPeriode(0);
         cible = new Cible();
         cible.setIdservice(new Service());
         cibles.clear();

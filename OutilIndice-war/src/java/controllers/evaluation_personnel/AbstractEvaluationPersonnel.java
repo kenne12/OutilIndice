@@ -26,6 +26,7 @@ import entities.Penalite;
 import entities.Personnel;
 import entities.Sousperiode;
 import entities.Structure;
+import entities.TypeSousPeriode;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
@@ -53,6 +54,7 @@ import sessions.PenaliteFacadeLocal;
 import sessions.PersonnelFacadeLocal;
 import sessions.SousperiodeFacadeLocal;
 import sessions.StructureFacadeLocal;
+import sessions.TypeSousPeriodeFacadeLocal;
 import utils.MappingResultat;
 import utils.Routine;
 import utils.SessionMBean;
@@ -135,7 +137,7 @@ public class AbstractEvaluationPersonnel {
     @EJB
     protected LignePenalitePersonnelFacadeLocal lignePenalitePersonnelFacadeLocal;
     protected List<LignePenalitePersonnel> lignePenalitePersonnels = new ArrayList<>();
-    
+
     @EJB
     protected ParametragePenaliteFacadeLocal parametragePenaliteFacadeLocal;
 
@@ -157,7 +159,11 @@ public class AbstractEvaluationPersonnel {
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
     protected Structure structure = SessionMBean.getStructure();
-    protected List<Structure> structures = new ArrayList<>();
+
+    @EJB
+    protected TypeSousPeriodeFacadeLocal typeSousPeriodeFacadeLocal;
+    protected TypeSousPeriode typeSousPeriode = new TypeSousPeriode();
+    protected List<TypeSousPeriode> typeSousPeriodes = new ArrayList<>();
 
     @EJB
     protected NoteFacadeLocal noteFacadeLocal;
@@ -217,10 +223,6 @@ public class AbstractEvaluationPersonnel {
         this.structure = structure;
     }
 
-    public List<Structure> getStructures() {
-        return structures;
-    }
-
     public List<Detailsc> getListDetailsc() {
         return listDetailsc;
     }
@@ -251,7 +253,6 @@ public class AbstractEvaluationPersonnel {
     }
 
     public List<Sousperiode> getSousperiodes() {
-        sousperiodes = sousperiodeFacadeLocal.findAllRangeCode();
         return sousperiodes;
     }
 
@@ -467,44 +468,16 @@ public class AbstractEvaluationPersonnel {
         return totalPIncitationNegatif;
     }
 
-    public boolean isCriter1() {
-        return criter1;
+    public TypeSousPeriode getTypeSousPeriode() {
+        return typeSousPeriode;
     }
 
-    public boolean isCriter2() {
-        return criter2;
+    public void setTypeSousPeriode(TypeSousPeriode typeSousPeriode) {
+        this.typeSousPeriode = typeSousPeriode;
     }
 
-    public boolean isCriter3() {
-        return criter3;
-    }
-
-    public boolean isCriter4() {
-        return criter4;
-    }
-
-    public boolean isCriter5() {
-        return criter5;
-    }
-
-    public boolean isCriter6() {
-        return criter6;
-    }
-
-    public boolean isCriter7() {
-        return criter7;
-    }
-
-    public boolean isCriter8() {
-        return criter8;
-    }
-
-    public boolean isCriter9() {
-        return criter9;
-    }
-
-    public boolean isCriter10() {
-        return criter10;
+    public List<TypeSousPeriode> getTypeSousPeriodes() {
+        return typeSousPeriodes;
     }
 
 }

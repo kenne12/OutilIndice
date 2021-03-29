@@ -10,10 +10,10 @@ import entities.Note;
 import entities.Prime;
 import entities.Sousperiode;
 import entities.Structure;
+import entities.TypeSousPeriode;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.faces.context.FacesContext;
 import sessions.DepenseFacadeLocal;
 import sessions.EvaluationpersonnelFacadeLocal;
 import sessions.NoteFacadeLocal;
@@ -21,7 +21,9 @@ import sessions.NoteserviceFacadeLocal;
 import sessions.PrimeFacadeLocal;
 import sessions.SousperiodeFacadeLocal;
 import sessions.StructureFacadeLocal;
+import sessions.TypeSousPeriodeFacadeLocal;
 import utils.Routine;
+import utils.SessionMBean;
 
 /**
  *
@@ -45,9 +47,13 @@ public class AbstractPrimeController {
     protected List<Sousperiode> sousperiodes = new ArrayList<>();
 
     @EJB
+    protected TypeSousPeriodeFacadeLocal typeSousPeriodeFacadeLocal;
+    protected TypeSousPeriode typeSousPeriode = new TypeSousPeriode();
+    protected List<TypeSousPeriode> typeSousPeriodes = new ArrayList<>();
+
+    @EJB
     protected StructureFacadeLocal structureFacadeLocal;
-    protected Structure structure = new Structure();
-    protected List<Structure> structures = new ArrayList<>();
+    protected Structure structure = SessionMBean.getStructure();
 
     @EJB
     protected NoteFacadeLocal noteFacadeLocal;
@@ -58,13 +64,9 @@ public class AbstractPrimeController {
     protected NoteserviceFacadeLocal noteserviceFacadeLocal;
 
     protected Routine routine = new Routine();
-    protected static final double scoreMax = 100;
-    protected double score = 0;
 
     @EJB
     protected DepenseFacadeLocal depenseFacadeLocal;
-
-    String sc = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
 
     protected String mode = "";
     protected String message = "";
@@ -86,14 +88,6 @@ public class AbstractPrimeController {
         this.structure = structure;
     }
 
-    public List<Structure> getStructures() {
-        return structures;
-    }
-
-    public double getScore() {
-        return score;
-    }
-
     public String getMessage() {
         return message;
     }
@@ -107,7 +101,6 @@ public class AbstractPrimeController {
     }
 
     public List<Sousperiode> getSousperiodes() {
-        sousperiodes = sousperiodeFacadeLocal.findAllRangeCode();
         return sousperiodes;
     }
 
@@ -153,6 +146,18 @@ public class AbstractPrimeController {
 
     public void setPrime(Prime prime) {
         this.prime = prime;
+    }
+
+    public TypeSousPeriode getTypeSousPeriode() {
+        return typeSousPeriode;
+    }
+
+    public void setTypeSousPeriode(TypeSousPeriode typeSousPeriode) {
+        this.typeSousPeriode = typeSousPeriode;
+    }
+
+    public List<TypeSousPeriode> getTypeSousPeriodes() {
+        return typeSousPeriodes;
     }
 
 }

@@ -12,6 +12,7 @@ import entities.Indicateur;
 import entities.IndicateurQteService;
 import entities.Service;
 import entities.Sousperiode;
+import entities.TypeSousPeriode;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -45,6 +46,7 @@ public class PrimeQntifDeptCtrl extends AbstractPrimeQntifDeptCtrl implements Se
     public void prepareCreate() {
         mode = "Create";
         sousperiode = new Sousperiode();
+        typeSousPeriode = new TypeSousPeriode(0);
         service = new Service();
         cible = new Cible();
         cible.setIdindicateur(new Indicateur());

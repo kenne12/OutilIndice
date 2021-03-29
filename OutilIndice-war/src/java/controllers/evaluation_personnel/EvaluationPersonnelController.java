@@ -32,6 +32,7 @@ import entities.Personnel;
 import entities.Responsabilite;
 import entities.Service;
 import entities.Sousperiode;
+import entities.TypeSousPeriode;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,9 +59,9 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
 
     @PostConstruct
     private void init() {
-        structures.clear();
-        structures.add(SessionMBean.getStructure());
         this.initNote();
+        this.checkCritere();
+        typeSousPeriodes = SessionMBean.getTypeSousPeriodes();
     }
 
     private void initNote() {
@@ -81,9 +82,9 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
             return;
         }
         mode = "Create";
-        this.checkCritere();
         this.initNote();
         sousperiode = new Sousperiode(0);
+        typeSousPeriode = new TypeSousPeriode(0);
         listDetailsc.clear();
         evaluationpersonnels.clear();
         evaluationrqntifdepts.clear();
@@ -116,6 +117,18 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
 
         if (notes.isEmpty()) {
             JsfUtil.addWarningMessage("Aucune donnée trouvée");
+        }
+    }
+
+    public void updateSousPeriode(String option) {
+        sousperiodes.clear();
+        sousperiode = new Sousperiode(0);
+        if (option.equals("1")) {
+            notes.clear();
+        }
+
+        if (typeSousPeriode.getIdTypeSousperiode() != 0) {
+            sousperiodes = sousperiodeFacadeLocal.findIdTypeSousPeriode(typeSousPeriode.getIdTypeSousperiode());
         }
     }
 

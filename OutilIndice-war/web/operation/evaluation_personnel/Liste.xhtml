@@ -32,18 +32,26 @@
 
                     <div class="panel-body">
 
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>#{langue.sous_periode}</label>                               
-                                    <h:selectOneMenu class="form-control" value="#{evaluationPersonnelController.sousperiode.idsousperiode}">
-                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
-                                        <f:selectItems value="#{evaluationPersonnelController.sousperiodes}" var="item" itemLabel="#{item.nom}" itemValue="#{item.idsousperiode}" />
-                                        <p:ajax update="EvaluationListerForm,:NotifZone" listener="#{evaluationPersonnelController.filterData()}" />
-                                    </h:selectOneMenu>
-                                </div>
-                            </div>
+                        <div class="form-inline">
+
+                            <label>#{langue.periodicite}&nbsp;</label>
+                            <h:selectOneMenu id="type_sousperiode" class="form-control" value="#{evaluationPersonnelController.typeSousPeriode.idTypeSousperiode}"
+                                             required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+                                <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                <f:selectItems value="#{evaluationPersonnelController.typeSousPeriodes}" var="tsp" itemLabel="#{tsp.nom}" itemValue="#{tsp.idTypeSousperiode}" />
+                                <p:ajax update="sous_periode" listener="#{evaluationPersonnelController.updateSousPeriode('1')}" />
+                            </h:selectOneMenu>&nbsp;
+
+                            <label>&nbsp;#{langue.sous_periode}&nbsp;</label>                               
+                            <h:selectOneMenu class="form-control" id="sous_periode" value="#{evaluationPersonnelController.sousperiode.idsousperiode}">
+                                <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                <f:selectItems value="#{evaluationPersonnelController.sousperiodes}" var="item" itemLabel="#{item.nom}" itemValue="#{item.idsousperiode}" />
+                                <p:ajax update="EvaluationListerForm,:NotifZone" listener="#{evaluationPersonnelController.filterData()}" />
+                            </h:selectOneMenu>
+
                         </div>
+                        
+                        <br/>
 
                         <div class="table-responsive">
 
@@ -73,7 +81,7 @@
                                                 <p:commandButton icon="ui-icon-search" update=":EvaluationDetailForm"
                                                                  class="btn btn-success btn-sm"
                                                                  actionListener="#{evaluationPersonnelController.prepareView(item)}"/>
-                                                
+
                                                 <p:commandButton class="btn btn-danger btn-sm" icon="ui-icon-trash">
                                                     <p:ajax event="click" listener="#{evaluationPersonnelController.delete(item)}" update=":EvaluationListerForm,:notify1,:NotifZone"/>
                                                     <p:confirm header="#{langue['dialog.confirmation']}"

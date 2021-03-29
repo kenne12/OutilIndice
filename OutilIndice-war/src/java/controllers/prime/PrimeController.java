@@ -11,9 +11,9 @@ import entities.Evaluationpersonnel;
 import entities.Note;
 import entities.Prime;
 import entities.Sousperiode;
+import entities.TypeSousPeriode;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -30,14 +30,7 @@ public class PrimeController extends AbstractPrimeController implements Serializ
 
     @PostConstruct
     private void init() {
-        structures.clear();
-        structures.add(SessionMBean.getStructure());
-        structure = SessionMBean.getStructure();
-        this.initNote();
-    }
-
-    private void initNote() {
-
+        typeSousPeriodes = SessionMBean.getTypeSousPeriodes();
     }
 
     public PrimeController() {
@@ -45,18 +38,16 @@ public class PrimeController extends AbstractPrimeController implements Serializ
     }
 
     public void prepareCreate() {
-        sousperiode = new Sousperiode();
-        sousperiode.setIdsousperiode(0);
+        sousperiode = new Sousperiode(0);
+        typeSousPeriode = new TypeSousPeriode(0);
 
         notes.clear();
         selectedNotes.clear();
 
-        score = 0;
         mode = "Create";
         message = "";
         montantPrime = 0;
-
-        RequestContext.getCurrentInstance().execute("PF('EvaluationCreateDialog').show()");
+        RequestContext.getCurrentInstance().execute("PF('PrimeCreateDialog').show()");
     }
 
     public void filterData() {
@@ -75,13 +66,12 @@ public class PrimeController extends AbstractPrimeController implements Serializ
         mode = "Edit";
         message = "";
         this.updateFiltre();
-        RequestContext.getCurrentInstance().execute("PF('EvaluationCreateDialog').show()");
+        RequestContext.getCurrentInstance().execute("PF('PrimeCreateDialog').show()");
     }
 
     public void prepareView(Prime p) {
         this.prime = p;
         evaluationpersonnels = evaluationpersonnelFacadeLocal.findByPersonnel(p.getIdpersonnel().getIdpersonnel(), p.getIdperiode().getIdperiode(), p.getIdsousperiode().getIdsousperiode());
-        score = this.sommeCritere();
         RequestContext.getCurrentInstance().execute("PF('ViewEditDialog').show()");
     }
 
@@ -122,18 +112,16 @@ public class PrimeController extends AbstractPrimeController implements Serializ
                 this.primes.addAll(listPrimes);
                 return;
             }
-       
+
             double pointTotal = 0;
             for (Note n : notes) {
-                Prime prime = new Prime();
-                prime.setIdprime(0l);
+                Prime prime = new Prime(0l);
                 prime.setIdnote(n);
                 prime.setIdperiode(SessionMBean.getPeriode());
                 prime.setIdpersonnel(n.getIdpersonnel());
                 prime.setIdsousperiode(sousperiode);
                 prime.setNotepersonnelle(n.getTotalPoint());
                 prime.setMontantglobal(montantPrime);
-               
                 prime.setPoint(n.getTotalPoint());
                 pointTotal += n.getTotalPoint();
                 this.primes.add(prime);
@@ -147,30 +135,38 @@ public class PrimeController extends AbstractPrimeController implements Serializ
                 primes.get(counteur).setMontant(p.getPoint() * indice);
                 counteur += 1;
             }
+
+            notes.clear();
         }
     }
 
-    public void updateFiltreSc() {
-        score = this.sommeCritere();
+    public void updateSousPeriode(String option) {
+        sousperiodes.clear();
+        sousperiode = new Sousperiode(0);
+        if (option.equals("1")) {
+            primes.clear();
+        }
+
+        if (typeSousPeriode.getIdTypeSousperiode() != 0) {
+            sousperiodes = sousperiodeFacadeLocal.findIdTypeSousPeriode(typeSousPeriode.getIdTypeSousperiode());
+        }
     }
 
     public void addNoteToTable() {
         if (!selectedNotes.isEmpty()) {
             for (Note n : selectedNotes) {
                 if (!checkCritereInTable(n)) {
-                    Prime obj = new Prime();
-                    obj.setIdprime(0l);
+                    Prime obj = new Prime(0l);
                     obj.setIdnote(n);
                     obj.setIdperiode(n.getIdperiode());
                     obj.setIdpersonnel(n.getIdpersonnel());
                     obj.setIdsousperiode(n.getIdsousperiode());
                     obj.setNotepersonnelle(n.getTotalPoint());
-                    //obj.setNoteservice(n.getNoteservice());
                     primes.add(obj);
                 }
             }
+            notes.removeAll(selectedNotes);
         }
-        score = this.sommeCritere();
     }
 
     private boolean checkCritereInTable(Note n) {
@@ -189,86 +185,20 @@ public class PrimeController extends AbstractPrimeController implements Serializ
         RequestContext.getCurrentInstance().execute("PF('DetailEditDialog').show()");
     }
 
-    public void removeCritere(Prime item) {
+    public void removePrime(int index) {
+        Prime item = primes.get(index);
         if (item.getIdprime() != 0 && item.getIdprime() != null) {
             primeFacadeLocal.remove(item);
-            primes.remove(item);
-        } else {
-            int conteur = 0;
-            for (Prime p : primes) {
-                if (Objects.equals(item.getIdnote(), p.getIdnote())) {
-                    break;
-                }
-                conteur++;
-            }
-            primes.remove(conteur);
         }
-        score = this.sommeCritere();
+        primes.remove(index);
+        notes.add(item.getIdnote());
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
-    }
-
-    private boolean verifyQuantite() {
-        message = "";
-        boolean result = false;
-        double pointMax = 0;
-        for (Evaluationpersonnel ev : evaluationpersonnels) {
-            pointMax += ev.getNote();
-        }
-
-        /*if (pointMax > categoriestructure.getPointmax()) {
-         message = "L'ensemble des valeurs des sous critères  : " + pointMax + " Sont supérieur au poid max : " + categoriestructure.getPointmax();
-         result = true;
-         }*/
-
-        /*for (Criterestructure sc : criterestructures) {
-         double pointMax = 0;
-         for (Detailsc dsc : listDetailsc) {
-         if (dsc.getIdsouscritere().getIdcritere().equals(sc.getCritere())) {
-         pointMax += dsc.getPointMax();
-         }
-         }
-
-         if (pointMax > sc.getPointmax()) {
-         message = "L'ensemble des sous critère de : " + sc.getCritere().getNom() + " Sont supérieur au poid max : " + sc.getPointmax();
-         result = true;
-         break;
-         }
-         }*/
-        return result;
-    }
-
-    public void editDetail() {
-        if (evaluationpersonnel.getIdevaluationpersonnel() != null && evaluationpersonnel.getIdevaluationpersonnel() > 0) {
-            int i = 0;
-            for (Evaluationpersonnel evp : evaluationpersonnels) {
-                if (evp.getIddetailsc().equals(evaluationpersonnel.getIddetailsc())) {
-                    break;
-                }
-                i++;
-            }
-            evaluationpersonnels.set(i, evaluationpersonnel);
-        } else {
-            int i = 0;
-            for (Evaluationpersonnel evp : evaluationpersonnels) {
-                if (evp.getIddetailsc().equals(evaluationpersonnel.getIddetailsc())) {
-                    break;
-                }
-                i++;
-            }
-            evaluationpersonnels.set(i, evaluationpersonnel);
-        }
-        RequestContext.getCurrentInstance().execute("PF('DetailEditDialog').hide()");
     }
 
     public void save() {
         try {
             if (primes.isEmpty()) {
                 JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
-                return;
-            }
-
-            if (this.verifyQuantite()) {
-                JsfUtil.addErrorMessage(message);
                 return;
             }
 

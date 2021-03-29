@@ -65,13 +65,6 @@
                             <h:outputText class="hardBreak" value="#{item.note}"/> 
                         </p:column>
 
-                        <p:column class="hardBreak" style="width: 10%;text-align: center" >
-                            <f:facet name="header">
-                                <h:outputText value="#{langue.coef}"/>
-                            </f:facet>
-                            <h:outputText class="hardBreak" value="#{item.multiplicateur}"/> 
-                        </p:column>
-
                         <p:column class="hardBreak" style="width: 30%;" >
                             <f:facet name="header">
                                 <h:outputText value="#{langue['common.observaiton']}"/>
@@ -79,17 +72,10 @@
                             <h:outputText class="hardBreak" value="#{item.observation}"/> 
                         </p:column>
 
-                        <p:column class="hardBreak" style="width: 10%;text-align: center" >
-                            <f:facet name="header">
-                                <h:outputText value="#{langue.incitatif}"/>
-                            </f:facet>
-                            <h:selectBooleanCheckbox value="#{item.iddetailsc.idsouscritere.incitatif}" disabled="true" /> 
-                        </p:column>
-
                         <p:columnGroup type="footer" id="footer_tab">
                             <p:row>
                                 <p:column style="text-align:right" footerText="Totaux" />                                                                          
-                                <p:column style="text-align:center" footerText="#{primeController.score}"/>  
+                                <p:column style="text-align:center" footerText=""/>  
                                 <p:column colspan="3" style="text-align:center" footerText=" / " /> 
                             </p:row>
                         </p:columnGroup>
