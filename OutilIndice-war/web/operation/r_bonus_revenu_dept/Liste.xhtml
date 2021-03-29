@@ -8,36 +8,35 @@
                 xmlns:jsf="http://xmlns.jcp.org/jsf">
 
 
-    <h:form id="search_form">
+    <h:form id="search_form" class="form-inline">
 
-        <div class="row">
+        <label>#{langue.periodicite}&nbsp;</label>
+        <h:selectOneMenu id="type_sousperiode" class="form-control" value="#{realisationBonusRDeptCtrl.typeSousPeriode.idTypeSousperiode}"
+                         required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+            <f:selectItems value="#{realisationBonusRDeptCtrl.typeSousPeriodes}" var="tsp" itemLabel="#{tsp.nom}" itemValue="#{tsp.idTypeSousperiode}" />
+            <p:ajax update=":BonusRevenuDeptListerForm,search_form" listener="#{realisationBonusRDeptCtrl.updateSousPeriode('1')}" />
+        </h:selectOneMenu>&nbsp;
 
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label>#{langue.sous_periode}</label>
-                    <h:selectOneMenu id="type_sousperiode" class="form-control" value="#{realisationBonusRDeptCtrl.sousperiode.idsousperiode}"                                     
-                                     required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
-                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                        <f:selectItems value="#{realisationBonusRDeptCtrl.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
-                        <p:ajax listener="#{realisationBonusRDeptCtrl.searchData()}" />
-                    </h:selectOneMenu>
-                </div>
-            </div>
+        <label>#{langue.sous_periode}</label>
+        <h:selectOneMenu id="sousperiode" class="form-control" value="#{realisationBonusRDeptCtrl.sousperiode.idsousperiode}"                                     
+                         required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
+            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+            <f:selectItems value="#{realisationBonusRDeptCtrl.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
+            <p:ajax listener="#{realisationBonusRDeptCtrl.searchData()}" />
+        </h:selectOneMenu>&nbsp;
 
-            <div class="col-md-1 ">
-                <p:commandButton class="mt-3" value="#{langue['common.chercher']}" update=":BonusRevenuDeptListerForm"  actionListener="#{realisationBonusRDeptCtrl.searchData()}" />
-            </div>                           
-        </div>
+        <p:commandButton  value="#{langue['common.chercher']}" update=":BonusRevenuDeptListerForm"  actionListener="#{realisationBonusRDeptCtrl.searchData()}" />
 
     </h:form>
-
 
     <h:form id="BonusRevenuDeptListerForm">
 
         <p:messages id="growl" closable="true">
             <p:effect type="pulsate" event="load" delay="50" />
         </p:messages>
-
+        <br/>
+        
         <div class="row">
             <div class="col-md-9">
                 <div class="panel panel-success">

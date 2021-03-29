@@ -58,7 +58,6 @@ public class AbstractRealisationPrimeRQltifDeptCtrl {
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
     protected Structure structure = SessionMBean.getStructure();
-    protected List<Structure> structures = new ArrayList<>();
 
     @EJB
     protected TypeSousPeriodeFacadeLocal typeSousPeriodeFacadeLocal;
@@ -74,10 +73,6 @@ public class AbstractRealisationPrimeRQltifDeptCtrl {
 
     public void setStructure(Structure structure) {
         this.structure = structure;
-    }
-
-    public List<Structure> getStructures() {
-        return structures;
     }
 
     public Routine getRoutine() {

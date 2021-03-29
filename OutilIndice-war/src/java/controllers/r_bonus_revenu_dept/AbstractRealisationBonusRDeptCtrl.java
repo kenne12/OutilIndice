@@ -6,20 +6,20 @@
 package controllers.r_bonus_revenu_dept;
 
 import entities.Cible;
-import entities.Indicateur;
 import entities.Periode;
 import entities.Service;
 import entities.Sousperiode;
 import entities.Structure;
+import entities.TypeSousPeriode;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import sessions.CibleFacadeLocal;
-import sessions.IndicateurFacadeLocal;
 import sessions.PeriodeFacadeLocal;
 import sessions.ServiceFacadeLocal;
 import sessions.SousperiodeFacadeLocal;
 import sessions.StructureFacadeLocal;
+import sessions.TypeSousPeriodeFacadeLocal;
 import utils.Routine;
 import utils.SessionMBean;
 
@@ -34,11 +34,6 @@ public class AbstractRealisationBonusRDeptCtrl {
     protected Cible cible = new Cible();
     protected List<Cible> cibles = new ArrayList<>();
     protected List<Cible> listCibles = new ArrayList<>();
-
-    @EJB
-    protected IndicateurFacadeLocal indicateurFacadeLocal;
-    protected Indicateur indicateur = new Indicateur();
-    protected List<Indicateur> indicateurs = new ArrayList<>();
 
     @EJB
     protected PeriodeFacadeLocal periodeFacadeLocal;
@@ -57,8 +52,12 @@ public class AbstractRealisationBonusRDeptCtrl {
 
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
-    protected Structure structure = new Structure();
-    protected List<Structure> structures = new ArrayList<>();
+    protected Structure structure = SessionMBean.getStructure();
+
+    @EJB
+    protected TypeSousPeriodeFacadeLocal typeSousPeriodeFacadeLocal;
+    protected TypeSousPeriode typeSousPeriode = new TypeSousPeriode();
+    protected List<TypeSousPeriode> typeSousPeriodes = new ArrayList<>();
 
     protected Routine routine = new Routine();
     protected String mode = "";
@@ -73,10 +72,6 @@ public class AbstractRealisationBonusRDeptCtrl {
 
     public void setStructure(Structure structure) {
         this.structure = structure;
-    }
-
-    public List<Structure> getStructures() {
-        return structures;
     }
 
     public Routine getRoutine() {
@@ -97,11 +92,6 @@ public class AbstractRealisationBonusRDeptCtrl {
 
     public List<Cible> getListCibles() {
         return listCibles;
-    }
-
-    public List<Indicateur> getIndicateurs() {
-        indicateurs = indicateurFacadeLocal.findAll();
-        return indicateurs;
     }
 
     public Periode getPeriode() {
@@ -130,7 +120,6 @@ public class AbstractRealisationBonusRDeptCtrl {
     }
 
     public List<Sousperiode> getSousperiodes() {
-        sousperiodes = sousperiodeFacadeLocal.findAllRangeCode();
         return sousperiodes;
     }
 
@@ -140,14 +129,6 @@ public class AbstractRealisationBonusRDeptCtrl {
 
     public void setSelectedServices(List<Service> selectedServices) {
         this.selectedServices = selectedServices;
-    }
-
-    public Indicateur getIndicateur() {
-        return indicateur;
-    }
-
-    public void setIndicateur(Indicateur indicateur) {
-        this.indicateur = indicateur;
     }
 
     public double getTotalCible() {
@@ -160,6 +141,18 @@ public class AbstractRealisationBonusRDeptCtrl {
 
     public double getTotalRatio() {
         return totalRatio;
+    }
+
+    public TypeSousPeriode getTypeSousPeriode() {
+        return typeSousPeriode;
+    }
+
+    public void setTypeSousPeriode(TypeSousPeriode typeSousPeriode) {
+        this.typeSousPeriode = typeSousPeriode;
+    }
+
+    public List<TypeSousPeriode> getTypeSousPeriodes() {
+        return typeSousPeriodes;
     }
 
 }

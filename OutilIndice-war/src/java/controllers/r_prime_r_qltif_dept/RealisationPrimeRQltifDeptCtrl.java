@@ -35,8 +35,6 @@ public class RealisationPrimeRQltifDeptCtrl extends AbstractRealisationPrimeRQlt
 
     @PostConstruct
     private void init() {
-        structures.clear();
-        structures.add(SessionMBean.getStructure());
         evaluationRPrimeQltifDept = new EvaluationRPrimeQltifDept();
         services = SessionMBean.getServices();
         typeSousPeriodes = SessionMBean.getTypeSousPeriodes();

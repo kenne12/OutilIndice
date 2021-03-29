@@ -24,23 +24,21 @@ import utils.SessionMBean;
  */
 @ManagedBean
 @SessionScoped
-public class RealisationBonusRDeptCtrl extends AbstractRealisationBonusRDeptCtrl implements Serializable{
+public class RealisationBonusRDeptCtrl extends AbstractRealisationBonusRDeptCtrl implements Serializable {
 
     /**
      * Creates a new instance of RealisationBonusRDeptCtrl
      */
     public RealisationBonusRDeptCtrl() {
     }
-    
+
     @PostConstruct
     private void init() {
-        structure = SessionMBean.getStructure();
-        structures.clear();
-        structures.add(SessionMBean.getStructure());
         cible = new Cible();
         cible.setIdservice(new Service());
+        typeSousPeriodes = SessionMBean.getTypeSousPeriodes();
     }
-    
+
     public void prepareCreate() {
         mode = "Create";
         sousperiode = new Sousperiode();
@@ -49,18 +47,18 @@ public class RealisationBonusRDeptCtrl extends AbstractRealisationBonusRDeptCtrl
         cibles.clear();
         RequestContext.getCurrentInstance().execute("PF('BonusRevenuDeptCreateDialog').show()");
     }
-    
+
     public void prepareEdit(Cible c) {
         this.cible = c;
         mode = "Edit";
         RequestContext.getCurrentInstance().execute("PF('BonusRevenuDeptEditDialog').show()");
     }
-    
+
     public void updateFiltre() {
         cibles.clear();
         if (sousperiode.getIdsousperiode() != null && sousperiode.getIdsousperiode() > 0) {
             List<Cible> list = cibleFacadeLocal.findByIdStructureSousPeriode(SessionMBean.getStructure().getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 6);
-            if (list.isEmpty() || list == null) {
+            if (list.isEmpty()) {
                 JsfUtil.addWarningMessage("Cibles non programmées");
             } else {
                 cibles.addAll(list);
@@ -68,7 +66,24 @@ public class RealisationBonusRDeptCtrl extends AbstractRealisationBonusRDeptCtrl
             }
         }
     }
-    
+
+    public void updateSousPeriode(String option) {
+        sousperiodes.clear();
+        sousperiode = new Sousperiode(0);
+
+        if (option.equals("2")) {
+            cibles.clear();
+        }
+
+        if (option.equals("1")) {
+            listCibles.clear();
+        }
+
+        if (typeSousPeriode.getIdTypeSousperiode() != 0) {
+            sousperiodes = sousperiodeFacadeLocal.findIdTypeSousPeriode(typeSousPeriode.getIdTypeSousperiode());
+        }
+    }
+
     public void searchData() {
         try {
             listCibles.clear();
@@ -80,21 +95,16 @@ public class RealisationBonusRDeptCtrl extends AbstractRealisationBonusRDeptCtrl
             e.printStackTrace();
         }
     }
-    
+
     public void save() {
         try {
             if (cibles.isEmpty()) {
                 JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
                 return;
             }
-            
+
             for (Cible c : cibles) {
-                if (c.getIdcible() == 0l) {
-                    c.setIdcible(cibleFacadeLocal.nextId());
-                    cibleFacadeLocal.create(c);
-                } else {
-                    cibleFacadeLocal.edit(c);
-                }
+                cibleFacadeLocal.edit(c);
             }
             listCibles = cibleFacadeLocal.findByIdStructureSousPeriode(SessionMBean.getStructure().getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 6);
             this.cibles.clear();
@@ -107,7 +117,7 @@ public class RealisationBonusRDeptCtrl extends AbstractRealisationBonusRDeptCtrl
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-    
+
     public void edit() {
         try {
             cibleFacadeLocal.edit(cible);
@@ -122,7 +132,7 @@ public class RealisationBonusRDeptCtrl extends AbstractRealisationBonusRDeptCtrl
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-    
+
     public void delete(Cible c) {
         try {
             cibleFacadeLocal.remove(c);
@@ -135,7 +145,7 @@ public class RealisationBonusRDeptCtrl extends AbstractRealisationBonusRDeptCtrl
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-    
+
     public void getTotals(List<Cible> list) {
         try {
             this.totalCible = 0;
@@ -157,7 +167,7 @@ public class RealisationBonusRDeptCtrl extends AbstractRealisationBonusRDeptCtrl
             totalRatio = 0;
         }
     }
-    
+
     public void getTotals2(List<Cible> list) {
         try {
             this.totalCible = 0;
@@ -172,7 +182,7 @@ public class RealisationBonusRDeptCtrl extends AbstractRealisationBonusRDeptCtrl
             totalRatio = 0;
         }
     }
-    
+
     public void updateLine() {
         try {
             cible.setRatio((cible.getValeurrealisee() / cible.getValeurcible()) * 100);
