@@ -29,5 +29,9 @@ public interface TypeStructureSousRubriqueDepenseFacadeLocal {
     List<TypeStructureSousRubriqueDepense> findRange(int[] range);
 
     int count();
-    
+
+    Integer nextId();
+
+    List<TypeStructureSousRubriqueDepense> findByIdTypestructure(long idTypeStructure);
+
 }

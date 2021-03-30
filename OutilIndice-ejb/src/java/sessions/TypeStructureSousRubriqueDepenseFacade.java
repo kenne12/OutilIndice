@@ -6,9 +6,11 @@
 package sessions;
 
 import entities.TypeStructureSousRubriqueDepense;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -16,6 +18,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class TypeStructureSousRubriqueDepenseFacade extends AbstractFacade<TypeStructureSousRubriqueDepense> implements TypeStructureSousRubriqueDepenseFacadeLocal {
+
     @PersistenceContext(unitName = "OutilIndice-ejbPU")
     private EntityManager em;
 
@@ -28,4 +31,26 @@ public class TypeStructureSousRubriqueDepenseFacade extends AbstractFacade<TypeS
         super(TypeStructureSousRubriqueDepense.class);
     }
     
+    @Override
+    public Integer nextId() {
+        try {
+            Query query = em.createQuery("SELECT MAX(t.id) FROM TypeStructureSousRubriqueDepense t");
+            List listObj = query.getResultList();
+            if (!listObj.isEmpty()) {
+                return ((Integer) listObj.get(0)) + 1;
+            } else {
+                return 1 + 1;
+            }
+        } catch (Exception e) {
+            return 1;
+        }
+    }
+
+    @Override
+    public List<TypeStructureSousRubriqueDepense> findByIdTypestructure(long idTypeStructure) {
+        Query query = em.createQuery("SELECT t FROM TypeStructureSousRubriqueDepense t WHERE t.typestructure.idtypestructure=:idTypeStructure ORDER BY t.sousrubriquedepense.code");
+        query.setParameter("idTypeStructure", idTypeStructure);
+        return query.getResultList();
+    }
+
 }

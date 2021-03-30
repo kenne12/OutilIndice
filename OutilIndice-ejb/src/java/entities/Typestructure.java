@@ -56,6 +56,12 @@ public class Typestructure implements Serializable {
     @OneToMany(mappedBy = "typestructure", fetch = FetchType.LAZY)
     private Collection<TypestructureResponsabilite> typestructureResponsabiliteCollection;
 
+    @OneToMany(mappedBy = "typestructure", fetch = FetchType.LAZY)
+    private Collection<TypeStructureSousRubriqueDepense> typeStructureSRDepenseCollection;
+
+    @OneToMany(mappedBy = "typestructure", fetch = FetchType.LAZY)
+    private Collection<TypeStructureSousRubriqueRecette> typeStructureSRRecetteCollection;
+
     public Typestructure() {
     }
 
@@ -130,6 +136,24 @@ public class Typestructure implements Serializable {
 
     public void setTypestructureResponsabiliteCollection(Collection<TypestructureResponsabilite> typestructureResponsabiliteCollection) {
         this.typestructureResponsabiliteCollection = typestructureResponsabiliteCollection;
+    }
+
+    @XmlTransient
+    public Collection<TypeStructureSousRubriqueDepense> getTypeStructureSRDepenseCollection() {
+        return typeStructureSRDepenseCollection;
+    }
+
+    public void setTypeStructureSRDepenseCollection(Collection<TypeStructureSousRubriqueDepense> typeStructureSRDepenseCollection) {
+        this.typeStructureSRDepenseCollection = typeStructureSRDepenseCollection;
+    }
+
+    @XmlTransient
+    public Collection<TypeStructureSousRubriqueRecette> getTypeStructureSRRecetteCollection() {
+        return typeStructureSRRecetteCollection;
+    }
+
+    public void setTypeStructureSRRecetteCollection(Collection<TypeStructureSousRubriqueRecette> typeStructureSRRecetteCollection) {
+        this.typeStructureSRRecetteCollection = typeStructureSRRecetteCollection;
     }
 
     @Override
