@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="TypestructureSrrCreateDlg" 
+                  widgetVar="TypestructureSrrCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['typestructure_srr.formulaire_creation']}"
+                  closeOnEscape="true"
+                  width="60%"
+                  height="600">
+
+            <h:form id="TypestructureSrrCreateForm">
+
+                <div class="col-md-12">
+
+                    <h:panelGroup id="display">
+
+                        <p:selectManyCheckbox id="grid_critere" value="#{typestructureSrrCtrl.selectedSousrubriquerecettes}" layout="grid" columns="1" converter="sousRubriqueRecetteConverter">
+                            <f:selectItems value="#{typestructureSrrCtrl.sousrubriquerecettes}" var="s" itemLabel="#{s.nom}" itemValue="#{s}" />
+                            <p:ajax />
+                        </p:selectManyCheckbox>
+
+                        <p:separator />
+
+                        <p:commandButton value="#{langue['common.ajouter']}"
+                                         actionListener="#{typestructureSrrCtrl.addSRubriqueToTable()}"
+                                         update="datalist,grid_critere" icon="ui-icon-plus" />
+                        <p:separator />
+
+                        <p:dataTable id="datalist" value="#{typestructureSrrCtrl.typeStructureSousRubriqueRecettes}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="#{typestructureSrrCtrl.typeStructureSousRubriqueRecettes.size()}"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                           
+                            <p:column class="hardBreak" style="width: 90%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue['common.nom']}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.sousrubriquerecette.code} #{item.sousrubriquerecette.nom}"/> 
+                            </p:column>
+
+                            <p:column style="width: 10%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="Action"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-trash">
+                                    <p:ajax update="datalist,:TypestructureSrrCreateForm:grid_critere" event="click" listener="#{typestructureSrrCtrl.removeSousRubrique(index)}" />
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:separator/>
+
+                        <center>
+
+                            <p:commandButton value="#{langue['common.fermer']}" 
+                                             onclick="PF('TypestructureSrrCreateDialog').hide()"
+                                             icon="ui-icon-close"/>
+
+                            <p:commandButton icon="ui-icon-save" actionListener="#{typestructureSrrCtrl.save()}" value="#{langue['common.enregistrer']}" update="display,:TypestructureSrrListerForm:datalist,:TypestructureSrrListerForm:growl">
+                                <p:confirm header="#{langue['notification.confirmation']}" 
+                                           message="#{langue['notification.confirmation_enregistrement']}" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+
+                        </center>
+
+                    </h:panelGroup>
+
+                </div>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
