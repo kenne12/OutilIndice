@@ -6,6 +6,8 @@ import entities.Criterestructure;
 import entities.Periode;
 import entities.Responsabilite;
 import entities.Service;
+import entities.Sousrubriquedepense;
+import entities.Sousrubriquerecette;
 import entities.Structure;
 import entities.TypeSousPeriode;
 import entities.Utilisateur;
@@ -22,8 +24,7 @@ public class SessionMBean {
     }
 
     public static HttpServletRequest getRequest() {
-        return (HttpServletRequest) FacesContext.getCurrentInstance()
-                .getExternalContext().getRequest();
+        return (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     }
 
     public static Utilisateur getUserAccount() {
@@ -102,6 +103,22 @@ public class SessionMBean {
         HttpSession session = getSession();
         if (session != null) {
             return (List<Responsabilite>) session.getAttribute("responsabilites");
+        }
+        return null;
+    }
+    
+    public static List<Sousrubriquerecette> getSousRubriqueRecettes() {
+        HttpSession session = getSession();
+        if (session != null) {
+            return (List<Sousrubriquerecette>) session.getAttribute("sous_rubrique_recette");
+        }
+        return null;
+    }
+    
+    public static List<Sousrubriquedepense> getSousRubriqueDepenses() {
+        HttpSession session = getSession();
+        if (session != null) {
+            return (List<Sousrubriquedepense>) session.getAttribute("sous_rubrique_depense");
         }
         return null;
     }

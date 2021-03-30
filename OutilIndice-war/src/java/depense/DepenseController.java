@@ -30,8 +30,9 @@ public class DepenseController extends AbstractDepenseController implements Seri
             selectedSousrubriquedepenses.clear();
 
             if (sousperiode.getIdsousperiode() != null) {
-                sousrubriquedepenses = sousrubriquedepenseFacadeLocal.findAllEtatPrime(false);
-                sousrubriquedepenses.addAll(sousrubriquedepenseFacadeLocal.findAllEtatPrime(true));
+                //sousrubriquedepenses = sousrubriquedepenseFacadeLocal.findAllEtatPrime(false);
+                //sousrubriquedepenses.addAll(sousrubriquedepenseFacadeLocal.findAllEtatPrime(true));
+                sousrubriquedepenses = SessionMBean.getSousRubriqueDepenses();
 
                 depenses = depenseFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
                 total = this.sommeDepense(depenses);
@@ -89,8 +90,10 @@ public class DepenseController extends AbstractDepenseController implements Seri
             List<Recette> listRecette = recetteFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
             this.montant = this.sommeRecette(listRecette);
 
-            sousrubriquedepenses = sousrubriquedepenseFacadeLocal.findAllEtatPrime(false);
-            sousrubriquedepenses.addAll(sousrubriquedepenseFacadeLocal.findAllEtatPrime(true));
+            //sousrubriquedepenses = sousrubriquedepenseFacadeLocal.findAllEtatPrime(false);
+            //sousrubriquedepenses.addAll(sousrubriquedepenseFacadeLocal.findAllEtatPrime(true));
+            
+            sousrubriquedepenses = SessionMBean.getSousRubriqueDepenses();
         }
     }
 

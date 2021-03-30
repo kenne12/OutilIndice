@@ -4,7 +4,6 @@ import entities.Recette;
 import entities.Sousperiode;
 import entities.Sousrubriquerecette;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -76,7 +75,7 @@ public class RecetteController extends AbstractRecetteController implements Seri
 
         if (sousperiode.getIdsousperiode() != null) {
             sousrubriquerecettes.clear();
-            sousrubriquerecettes = sousrubriquerecetteFacadeLocal.findAllRangeByCode();
+            sousrubriquerecettes = SessionMBean.getSousRubriqueRecettes();
 
             recettes = recetteFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
 
@@ -86,6 +85,7 @@ public class RecetteController extends AbstractRecetteController implements Seri
                 }
                 sousrubriquerecettes.removeAll(selectedSousrubriquerecettes);
             }
+            selectedSousrubriquerecettes.clear();
         }
         sommeData(recettes);
     }
@@ -143,8 +143,7 @@ public class RecetteController extends AbstractRecetteController implements Seri
         try {
             for (Sousrubriquerecette srr : selectedSousrubriquerecettes) {
                 if (!checkSubRubricInList(srr, recettes)) {
-                    Recette r = new Recette();
-                    r.setIdrecette(0l);
+                    Recette r = new Recette(0l);
                     r.setIdperiode(periode);
                     r.setIdsousperiode(sousperiode);
                     r.setIdsousrubriquerecette(srr);
@@ -160,9 +159,9 @@ public class RecetteController extends AbstractRecetteController implements Seri
         }
     }
 
-    public void removeSubRubric(int index, Recette item) { 
+    public void removeSubRubric(int index, Recette item) {
         Recette rTemp = recettes.get(index);
-        
+
         if (rTemp.getIdrecette() != 0) {
             recettes.remove(index);
             sousrubriquerecettes.add(item.getIdsousrubriquerecette());

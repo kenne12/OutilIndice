@@ -28,8 +28,12 @@ import entities.Periode;
 import entities.Privilege;
 import entities.Responsabilite;
 import entities.Service;
+import entities.Sousrubriquedepense;
+import entities.Sousrubriquerecette;
 import entities.Structure;
 import entities.TypeSousPeriode;
+import entities.TypeStructureSousRubriqueDepense;
+import entities.TypeStructureSousRubriqueRecette;
 import entities.TypestructureCategorie;
 import entities.TypestructureResponsabilite;
 import entities.TypestructureService;
@@ -174,6 +178,19 @@ public class LoginController extends AbstractLoginController implements Serializ
             session.setAttribute("responsabilites", responsabilites);
             session.setAttribute("ts_responsabilites", typestructureResponsabilites);
 
+            List<TypeStructureSousRubriqueRecette> sousRubriqueRecettes = typeStructureSousRubriqueRecetteFacadeLocal.findByIdTypestructure(structure.getIdtypestructure().getIdtypestructure());
+            List<Sousrubriquerecette> vals = new ArrayList<>();
+            sousRubriqueRecettes.forEach(srr -> {
+                vals.add(srr.getSousrubriquerecette());
+            });
+            session.setAttribute("sous_rubrique_recette", vals);
+
+            List<TypeStructureSousRubriqueDepense> sousRubriqueDepenses = typeStructureSousRubriqueDepenseFacadeLocal.findByIdTypestructure(structure.getIdtypestructure().getIdtypestructure());
+            List<Sousrubriquedepense> vals2 = new ArrayList<>();
+            sousRubriqueDepenses.forEach(val -> {
+                vals2.add(val.getSousrubriquedepense());
+            });
+            session.setAttribute("sous_rubrique_depense", vals2);
             this.getDetail();
 
             showSessionPanel = false;
