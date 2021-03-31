@@ -17,7 +17,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
 import utils.SessionMBean;
-import utils.Utilitaires;
 
 /**
  *
@@ -35,22 +34,17 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl imp
 
     @PostConstruct
     private void init() {
-        structures.clear();
-        structures.add(SessionMBean.getStructure());
-        listCriteres = critereresponsabiliteFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
-        critereresponsabilite.setIdresponsabilite(new Responsabilite());
-        
-        criterestructure = Utilitaires.findCritereSInSession(1);
-        if (criterestructure != null) {
+        try {
+            listCriteres = critereresponsabiliteFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
+            critereresponsabilite.setIdresponsabilite(new Responsabilite());
             totalPointMaxCritere = criterestructure.getResultat();
+            indexCritere = criterestructures.indexOf(criterestructure);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public void prepareCreate(String option) {
-        if (criterestructure == null) {
-            JsfUtil.addWarningMessage("Cette structure ne traite pas de la prime de responsabilité");
-            return;
-        }
         mode = "Create";
 
         if (option.equals("1")) {
@@ -98,7 +92,7 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl imp
                 Critereresponsabilite cr = new Critereresponsabilite();
                 cr.setIdcritereresponsabilite(0l);
                 cr.setIdstructure(structure);
-                cr.setIdcritere(new Critere(1));
+                cr.setIdcritere(criterestructure.getCritere());
                 cr.setPoint(0d);
                 cr.setNombre(efr.getNombre());
                 cr.setIdresponsabilite(efr.getResponsabilite());
@@ -109,6 +103,7 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl imp
         } else {
             critereresponsabilites.addAll(list);
         }
+        sommeDetail(critereresponsabilites);
         RequestContext.getCurrentInstance().execute("PF('ResponsabiliteCreateDialog').show()");
     }
 
@@ -116,10 +111,9 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl imp
         if (!selectedResponsabilites.isEmpty()) {
             for (Responsabilite r : selectedResponsabilites) {
                 if (!checkResponsabilityInTable(r)) {
-                    Critereresponsabilite cr = new Critereresponsabilite();
-                    cr.setIdcritereresponsabilite(0l);
+                    Critereresponsabilite cr = new Critereresponsabilite(0l);
                     cr.setIdstructure(structure);
-                    cr.setIdcritere(new Critere(1));
+                    cr.setIdcritere(criterestructure.getCritere());
                     cr.setPoint(0d);
                     cr.setIdresponsabilite(r);
                     cr.setResponsabilite(true);
@@ -127,6 +121,7 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl imp
                 }
             }
             responsabilites.removeAll(selectedResponsabilites);
+            selectedResponsabilites.clear();
         }
     }
 
@@ -141,22 +136,33 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl imp
         return result;
     }
 
-    public void removeResponsability(Critereresponsabilite item) {
+    public void removeResponsability(int index) {
+        Critereresponsabilite item = critereresponsabilites.get(index);
         if (item.getIdcritereresponsabilite() != 0l) {
             critereresponsabiliteFacadeLocal.remove(item);
-            critereresponsabilites.remove(item);
             listCriteres = critereresponsabiliteFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
-        } else {
-            int conteur = 0;
-            for (Critereresponsabilite cr : critereresponsabilites) {
-                if (cr.getIdresponsabilite().getIdresponsabilite().equals(item.getIdresponsabilite().getIdresponsabilite())) {
-                    break;
-                }
-                conteur++;
-            }
-            critereresponsabilites.remove(conteur);
         }
+        critereresponsabilites.remove(index);
+        responsabilites.add(item.getIdresponsabilite());
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
+    }
+
+    public void refreshCosting() {
+        criterestructure.setResultatfinal(totalPointSaisi);
+        criterestructures.set(indexCritere, criterestructure);
+        double somme = 0;
+        for (int i = 0; i < criterestructures.size(); i++) {
+            if (criterestructures.get(i).getPoids() != null && criterestructures.get(i).getPoids() > 0) {
+                somme += criterestructures.get(i).getResultatfinal();
+            }
+        }
+        for (int i = 0; i < criterestructures.size(); i++) {
+            if (criterestructures.get(i).getPoids() != null && criterestructures.get(i).getPoids() > 0) {
+                criterestructures.get(i).setPoidsfinal((criterestructures.get(i).getResultatfinal() / somme) * 100);
+                criterestructures.get(i).setEcart(criterestructures.get(i).getPoidsfinal() - criterestructures.get(i).getPoids());
+            }
+        }
+        criterestructure = criterestructures.get(indexCritere);
     }
 
     public void updateSaisieLine(int index) {
@@ -186,8 +192,8 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl imp
                 JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
                 return;
             }
-            
-            if (totalPointSaisi>totalPointMaxCritere) {
+
+            if (totalPointSaisi > totalPointMaxCritere) {
                 JsfUtil.addErrorMessage("Le total saisi depasse le total point max possible");
                 return;
             }
@@ -201,6 +207,10 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl imp
                 }
             }
             listCriteres = critereresponsabiliteFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
+            criterestructureFacadeLocal.edit(criterestructure);
+            criterestructures.forEach(cs -> {
+                criterestructureFacadeLocal.edit(cs);
+            });
             this.critereresponsabilites.clear();
 
             RequestContext.getCurrentInstance().execute("PF('ResponsabiliteCreateDialog').hide()");

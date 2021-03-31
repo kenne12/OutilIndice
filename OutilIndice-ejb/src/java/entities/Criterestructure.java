@@ -41,6 +41,10 @@ public class Criterestructure implements Serializable {
     @Column(name = "scoremoyen")
     private Integer scoreMoyen;
     private Double resultat;
+    private double resultatfinal;
+    private double poidsfinal;
+    private double ecart;
+    private boolean etat;
     @JoinColumn(name = "idcritere", referencedColumnName = "idcritere", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Critere critere;
@@ -124,6 +128,38 @@ public class Criterestructure implements Serializable {
 
     public void setCreated(boolean created) {
         this.created = created;
+    }
+
+    public double getResultatfinal() {
+        return resultatfinal;
+    }
+
+    public void setResultatfinal(double resultatfinal) {
+        this.resultatfinal = resultatfinal;
+    }
+
+    public double getPoidsfinal() {
+        return poidsfinal;
+    }
+
+    public void setPoidsfinal(double poidsfinal) {
+        this.poidsfinal = poidsfinal;
+    }
+
+    public double getEcart() {
+        return ecart;
+    }
+
+    public void setEcart(double ecart) {
+        this.ecart = ecart;
+    }
+
+    public boolean isEtat() {
+        return etat;
+    }
+
+    public void setEtat(boolean etat) {
+        this.etat = etat;
     }
 
     @Override

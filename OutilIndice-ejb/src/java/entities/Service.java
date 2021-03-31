@@ -8,7 +8,6 @@ package entities;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -42,8 +41,6 @@ public class Service implements Serializable {
     private String nom;
     @Size(max = 254)
     private String code;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "service", fetch = FetchType.LAZY)
-    private Collection<Critereservice> critereserviceCollection;
     @OneToMany(mappedBy = "idservice", fetch = FetchType.LAZY)
     private Collection<Souscritereservice> souscritereserviceCollection;
     @OneToMany(mappedBy = "idservice", fetch = FetchType.LAZY)
@@ -80,15 +77,6 @@ public class Service implements Serializable {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    @XmlTransient
-    public Collection<Critereservice> getCritereserviceCollection() {
-        return critereserviceCollection;
-    }
-
-    public void setCritereserviceCollection(Collection<Critereservice> critereserviceCollection) {
-        this.critereserviceCollection = critereserviceCollection;
     }
 
     @XmlTransient

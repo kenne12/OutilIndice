@@ -20,6 +20,7 @@ import sessions.ParametragecritereFacadeLocal;
 import sessions.StructureFacadeLocal;
 import utils.Routine;
 import utils.SessionMBean;
+import utils.Utilitaires;
 
 /**
  *
@@ -29,7 +30,8 @@ public class AbstractBonusPratiquePriveeCtrl {
 
     @EJB
     protected CriterestructureFacadeLocal criterestructureFacadeLocal;
-    protected Criterestructure criterestructure = new Criterestructure();
+    protected Criterestructure criterestructure = Utilitaires.findCritereSInSession(3);
+    protected List<Criterestructure> criterestructures = SessionMBean.getCritereStructures();
 
     @EJB
     protected ParametragecritereFacadeLocal parametragecritereFacadeLocal;
@@ -45,8 +47,7 @@ public class AbstractBonusPratiquePriveeCtrl {
 
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
-    protected Structure structure = SessionMBean.getStructure();
-    protected List<Structure> structures = new ArrayList<>();
+    protected final Structure structure = SessionMBean.getStructure();
 
     @EJB
     protected EffectifCategorieFacadeLocal effectifCategorieFacadeLocal;
@@ -58,6 +59,8 @@ public class AbstractBonusPratiquePriveeCtrl {
     protected double totalPointMaxCritere;
     protected int totalEffectif;
     protected double totalPointSaisi;
+
+    protected int indexCritere;
 
     public Parametragecritere getParametragecritere() {
         return parametragecritere;
@@ -85,14 +88,6 @@ public class AbstractBonusPratiquePriveeCtrl {
 
     public Structure getStructure() {
         return structure;
-    }
-
-    public void setStructure(Structure structure) {
-        this.structure = structure;
-    }
-
-    public List<Structure> getStructures() {
-        return structures;
     }
 
     public Routine getRoutine() {

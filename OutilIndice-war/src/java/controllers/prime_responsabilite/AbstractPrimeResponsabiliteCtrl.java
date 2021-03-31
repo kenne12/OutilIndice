@@ -20,6 +20,7 @@ import sessions.ResponsabiliteFacadeLocal;
 import sessions.StructureFacadeLocal;
 import utils.Routine;
 import utils.SessionMBean;
+import utils.Utilitaires;
 
 /**
  *
@@ -29,7 +30,8 @@ public class AbstractPrimeResponsabiliteCtrl {
 
     @EJB
     protected CriterestructureFacadeLocal criterestructureFacadeLocal;
-    protected Criterestructure criterestructure = new Criterestructure();
+    protected Criterestructure criterestructure = Utilitaires.findCritereSInSession(1);
+    protected List<Criterestructure> criterestructures = SessionMBean.getCritereStructures();
 
     @EJB
     protected CritereresponsabiliteFacadeLocal critereresponsabiliteFacadeLocal;
@@ -48,14 +50,15 @@ public class AbstractPrimeResponsabiliteCtrl {
 
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
-    protected Structure structure = SessionMBean.getStructure();
-    protected List<Structure> structures = new ArrayList<>();
+    protected final Structure structure = SessionMBean.getStructure();
 
     protected Routine routine = new Routine();
     protected String mode = "";
     protected double totalPointMaxCritere;
     protected double totalPointSaisi;
     protected int totalEffectifs;
+
+    protected int indexCritere;
 
     public Routine getRoutine() {
         return routine;
@@ -67,14 +70,6 @@ public class AbstractPrimeResponsabiliteCtrl {
 
     public Structure getStructure() {
         return structure;
-    }
-
-    public void setStructure(Structure structure) {
-        this.structure = structure;
-    }
-
-    public List<Structure> getStructures() {
-        return structures;
     }
 
     public List<Responsabilite> getResponsabilites() {
@@ -119,6 +114,10 @@ public class AbstractPrimeResponsabiliteCtrl {
 
     public int getTotalEffectifs() {
         return totalEffectifs;
+    }
+
+    public Criterestructure getCriterestructure() {
+        return criterestructure;
     }
 
 }

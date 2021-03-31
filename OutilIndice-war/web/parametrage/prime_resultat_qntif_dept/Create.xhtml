@@ -4,7 +4,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
 
     <ui:composition>
 
@@ -20,19 +21,7 @@
 
                 <div class="col-md-12">
 
-                    <h:panelGroup id="display">
-
-                        <div class="form-group">
-                            <p:outputLabel value="#{langue.structure}" for="structure" />
-                            <h:selectOneMenu disabled="true" converter="structureConverter" 
-                                             class="form-control" 
-                                             id="structure" value="#{pMaxPrimeRQntifDeptCtrl.structure}">
-                                <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                                <f:selectItems value="#{pMaxPrimeRQntifDeptCtrl.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
-                            </h:selectOneMenu>                                                
-                        </div>
-
-                        <p:separator/>
+                    <h:panelGroup id="display">                      
 
                         <p:selectManyCheckbox id="grid_critere" value="#{pMaxPrimeRQntifDeptCtrl.selectedCategories}" layout="grid" columns="1" converter="categorieConverter">
                             <f:selectItems value="#{pMaxPrimeRQntifDeptCtrl.categories}" var="c" itemLabel="#{c.nom}" itemValue="#{c}" />
@@ -42,24 +31,40 @@
                         <p:separator />
 
                         <div class="row">
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>#{langue.denominateur}</label>
-                                    <h:inputText class="form-control" value="#{pMaxPrimeRQntifDeptCtrl.denominateur}" >
-                                        <p:ajax event="keyup" update="datalist" listener="#{pMaxPrimeRQntifDeptCtrl.updateData('')}" />
-                                    </h:inputText>
-                                </div>
+                            <div class="form-group col-md-2">
+                                <label>#{langue.denominateur}</label>
+                                <h:inputText class="form-control" value="#{pMaxPrimeRQntifDeptCtrl.denominateur}" >
+                                    <p:ajax event="keyup" update="datalist" listener="#{pMaxPrimeRQntifDeptCtrl.updateData('')}" />
+                                </h:inputText>
                             </div>
                         </div>
 
                         <p:separator />
 
                         <p:commandButton value="#{langue['common.ajouter']}"
+                                         id="add_btn" disabled="#{pMaxPrimeRQntifDeptCtrl.categories.size()==0}"
                                          actionListener="#{pMaxPrimeRQntifDeptCtrl.addCategoriesToTable()}"
-                                         update="datalist,grid_critere" icon="ui-icon-plus" />
+                                         update="datalist,grid_critere,add_btn" icon="ui-icon-plus" />
                         <p:separator />
-                        
-                        <h:outputText value="Max Point : #{pMaxPrimeRQntifDeptCtrl.totalPointMaxCritere}" style="font-size: 20px ; color: red" />
+
+                        <div class="form-inline" jsf:id="detail">
+                            <h:outputText value="Max Point Initial :" style="font-size: 20px ; color: #000" />&nbsp;      
+                            <h:outputText value="#{pMaxPrimeRQntifDeptCtrl.totalPointMaxCritere}" style="font-size: 20px ; color: red" />&nbsp;
+
+                            <h:outputText value=" / " style="font-size: 20px ; color: black" />&nbsp;
+
+                            <h:outputText value="Poids Initial : " style="font-size: 20px ; color: #000" />&nbsp;      
+                            <h:outputText value="#{pMaxPrimeRQntifDeptCtrl.criterestructure.poids}" style="font-size: 20px ; color: red" />
+
+                            <h:outputText value=" / " style="font-size: 20px ; color: black" />&nbsp;
+
+                            <h:outputText value="Poids Définitif : " style="font-size: 20px ; color: #000" />&nbsp;      
+                            <h:outputText value="#{pMaxPrimeRQntifDeptCtrl.criterestructure.poidsfinal}" style="font-size: 20px ; color: red" >
+                                <f:convertNumber pattern="0.00" />
+                            </h:outputText>&nbsp;
+
+                            <p:commandButton value="Actualiser" icon="ui-icon-refresh" update="detail" actionListener="#{pMaxPrimeRQntifDeptCtrl.refreshCosting()}" />
+                        </div>
 
                         <p:dataTable id="datalist" value="#{pMaxPrimeRQntifDeptCtrl.parametragecriteres}" var="item"                             
                                      paginator="true"
@@ -107,21 +112,21 @@
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
-                            
+
                             <p:column class="hardBreak" style="width: 10%;text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.point_max}"/>
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{item.point}"/> 
                             </p:column>
-                            
+
                             <p:column class="hardBreak" style="width: 8%;text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue['common.effectif']}"/>
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{item.nombre}"/> 
                             </p:column>
-                            
+
                             <p:column class="hardBreak" style="width: 10%;text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.total}"/>
@@ -134,10 +139,10 @@
                                     <h:outputText value="Action"/>
                                 </f:facet>
                                 <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist,:PrimeRQltifCreateForm:grid_critere" event="click" listener="#{pMaxPrimeRQntifDeptCtrl.removeCategory(item)}" />
+                                    <p:ajax update="datalist,:PrimeRQltifCreateForm:grid_critere,:PrimeRQltifCreateForm:add_btn" event="click" listener="#{pMaxPrimeRQntifDeptCtrl.removeCategory(index)}" />
                                 </p:commandButton>
                             </p:column>
-                            
+
                             <p:columnGroup type="footer" id="footer_tab">
                                 <p:row>
                                     <p:column colspan="4" style="text-align:right" footerText="Totaux" /> 

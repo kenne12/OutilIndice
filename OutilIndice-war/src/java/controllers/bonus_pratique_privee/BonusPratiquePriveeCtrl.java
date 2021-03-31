@@ -7,7 +7,6 @@ package controllers.bonus_pratique_privee;
 
 import controllers.util.JsfUtil;
 import entities.Categorie;
-import entities.Critere;
 import entities.EffectifCategorie;
 import entities.Parametragecritere;
 import java.io.Serializable;
@@ -17,7 +16,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
 import utils.SessionMBean;
-import utils.Utilitaires;
 
 /**
  *
@@ -35,24 +33,14 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
 
     @PostConstruct
     private void init() {
-        structures.clear();
-        structures.add(SessionMBean.getStructure());
         listParametres = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
         parametragecritere = new Parametragecritere();
         parametragecritere.setIdcategorie(new Categorie());
-
-        criterestructure = Utilitaires.findCritereSInSession(3);
-        if (criterestructure != null) {
-            totalPointMaxCritere = criterestructure.getResultat();
-        }
+        totalPointMaxCritere = criterestructure.getResultat();
+        indexCritere = criterestructures.indexOf(criterestructure);
     }
 
     public void prepareCreate(String option) {
-        if (criterestructure == null) {
-            JsfUtil.addWarningMessage("Cette structure ne traite pas du bonus d'heure supplementaire");
-            return;
-        }
-
         mode = "Create";
         if (option.equals("1")) {
             this.updateFiltre();
@@ -63,10 +51,8 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
 
     public void prepareEdit(Parametragecritere p) {
         this.parametragecritere = p;
-        if (structure != null) {
-            mode = "Edit";
-            RequestContext.getCurrentInstance().execute("PF('BonusPPriveeCreateDialog').show()");
-        }
+        mode = "Edit";
+        RequestContext.getCurrentInstance().execute("PF('BonusPPriveeCreateDialog').show()");
     }
 
     public void updateFiltre() {
@@ -99,7 +85,7 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
             for (EffectifCategorie efc : effectifCategories) {
                 Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
-                pc.setIdcritere(new Critere(3));
+                pc.setIdcritere(criterestructure.getCritere());
                 pc.setIndice(efc.getCategorie().getIndice());
                 pc.setDenominateurjournee(0);
                 pc.setDenominateurnuit(0);
@@ -149,7 +135,7 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
             for (Categorie c : selectedCategories) {
                 Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
-                pc.setIdcritere(new Critere(3));
+                pc.setIdcritere(criterestructure.getCritere());
                 pc.setIndice(c.getIndice());
                 pc.setDenominateurjournee(0);
                 pc.setDenominateurnuit(0);
@@ -169,22 +155,33 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
         }
     }
 
-    public void removeCategory(Parametragecritere p) {
+    public void removeCategory(int index) {
+        Parametragecritere p = parametragecriteres.get(index);
         if (p.getIdparametragecritere() != 0l) {
             parametragecritereFacadeLocal.remove(p);
-            parametragecriteres.remove(p);
             listParametres = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
-        } else {
-            int conteur = 0;
-            for (Parametragecritere pc : parametragecriteres) {
-                if (pc.getIdcategorie().getIdcategorie().equals(p.getIdcategorie().getIdcategorie())) {
-                    break;
-                }
-                conteur++;
-            }
-            parametragecriteres.remove(conteur);
         }
+        parametragecriteres.remove(index);
+        categories.add(p.getIdcategorie());
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
+    }
+
+    public void refreshCosting() {
+        criterestructure.setResultatfinal(totalPointSaisi);
+        criterestructures.set(indexCritere, criterestructure);
+        double somme = 0;
+        for (int i = 0; i < criterestructures.size(); i++) {
+            if (criterestructures.get(i).getPoids() != null && criterestructures.get(i).getPoids() > 0) {
+                somme += criterestructures.get(i).getResultatfinal();
+            }
+        }
+        for (int i = 0; i < criterestructures.size(); i++) {
+            if (criterestructures.get(i).getPoids() != null && criterestructures.get(i).getPoids() > 0) {
+                criterestructures.get(i).setPoidsfinal((criterestructures.get(i).getResultatfinal() / somme) * 100);
+                criterestructures.get(i).setEcart(criterestructures.get(i).getPoidsfinal() - criterestructures.get(i).getPoids());
+            }
+        }
+        criterestructure = criterestructures.get(indexCritere);
     }
 
     public void save() {
@@ -207,7 +204,11 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
                     parametragecritereFacadeLocal.edit(pc);
                 }
             }
+
             listParametres = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
+            criterestructures.forEach(cs -> {
+                criterestructureFacadeLocal.edit(cs);
+            });
             this.parametragecriteres.clear();
 
             RequestContext.getCurrentInstance().execute("PF('BonusPPriveeCreateDialog').hide()");
@@ -242,4 +243,5 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
+
 }

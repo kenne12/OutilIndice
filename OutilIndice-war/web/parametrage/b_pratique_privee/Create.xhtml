@@ -4,7 +4,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
 
     <ui:composition>
 
@@ -22,18 +23,6 @@
 
                     <h:panelGroup id="display">
 
-                        <div class="form-group">
-                            <p:outputLabel value="#{langue.structure}" for="structure" />
-                            <h:selectOneMenu disabled="true" converter="structureConverter" 
-                                             class="form-control" 
-                                             id="structure" value="#{bonusPratiquePriveeCtrl.structure}">
-                                <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                                <f:selectItems value="#{bonusPratiquePriveeCtrl.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
-                            </h:selectOneMenu>                                                
-                        </div>
-
-                        <p:separator/>
-
                         <p:selectManyCheckbox id="grid_critere" value="#{bonusPratiquePriveeCtrl.selectedCategories}" layout="grid" columns="1" converter="categorieConverter">
                             <f:selectItems value="#{bonusPratiquePriveeCtrl.categories}" var="c" itemLabel="#{c.nom}" itemValue="#{c}" />
                             <p:ajax />
@@ -42,12 +31,29 @@
                         <p:separator />
 
                         <p:commandButton value="#{langue['common.ajouter']}"
+                                         id="add_btn" disabled="#{bonusPratiquePriveeCtrl.categories.size()==0}"
                                          actionListener="#{bonusPratiquePriveeCtrl.addCategoriesToTable()}"
                                          update="datalist,grid_critere" icon="ui-icon-plus" />
                         <p:separator />
-                        
-                        <h:outputText value="Max Point : #{bonusPratiquePriveeCtrl.totalPointMaxCritere}" style="font-size: 20px ; color: red" />
-                        
+
+                        <div class="form-inline" jsf:id="detail">
+                            <h:outputText value="Max Point Initial :" style="font-size: 20px ; color: #000" />&nbsp;      
+                            <h:outputText value="#{bonusPratiquePriveeCtrl.totalPointMaxCritere}" style="font-size: 20px ; color: red" />&nbsp;
+
+                            <h:outputText value=" / " style="font-size: 20px ; color: black" />&nbsp;
+
+                            <h:outputText value="Poids Initial : " style="font-size: 20px ; color: #000" />&nbsp;      
+                            <h:outputText value="#{bonusPratiquePriveeCtrl.criterestructure.poids}" style="font-size: 20px ; color: red" />
+
+                            <h:outputText value=" / " style="font-size: 20px ; color: black" />&nbsp;
+
+                            <h:outputText value="Poids Définitif : " style="font-size: 20px ; color: #000" />&nbsp;      
+                            <h:outputText value="#{bonusPratiquePriveeCtrl.criterestructure.poidsfinal}" style="font-size: 20px ; color: red" >
+                                <f:convertNumber pattern="0.00" />
+                            </h:outputText>&nbsp;
+
+                            <p:commandButton value="Actualiser" icon="ui-icon-refresh" update="detail" actionListener="#{bonusPratiquePriveeCtrl.refreshCosting()}" />
+                        </div>
 
                         <p:dataTable id="datalist" value="#{bonusPratiquePriveeCtrl.parametragecriteres}" var="item"                             
                                      paginator="true"
@@ -65,7 +71,7 @@
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{item.idcategorie.nom}"/> 
                             </p:column>
-                            
+
                             <p:column class="hardBreak" style="width: 10%; text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue['common.effectif']}"/>
@@ -87,7 +93,7 @@
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
-                            
+
                             <p:column class="hardBreak" style="width: 10%;text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.total}"/>
@@ -102,10 +108,10 @@
                                     <h:outputText value="Action"/>
                                 </f:facet>
                                 <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist,:BonusPPriveeCreateForm:grid_critere" event="click" listener="#{bonusPratiquePriveeCtrl.removeCategory(item)}" />
+                                    <p:ajax update="datalist,:BonusPPriveeCreateForm:grid_critere,:BonusPPriveeCreateForm:add_btn" event="click" listener="#{bonusPratiquePriveeCtrl.removeCategory(index)}" />
                                 </p:commandButton>
                             </p:column>
-                            
+
                             <p:columnGroup type="footer" id="footer_tab">
                                 <p:row>
                                     <p:column style="text-align:right" footerText="Totaux" /> 
@@ -131,13 +137,9 @@
                                            icon="ui-icon-alert"/>
                             </p:commandButton>
                         </center>
-
                     </h:panelGroup>
-
                 </div>
-
             </h:form>
-
         </p:dialog>
     </ui:composition>
 </html>

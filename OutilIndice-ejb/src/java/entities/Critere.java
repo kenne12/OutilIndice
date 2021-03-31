@@ -55,8 +55,6 @@ public class Critere implements Serializable {
     private Collection<Criterestructure> criterestructureCollection;
     @OneToMany(mappedBy = "idcritere", fetch = FetchType.LAZY)
     private Collection<Souscritere> souscritereCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "critere", fetch = FetchType.LAZY)
-    private Collection<Critereservice> critereserviceCollection;
 
     public Critere() {
     }
@@ -137,15 +135,6 @@ public class Critere implements Serializable {
 
     public void setSouscritereCollection(Collection<Souscritere> souscritereCollection) {
         this.souscritereCollection = souscritereCollection;
-    }
-
-    @XmlTransient
-    public Collection<Critereservice> getCritereserviceCollection() {
-        return critereserviceCollection;
-    }
-
-    public void setCritereserviceCollection(Collection<Critereservice> critereserviceCollection) {
-        this.critereserviceCollection = critereserviceCollection;
     }
 
     @Override
