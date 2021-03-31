@@ -40,6 +40,10 @@ public class Categoriestructure implements Serializable {
     private Structure structure;
     private int indice;
     private int denominateur;
+    private double poidsfinal;
+    private double resultatfinal;
+    private double ecart;
+    private boolean etat;
 
     public Categoriestructure() {
     }
@@ -98,6 +102,38 @@ public class Categoriestructure implements Serializable {
 
     public void setStructure(Structure structure) {
         this.structure = structure;
+    }
+
+    public double getPoidsfinal() {
+        return poidsfinal;
+    }
+
+    public void setPoidsfinal(double poidsfinal) {
+        this.poidsfinal = poidsfinal;
+    }
+
+    public double getResultatfinal() {
+        return resultatfinal;
+    }
+
+    public void setResultatfinal(double resultatfinal) {
+        this.resultatfinal = resultatfinal;
+    }
+
+    public double getEcart() {
+        return ecart;
+    }
+
+    public void setEcart(double ecart) {
+        this.ecart = ecart;
+    }
+
+    public boolean isEtat() {
+        return etat;
+    }
+
+    public void setEtat(boolean etat) {
+        this.etat = etat;
     }
 
     @Override
