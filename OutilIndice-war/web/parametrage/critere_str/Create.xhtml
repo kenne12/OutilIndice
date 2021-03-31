@@ -136,7 +136,7 @@
                                     <h:outputText value="Action"/>
                                 </f:facet>
                                 <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist,:CritereCreateForm:grid_critere" event="click" listener="#{critereStrController.removeCritere(index,item)}" />
+                                    <p:ajax update="datalist,:CritereCreateForm:grid_critere" event="click" listener="#{critereStrController.removeCritere(index)}" />
                                 </p:commandButton>
                             </p:column>
 
@@ -154,7 +154,6 @@
                         <p:separator/>
 
                         <center>
-
                             <p:commandButton value="#{langue['common.fermer']}" 
                                              onclick="PF('CritereCreateDialog').hide()"
                                              icon="ui-icon-close"/>
@@ -164,9 +163,7 @@
                                            message="#{langue['notification.confirmation_enregistrement']}" 
                                            icon="ui-icon-alert"/>
                             </p:commandButton>
-
                         </center>
-
                     </h:panelGroup>
 
                 </div>
