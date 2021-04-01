@@ -22,16 +22,14 @@
                     <h:panelGroup id="display">
 
                         <div class="row">
-                            <div class="col-md-8">
-                                <div class="form-group">
-                                    <p:outputLabel value="#{langue.service}" for="service" />
-                                    <h:selectOneMenu disabled="#{penaliteServiceController.mode.equals('Edit')}" class="form-control"
-                                                     id="service" value="#{penaliteServiceController.service.idservice}">
-                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
-                                        <f:selectItems value="#{penaliteServiceController.services}" var="s" itemLabel="#{s.nom}" itemValue="#{s.idservice}" />
-                                        <p:ajax update="grid_critere,datalist" listener="#{penaliteServiceController.updateFiltre()}"/>
-                                    </h:selectOneMenu>                                                
-                                </div>
+                            <div class="form-group col-md-8">
+                                <p:outputLabel value="#{langue.service}" for="service" />
+                                <h:selectOneMenu disabled="#{penaliteServiceController.mode.equals('Edit')}" class="form-control"
+                                                 id="service" value="#{penaliteServiceController.service.idservice}">
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                    <f:selectItems value="#{penaliteServiceController.services}" var="s" itemLabel="#{s.nom}" itemValue="#{s.idservice}" />
+                                    <p:ajax update="grid_critere,datalist" listener="#{penaliteServiceController.updateFiltre()}"/>
+                                </h:selectOneMenu>                                                
                             </div>
                         </div>
 
@@ -46,10 +44,10 @@
 
                         <p:commandButton                            
                             value="#{langue['common.ajouter']}"
-                            actionListener="#{penaliteServiceController.addSousCritereToTable()}"
-                            update="datalist,grid_critere" icon="ui-icon-plus" />
-
-                        <p:separator />
+                            id="add_btn"
+                            disabled="#{penaliteServiceController.penalites.size()==0}"
+                            actionListener="#{penaliteServiceController.addPenaliteToTable()}"
+                            update="datalist,grid_critere,add_btn" icon="ui-icon-plus" />
 
                         <p:dataTable id="datalist" value="#{penaliteServiceController.parametragePenalites}" var="item"                             
                                      paginator="true"
@@ -101,7 +99,7 @@
                                     <h:outputText value="Action"/>
                                 </f:facet>
                                 <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist" event="click" listener="#{penaliteServiceController.removeCritere(item)}" />
+                                    <p:ajax update="datalist,:CritereCreateForm:grid_critere,:CritereCreateForm:add_btn" event="click" listener="#{penaliteServiceController.removePenalite(item)}" />
                                 </p:commandButton>
 
                                 <p:commandButton icon="ui-icon-pencil">

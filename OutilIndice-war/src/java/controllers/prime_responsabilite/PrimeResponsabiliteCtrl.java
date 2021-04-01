@@ -6,7 +6,6 @@
 package controllers.prime_responsabilite;
 
 import controllers.util.JsfUtil;
-import entities.Critere;
 import entities.Critereresponsabilite;
 import entities.EffectifResponsabilite;
 import entities.Responsabilite;
@@ -46,11 +45,8 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl imp
 
     public void prepareCreate(String option) {
         mode = "Create";
-
-        if (option.equals("1")) {
+        if (option.equals("2")) {
             this.updateFiltre();
-        } else {
-            this.updateFiltre2();
         }
     }
 
@@ -61,25 +57,6 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl imp
     }
 
     public void updateFiltre() {
-        responsabilites.clear();
-        selectedResponsabilites.clear();
-        critereresponsabilites.clear();
-        List<Critereresponsabilite> list = critereresponsabiliteFacadeLocal.findByIdStructure(structure.getIdstructure());
-        if (list.isEmpty() || list == null) {
-            responsabilites.addAll(responsabiliteFacadeLocal.findAll());
-        } else {
-            critereresponsabilites.addAll(list);
-            responsabilites.addAll(responsabiliteFacadeLocal.findAll());
-            for (Critereresponsabilite cr : list) {
-                selectedResponsabilites.add(cr.getIdresponsabilite());
-            }
-            responsabilites.removeAll(selectedResponsabilites);
-            selectedResponsabilites.clear();
-        }
-        RequestContext.getCurrentInstance().execute("PF('ResponsabiliteCreateDialog').show()");
-    }
-
-    public void updateFiltre2() {
         critereresponsabilites.clear();
         List<Critereresponsabilite> list = critereresponsabiliteFacadeLocal.findByIdStructure(structure.getIdstructure());
         if (list.isEmpty()) {

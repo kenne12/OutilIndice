@@ -18,19 +18,12 @@
                 <div class="panel panel-success">
                     <div style="color: white" class="panel-heading bg-success">
                         #{langue['penalite_personnel.liste']}
-                         
+
                         <p:commandButton update=":PenaliteCreateForm"
                                          icon="ui-icon-plus"
-                                         value="#{langue['common.ajouter']} 2"
+                                         value="#{langue['common.ajouter']}"
                                          style="float: right"
                                          actionListener="#{penaliteStructureController.prepareCreate('2')}"/>
-                        
-                        <p:commandButton update=":PenaliteCreateForm"
-                                         icon="ui-icon-plus"
-                                         disabled="true"
-                                         value="#{langue['common.ajouter']} 1"
-                                         style="float: right"
-                                         actionListener="#{penaliteStructureController.prepareCreate('1')}"/>
                     </div>
 
                     <div class="panel-body">

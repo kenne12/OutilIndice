@@ -18,19 +18,13 @@
                 <div class="panel panel-success">
                     <div style="color: white" class="panel-heading bg-success">
                         #{langue['bonus_pratique_privee.liste_point_categorie']}
-                       
+
                         <p:commandButton update=":BonusPPriveeCreateForm"
                                          icon="ui-icon-plus"
-                                         value="#{langue['common.ajouter']} 2"
+                                         value="#{langue['common.ajouter']}"
                                          style="float: right"
                                          actionListener="#{bonusPratiquePriveeCtrl.prepareCreate('2')}"/>
-                        
-                        <p:commandButton update=":BonusPPriveeCreateForm"
-                                         icon="ui-icon-plus"
-                                         disabled="true"
-                                         value="#{langue['common.ajouter']} 1"
-                                         style="float: right"
-                                         actionListener="#{bonusPratiquePriveeCtrl.prepareCreate('1')}"/>
+
                     </div>
 
                     <div class="panel-body">

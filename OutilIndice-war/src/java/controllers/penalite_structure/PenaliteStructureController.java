@@ -7,19 +7,16 @@ package controllers.penalite_structure;
 
 import controllers.util.JsfUtil;
 import entities.Critere;
-import entities.Criterestructure;
 import entities.ParametragePenalite;
 import entities.Penalite;
 import entities.Service;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
-import utils.Utilitaires;
 
 /**
  *
@@ -41,18 +38,10 @@ public class PenaliteStructureController extends AbstractPenaliteStructure imple
     }
 
     public void prepareCreate(String option) {
-        Criterestructure criterestructure = Utilitaires.findCritereSInSession(10);
-        if (criterestructure == null) {
-            JsfUtil.addWarningMessage("La prime de resultat qualitatif de departement de fait pas partie des critères de cette structure");
-            return;
-        }
-
         mode = "Create";
         total = 0;
-        if (option.equals("1")) {
+        if (option.equals("2")) {
             this.updateFiltre();
-        } else {
-            updateFiltre();
         }
     }
 
@@ -116,20 +105,13 @@ public class PenaliteStructureController extends AbstractPenaliteStructure imple
         RequestContext.getCurrentInstance().execute("PF('DetailEditDialog').show()");
     }
 
-    public void removePenalite(ParametragePenalite item) {
+    public void removePenalite(int index) {
+        ParametragePenalite item = parametragePenalites.get(index);
         if (item.getIdParametragePenalite() != 0 && item.getIdParametragePenalite() != null) {
             parametragePenaliteFacadeLocal.remove(item);
-            parametragePenalites.remove(item);
-        } else {
-            int conteur = 0;
-            for (ParametragePenalite p : parametragePenalites) {
-                if (Objects.equals(item.getPenalite().getIdpenalite(), p.getPenalite().getIdpenalite())) {
-                    break;
-                }
-                conteur++;
-            }
-            parametragePenalites.remove(conteur);
         }
+        parametragePenalites.remove(index);
+        penalites.add(item.getPenalite());
         total = this.sommePenalites();
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }

@@ -6,7 +6,6 @@
 package controllers.bonus_revenu_dept;
 
 import controllers.util.JsfUtil;
-import entities.Critere;
 import entities.Parametragecritere;
 import entities.Categorie;
 import entities.EffectifCategorie;
@@ -17,7 +16,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
 import utils.SessionMBean;
-import utils.Utilitaires;
 
 /**
  *
@@ -35,25 +33,18 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
 
     @PostConstruct
     private void init() {
-        structures.clear();
-        structures.add(SessionMBean.getStructure());
         listParametres = parametragecritereFacadeLocal.findByIdStructureBrd(SessionMBean.getStructure().getIdstructure(), 6, true);
         parametragecritere = new Parametragecritere();
         parametragecritere.setIdcategorie(new Categorie());
-
-        criterestructure = Utilitaires.findCritereSInSession(6);
-        if (criterestructure != null) {
-            totalPointMaxCritere = criterestructure.getResultat();
-        }
+        totalPointMaxCritere = criterestructure.getResultat();
+        indexCritere = criterestructures.indexOf(criterestructure);
     }
 
     public void prepareCreate(String option) {
         this.denominateur = 5;
         mode = "Create";
-        if (option.equals("1")) {
+        if (option.equals("2")) {
             this.updateFiltre();
-        } else {
-            this.updateFiltre2();
         }
     }
 
@@ -63,24 +54,7 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
         RequestContext.getCurrentInstance().execute("PF('BonusRevenuDeptEditDialog').show()");
     }
 
-    public void updateFiltre() {
-        categories.clear();
-        selectedCategories.clear();
-        parametragecriteres.clear();
-        List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructureBrd(SessionMBean.getStructure().getIdstructure(), 6, true);
-        categories.addAll(SessionMBean.getCategories());
-        if (!list.isEmpty()) {
-            parametragecriteres.addAll(list);
-            for (Parametragecritere pc : list) {
-                selectedCategories.add(pc.getIdcategorie());
-            }
-            categories.removeAll(selectedCategories);
-            selectedCategories.clear();
-        }
-        RequestContext.getCurrentInstance().execute("PF('BonusRevenuDeptCreateDialog').show()");
-    }
-
-    private void updateFiltre2() {
+    private void updateFiltre() {
         parametragecriteres.clear();
         List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructureBrd(SessionMBean.getStructure().getIdstructure(), 6, true);
         if (list.isEmpty()) {
@@ -93,7 +67,7 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
             for (EffectifCategorie efc : effectifCategories) {
                 Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
-                pc.setIdcritere(new Critere(6));
+                pc.setIdcritere(criterestructure.getCritere());
                 pc.setIndice(efc.getCategorie().getIndice());
                 pc.setIdcategorie(efc.getCategorie());
                 pc.setNombre(efc.getNombre());
@@ -138,7 +112,7 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
             for (Categorie c : selectedCategories) {
                 Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
-                pc.setIdcritere(new Critere(6));
+                pc.setIdcritere(criterestructure.getCritere());
                 pc.setIndice(c.getIndice());
                 pc.setDenominateurjournee(0);
                 pc.setDenominateurnuit(0);
@@ -159,25 +133,37 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
                 parametragecriteres.add(pc);
             }
             categories.removeAll(selectedCategories);
+            selectedCategories.clear();
         }
     }
 
-    public void removeCategory(Parametragecritere p) {
+    public void removeCategory(int index) {
+        Parametragecritere p = parametragecriteres.get(index);
         if (p.getIdparametragecritere() != 0l) {
             parametragecritereFacadeLocal.remove(p);
-            parametragecriteres.remove(p);
             listParametres = parametragecritereFacadeLocal.findByIdStructureBrd(SessionMBean.getStructure().getIdstructure(), 6, true);
-        } else {
-            int conteur = 0;
-            for (Parametragecritere pc : parametragecriteres) {
-                if (pc.getIdcategorie().getIdcategorie().equals(p.getIdcategorie().getIdcategorie())) {
-                    break;
-                }
-                conteur++;
-            }
-            parametragecriteres.remove(conteur);
         }
+        parametragecriteres.remove(p);
+        categories.add(p.getIdcategorie());
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
+    }
+
+    public void refreshCosting() {
+        criterestructure.setResultatfinal(totalPointSaisi);
+        criterestructures.set(indexCritere, criterestructure);
+        double somme = 0;
+        for (int i = 0; i < criterestructures.size(); i++) {
+            if (criterestructures.get(i).getPoids() != null && criterestructures.get(i).getPoids() > 0) {
+                somme += criterestructures.get(i).getResultatfinal();
+            }
+        }
+        for (int i = 0; i < criterestructures.size(); i++) {
+            if (criterestructures.get(i).getPoids() != null && criterestructures.get(i).getPoids() > 0) {
+                criterestructures.get(i).setPoidsfinal((criterestructures.get(i).getResultatfinal() / somme) * 100);
+                criterestructures.get(i).setEcart(criterestructures.get(i).getPoidsfinal() - criterestructures.get(i).getPoids());
+            }
+        }
+        criterestructure = criterestructures.get(indexCritere);
     }
 
     public void updateData(String mode) {
@@ -229,6 +215,10 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
                 }
             }
             listParametres = parametragecritereFacadeLocal.findByIdStructureBrd(SessionMBean.getStructure().getIdstructure(), 6, true);
+
+            criterestructures.forEach(cs -> {
+                criterestructureFacadeLocal.edit(cs);
+            });
             this.parametragecriteres.clear();
 
             RequestContext.getCurrentInstance().execute("PF('BonusRevenuDeptCreateDialog').hide()");

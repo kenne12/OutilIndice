@@ -18,19 +18,12 @@
                 <div class="panel panel-success">
                     <div style="color: white" class="panel-heading bg-success">
                         #{langue['responsabilite.liste_poste_responsabilite']}
-                         
+
                         <p:commandButton update=":ResponsabiliteCreateForm"
                                          icon="ui-icon-plus"
-                                         value="#{langue['common.ajouter']} 2"
+                                         value="#{langue['common.ajouter']}"
                                          style="float: right"
                                          actionListener="#{primeResponsabiliteCtrl.prepareCreate('2')}"/>
-                        
-                        <p:commandButton update=":ResponsabiliteCreateForm"
-                                         icon="ui-icon-plus"
-                                         disabled="true"
-                                         value="#{langue['common.ajouter']} 1"
-                                         style="float: right"
-                                         actionListener="#{primeResponsabiliteCtrl.prepareCreate('1')}"/>
                     </div>
 
                     <div class="panel-body">

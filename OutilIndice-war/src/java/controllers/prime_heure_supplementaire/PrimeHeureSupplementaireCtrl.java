@@ -7,7 +7,6 @@ package controllers.prime_heure_supplementaire;
 
 import controllers.util.JsfUtil;
 import entities.Categorie;
-import entities.Critere;
 import entities.EffectifCategorie;
 import entities.Parametragecritere;
 import java.io.Serializable;
@@ -17,7 +16,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
 import utils.SessionMBean;
-import utils.Utilitaires;
 
 /**
  *
@@ -35,30 +33,17 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
 
     @PostConstruct
     private void init() {
-        structures.clear();
-        structures.add(SessionMBean.getStructure());
         listParametres = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
         parametragecritere = new Parametragecritere();
         parametragecritere.setIdcategorie(new Categorie());
-
-        criterestructure = Utilitaires.findCritereSInSession(2);
-        if (criterestructure != null) {
-            totalPointMaxCritere = criterestructure.getResultat();
-        }
     }
 
     public void prepareCreate(String option) {
-        if (criterestructure == null) {
-            JsfUtil.addWarningMessage("Cette structure ne traite pas du bonus d'heure supplementaire");
-            return;
-        }
         mode = "Create";
         denominateurNuit = 500;
         denominateurJour = 1000;
-        if (option.equals("1")) {
+        if (option.equals("2")) {
             this.updateFiltre();
-        } else {
-            this.updateFiltre2();
         }
     }
 
@@ -71,23 +56,6 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
     }
 
     public void updateFiltre() {
-        categories.clear();
-        selectedCategories.clear();
-        parametragecriteres.clear();
-        List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
-        categories.addAll(SessionMBean.getCategories());
-        if (!list.isEmpty()) {
-            parametragecriteres.addAll(list);
-            for (Parametragecritere pc : list) {
-                selectedCategories.add(pc.getIdcategorie());
-            }
-            categories.removeAll(selectedCategories);
-            selectedCategories.clear();
-        }
-        RequestContext.getCurrentInstance().execute("PF('HeureSuppCreateDialog').show()");
-    }
-
-    public void updateFiltre2() {
         parametragecriteres.clear();
         List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
         if (list.isEmpty()) {
@@ -100,7 +68,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
             for (EffectifCategorie efc : effectifCategories) {
                 Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
-                pc.setIdcritere(new Critere(2));
+                pc.setIdcritere(criterestructure.getCritere());
                 pc.setIndice(efc.getCategorie().getIndice());
                 pc.setDenominateurjournee(denominateurJour);
                 pc.setDenominateurnuit(denominateurNuit);
@@ -115,8 +83,6 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
                 pc.setResultatqualitatifdept(false);
                 pc.setBonusrevenudept(false);
                 pc.setNombre(efc.getNombre());
-                pc.setTotal1(Math.ceil(pc.getValeurjournee() * efc.getNombre()));
-                pc.setTotal2(Math.ceil(pc.getValeurnuit() * efc.getNombre()));
                 parametragecriteres.add(pc);
             }
         } else {
@@ -131,7 +97,7 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
             for (Categorie c : selectedCategories) {
                 Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
-                pc.setIdcritere(new Critere(2));
+                pc.setIdcritere(criterestructure.getCritere());
                 pc.setIndice(c.getIndice());
                 pc.setDenominateurjournee(denominateurJour);
                 pc.setDenominateurnuit(denominateurNuit);
@@ -144,58 +110,45 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
                 pc.setPratiqueprivee(false);
                 pc.setPerformanceindividuelle(false);
                 pc.setResultatqualitatifdept(false);
-                pc.setBonusrevenudept(false);                
+                pc.setBonusrevenudept(false);
                 parametragecriteres.add(pc);
             }
             categories.removeAll(selectedCategories);
+            selectedCategories.clear();
         }
     }
 
-    public void removeCategory(Parametragecritere p) {
+    public void removeCategory(int index) {
+        Parametragecritere p = parametragecriteres.get(index);
         if (p.getIdparametragecritere() != 0l) {
             parametragecritereFacadeLocal.remove(p);
-            parametragecriteres.remove(p);
             listParametres = parametragecritereFacadeLocal.findByIdStructureHs(SessionMBean.getStructure().getIdstructure(), 2, true);
-        } else {
-            int conteur = 0;
-            for (Parametragecritere pc : parametragecriteres) {
-                if (pc.getIdcategorie().getIdcategorie().equals(p.getIdcategorie().getIdcategorie())) {
-                    break;
-                }
-                conteur++;
-            }
-            parametragecriteres.remove(conteur);
         }
+        parametragecriteres.remove(index);
+        categories.add(p.getIdcategorie());
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }
 
     public void updateData(String mode) {
         int i = 0;
         this.totalEffectif = 0;
-        this.totalPointSaisiJ = 0;
-        this.totalPointSaisiN = 0;
+
         for (Parametragecritere pc : parametragecriteres) {
             if (mode.equals("jour")) {
                 pc.setDenominateurjournee(denominateurJour);
                 pc.setValeurjournee(pc.getIndice() / denominateurJour);
-                pc.setTotal1(Math.ceil(pc.getValeurjournee() * pc.getNombre()));
                 parametragecriteres.set(i, pc);
             } else if (mode.equals("nuit")) {
                 pc.setDenominateurnuit(denominateurNuit);
                 pc.setValeurnuit(pc.getIndice() / denominateurNuit);
-                pc.setTotal2(Math.ceil(pc.getValeurnuit() * pc.getNombre()));
                 parametragecriteres.set(i, pc);
             } else {
                 pc.setValeurjournee(pc.getIndice() / pc.getDenominateurjournee());
                 pc.setValeurnuit(pc.getIndice() / pc.getDenominateurnuit());
-                pc.setTotal1(Math.ceil(pc.getValeurjournee() * pc.getNombre()));
-                pc.setTotal2(Math.ceil(pc.getValeurnuit() * pc.getNombre()));
                 parametragecriteres.set(i, pc);
             }
 
             this.totalEffectif += pc.getNombre();
-            totalPointSaisiJ += pc.getTotal1();
-            totalPointSaisiN += pc.getTotal2();
             i++;
         }
     }
@@ -204,26 +157,17 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
         if (mode.equals("indice")) {
             parametragecritere.setValeurjournee(parametragecritere.getIndice() / parametragecritere.getDenominateurjournee());
             parametragecritere.setValeurnuit(parametragecritere.getIndice() / parametragecritere.getDenominateurnuit());
-            parametragecritere.setTotal1(Math.ceil(parametragecritere.getValeurjournee() * parametragecritere.getNombre()));
-            parametragecritere.setTotal2(Math.ceil(parametragecritere.getValeurnuit() * parametragecritere.getNombre()));
         } else if (mode.equals("jour")) {
             parametragecritere.setValeurjournee(parametragecritere.getIndice() / parametragecritere.getDenominateurjournee());
-            parametragecritere.setTotal1(Math.ceil(parametragecritere.getValeurjournee() * parametragecritere.getNombre()));
         } else if (mode.equals("nuit")) {
             parametragecritere.setValeurnuit(parametragecritere.getIndice() / parametragecritere.getDenominateurnuit());
-            parametragecritere.setTotal2(Math.ceil(parametragecritere.getValeurnuit() * parametragecritere.getNombre()));
         }
     }
 
     private void sommeDetail(List<Parametragecritere> list) {
-        this.totalPointSaisiJ = 0;
-        this.totalPointSaisiN = 0;
         this.totalEffectif = 0;
-
         for (Parametragecritere pc : list) {
             totalEffectif += pc.getNombre();
-            totalPointSaisiJ += pc.getTotal1();
-            totalPointSaisiN += pc.getTotal2();
         }
     }
 
@@ -231,11 +175,6 @@ public class PrimeHeureSupplementaireCtrl extends AbstractPrimeHeureSupplementai
         try {
             if (parametragecriteres.isEmpty()) {
                 JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
-                return;
-            }
-
-            if ((totalPointSaisiJ + totalPointSaisiN) > totalPointMaxCritere) {
-                JsfUtil.addErrorMessage("Le total saisi depasse le total point max possible");
                 return;
             }
 

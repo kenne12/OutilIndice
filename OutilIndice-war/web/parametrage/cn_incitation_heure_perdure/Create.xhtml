@@ -22,18 +22,6 @@
 
                     <h:panelGroup id="display">
 
-                        <div class="form-group">
-                            <p:outputLabel value="#{langue.structure}" for="structure" />
-                            <h:selectOneMenu disabled="true" converter="structureConverter" 
-                                             class="form-control" 
-                                             id="structure" value="#{critereNIHPerdueCtrl.structure}">
-                                <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                                <f:selectItems value="#{critereNIHPerdueCtrl.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
-                            </h:selectOneMenu>                                                
-                        </div>
-
-                        <p:separator/>
-
                         <p:selectManyCheckbox id="grid_critere" value="#{critereNIHPerdueCtrl.selectedCategories}" layout="grid" columns="1" converter="categorieConverter">
                             <f:selectItems value="#{critereNIHPerdueCtrl.categories}" var="c" itemLabel="#{c.nom}" itemValue="#{c}" />
                             <p:ajax />
@@ -41,34 +29,24 @@
 
                         <p:separator />
 
-                        <div class="row">
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>#{langue.denominateur_jour}</label>
-                                    <h:inputText class="form-control" value="#{critereNIHPerdueCtrl.denominateurJour}" >
-                                        <p:ajax event="keyup" update="datalist" listener="#{critereNIHPerdueCtrl.updateData('jour')}" />
-                                    </h:inputText>
-                                </div>
-                            </div>
+                        <div class="form-inline">
 
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>#{langue.denominateur_nuit}</label>
-                                    <h:inputText class="form-control" value="#{critereNIHPerdueCtrl.denominateurNuit}" >
-                                        <p:ajax event="keyup" update="datalist" listener="#{critereNIHPerdueCtrl.updateData('nuit')}" />
-                                    </h:inputText>
-                                </div>
-                            </div>         
+                            <p:commandButton value="#{langue['common.ajouter']}"
+                                             id="add_btn"
+                                             disabled="#{critereNIHPerdueCtrl.categories.size()==0}"
+                                             actionListener="#{critereNIHPerdueCtrl.addCategoriesToTable()}"
+                                             update="datalist,grid_critere,add_btn" icon="ui-icon-plus" />
+
+                            <label>&nbsp;#{langue.denominateur_jour}&nbsp;</label>
+                            <h:inputText class="form-control" value="#{critereNIHPerdueCtrl.denominateurJour}" >
+                                <p:ajax event="keyup" update="datalist" listener="#{critereNIHPerdueCtrl.updateData('jour')}" />
+                            </h:inputText>
+
+                            <label>&nbsp;#{langue.denominateur_nuit}&nbsp;</label>
+                            <h:inputText class="form-control" value="#{critereNIHPerdueCtrl.denominateurNuit}" >
+                                <p:ajax event="keyup" update="datalist" listener="#{critereNIHPerdueCtrl.updateData('nuit')}" />
+                            </h:inputText>
                         </div>
-
-                        <p:separator />
-
-                        <p:commandButton value="#{langue['common.ajouter']}"
-                                         actionListener="#{critereNIHPerdueCtrl.addCategoriesToTable()}"
-                                         update="datalist,grid_critere" icon="ui-icon-plus" />
-                        <p:separator />
-                        <h:outputText value="Max Point : #{critereNIHPerdueCtrl.totalPointMaxCritere}" style="font-size: 20px ; color: red" />
-                        
 
                         <p:dataTable id="datalist" value="#{critereNIHPerdueCtrl.parametragecriteres}" var="item"                             
                                      paginator="true"
@@ -80,7 +58,7 @@
                                      rowIndexVar="index"
                                      emptyMessage="#{langue['common.tableau_vide']}">
 
-                            <p:column class="hardBreak" style="width: 22%;" >
+                            <p:column class="hardBreak" style="width: 30%;" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.categorie}"/>
                                 </f:facet>
@@ -101,7 +79,7 @@
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
-                            
+
                             <p:column class="hardBreak" style="width: 6%;text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue['common.effectif']}"/>
@@ -152,37 +130,21 @@
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{item.valeurnuit}"/> 
                             </p:column>
-                            
-                            <p:column class="hardBreak" style="width: 8%;text-align: center" >
-                                <f:facet name="header">
-                                    <h:outputText value="#{langue.tot_jr}"/>
-                                </f:facet>
-                                <h:outputText class="hardBreak" value="#{item.total1}"/> 
-                            </p:column>
-                            
-                            <p:column class="hardBreak" style="width: 8%;text-align: center" >
-                                <f:facet name="header">
-                                    <h:outputText value="#{langue.tot_nuit}"/>
-                                </f:facet>
-                                <h:outputText class="hardBreak" value="#{item.total2}"/> 
-                            </p:column>
 
                             <p:column style="width: 5%" >
                                 <f:facet name="header">
                                     <h:outputText value="Action"/>
                                 </f:facet>
                                 <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist,:HeurePerdueCreateForm:grid_critere" event="click" listener="#{critereNIHPerdueCtrl.removeCategory(item)}" />
+                                    <p:ajax update="datalist,:HeurePerdueCreateForm:grid_critere,:HeurePerdueCreateForm:add_btn" event="click" listener="#{critereNIHPerdueCtrl.removeCategory(index)}" />
                                 </p:commandButton>
                             </p:column>
-                            
+
                             <p:columnGroup type="footer" id="footer_tab">
                                 <p:row>
                                     <p:column colspan="2" style="text-align:right" footerText="Totaux" /> 
                                     <p:column style="text-align:center" footerText="#{critereNIHPerdueCtrl.totalEffectif}"/>
-                                    <p:column colspan="4" style="text-align:right" footerText="" /> 
-                                    <p:column style="text-align:center" footerText="#{critereNIHPerdueCtrl.totalPointSaisiJ}"/>
-                                    <p:column style="text-align:center" footerText="#{critereNIHPerdueCtrl.totalPointSaisiN}"/>
+                                    <p:column colspan="4" style="text-align:right" footerText="" />                                     
                                     <p:column style="text-align:center" footerText="/" /> 
                                 </p:row>
                             </p:columnGroup>

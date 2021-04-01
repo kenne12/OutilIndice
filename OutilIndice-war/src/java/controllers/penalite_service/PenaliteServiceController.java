@@ -7,20 +7,17 @@ package controllers.penalite_service;
 
 import controllers.util.JsfUtil;
 import entities.Critere;
-import entities.Criterestructure;
 import entities.Service;
 import entities.Penalite;
 import entities.ParametragePenalite;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 import utils.SessionMBean;
-import utils.Utilitaires;
 
 /**
  *
@@ -42,12 +39,6 @@ public class PenaliteServiceController extends AbstractPenaliteService implement
     }
 
     public void prepareCreate() {
-        Criterestructure criterestructure = Utilitaires.findCritereSInSession(9);
-        if (criterestructure == null) {
-            JsfUtil.addWarningMessage("La prime de resultat qualitatif de departement de fait pas partie des critères de cette structure");
-            return;
-        }
-
         penalites.clear();
         selectedPenalites.clear();
         total = 0;
@@ -81,10 +72,10 @@ public class PenaliteServiceController extends AbstractPenaliteService implement
         total = this.sommePenalites();
     }
 
-    public void addSousCritereToTable() {
+    public void addPenaliteToTable() {
         if (!selectedPenalites.isEmpty()) {
             for (Penalite p : selectedPenalites) {
-                if (!checkCritereInTable(p)) {
+                if (!checkPenaliteInTable(p)) {
                     ParametragePenalite obj = new ParametragePenalite(0);
                     obj.setService(service);
                     obj.setDetail(p.getDetail());
@@ -100,7 +91,7 @@ public class PenaliteServiceController extends AbstractPenaliteService implement
 
     }
 
-    private boolean checkCritereInTable(Penalite p) {
+    private boolean checkPenaliteInTable(Penalite p) {
         boolean result = false;
         for (ParametragePenalite scs : parametragePenalites) {
             if (scs.getPenalite().getIdpenalite().equals(p.getIdpenalite())) {
@@ -116,21 +107,14 @@ public class PenaliteServiceController extends AbstractPenaliteService implement
         RequestContext.getCurrentInstance().execute("PF('DetailEditDialog').show()");
     }
 
-    public void removeCritere(ParametragePenalite item) {
+    public void removePenalite(int index) {
+        ParametragePenalite item = parametragePenalites.get(index);
         if (item.getIdParametragePenalite() != 0 && item.getIdParametragePenalite() != null) {
             parametragePenaliteFacadeLocal.remove(item);
-            parametragePenalites.remove(item);
-        } else {
-            int conteur = 0;
-            for (ParametragePenalite p : parametragePenalites) {
-                if (Objects.equals(item.getPenalite().getIdpenalite(), p.getPenalite().getIdpenalite())) {
-                    break;
-                }
-                conteur++;
-            }
-            parametragePenalites.remove(conteur);
         }
+        parametragePenalites.remove(index);
         total = this.sommePenalites();
+        penalites.add(item.getPenalite());
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }
 
@@ -159,7 +143,6 @@ public class PenaliteServiceController extends AbstractPenaliteService implement
 
     public String returnCritere(Service s) {
         String resultat = "";
-
         List<ParametragePenalite> list = parametragePenaliteFacadeLocal.findByIdServiceIdCritere(structure.getIdstructure(), s.getIdservice(), 9);
 
         int i = 0;
@@ -219,8 +202,8 @@ public class PenaliteServiceController extends AbstractPenaliteService implement
             return 0;
         }
         int resultat = 0;
-        for (ParametragePenalite ssc : parametragePenalites) {
-            resultat += ssc.getPourcentage();
+        for (ParametragePenalite item : parametragePenalites) {
+            resultat += item.getPourcentage();
         }
         return resultat;
     }

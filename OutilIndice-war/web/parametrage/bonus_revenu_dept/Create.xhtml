@@ -4,7 +4,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
 
     <ui:composition>
 
@@ -22,18 +23,6 @@
 
                     <h:panelGroup id="display">
 
-                        <div class="form-group">
-                            <p:outputLabel value="#{langue.structure}" for="structure" />
-                            <h:selectOneMenu disabled="true" converter="structureConverter" 
-                                             class="form-control" 
-                                             id="structure" value="#{bonusRevenuDeptCtrl.structure}">
-                                <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                                <f:selectItems value="#{bonusRevenuDeptCtrl.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
-                            </h:selectOneMenu>                                                
-                        </div>
-
-                        <p:separator/>
-
                         <p:selectManyCheckbox id="grid_critere" value="#{bonusRevenuDeptCtrl.selectedCategories}" layout="grid" columns="1" converter="categorieConverter">
                             <f:selectItems value="#{bonusRevenuDeptCtrl.categories}" var="s" itemLabel="#{s.nom}" itemValue="#{s}" />
                             <p:ajax />
@@ -42,24 +31,41 @@
                         <p:separator />
 
                         <div class="row">
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>#{langue.denominateur}</label>
-                                    <h:inputText class="form-control" value="#{bonusRevenuDeptCtrl.denominateur}" >
-                                        <p:ajax update="datalist" listener="#{bonusRevenuDeptCtrl.updateData('')}" />
-                                    </h:inputText>
-                                </div>
+                            <div class="form-group col-md-2">
+                                <label>#{langue.denominateur}</label>
+                                <h:inputText class="form-control" value="#{bonusRevenuDeptCtrl.denominateur}" >
+                                    <p:ajax update="datalist" listener="#{bonusRevenuDeptCtrl.updateData('')}" />
+                                </h:inputText>
                             </div>
                         </div>
 
                         <p:separator />
 
                         <p:commandButton value="#{langue['common.ajouter']}"
+                                         id="add_btn"
+                                         disabled="#{bonusRevenuDeptCtrl.categories.size()==0}"
                                          actionListener="#{bonusRevenuDeptCtrl.addCategoriesToTable()}"
-                                         update="datalist,grid_critere" icon="ui-icon-plus" />
+                                         update="datalist,grid_critere,add_btn" icon="ui-icon-plus" />
                         <p:separator />
 
-                        <h:outputText value="Max Point : #{bonusRevenuDeptCtrl.totalPointMaxCritere}" style="font-size: 20px ; color: red" />
+                        <div class="form-inline" jsf:id="detail">
+                            <h:outputText value="Max Point Initial :" style="font-size: 20px ; color: #000" />&nbsp;      
+                            <h:outputText value="#{bonusRevenuDeptCtrl.totalPointMaxCritere}" style="font-size: 20px ; color: red" />&nbsp;
+
+                            <h:outputText value=" / " style="font-size: 20px ; color: black" />&nbsp;
+
+                            <h:outputText value="Poids Initial : " style="font-size: 20px ; color: #000" />&nbsp;      
+                            <h:outputText value="#{bonusRevenuDeptCtrl.criterestructure.poids}" style="font-size: 20px ; color: red" />
+
+                            <h:outputText value=" / " style="font-size: 20px ; color: black" />&nbsp;
+
+                            <h:outputText value="Poids Définitif : " style="font-size: 20px ; color: #000" />&nbsp;      
+                            <h:outputText value="#{bonusRevenuDeptCtrl.criterestructure.poidsfinal}" style="font-size: 20px ; color: red" >
+                                <f:convertNumber pattern="0.00" />
+                            </h:outputText>&nbsp;
+
+                            <p:commandButton value="Actualiser" icon="ui-icon-refresh" update="detail" actionListener="#{bonusRevenuDeptCtrl.refreshCosting()}" />
+                        </div>
 
                         <p:dataTable id="datalist" value="#{bonusRevenuDeptCtrl.parametragecriteres}" var="item"                             
                                      paginator="true"
@@ -130,7 +136,7 @@
                                     <h:outputText value="Action"/>
                                 </f:facet>
                                 <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist,:BonusRevenuDeptCreateForm:grid_critere" event="click" listener="#{bonusRevenuDeptCtrl.removeCategory(item)}" />
+                                    <p:ajax update="datalist,:BonusRevenuDeptCreateForm:grid_critere,:BonusRevenuDeptCreateForm:add_btn" event="click" listener="#{bonusRevenuDeptCtrl.removeCategory(index)}" />
                                 </p:commandButton>
                             </p:column>
 

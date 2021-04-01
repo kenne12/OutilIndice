@@ -30,7 +30,7 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
      */
     public PrimeRQltifDeptCtrl() {
     }
-    
+
     @PostConstruct
     private void init() {
         listParametres = parametragecritereFacadeLocal.findByIdStructurePrqd(SessionMBean.getStructure().getIdstructure(), 5, true);
@@ -39,51 +39,32 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
         totalPointMaxCritere = criterestructure.getResultat();
         indexCritere = criterestructures.indexOf(criterestructure);
     }
-    
+
     public void prepareCreate(String option) {
         this.denominateur = 5;
         mode = "Create";
-        if (option.equals("1")) {
+        if (option.equals("2")) {
             this.updateFiltre();
-        } else {
-            this.updateFiltre2();
         }
     }
-    
+
     public void prepareEdit(Parametragecritere p) {
         this.parametragecritere = p;
         mode = "Edit";
         RequestContext.getCurrentInstance().execute("PF('PrimeRQltifEditDialog').show()");
     }
-    
-    public void updateFiltre() {
-        categories.clear();
-        selectedCategories.clear();
-        parametragecriteres.clear();
-        List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructurePrqd(SessionMBean.getStructure().getIdstructure(), 5, true);
-        categories.addAll(SessionMBean.getCategories());
-        if (!list.isEmpty()) {
-            parametragecriteres.addAll(list);
-            for (Parametragecritere pc : list) {
-                selectedCategories.add(pc.getIdcategorie());
-            }
-            categories.removeAll(selectedCategories);
-            selectedCategories.clear();
-        }
-        RequestContext.getCurrentInstance().execute("PF('PrimeRQltifCreateDialog').show()");
-    }
-    
-    private void updateFiltre2() {
+
+    private void updateFiltre() {
         parametragecriteres.clear();
         List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructureIdCritere(SessionMBean.getStructure().getIdstructure(), 5);
         if (list.isEmpty()) {
-            
+
             effectifCategories = effectifCategorieFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
             if (effectifCategories.isEmpty()) {
                 JsfUtil.addWarningMessage("Veuillez définir les effectifs par catégorie pour cette structure");
                 return;
             }
-            
+
             for (EffectifCategorie efc : effectifCategories) {
                 Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
@@ -116,17 +97,17 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
         this.sommeDetail(parametragecriteres);
         RequestContext.getCurrentInstance().execute("PF('PrimeRQltifCreateDialog').show()");
     }
-    
+
     private void sommeDetail(List<Parametragecritere> list) {
         this.totalPointSaisi = 0;
         this.totalEffectif = 0;
-        
+
         for (Parametragecritere pc : list) {
             totalEffectif += pc.getNombre();
             totalPointSaisi += pc.getTotal1();
         }
     }
-    
+
     public void addCategoriesToTable() {
         if (!selectedCategories.isEmpty()) {
             for (Categorie c : selectedCategories) {
@@ -156,7 +137,7 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
             categories.removeAll(selectedCategories);
         }
     }
-    
+
     public void removeCategory(int index) {
         Parametragecritere p = parametragecriteres.get(index);
         if (p.getIdparametragecritere() != 0l) {
@@ -166,7 +147,7 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
         parametragecriteres.remove(index);
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }
-    
+
     public void refreshCosting() {
         criterestructure.setResultatfinal(totalPointSaisi);
         criterestructures.set(indexCritere, criterestructure);
@@ -184,7 +165,7 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
         }
         criterestructure = criterestructures.get(indexCritere);
     }
-    
+
     public void updateData(String mode) {
         int i = 0;
         totalPointSaisi = 0;
@@ -194,13 +175,13 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
             pc.setPoint(pc.getIndice() / denominateur);
             pc.setTotal1(Math.ceil(pc.getPoint() * pc.getNombre()));
             parametragecriteres.set(i, pc);
-            
+
             this.totalPointSaisi += pc.getTotal1();
             this.totalEffectif += pc.getNombre();
             i++;
         }
     }
-    
+
     public void updateDataLine(String mode) {
         try {
             parametragecritere.setPoint(parametragecritere.getIndice() / parametragecritere.getDenominateur());
@@ -211,19 +192,19 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
         }
         this.sommeDetail(parametragecriteres);
     }
-    
+
     public void save() {
         try {
             if (parametragecriteres.isEmpty()) {
                 JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
                 return;
             }
-            
+
             if ((totalPointSaisi) > totalPointMaxCritere) {
                 JsfUtil.addErrorMessage("Le total saisi depasse le total point max possible");
                 return;
             }
-            
+
             for (Parametragecritere pc : parametragecriteres) {
                 if (pc.getIdparametragecritere() == 0l) {
                     pc.setIdparametragecritere(parametragecritereFacadeLocal.nextId());
@@ -232,12 +213,12 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
                     parametragecritereFacadeLocal.edit(pc);
                 }
             }
-            listParametres = parametragecritereFacadeLocal.findByIdStructurePrqd(SessionMBean.getStructure().getIdstructure(), 5, true);            
+            listParametres = parametragecritereFacadeLocal.findByIdStructurePrqd(SessionMBean.getStructure().getIdstructure(), 5, true);
             criterestructures.forEach(cs -> {
                 criterestructureFacadeLocal.edit(cs);
             });
             this.parametragecriteres.clear();
-            
+
             RequestContext.getCurrentInstance().execute("PF('PrimeRQltifCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
@@ -245,7 +226,7 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-    
+
     public void edit() {
         try {
             parametragecritereFacadeLocal.edit(parametragecritere);
@@ -259,7 +240,7 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-    
+
     public void delete(Parametragecritere p) {
         try {
             parametragecritereFacadeLocal.remove(p);

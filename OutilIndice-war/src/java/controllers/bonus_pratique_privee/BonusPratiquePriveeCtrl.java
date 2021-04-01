@@ -42,10 +42,8 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
 
     public void prepareCreate(String option) {
         mode = "Create";
-        if (option.equals("1")) {
+        if (option.equals("2")) {
             this.updateFiltre();
-        } else {
-            this.updateFiltre2();
         }
     }
 
@@ -55,24 +53,7 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
         RequestContext.getCurrentInstance().execute("PF('BonusPPriveeCreateDialog').show()");
     }
 
-    public void updateFiltre() {
-        categories.clear();
-        selectedCategories.clear();
-        parametragecriteres.clear();
-
-        List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
-        categories.addAll(SessionMBean.getCategories());
-        if (!list.isEmpty()) {
-            parametragecriteres.addAll(list);
-            for (Parametragecritere pc : list) {
-                selectedCategories.add(pc.getIdcategorie());
-            }
-            categories.removeAll(selectedCategories);
-            selectedCategories.clear();
-        }
-    }
-
-    private void updateFiltre2() {
+    private void updateFiltre() {
         parametragecriteres.clear();
         List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
         if (list.isEmpty()) {

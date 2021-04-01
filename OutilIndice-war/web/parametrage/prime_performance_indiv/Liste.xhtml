@@ -18,19 +18,12 @@
                 <div class="panel panel-success">
                     <div style="color: white" class="panel-heading bg-success">
                         #{langue['prime_performance_individuelle.liste_point_max_perf_in']}
-                        
+
                         <p:commandButton update=":PerformanceIndividuelleCreateForm"
                                          icon="ui-icon-plus"
-                                         value="#{langue['common.ajouter']} 2"
+                                         value="#{langue['common.ajouter']}"
                                          style="float: right"
                                          actionListener="#{primePerfIndividuelCtrl.prepareCreate('2')}"/>
-                        
-                        <p:commandButton update=":PerformanceIndividuelleCreateForm"
-                                         icon="ui-icon-plus"
-                                         disabled="true"
-                                         value="#{langue['common.ajouter']} 1"
-                                         style="float: right"
-                                         actionListener="#{primePerfIndividuelCtrl.prepareCreate('1')}"/>      
                     </div>
 
                     <div class="panel-body">

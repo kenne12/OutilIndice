@@ -93,7 +93,7 @@ public class AbstractPenaliteService {
         this.service = service;
     }
 
-    public List<Service> getServices() {        
+    public List<Service> getServices() {
         return services;
     }
 

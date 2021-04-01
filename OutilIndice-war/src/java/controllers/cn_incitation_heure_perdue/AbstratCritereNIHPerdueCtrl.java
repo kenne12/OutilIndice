@@ -20,6 +20,7 @@ import sessions.ParametragecritereFacadeLocal;
 import sessions.StructureFacadeLocal;
 import utils.Routine;
 import utils.SessionMBean;
+import utils.Utilitaires;
 
 /**
  *
@@ -29,7 +30,7 @@ public class AbstratCritereNIHPerdueCtrl {
 
     @EJB
     protected CriterestructureFacadeLocal criterestructureFacadeLocal;
-    protected Criterestructure criterestructure = new Criterestructure();
+    protected Criterestructure criterestructure = Utilitaires.findCritereSInSession(8);
 
     @EJB
     protected ParametragecritereFacadeLocal parametragecritereFacadeLocal;
@@ -45,8 +46,7 @@ public class AbstratCritereNIHPerdueCtrl {
 
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
-    protected Structure structure = SessionMBean.getStructure();
-    protected List<Structure> structures = new ArrayList<>();
+    protected final Structure structure = SessionMBean.getStructure();
 
     @EJB
     protected EffectifCategorieFacadeLocal effectifCategorieFacadeLocal;
@@ -58,9 +58,6 @@ public class AbstratCritereNIHPerdueCtrl {
     protected double denominateurNuit = 500;
     protected double denominateurJour = 1000;
 
-    protected double totalPointMaxCritere;
-    protected double totalPointSaisiJ;
-    protected double totalPointSaisiN;
     protected int totalEffectif;
 
     public Parametragecritere getParametragecritere() {
@@ -91,14 +88,6 @@ public class AbstratCritereNIHPerdueCtrl {
         return structure;
     }
 
-    public void setStructure(Structure structure) {
-        this.structure = structure;
-    }
-
-    public List<Structure> getStructures() {
-        return structures;
-    }
-
     public Routine getRoutine() {
         return routine;
     }
@@ -121,18 +110,6 @@ public class AbstratCritereNIHPerdueCtrl {
 
     public void setDenominateurJour(double denominateurJour) {
         this.denominateurJour = denominateurJour;
-    }
-
-    public double getTotalPointMaxCritere() {
-        return totalPointMaxCritere;
-    }
-
-    public double getTotalPointSaisiJ() {
-        return totalPointSaisiJ;
-    }
-
-    public double getTotalPointSaisiN() {
-        return totalPointSaisiN;
     }
 
     public int getTotalEffectif() {

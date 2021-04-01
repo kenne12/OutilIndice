@@ -18,19 +18,12 @@
                 <div class="panel panel-success">
                     <div style="color: white" class="panel-heading bg-success">
                         #{langue['bonus_revenu_dept.liste_point_max_bonus_dept']}
-                        
+
                         <p:commandButton update=":BonusRevenuDeptCreateForm"
                                          icon="ui-icon-plus"
-                                         value="#{langue['common.ajouter']} 2"
+                                         value="#{langue['common.ajouter']}"
                                          style="float: right"
                                          actionListener="#{bonusRevenuDeptCtrl.prepareCreate('2')}"/>
-                        
-                        <p:commandButton update=":BonusRevenuDeptCreateForm"
-                                         icon="ui-icon-plus"
-                                         disabled="true"
-                                         value="#{langue['common.ajouter']} 1"
-                                         style="float: right"
-                                         actionListener="#{bonusRevenuDeptCtrl.prepareCreate('1')}"/>      
                     </div>
 
                     <div class="panel-body">
