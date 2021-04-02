@@ -74,7 +74,7 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
                 }
             }
         }
-        score = this.sommeCritere();
+        this.sommeCritere();
     }
 
     public void addCritereToTable() {
@@ -85,6 +85,10 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
                     Criterestructure cs = new Criterestructure();
                     cs.setStructure(structure);
                     cs.setCritere(c);
+                    if (c.isWorkflow()) {
+                        cs.setValeurInferieur(c.getValeurInferieur());
+                        cs.setValeurSuperieur(c.getValeurSuperieur());
+                    }
                     cs.setPoids(c.getPoids());
                     cs.setPointMax(c.getPointMax());
                     cs.setScoreMoyen(c.getScoreMoyen());
@@ -97,7 +101,7 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
             criteres.removeAll(list);
             selectedCriteres.clear();
         }
-        score = this.sommeCritere();
+        this.sommeCritere();
     }
 
     private boolean checkCritereInTable(Critere c) {
@@ -118,7 +122,7 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
         }
         criterestructures.remove(index);
         criteres.add(item.getCritere());
-        score = this.sommeCritere();
+        this.sommeCritere();
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }
 
@@ -146,7 +150,9 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
                 return;
             }
 
-            if (this.sommeCritere() > scoreMax) {
+            this.sommeCritere();
+
+            if (this.poids != 100) {
                 JsfUtil.addErrorMessage(routine.localizeMessage("notification.erreur_poids"));
                 return;
             }
@@ -186,19 +192,18 @@ public class CritereStrController extends AbstractCritereStr implements Serializ
         }
     }
 
-    private double sommeCritere() {
+    private void sommeCritere() {
         this.pointMax = 0;
+        this.poids = 0.0;
+        this.pointObtenu = 0.0;
         if (criterestructures.isEmpty()) {
-            return 0;
+            return;
         }
-        double resultat = 0;
-        double pointMax = 0;
         for (Criterestructure cs : criterestructures) {
-            resultat += cs.getPoids();
+            poids += cs.getPoids();
             pointMax += cs.getPointMax();
+            pointObtenu += cs.getPoidsfinal();
         }
-        this.pointMax = pointMax;
-        return resultat;
     }
 
 }

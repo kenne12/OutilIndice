@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
 
     <ui:composition>
 
@@ -24,50 +25,61 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <p:outputLabel value="#{langue['common.code']}" for="code" />
-                                <h:inputText class="form-control" id="code" value="#{critereController.critere.code}" required="true" requiredMessage="#{langue['common.valeur_requise']}" />
-                            </div>
+                        <div class="form-group col-md-6">
+                            <p:outputLabel value="#{langue['common.code']}" for="code" />
+                            <h:inputText class="form-control" id="code" value="#{critereController.critere.code}" required="true" requiredMessage="#{langue['common.valeur_requise']}" />
                         </div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <p:outputLabel value="#{langue['common.poids_par_default']}" for="poid_default" />
-                                <h:inputText class="form-control" id="poid_default" value="#{critereController.critere.poids}" />
-                            </div>
+                        <div class="form-group col-md-6">
+                            <p:outputLabel value="#{langue['common.poids_par_default']}" for="poid_default" />
+                            <h:inputText class="form-control" id="poid_default" value="#{critereController.critere.poids}" />
                         </div>
                     </div>
-                    
+
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <p:outputLabel value="#{langue['common.point_max']}" for="p_max" />
-                                <h:inputText class="form-control" id="p_max" value="#{critereController.critere.pointMax}" required="true" requiredMessage="#{langue['common.valeur_requise']}" >
-                                    <p:ajax event="keyup" update="resultat" listener="#{critereController.updateResultat()}" />
-                                </h:inputText>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <p:outputLabel value="#{langue['common.point_max']}" for="p_max" />
+                            <h:inputText class="form-control" id="p_max" value="#{critereController.critere.pointMax}" required="true" requiredMessage="#{langue['common.valeur_requise']}" >
+                                <p:ajax event="keyup" update="resultat" listener="#{critereController.updateResultat()}" />
+                            </h:inputText>
                         </div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <p:outputLabel value="#{langue['common.score_moyen']}" for="score_moyen" />
-                                <h:inputText class="form-control" id="score_moyen" value="#{critereController.critere.scoreMoyen}" >
-                                    <p:ajax event="keyup" update="resultat" listener="#{critereController.updateResultat()}" />
-                                </h:inputText>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <p:outputLabel value="#{langue['common.score_moyen']}" for="score_moyen" />
+                            <h:inputText class="form-control" id="score_moyen" value="#{critereController.critere.scoreMoyen}" >
+                                <p:ajax event="keyup" update="resultat" listener="#{critereController.updateResultat()}" />
+                            </h:inputText>
                         </div>
                     </div>
-                    
+
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <p:outputLabel value="#{langue['common.resultat']}" for="resultat" />
-                                <h:inputText class="form-control" id="resultat" value="#{critereController.critere.resultat}" required="true" requiredMessage="#{langue['common.valeur_requise']}" />
-                            </div>
+                        <div class="form-group col-md-6">
+                            <p:outputLabel value="#{langue['common.resultat']}" for="resultat" />
+                            <h:inputText class="form-control" id="resultat" value="#{critereController.critere.resultat}" required="true" requiredMessage="#{langue['common.valeur_requise']}" />
                         </div> 
                     </div>
-                            
+
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <p:outputLabel value="#{langue['common.marge_inferieur']}" for="val_inf" />
+                            <h:inputText class="form-control" id="val_inf" value="#{critereController.critere.valeurInferieur}" required="true" requiredMessage="#{langue['common.valeur_requise']}" />
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <p:outputLabel value="#{langue['common.marge_superieur']}" for="val_sup" />
+                            <h:inputText class="form-control" id="val_sup" value="#{critereController.critere.valeurSuperieur}" required="true" requiredMessage="#{langue['common.valeur_requise']}" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <div class="form-check">                                
+                                <input id="etat" type="checkbox" class="form-check-input" jsf:value="#{critereController.critere.workflow}" />
+                                <label for="etat" class="form-check-label">Ce critère à t-il un poids ?</label>
+                            </div>
+                        </div>
+                    </div>
+
                     <p:separator/>
 
                     <center>

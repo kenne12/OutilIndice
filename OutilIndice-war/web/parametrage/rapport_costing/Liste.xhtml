@@ -19,11 +19,11 @@
                     <div style="color: white" class="panel-heading bg-success">
                         #{langue['critere_structure.list']}
 
-                        <p:commandButton update=":CritereCreateForm"
-                                         icon="ui-icon-plus"
-                                         value="#{langue['common.ajouter']}"
-                                         style="float: right"
-                                         actionListener="#{critereStrController.prepareCreate()}"/>      
+                        <p:commandButton 
+                            icon="ui-icon-plus"
+                            value="#{langue['common.valider']}"
+                            style="float: right"
+                            actionListener="#{rapportCostingCtrl.prepareCreate()}"/>      
                     </div>
 
                     <div class="panel-body">
@@ -33,24 +33,30 @@
                             <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th style="width: 20%">#{langue.structure}</th>
-                                        <th style="width: 30%">#{langue['common.nom']}</th>
-                                        <th style="width: 43%">#{langue.criteres}</th>
-                                        <th style="width: 7%">#{langue['common.actions']}</th>
+                                        <th style="width: 5%">N°</th>
+                                        <th style="width: 40%">#{langue.critere}</th>
+                                        <th style="width: 5%">#{langue.norme}</th>
+                                        <th style="width: 5%">Valeur</th>
+                                        <th style="width: 5%">Ecart</th>
+                                        <th style="width: 10%">Point</th>        
+                                        <th style="width: 5%">#{langue['common.marge_inferieur']}</th>
+                                        <th style="width: 5%">#{langue['common.marge_superieur']}</th>                                        
+                                        <th style="width: 5%">#{langue.etat}</th>                                       
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    <ui:repeat value="#{critereStrController.structures}" var="item">
+                                    <ui:repeat value="#{rapportCostingCtrl.criterestructures}" var="item">
                                         <tr>
-                                            <td>#{item.idinstitution.nom}</td>
-                                            <td>#{item.nom}</td>
-                                            <td>#{critereStrController.returnCritere(item)}</td>                                   
-                                            <td style="text-align: center">                                        
-                                                <p:commandButton icon="ui-icon-pencil" update=":CritereCreateForm"
-                                                                 class="btn btn-success btn-sm"
-                                                                 actionListener="#{critereStrController.prepareEdit(item)}"/>
-                                            </td>
+                                            <td>#{item.critere.idcritere}</td>
+                                            <td>#{item.critere.nom}</td>
+                                            <td>#{item.poids}</td>
+                                            <td>#{item.poidsfinal}</td>
+                                            <td>#{item.resultatfinal}</td>
+                                            <td>#{item.ecart}</td>
+                                            <td>#{item.valeurInferieur}</td>
+                                            <td>#{item.valeurSuperieur}</td>
+                                            <td><h:selectBooleanCheckbox value="#{item.etat}" disabled="true" /></td>                                                                               
                                         </tr>
                                     </ui:repeat>
                                 </tbody>
@@ -67,14 +73,14 @@
 
     <p:dialog id="notify1" widgetVar="NotifyDialog1" height="400" width="700" resizable="true" responsive="true" modal="true" style="text-align: center; font-size: 14px; font-family: Cambria;">
         <f:facet name="header">
-            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{critereStrController.routine.titleNotify}" />
+            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{rapportCostingCtrl.routine.titleNotify}" />
         </f:facet>
         <h:form id="NotifyForm1">
-            <h:graphicImage id="nt_img" url="#{critereStrController.routine.iconMessage}" style="cursor:pointer" />
+            <h:graphicImage id="nt_img" url="#{rapportCostingCtrl.routine.iconMessage}" style="cursor:pointer" />
 
             <hr size="3" style="background-color: cornflowerblue;"/>
 
-            <h:outputText id="nt_msg" value="#{critereStrController.routine.message}"/>
+            <h:outputText id="nt_msg" value="#{rapportCostingCtrl.routine.message}"/>
 
             <hr size="3" style="background-color: cornflowerblue; margin-top: 5%;"/>
 

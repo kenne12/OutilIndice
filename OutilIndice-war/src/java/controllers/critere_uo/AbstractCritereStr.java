@@ -47,9 +47,9 @@ public class AbstractCritereStr {
     protected List<Structure> structures = new ArrayList<>();
 
     protected Routine routine = new Routine();
-    protected static final double scoreMax = 100;
-    protected double score = 0;
+    protected double poids = 0;
     protected double pointMax = 0;
+    protected double pointObtenu;
 
     String sc = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
 
@@ -121,12 +121,16 @@ public class AbstractCritereStr {
         this.selectedCriteres = selectedCriteres;
     }
 
-    public double getScore() {
-        return score;
-    }
-
     public double getPointMax() {
         return pointMax;
+    }
+
+    public double getPoids() {
+        return poids;
+    }
+
+    public double getPointObtenu() {
+        return pointObtenu;
     }
 
 }

@@ -22,19 +22,6 @@
 
                     <h:panelGroup id="display">
 
-                        <div class="form-group">
-                            <p:outputLabel value="#{langue.structure}" for="structure" />
-                            <h:selectOneMenu disabled="true" converter="structureConverter" 
-                                             class="form-control" 
-                                             id="structure" value="#{critereStrController.structure}">
-                                <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
-                                <f:selectItems value="#{critereStrController.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
-                                <p:ajax update="grid_critere,datalist" listener="#{critereStrController.updateFiltre()}"/>
-                            </h:selectOneMenu>                                                
-                        </div>
-
-                        <p:separator/>
-
                         <p:selectManyCheckbox id="grid_critere" value="#{critereStrController.selectedCriteres}" layout="grid" columns="1" converter="critereConverter">
                             <f:selectItems value="#{critereStrController.criteres}" var="t" itemLabel="#{t.nom}" itemValue="#{t}" />
                             <p:ajax />

@@ -51,6 +51,11 @@ public class Critere implements Serializable {
     @Column(name = "scoremoyen")
     private Integer scoreMoyen;
     private Double resultat;
+    @Column(name = "valeurinferieur")
+    private int valeurInferieur;
+    @Column(name = "valeursuperieur")
+    private int valeurSuperieur;
+    private boolean workflow;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "critere", fetch = FetchType.LAZY)
     private Collection<Criterestructure> criterestructureCollection;
     @OneToMany(mappedBy = "idcritere", fetch = FetchType.LAZY)
@@ -117,6 +122,30 @@ public class Critere implements Serializable {
 
     public void setResultat(Double resultat) {
         this.resultat = resultat;
+    }
+
+    public int getValeurInferieur() {
+        return valeurInferieur;
+    }
+
+    public void setValeurInferieur(int valeurInferieur) {
+        this.valeurInferieur = valeurInferieur;
+    }
+
+    public int getValeurSuperieur() {
+        return valeurSuperieur;
+    }
+
+    public void setValeurSuperieur(int valeurSuperieur) {
+        this.valeurSuperieur = valeurSuperieur;
+    }
+
+    public boolean isWorkflow() {
+        return workflow;
+    }
+
+    public void setWorkflow(boolean workflow) {
+        this.workflow = workflow;
     }
 
     @XmlTransient

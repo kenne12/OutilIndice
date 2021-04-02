@@ -45,6 +45,10 @@ public class Criterestructure implements Serializable {
     private double poidsfinal;
     private double ecart;
     private boolean etat;
+    @Column(name = "valeurinferieur")
+    private int valeurInferieur;
+    @Column(name = "valeursuperieur")
+    private int valeurSuperieur;
     @JoinColumn(name = "idcritere", referencedColumnName = "idcritere", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Critere critere;
@@ -160,6 +164,22 @@ public class Criterestructure implements Serializable {
 
     public void setEtat(boolean etat) {
         this.etat = etat;
+    }
+
+    public int getValeurInferieur() {
+        return valeurInferieur;
+    }
+
+    public void setValeurInferieur(int valeurInferieur) {
+        this.valeurInferieur = valeurInferieur;
+    }
+
+    public int getValeurSuperieur() {
+        return valeurSuperieur;
+    }
+
+    public void setValeurSuperieur(int valeurSuperieur) {
+        this.valeurSuperieur = valeurSuperieur;
     }
 
     @Override
