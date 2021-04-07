@@ -110,7 +110,7 @@ public class PersonnelController extends AbstractPersonnel implements Serializab
                     personnelFacadeLocal.edit(personnel);
 
                     JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
-                    RequestContext.getCurrentInstance().execute("PF('SousCritereCreateDialog').hide()");
+                    RequestContext.getCurrentInstance().execute("PF('PersonnelCreateDialog').hide()");
                 } else {
                     JsfUtil.addErrorMessage("Aucune ligne seletionnée");
                 }

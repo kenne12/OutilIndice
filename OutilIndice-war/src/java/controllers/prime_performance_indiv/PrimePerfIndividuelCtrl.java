@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 import utils.SessionMBean;
 
@@ -22,7 +22,7 @@ import utils.SessionMBean;
  * @author USER
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl implements Serializable {
 
     /**
@@ -30,16 +30,18 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
      */
     public PrimePerfIndividuelCtrl() {
     }
-    
+
     @PostConstruct
     private void init() {
         listParametres = parametragecritereFacadeLocal.findByIdStructurePpi(SessionMBean.getStructure().getIdstructure(), 7, true);
+        criterestructures = criterestructureFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
+        criterestructure = criterestructureFacadeLocal.findByIdStructureIdCritere(SessionMBean.getStructure().getIdstructure(), 7);
         parametragecritere = new Parametragecritere();
         parametragecritere.setIdcategorie(new Categorie());
         totalPointMaxCritere = criterestructure.getResultat();
         indexCritere = criterestructures.indexOf(criterestructure);
     }
-    
+
     public void prepareCreate(String option) {
         this.denominateur = 5;
         mode = "Create";
@@ -47,18 +49,18 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
             this.updateFiltre();
         }
     }
-    
+
     private void updateFiltre() {
         parametragecriteres.clear();
         List<Parametragecritere> list = parametragecritereFacadeLocal.findByIdStructureIdCritere(SessionMBean.getStructure().getIdstructure(), 7);
         if (list.isEmpty()) {
-            
+
             effectifCategories = effectifCategorieFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
             if (effectifCategories.isEmpty()) {
                 JsfUtil.addWarningMessage("Veuillez définir les effectifs par catégorie pour cette structure");
                 return;
             }
-            
+
             for (EffectifCategorie efc : effectifCategories) {
                 Parametragecritere pc = new Parametragecritere(0l);
                 pc.setIdstructure(structure);
@@ -91,23 +93,23 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
         this.sommeDetail(parametragecriteres);
         RequestContext.getCurrentInstance().execute("PF('PerformanceIndividuelleCreateDialog').show()");
     }
-    
+
     private void sommeDetail(List<Parametragecritere> list) {
         this.totalPointSaisi = 0;
         this.totalEffectif = 0;
-        
+
         for (Parametragecritere pc : list) {
             totalEffectif += pc.getNombre();
             totalPointSaisi += pc.getTotal1();
         }
     }
-    
+
     public void prepareEdit(Parametragecritere p) {
         this.parametragecritere = p;
         mode = "Edit";
         RequestContext.getCurrentInstance().execute("PF('PerformanceIndividuelleEditDialog').show()");
     }
-    
+
     public void addCategoriesToTable() {
         if (!selectedCategories.isEmpty()) {
             for (Categorie c : selectedCategories) {
@@ -137,7 +139,7 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
             selectedCategories.clear();
         }
     }
-    
+
     public void removeCategory(int index) {
         Parametragecritere p = parametragecriteres.get(index);
         if (p.getIdparametragecritere() != 0l) {
@@ -148,7 +150,7 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
         categories.add(p.getIdcategorie());
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }
-    
+
     public void refreshCosting() {
         criterestructure.setResultatfinal(totalPointSaisi);
         criterestructures.set(indexCritere, criterestructure);
@@ -166,7 +168,7 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
         }
         criterestructure = criterestructures.get(indexCritere);
     }
-    
+
     public void updateData(String mode) {
         int i = 0;
         totalPointSaisi = 0;
@@ -176,13 +178,13 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
             pc.setPoint(pc.getIndice() / denominateur);
             pc.setTotal1(Math.ceil(pc.getPoint() * pc.getNombre()));
             parametragecriteres.set(i, pc);
-            
+
             this.totalPointSaisi += pc.getTotal1();
             this.totalEffectif += pc.getNombre();
             i++;
         }
     }
-    
+
     public void updateDataLine(int index) {
         try {
             parametragecriteres.get(index).setPoint(parametragecriteres.get(index).getIndice() / parametragecriteres.get(index).getDenominateur());
@@ -193,19 +195,19 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
         }
         this.sommeDetail(parametragecriteres);
     }
-    
+
     public void save() {
         try {
             if (parametragecriteres.isEmpty()) {
                 JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
                 return;
             }
-            
-            if ((totalPointSaisi) > totalPointMaxCritere) {
+
+            /*if ((totalPointSaisi) > totalPointMaxCritere) {
                 JsfUtil.addErrorMessage("Le total saisi depasse le total point max possible");
                 return;
-            }
-            
+            }*/
+
             for (Parametragecritere pc : parametragecriteres) {
                 if (pc.getIdparametragecritere() == 0l) {
                     pc.setIdparametragecritere(parametragecritereFacadeLocal.nextId());
@@ -215,13 +217,13 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
                 }
             }
             listParametres = parametragecritereFacadeLocal.findByIdStructurePpi(SessionMBean.getStructure().getIdstructure(), 7, true);
-            
+
             criterestructures.forEach(cs -> {
                 criterestructureFacadeLocal.edit(cs);
             });
-            
+
             this.parametragecriteres.clear();
-            
+
             RequestContext.getCurrentInstance().execute("PF('PerformanceIndividuelleCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
@@ -229,7 +231,7 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-    
+
     public void edit() {
         try {
             parametragecritereFacadeLocal.edit(parametragecritere);
@@ -243,7 +245,7 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-    
+
     public void delete(Parametragecritere p) {
         try {
             parametragecritereFacadeLocal.remove(p);
@@ -254,5 +256,5 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-    
+
 }

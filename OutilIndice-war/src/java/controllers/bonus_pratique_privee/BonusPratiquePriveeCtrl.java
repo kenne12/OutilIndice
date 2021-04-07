@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 import utils.SessionMBean;
 
@@ -22,7 +22,7 @@ import utils.SessionMBean;
  * @author USER
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl implements Serializable {
 
     /**
@@ -36,6 +36,8 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
         listParametres = parametragecritereFacadeLocal.findByIdStructurePp(SessionMBean.getStructure().getIdstructure(), 3, true);
         parametragecritere = new Parametragecritere();
         parametragecritere.setIdcategorie(new Categorie());
+        criterestructure = criterestructureFacadeLocal.findByIdStructureIdCritere(SessionMBean.getStructure().getIdstructure(), 3);
+        criterestructures = criterestructureFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
         totalPointMaxCritere = criterestructure.getResultat();
         indexCritere = criterestructures.indexOf(criterestructure);
     }
@@ -172,10 +174,10 @@ public class BonusPratiquePriveeCtrl extends AbstractBonusPratiquePriveeCtrl imp
                 return;
             }
 
-            if ((totalPointSaisi) > totalPointMaxCritere) {
+            /*if ((totalPointSaisi) > totalPointMaxCritere) {
                 JsfUtil.addErrorMessage("Le total saisi depasse le total point max possible");
                 return;
-            }
+            }*/
 
             for (Parametragecritere pc : parametragecriteres) {
                 if (pc.getIdparametragecritere() == 0l) {

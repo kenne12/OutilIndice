@@ -25,13 +25,8 @@ public class RapportCostingCtrl extends AbstractRapportCostingCtrl implements Se
 
     @PostConstruct
     private void init() {
-        criterestructures = SessionMBean.getCritereStructures();
+        criterestructures = criterestructureFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
         this.sommeCritere();
-    }
-
-    public void prepareCreate() {
-        mode = "Create";
-        RequestContext.getCurrentInstance().execute("PF('CritereCreateDialog').show()");
     }
 
     @Transactional
@@ -48,7 +43,7 @@ public class RapportCostingCtrl extends AbstractRapportCostingCtrl implements Se
                 criterestructureFacadeLocal.edit(cs);
             });
 
-            this.criterestructures.clear();
+            criterestructures = criterestructureFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
             RequestContext.getCurrentInstance().execute("PF('CritereCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
@@ -69,6 +64,45 @@ public class RapportCostingCtrl extends AbstractRapportCostingCtrl implements Se
             pointMax += cs.getPointMax();
             pointObtenu += cs.getPoidsfinal();
         }
+    }
+
+    public String returnBgColor(Criterestructure c) {
+        if (!c.getCritere().isWorkflow()) {
+            return "";
+        }
+
+        if (c.getEcart() == 0) {
+            return "";
+        }
+
+        if (Math.abs(c.getEcart()) > c.getValeurInferieur()) {
+            return "red";
+        }
+
+        if (Math.abs(c.getEcart()) > c.getValeurSuperieur()) {
+            return "red";
+        }
+        return "blue";
+    }
+
+    public String returnTextColor(Criterestructure c) {
+        if (!c.getCritere().isWorkflow()) {
+            return "";
+        }
+
+        if (c.getEcart() == 0) {
+            return "";
+        }
+
+        if (Math.abs(c.getEcart()) > c.getValeurInferieur()) {
+            return "white";
+        }
+
+        if (Math.abs(c.getEcart()) > c.getValeurSuperieur()) {
+            return "white";
+        }
+
+        return "white";
     }
 
 }

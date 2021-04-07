@@ -14,7 +14,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 import utils.SessionMBean;
 
@@ -23,7 +23,7 @@ import utils.SessionMBean;
  * @author USER
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class PMaxPrimeRQntifDeptCtrl extends AbstractPMaxPrimeRQntifDeptCtrl implements Serializable {
 
     /**
@@ -35,9 +35,12 @@ public class PMaxPrimeRQntifDeptCtrl extends AbstractPMaxPrimeRQntifDeptCtrl imp
     @PostConstruct
     private void init() {
         listParametres = parametragecritereFacadeLocal.findByIdStructureIdCritere(SessionMBean.getStructure().getIdstructure(), 4);
+        criterestructures = criterestructureFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
+        criterestructure = criterestructureFacadeLocal.findByIdStructureIdCritere(SessionMBean.getStructure().getIdstructure(), 4);
         parametragecritere = new Parametragecritere();
         parametragecritere.setIdcategorie(new Categorie());
         totalPointMaxCritere = criterestructure.getResultat();
+        indexCritere = criterestructures.indexOf(criterestructure);
     }
 
     public void prepareCreate(String option) {
@@ -203,11 +206,10 @@ public class PMaxPrimeRQntifDeptCtrl extends AbstractPMaxPrimeRQntifDeptCtrl imp
                 return;
             }
 
-            if ((totalPointSaisi) > totalPointMaxCritere) {
-                JsfUtil.addErrorMessage("Le total saisi depasse le total point max possible");
-                return;
-            }
-
+            /*if ((totalPointSaisi) > totalPointMaxCritere) {
+             JsfUtil.addErrorMessage("Le total saisi depasse le total point max possible");
+             return;
+             }*/
             for (Parametragecritere pc : parametragecriteres) {
                 if (pc.getIdparametragecritere() == 0l) {
                     pc.setIdparametragecritere(parametragecritereFacadeLocal.nextId());

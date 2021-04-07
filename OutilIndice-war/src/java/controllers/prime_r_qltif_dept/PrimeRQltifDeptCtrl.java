@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 import utils.SessionMBean;
 
@@ -22,7 +22,7 @@ import utils.SessionMBean;
  * @author USER
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements Serializable {
 
     /**
@@ -34,6 +34,8 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
     @PostConstruct
     private void init() {
         listParametres = parametragecritereFacadeLocal.findByIdStructurePrqd(SessionMBean.getStructure().getIdstructure(), 5, true);
+        criterestructures = criterestructureFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
+        criterestructure = criterestructureFacadeLocal.findByIdStructureIdCritere(SessionMBean.getStructure().getIdstructure(), 5);
         parametragecritere = new Parametragecritere();
         parametragecritere.setIdcategorie(new Categorie());
         totalPointMaxCritere = criterestructure.getResultat();
@@ -86,8 +88,8 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
                 pc.setHeuresupn(false);
                 pc.setPratiqueprivee(false);
                 pc.setPerformanceindividuelle(false);
-                pc.setResultatqualitatifdept(false);
-                pc.setResultatquantitatifdept(true);
+                pc.setResultatqualitatifdept(true);
+                pc.setResultatquantitatifdept(false);
                 pc.setBonusrevenudept(false);
                 parametragecriteres.add(pc);
             }
@@ -200,10 +202,10 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
                 return;
             }
 
-            if ((totalPointSaisi) > totalPointMaxCritere) {
+            /*if ((totalPointSaisi) > totalPointMaxCritere) {
                 JsfUtil.addErrorMessage("Le total saisi depasse le total point max possible");
                 return;
-            }
+            }*/
 
             for (Parametragecritere pc : parametragecriteres) {
                 if (pc.getIdparametragecritere() == 0l) {

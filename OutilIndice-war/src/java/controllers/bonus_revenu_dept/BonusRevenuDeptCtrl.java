@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 import utils.SessionMBean;
 
@@ -22,7 +22,7 @@ import utils.SessionMBean;
  * @author USER
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements Serializable {
 
     /**
@@ -36,6 +36,8 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
         listParametres = parametragecritereFacadeLocal.findByIdStructureBrd(SessionMBean.getStructure().getIdstructure(), 6, true);
         parametragecritere = new Parametragecritere();
         parametragecritere.setIdcategorie(new Categorie());
+        criterestructure = criterestructureFacadeLocal.findByIdStructureIdCritere(SessionMBean.getStructure().getIdstructure(), 6);
+        criterestructures = criterestructureFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
         totalPointMaxCritere = criterestructure.getResultat();
         indexCritere = criterestructures.indexOf(criterestructure);
     }

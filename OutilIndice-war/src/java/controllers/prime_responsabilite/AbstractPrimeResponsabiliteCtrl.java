@@ -20,7 +20,6 @@ import sessions.ResponsabiliteFacadeLocal;
 import sessions.StructureFacadeLocal;
 import utils.Routine;
 import utils.SessionMBean;
-import utils.Utilitaires;
 
 /**
  *
@@ -30,8 +29,8 @@ public class AbstractPrimeResponsabiliteCtrl {
 
     @EJB
     protected CriterestructureFacadeLocal criterestructureFacadeLocal;
-    protected Criterestructure criterestructure = Utilitaires.findCritereSInSession(1);
-    protected List<Criterestructure> criterestructures = SessionMBean.getCritereStructures();
+    protected Criterestructure criterestructure = new Criterestructure();
+    protected List<Criterestructure> criterestructures = new ArrayList<>();
 
     @EJB
     protected CritereresponsabiliteFacadeLocal critereresponsabiliteFacadeLocal;

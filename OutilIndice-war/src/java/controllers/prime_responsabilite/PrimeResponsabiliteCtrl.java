@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 import utils.SessionMBean;
 
@@ -22,7 +22,7 @@ import utils.SessionMBean;
  * @author USER
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl implements Serializable {
 
     /**
@@ -36,6 +36,8 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl imp
         try {
             listCriteres = critereresponsabiliteFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
             critereresponsabilite.setIdresponsabilite(new Responsabilite());
+            criterestructures = criterestructureFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure());
+            criterestructure = criterestructureFacadeLocal.findByIdStructureIdCritere(SessionMBean.getStructure().getIdstructure(), 1);
             totalPointMaxCritere = criterestructure.getResultat();
             indexCritere = criterestructures.indexOf(criterestructure);
         } catch (Exception e) {
@@ -170,11 +172,10 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl imp
                 return;
             }
 
-            if (totalPointSaisi > totalPointMaxCritere) {
-                JsfUtil.addErrorMessage("Le total saisi depasse le total point max possible");
-                return;
-            }
-
+            /*if (totalPointSaisi > totalPointMaxCritere) {
+             JsfUtil.addErrorMessage("Le total saisi depasse le total point max possible");
+             return;
+             }*/
             for (Critereresponsabilite cr : critereresponsabilites) {
                 if (cr.getIdcritereresponsabilite() == 0l) {
                     cr.setIdcritereresponsabilite(critereresponsabiliteFacadeLocal.nextId());

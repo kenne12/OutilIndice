@@ -48,13 +48,77 @@
                     </ul>
                 </li>
 
-                <li id="parametrage">
-                    <a href="#"><i class="fa fa-wrench"></i> #{langue.parametrage} <span class="fa arrow"></span></a>
+                <li id="parametrage_globaux">
+                    <a href="#"><i class="fa fa-cogs"></i> #{langue.parametrage_globaux_menu} <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="#{request.contextPath}/parametrage/categorie/categorie.html">#{langue.categorie}</a>
+                        </li>
+
+                        <li>
+                            <a href="#{request.contextPath}/parametrage/personnel/personnel.html">#{langue.responsabilite}</a>
+                        </li>
+
+                        <li>
+                            <a href="#{request.contextPath}/parametrage/personnel/personnel.html">#{langue.personnel}</a>
+                        </li>
+
+                        <li>
+                            <a href="#{request.contextPath}/parametrage/periode/periode.html">#{langue.periode}</a>
+                        </li>
+
+                        <li>
+                            <a href="#{request.contextPath}/parametrage/sous_periode/index.html">#{langue.sous_periode}</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li id="recette_depense_menu">
+                    <a href="#"><i class="fa fa-money"></i> #{langue.recette_depense_menu} <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
 
-                        <li id="parametrage_ps">
+                        <li id="pr_recette">
+                            <a href="#">#{langue.recette}<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/rubrique_recette/rubrique_recette.html">#{langue.rubrique_recette}</a>
+                                </li>
+
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/sous_rubrique_recette/sous_rubrique_recette.html">#{langue.sous_rubrique_recette}</a>
+                                </li>
+
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/typestructure_srr/index.html">Rubrique recette / Type structure </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li id="pr_depense">
+                            <a href="#">#{langue.depense}<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/rubrique_depense/rubrique_depense.html">#{langue.rubrique_depense}</a>
+                                </li>  
+
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/sous_rubrique_depense/sous_rubrique_depense.html">#{langue.sous_rubrique_depense}</a>
+                                </li>
+
+                                <li>
+                                    <a href="#{request.contextPath}/parametrage/typestructure_srd/index.html">Rubrique dépense / Type structure </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <li id="pyramide_sanitaire_menu">
+                    <a href="#"><i class="fa fa-building-o"></i> #{langue.parametrage} <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li id="pyramide_sanitaire">
                             <a href="#">#{langue.pyramide_sanitaire}<span class="fa arrow"></span></a>
-                            <ul class="nav nav-third-level">                               
+                            <ul class="nav nav-third-level">
                                 <li>
                                     <a href="#{request.contextPath}/parametrage/typestructure/typestructure.html">#{langue.type_structure}</a>
                                 </li>
@@ -73,8 +137,13 @@
 
                                 <li>
                                     <a href="#{request.contextPath}/parametrage/service/service.html">#{langue.service}</a>
-                                </li>                         
+                                </li>
+                            </ul>
+                        </li>
 
+                        <li id="pyramide_sanitaire_affectation">
+                            <a href="#">#{langue.affectations}<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
                                 <li>
                                     <a href="#{request.contextPath}/parametrage/typestructure_service/index.html">Service / Type Structure</a>
                                 </li>
@@ -93,9 +162,15 @@
                             </ul>
                         </li>
 
-                        <li id="parametrage_cr">
+                    </ul>             
+                </li>
+
+                <li id="parametrage_critere">
+                    <a href="#"><i class="fa fa-wrench"></i> #{langue.critere_affectation} <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li id="parametrage_critere_cr">
                             <a href="#">#{langue.criteres}<span class="fa arrow"></span></a>
-                            <ul class="nav nav-third-level">                               
+                            <ul class="nav nav-third-level">
                                 <li>
                                     <a href="#{request.contextPath}/parametrage/critere/critere.html">#{langue.critere}</a>
                                 </li>
@@ -111,44 +186,67 @@
                                 <li>
                                     <a class="nav-link" href="#{request.contextPath}/parametrage/reponse/reponse.html">Elements de reponse</a>
                                 </li>
+                            </ul>
+                        </li>
 
-                                <li>
-                                    <a class="nav-link" href="#{request.contextPath}/parametrage/indicateur_r_dept/indicateur.html">Indicateur R Qntif</a>
-                                </li>
-
-                                <li>
-                                    <a class="nav-link" href="#{request.contextPath}/parametrage/penalite_dept/penalite.html" >Pénalités Dept</a>
-                                </li>
-
-                                <li>
-                                    <a class="nav-link" href="#{request.contextPath}/parametrage/penalite_indiv/penalite.html" >Pénalités Indiv</a>
-                                </li>
-
+                        <li id="parametrage_critere_affect">
+                            <a href="#">#{langue.affectations}<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
                                 <li>
                                     <a href="#{request.contextPath}/parametrage/critere_str/critere_str.html">#{langue.critere} / UO</a>
-                                </li> 
-
-                                <li>
-                                    <a class="nav-link" style="display: #{loginController.critere4}" href="#{request.contextPath}/parametrage/indicateurqte_service/indicateurqte_service.html">#{loginController.critere4_numero} - Indicateur Qte / Dept</a>
                                 </li>
-
-                                <li>
-                                    <a class="nav-link" style="display: #{loginController.critere5}" href="#{request.contextPath}/parametrage/s_critere_q_service/s_critere_q_service.html">#{loginController.critere5_numero} - Sous Critère Qlté de Dept</a>
-                                </li>                                                  
 
                                 <li>
                                     <a class="nav-link" style="display: #{loginController.critere7}" href="#{request.contextPath}/parametrage/s_critere_str/s_critere_str.html">#{loginController.critere7_numero} - Sous - Critere PI / Structure</a>
                                 </li>
                             </ul>
+                        </li>                        
+                    </ul>
+                </li>
+
+                <li id="menu_indicateur_penalite">
+                    <a href="#"><i class="fa fa-wrench"></i> #{langue.indicateur_penalite_menu} <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li id="indicateur_penalite">
+                            <a href="#">#{langue.indicateur_penalite_menu}<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+
+                                <li>
+                                    <a class="nav-link" href="#{request.contextPath}/parametrage/indicateur_r_dept/indicateur.html">Indicateur R Qualitatif</a>
+                                </li>
+
+                                <li>
+                                    <a class="nav-link" href="#{request.contextPath}/parametrage/penalite_dept/penalite.html">Pénalités Départements</a>
+                                </li>
+
+                                <li>
+                                    <a class="nav-link" href="#{request.contextPath}/parametrage/penalite_indiv/penalite.html">Pénalités Individuelles</a>
+                                </li>
+                            </ul>
                         </li>
+
+                        <li id="indicateur_penalite_affectation">
+                            <a href="#">#{langue.affectations}<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li>
+                                    <a class="nav-link" style="display: #{loginController.critere4}" href="#{request.contextPath}/parametrage/indicateurqte_service/indicateurqte_service.html">#{loginController.critere4_numero} - Indicateur Qte / Dept</a>
+                                </li>
+
+                                <li>
+                                    <a class="nav-link" style="display: #{loginController.critere5}" href="#{request.contextPath}/parametrage/s_critere_q_service/s_critere_q_service.html">#{loginController.critere5_numero} - Indicateur Qlté / Dept</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <li id="parametrage">
+                    <a href="#"><i class="fa fa-cogs"></i> #{langue.critere_indice}<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
 
                         <li id="parametrage_eval">
                             <a href="#">#{langue.evaluation}<span class="fa arrow"></span></a>
                             <ul class="nav nav-third-level">
-
-                                <li>
-                                    <a href="#{request.contextPath}/parametrage/categorie/categorie.html">#{langue.categorie}</a>
-                                </li>
 
                                 <li>
                                     <a href="#{request.contextPath}/parametrage/effectif_categorie/effectif_categorie.html">Effectif / Cat</a>
@@ -197,53 +295,11 @@
                                 <li>
                                     <a class="nav-link" style="display: #{loginController.critere10}" href="#{request.contextPath}/parametrage/penalite_structure/penalite.html">#{loginController.critere10_numero} - Pénalité Indiv</a>
                                 </li>
-                                
+
                                 <li>
                                     <a class="nav-link" style="display: #{loginController.critere10}" href="#{request.contextPath}/parametrage/rapport_costing/index.html">Rapport</a>
                                 </li>                           
                             </ul>
-                        </li>
-
-                        <li id="parametrage_budget">
-                            <a href="#">#{langue.budget}<span class="fa arrow"></span></a>
-                            <ul class="nav nav-third-level">
-                                <li>
-                                    <a href="#{request.contextPath}/parametrage/rubrique_recette/rubrique_recette.html">#{langue.rubrique_recette}</a>
-                                </li>
-
-                                <li>
-                                    <a href="#{request.contextPath}/parametrage/sous_rubrique_recette/sous_rubrique_recette.html">#{langue.sous_rubrique_recette}</a>
-                                </li>
-
-                                <li>
-                                    <a href="#{request.contextPath}/parametrage/rubrique_depense/rubrique_depense.html">#{langue.rubrique_depense}</a>
-                                </li>  
-
-                                <li>
-                                    <a href="#{request.contextPath}/parametrage/sous_rubrique_depense/sous_rubrique_depense.html">#{langue.sous_rubrique_depense}</a>
-                                </li>
-                                
-                                <li>
-                                    <a href="#{request.contextPath}/parametrage/typestructure_srr/index.html">Rubrique recette / Type structure </a>
-                                </li>
-
-                                <li>
-                                    <a href="#{request.contextPath}/parametrage/typestructure_srd/index.html">Rubrique dépense / Type structure </a>
-                                </li>
-                 
-                            </ul>
-                        </li>
-
-                        <li>
-                            <a href="#{request.contextPath}/parametrage/personnel/personnel.html">#{langue.personnel}</a>
-                        </li>
-
-                        <li>
-                            <a href="#{request.contextPath}/parametrage/periode/periode.html">#{langue.periode}</a>
-                        </li>
-
-                        <li>
-                            <a href="#{request.contextPath}/parametrage/sous_periode/index.html">#{langue.sous_periode}</a>
                         </li>
                     </ul>
                 </li>
@@ -255,7 +311,7 @@
                         <li id="traitement_budget">
                             <a href="#">
                                 <i class="fa fa-exchange fa-fw"></i>
-                                #{langue.budget}<span class="fa arrow"></span>
+                                #{langue.recette_depense_menu}<span class="fa arrow"></span>
                             </a>
                             <ul class="nav nav-third-level">
                                 <li>
@@ -271,31 +327,23 @@
                         <li id="traitement_cible">
                             <a href="#">
                                 <i class="fa fa-exchange fa-fw"></i>
-                                #{langue.cible_dept}<span class="fa arrow"></span>
+                                #{langue.cible_realisation_menu} Dpt<span class="fa arrow"></span>
                             </a>
                             <ul class="nav nav-third-level">
                                 <li>
-                                    <a style="display: #{loginController.critere4}" href="#{request.contextPath}/operation/prime_qnte_dept/prime_qnte_dept.html">#{loginController.critere4_numero} - Prime Résultat Qntif</a>
+                                    <a style="display: #{loginController.critere4}" href="#{request.contextPath}/operation/prime_qnte_dept/prime_qnte_dept.html">#{loginController.critere4_numero} - C Résultat Qntif</a>
                                 </li>
 
                                 <li>
-                                    <a style="display: #{loginController.critere6}" href="#{request.contextPath}/operation/cible_bonus_revenu_dept/cible_bonus_revenu_dept.html">#{loginController.critere6_numero} - Prime Bonus Revenu</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li id="traitement_realisation">
-                            <a href="#">
-                                <i class="fa fa-exchange fa-fw"></i>
-                                #{langue.realisation_dept}<span class="fa arrow"></span>
-                            </a>
-                            <ul class="nav nav-third-level">
-                                <li>
-                                    <a style="display: #{loginController.critere5}" href="#{request.contextPath}/operation/r_prime_qltif_dept/r_prime_qltif_dept.html">#{loginController.critere5_numero} - Prime Résultat Qltif</a>
+                                    <a style="display: #{loginController.critere6}" href="#{request.contextPath}/operation/cible_bonus_revenu_dept/cible_bonus_revenu_dept.html">#{loginController.critere6_numero} - C Bonus Revenu</a>
                                 </li>
 
                                 <li>
-                                    <a style="display: #{loginController.critere6}" href="#{request.contextPath}/operation/r_bonus_revenu_dept/r_bonus_revenu_dept.html">#{loginController.critere6_numero} - Bonus Recette</a>
+                                    <a style="display: #{loginController.critere5}" href="#{request.contextPath}/operation/r_prime_qltif_dept/r_prime_qltif_dept.html">#{loginController.critere5_numero} - R Résultat Qltif</a>
+                                </li>
+
+                                <li>
+                                    <a style="display: #{loginController.critere6}" href="#{request.contextPath}/operation/r_bonus_revenu_dept/r_bonus_revenu_dept.html">#{loginController.critere6_numero} - R Bonus Revenu</a>
                                 </li>
 
                                 <li>
@@ -307,15 +355,15 @@
                         <li id="traitement_evaluation">
                             <a href="#">
                                 <i class="fa fa-exchange fa-fw"></i>
-                                #{langue.evaluation}<span class="fa arrow"></span>
+                                #{langue.evaluation_prime_menu}<span class="fa arrow"></span>
                             </a>
                             <ul class="nav nav-third-level">
                                 <li>
-                                    <a href="#{request.contextPath}/operation/evaluation_personnel/evaluation_personnel.html">#{langue.personnel}</a>
+                                    <a href="#{request.contextPath}/operation/evaluation_personnel/evaluation_personnel.html">#{langue.evaluation}</a>
                                 </li>
 
                                 <li>
-                                    <a href="#{request.contextPath}/operation/partage/partage.html">Partage des primes</a>
+                                    <a href="#{request.contextPath}/operation/partage/partage.html">Primes</a>
                                 </li>
                             </ul>
                         </li>

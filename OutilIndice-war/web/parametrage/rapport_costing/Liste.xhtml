@@ -23,7 +23,7 @@
                             icon="ui-icon-plus"
                             value="#{langue['common.valider']}"
                             style="float: right"
-                            actionListener="#{rapportCostingCtrl.prepareCreate()}"/>      
+                            actionListener="#{rapportCostingCtrl.save()}"/>      
                     </div>
 
                     <div class="panel-body">
@@ -47,16 +47,16 @@
 
                                 <tbody>
                                     <ui:repeat value="#{rapportCostingCtrl.criterestructures}" var="item">
-                                        <tr>
-                                            <td>#{item.critere.idcritere}</td>
+                                        <tr style="background-color: #{rapportCostingCtrl.returnBgColor(item)}; color: #{rapportCostingCtrl.returnTextColor(item)}">
+                                            <td style="text-align: center">#{item.critere.idcritere}</td>
                                             <td>#{item.critere.nom}</td>
-                                            <td>#{item.poids}</td>
-                                            <td>#{item.poidsfinal}</td>
-                                            <td>#{item.resultatfinal}</td>
-                                            <td>#{item.ecart}</td>
-                                            <td>#{item.valeurInferieur}</td>
-                                            <td>#{item.valeurSuperieur}</td>
-                                            <td><h:selectBooleanCheckbox value="#{item.etat}" disabled="true" /></td>                                                                               
+                                            <td style="text-align: center">#{item.poids}</td>
+                                            <td style="text-align: center"><h:outputText value="#{item.poidsfinal}"> <f:convertNumber pattern="0.00" /></h:outputText></td>
+                                            <td style="text-align: center"><h:outputText value="#{item.ecart}"> <f:convertNumber pattern="0.00" /> </h:outputText>  </td>
+                                            <td style="text-align: center"><h:outputText value="#{item.resultatfinal}"> <f:convertNumber />  </h:outputText>  </td>                                            
+                                            <td style="text-align: center">#{item.valeurInferieur}</td>
+                                            <td style="text-align: center">#{item.valeurSuperieur}</td>
+                                            <td style="text-align: center"><h:selectBooleanCheckbox value="#{item.etat}" /></td>                                                                               
                                         </tr>
                                     </ui:repeat>
                                 </tbody>
