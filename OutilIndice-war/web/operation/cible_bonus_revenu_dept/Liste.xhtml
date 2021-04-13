@@ -46,6 +46,7 @@
                                          icon="ui-icon-plus"
                                          value="#{langue['common.ajouter']}"
                                          style="float: right"
+                                         disabled="#{cibleBonusRDeptCtrl.stateBtn}"
                                          actionListener="#{cibleBonusRDeptCtrl.prepareCreate()}"/>      
                     </div>
 
@@ -70,6 +71,7 @@
                                             <td style="text-align: center">                                        
                                                 <p:commandButton icon="ui-icon-pencil" update=":CibleBonusRDeptEditForm"
                                                                  class="btn btn-success btn-sm"
+                                                                 disabled="#{cibleBonusRDeptCtrl.stateBtn}"
                                                                  actionListener="#{cibleBonusRDeptCtrl.prepareEdit(item)}"/>
 
                                                 <p:commandButton icon="ui-icon-trash" update=":CibleBonusRDeptListerForm"

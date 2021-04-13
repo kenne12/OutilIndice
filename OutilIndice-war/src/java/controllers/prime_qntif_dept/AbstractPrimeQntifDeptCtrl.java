@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import sessions.CibleFacadeLocal;
+import sessions.CriterestructureFacadeLocal;
 import sessions.IndicateurFacadeLocal;
 import sessions.IndicateurQteServiceFacadeLocal;
 import sessions.PeriodeFacadeLocal;
@@ -42,13 +43,16 @@ public class AbstractPrimeQntifDeptCtrl {
     protected IndicateurQteServiceFacadeLocal indicateurQteServiceFacadeLocal;
 
     @EJB
+    protected CriterestructureFacadeLocal criterestructureFacadeLocal;
+
+    @EJB
     protected IndicateurFacadeLocal indicateurFacadeLocal;
     protected List<Indicateur> indicateurs = new ArrayList<>();
     protected List<Indicateur> selectedIndicateurs = new ArrayList<>();
 
     @EJB
     protected PeriodeFacadeLocal periodeFacadeLocal;
-    protected Periode periode = SessionMBean.getPeriode();
+    protected final Periode periode = SessionMBean.getPeriode();
     protected List<Periode> periodes = new ArrayList<>();
 
     @EJB
@@ -63,7 +67,7 @@ public class AbstractPrimeQntifDeptCtrl {
 
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
-    protected Structure structure = SessionMBean.getStructure();
+    protected final Structure structure = SessionMBean.getStructure();
 
     @EJB
     protected TypeSousPeriodeFacadeLocal typeSousPeriodeFacadeLocal;
@@ -75,12 +79,10 @@ public class AbstractPrimeQntifDeptCtrl {
     protected Routine routine = new Routine();
     protected String mode = "";
 
+    protected boolean stateBtn = true;
+
     public Structure getStructure() {
         return structure;
-    }
-
-    public void setStructure(Structure structure) {
-        this.structure = structure;
     }
 
     public Routine getRoutine() {
@@ -117,10 +119,6 @@ public class AbstractPrimeQntifDeptCtrl {
 
     public Periode getPeriode() {
         return periode;
-    }
-
-    public void setPeriode(Periode periode) {
-        this.periode = periode;
     }
 
     public List<Periode> getPeriodes() {
@@ -166,6 +164,10 @@ public class AbstractPrimeQntifDeptCtrl {
 
     public List<TypeSousPeriode> getTypeSousPeriodes() {
         return typeSousPeriodes;
+    }
+
+    public boolean isStateBtn() {
+        return stateBtn;
     }
 
 }

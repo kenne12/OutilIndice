@@ -40,6 +40,11 @@ public class PenaliteDeptCtrl extends AbstractPenaliteDeptCtrl implements Serial
     private void init() {
         services = SessionMBean.getServices();
         typeSousPeriodes = SessionMBean.getTypeSousPeriodes();
+        if (criterestructureFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure(), true).isEmpty()) {
+            JsfUtil.addErrorMessage("Veuillez valider les critères d'évaluation");
+            return;
+        }
+        stateBtn = false;
     }
 
     public void prepareCreate() {

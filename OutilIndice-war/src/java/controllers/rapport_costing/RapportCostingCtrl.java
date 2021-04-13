@@ -39,7 +39,17 @@ public class RapportCostingCtrl extends AbstractRapportCostingCtrl implements Se
 
             this.sommeCritere();
 
+            for (Criterestructure cs : criterestructures) {
+                if (cs.getCritere().isWorkflow()) {
+                    if (Math.abs(cs.getEcart()) > cs.getValeurInferieur() || Math.abs(cs.getEcart()) > cs.getValeurSuperieur()) {
+                        JsfUtil.addErrorMessage("Certains critères ne respectent pas les marges définies");
+                        return;
+                    }
+                }
+            }
+
             criterestructures.forEach(cs -> {
+                cs.setEtat(true);
                 criterestructureFacadeLocal.edit(cs);
             });
 

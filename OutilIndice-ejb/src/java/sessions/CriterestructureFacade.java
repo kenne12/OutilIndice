@@ -18,6 +18,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class CriterestructureFacade extends AbstractFacade<Criterestructure> implements CriterestructureFacadeLocal {
+
     @PersistenceContext(unitName = "OutilIndice-ejbPU")
     private EntityManager em;
 
@@ -29,11 +30,18 @@ public class CriterestructureFacade extends AbstractFacade<Criterestructure> imp
     public CriterestructureFacade() {
         super(Criterestructure.class);
     }
-    
+
     @Override
     public List<Criterestructure> findByIdStructure(Long idstructure) {
         Query query = em.createQuery("SELECT c FROM Criterestructure c WHERE c.structure.idstructure=:idStructure ORDER BY c.critere.idcritere");
         query.setParameter("idStructure", idstructure);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Criterestructure> findByIdStructure(Long idstructure, boolean etat) {
+        Query query = em.createQuery("SELECT c FROM Criterestructure c WHERE c.structure.idstructure=:idStructure AND c.etat=:etat ORDER BY c.critere.idcritere");
+        query.setParameter("idStructure", idstructure).setParameter("etat", etat);
         return query.getResultList();
     }
 
@@ -47,5 +55,5 @@ public class CriterestructureFacade extends AbstractFacade<Criterestructure> imp
         }
         return null;
     }
-    
+
 }

@@ -41,7 +41,7 @@
                                              required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
                                 <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
                                 <f:selectItems value="#{depenseController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
-                                <p:ajax update="datalist_1,grid_,add_btn,montant" listener="#{depenseController.updateData()}" />
+                                <p:ajax update="datalist_1,grid_,add_btn,montant,display" listener="#{depenseController.updateData()}" />
                             </h:selectOneMenu>
                         </div>
 

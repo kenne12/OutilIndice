@@ -41,6 +41,11 @@ public class PrimeQntifDeptCtrl extends AbstractPrimeQntifDeptCtrl implements Se
         cible.setIdindicateur(new Indicateur());
         services = SessionMBean.getServices();
         typeSousPeriodes = SessionMBean.getTypeSousPeriodes();
+        if (criterestructureFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure(), true).isEmpty()) {
+            JsfUtil.addErrorMessage("Veuillez valider les critères d'évaluation");
+            return;
+        }
+        stateBtn = false;
     }
 
     public void prepareCreate() {
@@ -67,7 +72,7 @@ public class PrimeQntifDeptCtrl extends AbstractPrimeQntifDeptCtrl implements Se
         totalCible = 0;
         if (service.getIdservice() != null && service.getIdservice() > 0) {
             if (sousperiode.getIdsousperiode() != null && sousperiode.getIdsousperiode() > 0) {
-                List<Cible> list = cibleFacadeLocal.findByIdSousPeriode(service.getIdservice(), service.getIdservice(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 4);
+                List<Cible> list = cibleFacadeLocal.findByIdSousPeriode(structure.getIdstructure(), service.getIdservice(), periode.getIdperiode(), sousperiode.getIdsousperiode(), 4);
 
                 List<IndicateurQteService> listIndicateur = indicateurQteServiceFacadeLocal.findByIdService(structure.getIdstructure(), service.getIdservice());
 

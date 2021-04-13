@@ -38,6 +38,11 @@ public class RealisationBonusRDeptCtrl extends AbstractRealisationBonusRDeptCtrl
         cible = new Cible();
         cible.setIdservice(new Service());
         typeSousPeriodes = SessionMBean.getTypeSousPeriodes();
+        if (criterestructureFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure(), true).isEmpty()) {
+            JsfUtil.addErrorMessage("Veuillez valider les critères d'évaluation");
+            return;
+        }
+        stateBtn = false;
     }
 
     public void prepareCreate() {

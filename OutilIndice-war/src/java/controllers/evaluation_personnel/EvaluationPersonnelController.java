@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 import utils.MappingResultat;
 import utils.SessionMBean;
@@ -50,20 +50,25 @@ import utils.Utilitaires;
  * @author kenne
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class EvaluationPersonnelController extends AbstractEvaluationPersonnel implements Serializable {
-
+    
     public EvaluationPersonnelController() {
-
+        
     }
-
+    
     @PostConstruct
     private void init() {
         this.initNote();
+        if (criterestructureFacade.findByIdStructure(SessionMBean.getStructure().getIdstructure(), true).isEmpty()) {
+            JsfUtil.addErrorMessage("Veuillez valider les critères d'évaluation");
+            return;
+        }
+        stateBtn = false;
         this.checkCritere();
         typeSousPeriodes = SessionMBean.getTypeSousPeriodes();
     }
-
+    
     private void initNote() {
         note = new Note();
         note.setIdperiode(new Periode());
@@ -75,7 +80,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
         personnel.setIdservice(new Service());
         personnel.setIdresponsabilite(new Responsabilite());
     }
-
+    
     public void prepareCreate() {
         if (criteres.isEmpty()) {
             signalError("definir_les_critere_evaluation");
@@ -108,30 +113,30 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
         this.mappingResultats = MappingResultat.getMapping();
         RequestContext.getCurrentInstance().execute("PF('EvaluationCreateDialog').show()");
     }
-
+    
     public void filterData() {
         notes.clear();
         if (sousperiode.getIdsousperiode() > 0) {
             notes = noteFacadeLocal.findByIdSousPeriode(SessionMBean.getStructure().getIdstructure(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
         }
-
+        
         if (notes.isEmpty()) {
             JsfUtil.addWarningMessage("Aucune donnée trouvée");
         }
     }
-
+    
     public void updateSousPeriode(String option) {
         sousperiodes.clear();
         sousperiode = new Sousperiode(0);
         if (option.equals("1")) {
             notes.clear();
         }
-
+        
         if (typeSousPeriode.getIdTypeSousperiode() != 0) {
             sousperiodes = sousperiodeFacadeLocal.findIdTypeSousPeriode(typeSousPeriode.getIdTypeSousperiode());
         }
     }
-
+    
     public void prepareEdit(Note n) {
         mode = "Edit";
         this.note = n;
@@ -141,35 +146,35 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
         this.updateEvaluationData();
         RequestContext.getCurrentInstance().execute("PF('EvaluationCreateDialog').show()");
     }
-
+    
     public void prepareView(Note n) {
         this.note = n;
         this.evaluationpersonnels.clear();
         List<Evaluationpersonnel> list = evaluationpersonnelFacadeLocal.findByPersonnel(n.getIdpersonnel().getIdpersonnel(), n.getIdperiode().getIdperiode(), n.getIdsousperiode().getIdsousperiode());
-
+        
         if (!list.isEmpty()) {
             for (Evaluationpersonnel evp : list) {
                 this.evaluationpersonnels.add(evp);
             }
         }
-
+        
         notePi = this.sommeNotePi();
         RequestContext.getCurrentInstance().execute("PF('EvaluationDetailDialog').show()");
     }
-
+    
     public void closeDetail() {
         evaluationpersonnels.clear();
         this.initNote();
         RequestContext.getCurrentInstance().execute("PF('ViewEditDialog').hide()");
     }
-
+    
     private void loadSavedData() {
         this.scorePi = note.getScorePIndiv();
         this.pointPi = note.getPointPIndiv();
         totalPIncitationNegatif = note.getIncitationNegatif();
         totalPIncitationPositif = note.getIncitationPositif();
     }
-
+    
     private List<Penalite> extractPenaliteInParam(List<ParametragePenalite> list) {
         if (list.isEmpty()) {
             return new ArrayList<>();
@@ -180,7 +185,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
         }
         return listPenalite;
     }
-
+    
     public void updateEvaluationData() {
         evaluationpersonnels.clear();
         listDetailsc.clear();
@@ -189,7 +194,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
         if (personnel.getIdpersonnel() > 0) {
             if (sousperiode.getIdsousperiode() > 0) {
                 personnel = personnelFacadeLocal.find(personnel.getIdpersonnel());
-
+                
                 note = noteFacadeLocal.findByIdPersonnel(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
                 if (note != null) {
                     this.loadSavedData();
@@ -205,7 +210,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                         if (!listDetail.isEmpty()) {
                             this.listDetailsc.clear();
                             this.listDetailsc.addAll(listDetail);
-
+                            
                             List<Evaluationpersonnel> list = evaluationpersonnelFacadeLocal.findByPersonnel(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
                             List<Detailsc> adds = new ArrayList<>();
                             if (list.isEmpty()) {
@@ -213,13 +218,13 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                                     Evaluationpersonnel ev = new Evaluationpersonnel();
                                     ev.setIdelementreponse(new Elementreponse());
                                     d.getIdsouscritere().setElementreponseCollection(elementReponseFacadeLocal.findByIdSousCritere(d.getIdsouscritere().getIdsouscritere()));
-
+                                    
                                     if (!d.getIdsouscritere().getElementreponseCollection().isEmpty()) {
                                         List<Elementreponse> ers = (List) d.getIdsouscritere().getElementreponseCollection();
                                         ev.setIdelementreponse(ers.get(0));
                                         ev.setNote(0d);
                                     }
-
+                                    
                                     ev.setIdevaluationpersonnel(0l);
                                     ev.setIddetailsc(d);
                                     ev.setObservation("---");
@@ -395,10 +400,10 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                     } else {
                         evaluationPenalitePersonnel = new EvaluationPenalitePersonnel(0l);
                         evaluationPenalitePersonnel.setCible(0);
-
+                        
                         List<ParametragePenalite> parametragePenalites = parametragePenaliteFacadeLocal.findByIdStructureIdCritere(structure.getIdstructure(), 10);
                         penalites = this.extractPenaliteInParam(parametragePenalites);
-
+                        
                         int sommeCible = 0;
                         for (Penalite p : penalites) {
                             LignePenalitePersonnel lpp = new LignePenalitePersonnel();
@@ -415,14 +420,14 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                         mappingResultats.get(9).setPoint((totalPIncitationPositif * evaluationPenalitePersonnel.getScore()) / 100);
                     }
                 }
-
+                
                 if (note.getIdnote() == 0) {
                     this.getTotalIncitation();
                 }
             }
         }
     }
-
+    
     public void updateValue(LignePenalitePersonnel item) {
         int counter = 0;
         for (int i = 0; i < lignePenalitePersonnels.size(); i++) {
@@ -439,12 +444,12 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
         this.setDetailPenalitePersonnel();
         this.getTotalIncitation();
     }
-
+    
     private void setDetailPenalitePersonnel() {
         int result = this.sommeLignePenalite(lignePenalitePersonnels);
         evaluationPenalitePersonnel.setScore(result);
     }
-
+    
     private int sommeLignePenalite(List<LignePenalitePersonnel> lignePenalitePersonnels) {
         int result = 0;
         for (LignePenalitePersonnel lpp : lignePenalitePersonnels) {
@@ -452,7 +457,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
         }
         return result;
     }
-
+    
     public void removeLignePenalite(LignePenalitePersonnel l) {
         if (l.getIdlignepenalitepersonnel() != 0l) {
             lignePenalitePersonnels.remove(l);
@@ -473,25 +478,25 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
         this.setDetailPenalitePersonnel();
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }
-
+    
     public void updateFiltreSc() {
         notePi = this.sommeNotePi();
     }
-
+    
     public void addCritereToTable() {
         if (!selectedDetailsc.isEmpty()) {
-
+            
             List<Detailsc> list = new ArrayList<>();
             for (Detailsc dsc : selectedDetailsc) {
                 if (!checkCritereInTable(dsc)) {
                     Evaluationpersonnel evp = new Evaluationpersonnel();
-
+                    
                     dsc.getIdsouscritere().setElementreponseCollection(elementReponseFacadeLocal.findByIdSousCritere(dsc.getIdsouscritere().getIdsouscritere()));
                     if (!dsc.getIdsouscritere().getElementreponseCollection().isEmpty()) {
                         List<Elementreponse> ers = (List) dsc.getIdsouscritere().getElementreponseCollection();
                         evp.setIdelementreponse(ers.get(0));
                     }
-
+                    
                     evp.setIdevaluationpersonnel(0l);
                     evp.setIddetailsc(dsc);
                     evp.setNote(0d);
@@ -499,14 +504,14 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                     list.add(dsc);
                 }
             }
-
+            
             selectedDetailsc.removeAll(list);
             listDetailsc.removeAll(list);
             notePi = this.sommeNotePi();
         }
-
+        
     }
-
+    
     private boolean checkCritereInTable(Detailsc dsc) {
         boolean result = false;
         for (Evaluationpersonnel evp : evaluationpersonnels) {
@@ -517,12 +522,12 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
         }
         return result;
     }
-
+    
     public void prepareEditDetail(Evaluationpersonnel item) {
         this.evaluationpersonnel = item;
         RequestContext.getCurrentInstance().execute("PF('DetailEditDialog').show()");
     }
-
+    
     public void removeCritere(String table, Evaluationpersonnel item, List<Evaluationpersonnel> list) {
         if (item.getIdevaluationpersonnel() != 0 && item.getIdevaluationpersonnel() != null) {
             evaluationpersonnelFacadeLocal.remove(item);
@@ -537,14 +542,14 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
             }
             list.remove(conteur);
         }
-
+        
         listDetailsc.add(item.getIddetailsc());
         if (table.equals("1")) {
             notePi = sommeNotePi();
         }
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }
-
+    
     public void calculHs(String cas, String option) {
         try {
             if (cas.equals("1")) {
@@ -557,7 +562,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                 this.getTotalIncitation();
                 return;
             }
-
+            
             if (option.equals("jour")) {
                 evaluationheuresuppN.setPointjour(evaluationheuresuppN.getCoefjour() * evaluationheuresuppN.getNbheurejour());
             } else {
@@ -569,7 +574,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
             e.printStackTrace();
         }
     }
-
+    
     public void editDetail() {
         if (evaluationpersonnel.getIdevaluationpersonnel() != null && evaluationpersonnel.getIdevaluationpersonnel() > 0) {
             int i = 0;
@@ -592,7 +597,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
         }
         RequestContext.getCurrentInstance().execute("PF('DetailEditDialog').hide()");
     }
-
+    
     private void saveEvaluation(List<Evaluationpersonnel> list) {
         list.forEach(evp -> {
             if (evp.getIdevaluationpersonnel() == 0l) {
@@ -604,12 +609,12 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
             }
         });
     }
-
+    
     public void save() {
         try {
-
+            
             ut.begin();
-
+            
             this.updateNote(note);
 
             // idCritère = 7
@@ -729,7 +734,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                     evaluationPenalitePersonnel.setIdnote(note);
                     evaluationPenalitePersonnelFacade.create(evaluationPenalitePersonnel);
                 }
-
+                
                 for (LignePenalitePersonnel ligne : lignePenalitePersonnels) {
                     if (ligne.getIdlignepenalitepersonnel().equals(0l)) {
                         ligne.setIdEvaluationPenalitePersonnel(evaluationPenalitePersonnel);
@@ -740,14 +745,14 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                     }
                 }
             }
-
+            
             ut.commit();
-
+            
             notes.clear();
             if (sousperiode.getIdsousperiode() > 0) {
                 notes = noteFacadeLocal.findByIdSousPeriode(SessionMBean.getStructure().getIdstructure(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
             }
-
+            
             this.listDetailsc.clear();
             this.signalSuccess();
             RequestContext.getCurrentInstance().execute("PF('EvaluationCreateDialog').hide()");
@@ -756,7 +761,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-
+    
     private void updateNote(Note note) {
         note.setIncitationNegatif(totalPIncitationNegatif);
         note.setIncitationPositif(totalPIncitationPositif);
@@ -772,7 +777,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
         note.setIdperiode(SessionMBean.getPeriode());
         note.setIdsousperiode(sousperiode);
         note.setIdpersonnel(personnel);
-
+        
         if (note.getIdnote() == 0l) {
             note.setIdnote(noteFacadeLocal.nextId());
             noteFacadeLocal.create(note);
@@ -780,7 +785,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
             noteFacadeLocal.edit(note);
         }
     }
-
+    
     public void delete(Note n) {
         try {
             evaluationpersonnelFacadeLocal.deleteData(n.getIdnote());
@@ -794,19 +799,19 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
             evaluationRPrimeQltifPersonnelFacadeLocal.deleteByIdNote(n.getIdnote());
             evaluationBonusRDeptPersonnelFacadeLocal.deleteByIdNote(n.getIdnote());
             noteFacadeLocal.remove(n);
-
+            
             notes.clear();
             if (sousperiode.getIdsousperiode() > 0) {
                 notes = noteFacadeLocal.findByIdSousPeriode(SessionMBean.getStructure().getIdstructure(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
             }
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
-
+            
         } catch (Exception e) {
             e.printStackTrace();
             JsfUtil.addFatalErrorMessage("Exception");
         }
     }
-
+    
     private double sommeNotePi() {
         if (evaluationpersonnels.isEmpty()) {
             return 0;
@@ -817,18 +822,18 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
         }
         return resultat;
     }
-
+    
     public void setResponse(int index, List<Evaluationpersonnel> evaluationpersonnels) {
         Evaluationpersonnel ev = evaluationpersonnels.get(index);
         ev.setNote(ev.getIdelementreponse().getValeur());
         evaluationpersonnels.set(index, ev);
-
+        
         this.notePi = this.calculNotePi();
         this.setDetailPi();
         this.mappingResultats.get(6).setPoint(pointPi);
         this.getTotalIncitation();
     }
-
+    
     private double calculNotePi() {
         if (evaluationpersonnels.isEmpty()) {
             return 0;
@@ -839,12 +844,12 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
         }
         return note;
     }
-
+    
     private void setDetailPi() {
         scorePi = (notePi / totalPointPi) * 100;
         pointPi = (parametragecritere.getPoint() * scorePi) / 100;
     }
-
+    
     private double sommeTotalSc(List<Detailsc> list) {
         if (list.isEmpty()) {
             return 0;
@@ -855,7 +860,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
         }
         return somme;
     }
-
+    
     public void calculPrimeQtif(String mode) {
         if (mode.equals("1")) {
             int i = 0;
@@ -871,7 +876,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                 } catch (Exception e) {
                 }
             }
-
+            
             this.ratioPrqnt = (realisation / cible) * 100;
             this.ciblePrqnt = cible;
             this.realisationPrqnt = realisation;
@@ -886,7 +891,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
             this.getTotalIncitation();
         }
     }
-
+    
     public void updatePointResponsabilite() {
         try {
             double res = ((evaluationresponsabilite.getRatio() * evaluationresponsabilite.getPointMax()) / 100);
@@ -898,7 +903,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
         }
         this.getTotalIncitation();
     }
-
+    
     public void updatePointPratiquePrivee() {
         try {
             double res = ((evaluationbonuspp.getRatio() * evaluationbonuspp.getPointMax()) / 100);
@@ -910,16 +915,16 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
         }
         this.getTotalIncitation();
     }
-
+    
     private void getTotalIncitation() {
         this.calculFinal();
     }
-
+    
     private void setDataPenalite() {
         mappingResultats.get(8).setPoint((totalPIncitationPositif * evaluationPenaliteDept.getValeur()) / 100);
         mappingResultats.get(9).setPoint((totalPIncitationPositif * evaluationPenalitePersonnel.getScore()) / 100);
     }
-
+    
     public void calculFinal() {
         if (!mappingResultats.isEmpty()) {
             totalPIncitationNegatif = 0;
@@ -931,40 +936,40 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                     totalPIncitationPositif += mr.getPoint();
                 }
             }
-
+            
             this.setDataPenalite();
-
+            
             note.setPointPenaliteDepartement(mappingResultats.get(8).getPoint());
             note.setPointPenalitePersonnel(mappingResultats.get(9).getPoint());
             totalPIncitationNegatif += (mappingResultats.get(8).getPoint() + mappingResultats.get(9).getPoint());
         }
     }
-
+    
     public void signalError(String chaine) {
         RequestContext.getCurrentInstance().execute("PF('AjaxNotifyDialog').hide()");
         this.routine.feedBack("information", "/resources/tool_images/warning.jpeg", this.routine.localizeMessage(chaine));
         RequestContext.getCurrentInstance().execute("PF('NotifyDialog1').show()");
     }
-
+    
     public void signalSuccess() {
         RequestContext.getCurrentInstance().execute("PF('AjaxNotifyDialog').hide()");
         this.routine.feedBack("information", "/resources/tool_images/success.png", this.routine.localizeMessage("operation_reussie"));
         RequestContext.getCurrentInstance().execute("PF('NotifyDialog1').show()");
     }
-
+    
     public void signalException(Exception e) {
         RequestContext.getCurrentInstance().execute("PF('AjaxNotifyDialog').hide()");
         this.routine.catchException(e, this.routine.localizeMessage("erreur_execution"));
         RequestContext.getCurrentInstance().execute("PF('NotifyDialog1').show()");
     }
-
+    
     public boolean checkCritere(Critere critere) {
         if (criteres.contains(critere)) {
             return true;
         }
         return false;
     }
-
+    
     private void checkCritere() {
         criter1 = Utilitaires.findCritereInSession(1) != null;
         criter2 = Utilitaires.findCritereInSession(2) != null;

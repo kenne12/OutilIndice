@@ -30,20 +30,19 @@ public class DepenseController extends AbstractDepenseController implements Seri
             selectedSousrubriquedepenses.clear();
 
             if (sousperiode.getIdsousperiode() != null) {
-                //sousrubriquedepenses = sousrubriquedepenseFacadeLocal.findAllEtatPrime(false);
-                //sousrubriquedepenses.addAll(sousrubriquedepenseFacadeLocal.findAllEtatPrime(true));
-                sousrubriquedepenses = SessionMBean.getSousRubriqueDepenses();
-
-                depenses = depenseFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
-                total = this.sommeDepense(depenses);
-                pourcentage = this.sommePourcentage(depenses);
-
                 List<Recette> listRecette = recetteFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
                 montant = this.sommeRecette(listRecette);
+                if (!listRecette.isEmpty()) {
+                    sousrubriquedepenses = SessionMBean.getSousRubriqueDepenses();
 
-                if (!depenses.isEmpty()) {
-                    for (Depense d : depenses) {
-                        selectedSousrubriquedepenses.add(d.getIdsousrubriquedepense());
+                    depenses = depenseFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
+                    total = this.sommeDepense(depenses);
+                    pourcentage = this.sommePourcentage(depenses);
+                    if (!depenses.isEmpty()) {
+                        for (Depense d : depenses) {
+                            selectedSousrubriquedepenses.add(d.getIdsousrubriquedepense());
+                        }
+                        sousrubriquedepenses.removeAll(selectedSousrubriquedepenses);
                     }
                 }
             }
@@ -83,17 +82,25 @@ public class DepenseController extends AbstractDepenseController implements Seri
 
     public void updateData() {
         depenses.clear();
+        selectedSousrubriquedepenses.clear();
+        sousrubriquedepenses.clear();
+        montant = 0;
         if (sousperiode.getIdsousperiode() != null) {
-            depenses = depenseFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
-            this.sommeData(depenses);
+            List<Recette> listRecettes = recetteFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
+            this.montant = this.sommeRecette(listRecettes);
+            if (!listRecettes.isEmpty()) {
+                sousrubriquedepenses = SessionMBean.getSousRubriqueDepenses();
+                depenses = depenseFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
+                if (!depenses.isEmpty()) {
+                    this.sommeData(depenses);
 
-            List<Recette> listRecette = recetteFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
-            this.montant = this.sommeRecette(listRecette);
-
-            //sousrubriquedepenses = sousrubriquedepenseFacadeLocal.findAllEtatPrime(false);
-            //sousrubriquedepenses.addAll(sousrubriquedepenseFacadeLocal.findAllEtatPrime(true));
-            
-            sousrubriquedepenses = SessionMBean.getSousRubriqueDepenses();
+                    for (Depense d : depenses) {
+                        selectedSousrubriquedepenses.add(d.getIdsousrubriquedepense());
+                    }
+                    sousrubriquedepenses.removeAll(selectedSousrubriquedepenses);
+                }
+                return;
+            }
         }
     }
 
@@ -254,7 +261,7 @@ public class DepenseController extends AbstractDepenseController implements Seri
                     d.setPourcentage(0d);
                     depenses.add(d);
                 }
-            }            
+            }
             sousrubriquedepenses.removeAll(selectedSousrubriquedepenses);
             selectedSousrubriquedepenses.clear();
         } catch (Exception e) {
@@ -272,10 +279,10 @@ public class DepenseController extends AbstractDepenseController implements Seri
         }
         return result;
     }
-    
-    public void removeSubRubric(int index, Depense item) { 
+
+    public void removeSubRubric(int index, Depense item) {
         Depense dTemp = depenses.get(index);
-        
+
         if (dTemp.getIddepense() != 0) {
             depenses.remove(index);
             sousrubriquedepenses.add(item.getIdsousrubriquedepense());

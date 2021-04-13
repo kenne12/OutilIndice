@@ -15,6 +15,7 @@ import entities.TypeSousPeriode;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import sessions.CriterestructureFacadeLocal;
 import sessions.EvaluationRPrimeQltifDeptFacadeLocal;
 import sessions.LignePrimeQualiteDeptFacadeLocal;
 import sessions.ServiceFacadeLocal;
@@ -56,6 +57,9 @@ public class AbstractRealisationPrimeRQltifDeptCtrl {
     protected List<Service> services = new ArrayList<>();
 
     @EJB
+    protected CriterestructureFacadeLocal criterestructureFacadeLocal;
+
+    @EJB
     protected StructureFacadeLocal structureFacadeLocal;
     protected Structure structure = SessionMBean.getStructure();
 
@@ -66,6 +70,8 @@ public class AbstractRealisationPrimeRQltifDeptCtrl {
 
     protected Routine routine = new Routine();
     protected String mode = "";
+
+    protected boolean stateBtn = true;
 
     public Structure getStructure() {
         return structure;
@@ -141,6 +147,14 @@ public class AbstractRealisationPrimeRQltifDeptCtrl {
 
     public List<TypeSousPeriode> getTypeSousPeriodes() {
         return typeSousPeriodes;
+    }
+
+    public boolean isStateBtn() {
+        return stateBtn;
+    }
+
+    public void setStateBtn(boolean stateBtn) {
+        this.stateBtn = stateBtn;
     }
 
 }

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import sessions.CibleFacadeLocal;
+import sessions.CriterestructureFacadeLocal;
 import sessions.PeriodeFacadeLocal;
 import sessions.ServiceFacadeLocal;
 import sessions.SousperiodeFacadeLocal;
@@ -55,6 +56,9 @@ public class AbstractRealisationBonusRDeptCtrl {
     protected Structure structure = SessionMBean.getStructure();
 
     @EJB
+    protected CriterestructureFacadeLocal criterestructureFacadeLocal;
+
+    @EJB
     protected TypeSousPeriodeFacadeLocal typeSousPeriodeFacadeLocal;
     protected TypeSousPeriode typeSousPeriode = new TypeSousPeriode();
     protected List<TypeSousPeriode> typeSousPeriodes = new ArrayList<>();
@@ -65,6 +69,8 @@ public class AbstractRealisationBonusRDeptCtrl {
     protected double totalCible;
     protected double totalRealisation;
     protected double totalRatio;
+
+    protected boolean stateBtn = true;
 
     public Structure getStructure() {
         return structure;
@@ -153,6 +159,10 @@ public class AbstractRealisationBonusRDeptCtrl {
 
     public List<TypeSousPeriode> getTypeSousPeriodes() {
         return typeSousPeriodes;
+    }
+
+    public boolean isStateBtn() {
+        return stateBtn;
     }
 
 }

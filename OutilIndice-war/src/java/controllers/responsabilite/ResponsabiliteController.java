@@ -1,60 +1,46 @@
-package controllers.typestructure;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package controllers.responsabilite;
 
-import entities.Typestructure;
+import entities.Responsabilite;
 import java.io.Serializable;
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 import utils.Utilitaires;
 
+/**
+ *
+ * @author USER
+ */
 @ManagedBean
 @ViewScoped
-public class TypestructureController extends AbstractTypestructureController implements Serializable {
+public class ResponsabiliteController extends AbstractResponsabiliteController implements Serializable {
 
-    @PostConstruct
-    private void init() {
-        this.initTypeStructure();
-    }
-
-    private void initTypeStructure() {
-        typestructure = new Typestructure();
-        typestructure.setEtat("Actif");
+    /**
+     * Creates a new instance of ResponsabiliteController
+     */
+    public ResponsabiliteController() {
     }
 
     public void prepareCreate() {
         try {
-            /*if (!Utilitaires.isAccess(2L)) {
-             signalError("acces_refuse");
-             return;
-             }*/
-
             this.mode = "Create";
-            this.initTypeStructure();
-
-            RequestContext.getCurrentInstance().execute("PF('TypestructureCreerDialog').show()");
+            responsabilite = new Responsabilite();
+            RequestContext.getCurrentInstance().execute("PF('ResponsabiliteCreerDialog').show()");
         } catch (Exception e) {
             signalException(e);
         }
     }
 
-    public void prepareEdit(Typestructure r) {
+    public void prepareEdit(Responsabilite r) {
         try {
-            /*if (!Utilitaires.isAccess(3L)) {
-             signalError("acces_refuse");
-             return;
-             }*/
-
-            this.typestructure = r;
-
-            if (this.typestructure == null) {
-                signalError("not_row_selected");
-                return;
-            }
-
+            this.responsabilite = r;
             this.mode = "Edit";
-
-            RequestContext.getCurrentInstance().execute("PF('TypestructureCreerDialog').show()");
+            RequestContext.getCurrentInstance().execute("PF('ResponsabiliteCreerDialog').show()");
         } catch (Exception e) {
             signalException(e);
         }
@@ -63,13 +49,13 @@ public class TypestructureController extends AbstractTypestructureController imp
     public void create() {
         try {
             if (this.mode.equals("Create")) {
-                typestructure.setIdtypestructure(typestructureFacadeLocal.nextVal());
-                typestructureFacadeLocal.create(typestructure);
-                RequestContext.getCurrentInstance().execute("PF('TypestructureCreerDialog').hide()");
+                responsabilite.setIdresponsabilite(responsabiliteFacadeLocal.nextVal());
+                responsabiliteFacadeLocal.create(responsabilite);
+                RequestContext.getCurrentInstance().execute("PF('ResponsabiliteCreerDialog').hide()");
                 signalSuccess();
-            } else if (this.typestructure != null) {
-                this.typestructureFacadeLocal.edit(this.typestructure);
-                RequestContext.getCurrentInstance().execute("PF('TypestructureCreerDialog').hide()");
+            } else if (this.responsabilite != null) {
+                this.responsabiliteFacadeLocal.edit(this.responsabilite);
+                RequestContext.getCurrentInstance().execute("PF('ResponsabiliteCreerDialog').hide()");
                 signalSuccess();
             } else {
                 signalError("not_row_selected");
@@ -81,12 +67,13 @@ public class TypestructureController extends AbstractTypestructureController imp
 
     public void delete() {
         try {
-            if (this.typestructure != null) {
+            if (this.responsabilite != null) {
                 if (!Utilitaires.isAccess(4L)) {
                     signalError("acces_refuse");
                     return;
                 }
-                this.typestructureFacadeLocal.remove(this.typestructure);
+
+                this.responsabiliteFacadeLocal.remove(this.responsabilite);              
                 signalSuccess();
             } else {
                 signalError("not_row_selected");
@@ -96,11 +83,10 @@ public class TypestructureController extends AbstractTypestructureController imp
         }
     }
 
-    public void delete(Typestructure item) {
+    public void delete(Responsabilite item) {
         try {
-            this.typestructure = item;
-            this.typestructureFacadeLocal.remove(item);
-            //Utilitaires.saveOperation(this.mouchardFacadeLocal, "Suppresion de l'structure : " + this.structure.getNom() + " " + this.structure.getPrenom(), SessionMBean.getUserAccount());
+            this.responsabilite = item;
+            this.responsabiliteFacadeLocal.remove(item);            
             signalSuccess();
         } catch (Exception e) {
             signalException(e);
@@ -124,4 +110,5 @@ public class TypestructureController extends AbstractTypestructureController imp
         this.routine.catchException(e, this.routine.localizeMessage("erreur_execution"));
         RequestContext.getCurrentInstance().execute("PF('NotifyDialog1').show()");
     }
+
 }

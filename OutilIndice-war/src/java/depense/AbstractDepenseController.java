@@ -39,7 +39,7 @@ public class AbstractDepenseController {
 
     @EJB
     protected PeriodeFacadeLocal periodeFacadeLocal;
-    protected Periode periode = SessionMBean.getPeriode();
+    protected final Periode periode = SessionMBean.getPeriode();
 
     @EJB
     protected SousperiodeFacadeLocal sousperiodeFacadeLocal;
@@ -85,10 +85,6 @@ public class AbstractDepenseController {
 
     public Periode getPeriode() {
         return periode;
-    }
-
-    public void setPeriode(Periode periode) {
-        this.periode = periode;
     }
 
     public List<Recette> getRecettes() {
@@ -141,10 +137,6 @@ public class AbstractDepenseController {
 
     public List<Depense> getDepenses() {
         return depenses;
-    }
-
-    public void setDepenses(List<Depense> depenses) {
-        this.depenses = depenses;
     }
 
     public List<Sousrubriquedepense> getSousrubriquedepenses() {

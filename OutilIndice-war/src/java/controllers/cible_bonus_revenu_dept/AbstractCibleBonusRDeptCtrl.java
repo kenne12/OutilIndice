@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import sessions.CibleFacadeLocal;
+import sessions.CriterestructureFacadeLocal;
 import sessions.IndicateurFacadeLocal;
 import sessions.PeriodeFacadeLocal;
 import sessions.ServiceFacadeLocal;
@@ -62,6 +63,9 @@ public class AbstractCibleBonusRDeptCtrl {
     protected Structure structure = new Structure();
 
     @EJB
+    protected CriterestructureFacadeLocal criterestructureFacadeLocal;
+
+    @EJB
     protected TypeSousPeriodeFacadeLocal typeSousPeriodeFacadeLocal;
     protected TypeSousPeriode typeSousPeriode = new TypeSousPeriode();
     protected List<TypeSousPeriode> typeSousPeriodes = new ArrayList<>();
@@ -70,6 +74,8 @@ public class AbstractCibleBonusRDeptCtrl {
 
     protected Routine routine = new Routine();
     protected String mode = "";
+
+    protected boolean stateBtn = true;
 
     public Structure getStructure() {
         return structure;
@@ -167,6 +173,10 @@ public class AbstractCibleBonusRDeptCtrl {
 
     public List<TypeSousPeriode> getTypeSousPeriodes() {
         return typeSousPeriodes;
+    }
+
+    public boolean isStateBtn() {
+        return stateBtn;
     }
 
 }

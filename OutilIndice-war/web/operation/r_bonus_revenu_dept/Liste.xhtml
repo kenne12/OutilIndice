@@ -46,6 +46,7 @@
                                          icon="ui-icon-plus"
                                          value="#{langue['common.ajouter']}"
                                          style="float: right"
+                                         disabled="#{realisationBonusRDeptCtrl.stateBtn}"
                                          actionListener="#{realisationBonusRDeptCtrl.prepareCreate()}"/>      
                     </div>
 
@@ -74,6 +75,7 @@
                                             <td style="text-align: center">                                        
                                                 <p:commandButton icon="ui-icon-pencil" update=":BonusRevenuDeptEditForm"
                                                                  class="btn btn-success btn-sm"
+                                                                 disabled="#{realisationBonusRDeptCtrl.stateBtn}"
                                                                  actionListener="#{realisationBonusRDeptCtrl.prepareEdit(item)}"/>
                                             </td>
                                         </tr>

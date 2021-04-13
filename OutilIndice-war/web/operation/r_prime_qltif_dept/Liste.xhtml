@@ -45,6 +45,7 @@
                                          icon="ui-icon-plus"
                                          value="#{langue['common.ajouter']}"
                                          style="float: right"
+                                         disabled="#{realisationPrimeRQltifDeptCtrl.stateBtn}"
                                          actionListener="#{realisationPrimeRQltifDeptCtrl.prepareCreate()}"/>      
                     </div>
 
@@ -73,6 +74,7 @@
                                             <td style="text-align: center">                                        
                                                 <p:commandButton icon="ui-icon-pencil" update=":RPrimeRQLtifEditForm"
                                                                  class="btn btn-success btn-sm"
+                                                                 disabled="#{realisationPrimeRQltifDeptCtrl.stateBtn}"
                                                                  actionListener="#{realisationPrimeRQltifDeptCtrl.prepareEdit(item)}"/>
 
                                                 <p:commandButton icon="ui-icon-trash" update=":RPrimeRQLtifListerForm"

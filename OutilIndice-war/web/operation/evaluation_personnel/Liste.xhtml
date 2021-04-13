@@ -27,6 +27,7 @@
                                          icon="ui-icon-plus"
                                          style="float: right"
                                          value="#{langue['common.ajouter']}"
+                                         disabled="#{evaluationPersonnelController.stateBtn}"
                                          actionListener="#{evaluationPersonnelController.prepareCreate()}"/> 
                     </div>
 
@@ -70,9 +71,9 @@
                                     <ui:repeat value="#{evaluationPersonnelController.notes}" var="item">
                                         <tr>
                                             <td>#{item.idpersonnel.nom} #{item.idpersonnel.prenom}</td>
-                                            <td>#{item.incitationPositif}</td>
-                                            <td>#{item.incitationNegatif}</td>
-                                            <td>#{item.totalPoint}</td>
+                                            <td> <h:outputText value="#{item.incitationPositif}" ><f:convertNumber /> </h:outputText> </td>
+                                            <td><h:outputText value="#{item.incitationNegatif}" ><f:convertNumber /> </h:outputText></td>
+                                            <td><h:outputText value="#{item.totalPoint}" ><f:convertNumber /> </h:outputText></td>
                                             <td>                                        
                                                 <p:commandButton icon="ui-icon-pencil" update=":EvaluationCreateForm"
                                                                  class="btn btn-success btn-sm"

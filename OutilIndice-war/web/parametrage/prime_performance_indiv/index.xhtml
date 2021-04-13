@@ -6,7 +6,7 @@
     xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="contenu" >
-        <h3 class="page-header">#{langue['critere_negatif_negatif_heure_perdu.parametrage']}</h3>
+        <h3 class="page-header">#{langue['prime_performance_individuelle.parametrage']}</h3>
 
         <ui:include src="Liste.xhtml" />
         <ui:include src="Create.xhtml" />
@@ -17,9 +17,6 @@
         <script>
             var el = document.getElementById("parametrage");
             el.setAttribute("class", "sub-menu active");
-
-            var el_1 = document.getElementById("parametrage_eval");
-            el_1.setAttribute("class", "sub-menu active");
 
             $('#datalist').dataTable();
         </script>

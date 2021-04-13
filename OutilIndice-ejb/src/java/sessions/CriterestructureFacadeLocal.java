@@ -32,6 +32,8 @@ public interface CriterestructureFacadeLocal {
 
     List<Criterestructure> findByIdStructure(Long idstructure);
 
+    List<Criterestructure> findByIdStructure(Long idstructure, boolean etat);
+
     Criterestructure findByIdStructureIdCritere(Long idstructure, int idCritere);
 
 }

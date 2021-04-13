@@ -29,5 +29,9 @@ public interface ResponsabiliteFacadeLocal {
     List<Responsabilite> findRange(int[] range);
 
     int count();
-    
+
+    Integer nextVal();
+
+    List<Responsabilite> findAllOrderByCode();
+
 }

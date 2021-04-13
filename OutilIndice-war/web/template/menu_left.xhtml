@@ -56,7 +56,7 @@
                         </li>
 
                         <li>
-                            <a href="#{request.contextPath}/parametrage/personnel/personnel.html">#{langue.responsabilite}</a>
+                            <a href="#{request.contextPath}/parametrage/responsabilite/index.html">#{langue.responsabilite}</a>
                         </li>
 
                         <li>
@@ -244,63 +244,58 @@
                     <a href="#"><i class="fa fa-cogs"></i> #{langue.critere_indice}<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
 
-                        <li id="parametrage_eval">
-                            <a href="#">#{langue.evaluation}<span class="fa arrow"></span></a>
-                            <ul class="nav nav-third-level">
-
-                                <li>
-                                    <a href="#{request.contextPath}/parametrage/effectif_categorie/effectif_categorie.html">Effectif / Cat</a>
-                                </li>
-
-                                <li>
-                                    <a href="#{request.contextPath}/parametrage/effectif_responsabilite/effectif_responsabilite.html">Effectif / Resp</a>
-                                </li>
-
-                                <li>
-                                    <a class="nav-link" style="display: #{loginController.critere1}" href="#{request.contextPath}/parametrage/p_prime_responsabilite/p_prime_responsabilite.html">#{loginController.critere1_numero} - Prime de responsabilité</a>
-                                </li>
-
-                                <li>
-                                    <a class="nav-link" style="display: #{loginController.critere2}" href="#{request.contextPath}/parametrage/p_heure_supplementaire/p_heure_supplementaire.html">#{loginController.critere2_numero} - Bonus heure supp</a>
-                                </li>
-
-                                <li>
-                                    <a class="nav-link" style="display: #{loginController.critere3}" href="#{request.contextPath}/parametrage/b_pratique_privee/b_pratique_privee.html">#{loginController.critere3_numero} - Bonus pratique privée</a>
-                                </li>
-
-                                <li>
-                                    <a class="nav-link" style="display: #{loginController.critere4}" href="#{request.contextPath}/parametrage/prime_resultat_qntif_dept/prime_resultat_qntif_dept.html">#{loginController.critere4_numero} - Prime R Qntif Dépt</a>
-                                </li>
-
-                                <li>
-                                    <a class="nav-link" style="display: #{loginController.critere5}" href="#{request.contextPath}/parametrage/prime_resultat_qltif_dept/prime_resultat_qltif_dept.html">#{loginController.critere5_numero} - Prime R Qltif Dépt</a>
-                                </li>
-
-                                <li>
-                                    <a class="nav-link" style="display: #{loginController.critere6}" href="#{request.contextPath}/parametrage/bonus_revenu_dept/bonus_revenu_dept.html">#{loginController.critere6_numero} - Bonus Revenu Dept</a>
-                                </li>
-
-                                <li>
-                                    <a class="nav-link" style="display: #{loginController.critere7}" href="#{request.contextPath}/parametrage/prime_performance_indiv/prime_performance_indiv.html">#{loginController.critere7_numero} - Performance individuelle</a>
-                                </li>
-
-                                <li>
-                                    <a class="nav-link" style="display: #{loginController.critere8}" href="#{request.contextPath}/parametrage/cn_incitation_heure_perdure/cn_incitation_heure_perdure.html">#{loginController.critere8_numero} - Critère I N Heure Perdue</a>
-                                </li> 
-
-                                <li>
-                                    <a class="nav-link" style="display: #{loginController.critere9}" href="#{request.contextPath}/parametrage/penalite_service/penalite.html">#{loginController.critere9_numero} - Pénalité Dept</a>
-                                </li>
-
-                                <li>
-                                    <a class="nav-link" style="display: #{loginController.critere10}" href="#{request.contextPath}/parametrage/penalite_structure/penalite.html">#{loginController.critere10_numero} - Pénalité Indiv</a>
-                                </li>
-
-                                <li>
-                                    <a class="nav-link" style="display: #{loginController.critere10}" href="#{request.contextPath}/parametrage/rapport_costing/index.html">Rapport</a>
-                                </li>                           
-                            </ul>
+                        <li>
+                            <a href="#{request.contextPath}/parametrage/effectif_categorie/index.html">Effectif / Cat</a>
                         </li>
+
+                        <li>
+                            <a href="#{request.contextPath}/parametrage/effectif_responsabilite/index.html">Effectif / Resp</a>
+                        </li>
+
+                        <li>
+                            <a class="nav-link" style="display: #{loginController.critere1}" href="#{request.contextPath}/parametrage/p_prime_responsabilite/index.html">#{loginController.critere1_numero} - Prime de responsabilité</a>
+                        </li>
+
+                        <li>
+                            <a class="nav-link" style="display: #{loginController.critere2}" href="#{request.contextPath}/parametrage/p_heure_supplementaire/index.html">#{loginController.critere2_numero} - Bonus heure supp</a>
+                        </li>
+
+                        <li>
+                            <a class="nav-link" style="display: #{loginController.critere3}" href="#{request.contextPath}/parametrage/b_pratique_privee/index.html">#{loginController.critere3_numero} - Bonus pratique privée</a>
+                        </li>
+
+                        <li>
+                            <a class="nav-link" style="display: #{loginController.critere4}" href="#{request.contextPath}/parametrage/prime_resultat_qntif_dept/index.html">#{loginController.critere4_numero} - Prime R Qntif Dépt</a>
+                        </li>
+
+                        <li>
+                            <a class="nav-link" style="display: #{loginController.critere5}" href="#{request.contextPath}/parametrage/prime_resultat_qltif_dept/index.html">#{loginController.critere5_numero} - Prime R Qltif Dépt</a>
+                        </li>
+
+                        <li>
+                            <a class="nav-link" style="display: #{loginController.critere6}" href="#{request.contextPath}/parametrage/bonus_revenu_dept/index.html">#{loginController.critere6_numero} - Bonus Revenu Dept</a>
+                        </li>
+
+                        <li>
+                            <a class="nav-link" style="display: #{loginController.critere7}" href="#{request.contextPath}/parametrage/prime_performance_indiv/index.html">#{loginController.critere7_numero} - Performance individuelle</a>
+                        </li>
+
+                        <li>
+                            <a class="nav-link" style="display: #{loginController.critere8}" href="#{request.contextPath}/parametrage/cn_incitation_heure_perdure/index.html">#{loginController.critere8_numero} - Critère I N Heure Perdue</a>
+                        </li> 
+
+                        <li>
+                            <a class="nav-link" style="display: #{loginController.critere9}" href="#{request.contextPath}/parametrage/penalite_service/index.html">#{loginController.critere9_numero} - Pénalité Dept</a>
+                        </li>
+
+                        <li>
+                            <a class="nav-link" style="display: #{loginController.critere10}" href="#{request.contextPath}/parametrage/penalite_structure/index.html">#{loginController.critere10_numero} - Pénalité Indiv</a>
+                        </li>
+
+                        <li>
+                            <a class="nav-link" style="display: #{loginController.critere10}" href="#{request.contextPath}/parametrage/rapport_costing/index.html">Rapport</a>
+                        </li>                           
+
                     </ul>
                 </li>
 
@@ -310,7 +305,7 @@
 
                         <li id="traitement_budget">
                             <a href="#">
-                                <i class="fa fa-exchange fa-fw"></i>
+                                <i class="fa fa-money  fa-fw"></i>
                                 #{langue.recette_depense_menu}<span class="fa arrow"></span>
                             </a>
                             <ul class="nav nav-third-level">
@@ -359,11 +354,11 @@
                             </a>
                             <ul class="nav nav-third-level">
                                 <li>
-                                    <a href="#{request.contextPath}/operation/evaluation_personnel/evaluation_personnel.html">#{langue.evaluation}</a>
+                                    <a href="#{request.contextPath}/operation/evaluation_personnel/index.html">#{langue.evaluation}</a>
                                 </li>
 
                                 <li>
-                                    <a href="#{request.contextPath}/operation/partage/partage.html">Primes</a>
+                                    <a href="#{request.contextPath}/operation/partage/index.html">Primes</a>
                                 </li>
                             </ul>
                         </li>

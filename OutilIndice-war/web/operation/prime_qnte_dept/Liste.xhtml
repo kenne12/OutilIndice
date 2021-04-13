@@ -34,7 +34,7 @@
             <p:ajax listener="#{primeQntifDeptCtrl.searchData()}" />
         </h:selectOneMenu>&nbsp;
 
-        <p:commandButton class="mt-3" value="#{langue['common.chercher']}" update=":PrimeRQntifListerForm"  actionListener="#{primeQntifDeptCtrl.searchData()}" />
+        <p:commandButton class="mt-3" value="#{langue['common.chercher']}" update=":PrimeRQntifListerForm" actionListener="#{primeQntifDeptCtrl.searchData()}" />
 
     </h:form>
 
@@ -55,6 +55,7 @@
                                          icon="ui-icon-plus"
                                          value="#{langue['common.ajouter']}"
                                          style="float: right"
+                                         disabled="#{primeQntifDeptCtrl.stateBtn}"
                                          actionListener="#{primeQntifDeptCtrl.prepareCreate()}"/>      
                     </div>
 
@@ -79,6 +80,7 @@
                                             <td style="text-align: center">                                        
                                                 <p:commandButton icon="ui-icon-pencil" update=":PrimeRQntifEditForm"
                                                                  class="btn btn-success btn-sm"
+                                                                 disabled="#{primeQntifDeptCtrl.stateBtn}"
                                                                  actionListener="#{primeQntifDeptCtrl.prepareEdit(item)}"/>
 
                                                 <p:commandButton icon="ui-icon-trash" update=":PrimeRQntifListerForm"

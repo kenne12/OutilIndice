@@ -190,7 +190,9 @@ public class LoginController extends AbstractLoginController implements Serializ
             sousRubriqueDepenses.forEach(val -> {
                 vals2.add(val.getSousrubriquedepense());
             });
+            System.err.println("taille : " + vals2.size());            
             session.setAttribute("sous_rubrique_depense", vals2);
+            System.err.println("taille session : "+SessionMBean.getSousRubriqueDepenses().size());
             this.getDetail();
 
             showSessionPanel = false;

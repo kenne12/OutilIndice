@@ -17,7 +17,6 @@ import javax.ejb.EJB;
 import sessions.DepenseFacadeLocal;
 import sessions.EvaluationpersonnelFacadeLocal;
 import sessions.NoteFacadeLocal;
-import sessions.NoteserviceFacadeLocal;
 import sessions.PrimeFacadeLocal;
 import sessions.SousperiodeFacadeLocal;
 import sessions.StructureFacadeLocal;
@@ -59,9 +58,6 @@ public class AbstractPrimeController {
     protected NoteFacadeLocal noteFacadeLocal;
     protected List<Note> notes = new ArrayList<>();
     protected List<Note> selectedNotes = new ArrayList<>();
-
-    @EJB
-    protected NoteserviceFacadeLocal noteserviceFacadeLocal;
 
     protected Routine routine = new Routine();
 

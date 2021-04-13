@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ResponsabiliteCreerDlg" 
+                  widgetVar="ResponsabiliteCreerDialog" 
+                  modal="true" resizable="false" 
+                  appendTo="@(body)" 
+                  width="40%"
+                  header="#{langue['responsabilite_.formulaire_creation']}" 
+                  closeOnEscape="true">
+
+            <h:form id="ResponsabiliteCreerForm">
+                <h:panelGroup id="display">
+
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label>#{langue['common.nom']}</label>
+                            <h:inputTextarea id="nom" value="#{responsabiliteController.responsabilite.nom}" required="true" 
+                                             requiredMessage="#{langue['common.valeur_obligatoire']}" rows="2"                      
+                                             class="form-control"/>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label>#{langue['common.code']}</label>
+                            <h:inputText id="code" value="#{responsabiliteController.responsabilite.code}" required="true" 
+                                             requiredMessage="#{langue['common.valeur_obligatoire']}"                       
+                                             class="form-control"/>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-10">
+                            <p:commandButton value="#{langue['common.annuler']}" oncomplete="PF('ResponsabiliteCreerDialog').hide()" icon="ui-icon-close"/>
+                            <p:commandButton actionListener="#{responsabiliteController.create()}" value="#{langue['crud.enregistrer']}" 
+                                             update="display,:ResponsabiliteListerForm,:notify1" 
+                                             onclick="PF('AjaxNotifyDialog').show()" icon="ui-icon-check"/>
+                        </div>
+                    </div>
+
+                </h:panelGroup>  
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+
+</html>

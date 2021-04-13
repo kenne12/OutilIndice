@@ -34,6 +34,7 @@ import javax.ejb.EJB;
 import javax.transaction.UserTransaction;
 import sessions.CibleFacadeLocal;
 import sessions.CritereresponsabiliteFacadeLocal;
+import sessions.CriterestructureFacadeLocal;
 import sessions.DetailscFacadeLocal;
 import sessions.ElementReponseFacadeLocal;
 import sessions.EvaluationBonusRDeptPersonnelFacadeLocal;
@@ -72,6 +73,9 @@ public class AbstractEvaluationPersonnel {
     protected EvaluationpersonnelFacadeLocal evaluationpersonnelFacadeLocal;
     protected Evaluationpersonnel evaluationpersonnel = new Evaluationpersonnel();
     protected List<Evaluationpersonnel> evaluationpersonnels = new ArrayList<>();
+
+    @EJB
+    protected CriterestructureFacadeLocal criterestructureFacade;
 
     @EJB
     protected PersonnelFacadeLocal personnelFacadeLocal;
@@ -206,6 +210,8 @@ public class AbstractEvaluationPersonnel {
     protected boolean criter8 = false;
     protected boolean criter9 = false;
     protected boolean criter10 = false;
+
+    protected boolean stateBtn = true;
 
     public Routine getRoutine() {
         return routine;
@@ -478,6 +484,10 @@ public class AbstractEvaluationPersonnel {
 
     public List<TypeSousPeriode> getTypeSousPeriodes() {
         return typeSousPeriodes;
+    }
+
+    public boolean isStateBtn() {
+        return stateBtn;
     }
 
 }

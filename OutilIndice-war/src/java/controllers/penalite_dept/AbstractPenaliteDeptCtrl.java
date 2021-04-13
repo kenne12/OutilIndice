@@ -15,6 +15,7 @@ import entities.TypeSousPeriode;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import sessions.CriterestructureFacadeLocal;
 import sessions.EvaluationPenaliteDeptFacadeLocal;
 import sessions.LignePenaliteDeptFacadeLocal;
 import sessions.ParametragePenaliteFacadeLocal;
@@ -46,6 +47,9 @@ public class AbstractPenaliteDeptCtrl {
     protected List<Penalite> selectedPenalites = new ArrayList<>();
 
     @EJB
+    protected CriterestructureFacadeLocal criterestructureFacadeLocal;
+
+    @EJB
     protected LignePenaliteDeptFacadeLocal lignePenaliteDeptFacadeLocal;
     protected List<LignePenaliteDept> lignePenaliteDepts = new ArrayList<>();
 
@@ -70,6 +74,8 @@ public class AbstractPenaliteDeptCtrl {
 
     protected Routine routine = new Routine();
     protected String mode = "";
+
+    protected boolean stateBtn = true;
 
     public Structure getStructure() {
         return structure;
@@ -146,4 +152,9 @@ public class AbstractPenaliteDeptCtrl {
     public List<TypeSousPeriode> getTypeSousPeriodes() {
         return typeSousPeriodes;
     }
+
+    public boolean isStateBtn() {
+        return stateBtn;
+    }
+
 }

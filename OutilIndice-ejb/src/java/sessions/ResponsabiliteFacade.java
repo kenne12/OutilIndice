@@ -6,9 +6,11 @@
 package sessions;
 
 import entities.Responsabilite;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -16,6 +18,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class ResponsabiliteFacade extends AbstractFacade<Responsabilite> implements ResponsabiliteFacadeLocal {
+
     @PersistenceContext(unitName = "OutilIndice-ejbPU")
     private EntityManager em;
 
@@ -27,5 +30,23 @@ public class ResponsabiliteFacade extends AbstractFacade<Responsabilite> impleme
     public ResponsabiliteFacade() {
         super(Responsabilite.class);
     }
-    
+
+    @Override
+    public Integer nextVal() {
+        Query query = this.em.createQuery("SELECT MAX(r.idresponsabilite) FROM Responsabilite r");
+        Integer result = (Integer) query.getSingleResult();
+        if (result == null) {
+            result = 1;
+        } else {
+            result = result + 1;
+        }
+        return result;
+    }
+
+    @Override
+    public List<Responsabilite> findAllOrderByCode() {
+        Query query = em.createQuery("SELECT r FROM Responsabilite r ORDER BY r.code");
+        return query.getResultList();
+    }
+
 }
