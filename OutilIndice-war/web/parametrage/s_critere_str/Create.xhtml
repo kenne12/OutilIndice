@@ -33,11 +33,13 @@
 
                         <p:commandButton                            
                             value="#{langue['common.ajouter']}"
+                            id="add_btn"
+                            disabled="#{sousCritereStrController.souscriteres.size()==0}"
                             actionListener="#{sousCritereStrController.addCritereToTable()}"
-                            update="datalist,grid_critere" icon="ui-icon-plus" />
+                            update="datalist,grid_critere,add_btn" icon="ui-icon-plus" />
 
                         <p:separator />
- 
+
                         <p:dataTable id="datalist" value="#{sousCritereStrController.listDetailsc}" var="item"                             
                                      paginator="true"
                                      editable="true"
@@ -88,7 +90,7 @@
                                     <h:outputText value="Action"/>
                                 </f:facet>
                                 <p:commandButton icon="ui-icon-trash">
-                                    <p:ajax update="datalist,:CritereCreateForm:grid_critere" event="click" listener="#{sousCritereStrController.removeCritere(item)}" />
+                                    <p:ajax update="datalist,:CritereCreateForm:grid_critere,:CritereCreateForm:add_btn" event="click" listener="#{sousCritereStrController.removeCritere(index)}" />
                                 </p:commandButton>
 
                                 <p:commandButton icon="ui-icon-pencil">

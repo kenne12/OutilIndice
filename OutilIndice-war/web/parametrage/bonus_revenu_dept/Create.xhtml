@@ -112,7 +112,9 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.point_max}"/>
                                 </f:facet>
-                                <h:outputText class="hardBreak" value="#{item.point}"/> 
+                                <h:outputText class="hardBreak" value="#{item.point}">
+                                    <f:convertNumber />
+                                </h:outputText> 
                             </p:column>
 
                             <p:column class="hardBreak" style="width: 10%;text-align: center" >

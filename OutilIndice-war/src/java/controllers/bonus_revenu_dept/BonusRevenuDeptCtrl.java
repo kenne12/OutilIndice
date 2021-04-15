@@ -87,7 +87,7 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
                 pc.setPratiqueprivee(false);
                 if (denominateur > 0) {
                     pc.setDenominateur((int) denominateur);
-                    pc.setPoint(pc.getIndice() / denominateur);
+                    pc.setPoint(Math.ceil(pc.getIndice() / denominateur));
                 }
                 pc.setTotal1(Math.ceil(pc.getPoint() * pc.getNombre()));
                 parametragecriteres.add(pc);
@@ -123,8 +123,9 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
                 pc.setPoint(0d);
                 if (denominateur > 0) {
                     pc.setDenominateur((int) denominateur);
-                    pc.setPoint(pc.getIndice() / denominateur);
+                    pc.setPoint(Math.ceil(pc.getIndice() / denominateur));
                 }
+                pc.setTotal1((pc.getPoint() * pc.getNombre()));
                 pc.setIdcategorie(c);
                 pc.setHeuresupp(false);
                 pc.setHeuresupn(false);
@@ -175,8 +176,8 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
 
         for (Parametragecritere pc : parametragecriteres) {
             pc.setDenominateur((int) denominateur);
-            pc.setPoint(pc.getIndice() / denominateur);
-            pc.setTotal1(Math.ceil(pc.getPoint() * pc.getNombre()));
+            pc.setPoint(Math.ceil(pc.getIndice() / denominateur));
+            pc.setTotal1(pc.getPoint() * pc.getNombre());
             parametragecriteres.set(i, pc);
 
             this.totalPointSaisi += pc.getTotal1();
@@ -187,8 +188,8 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
 
     public void updateDataLine(int index) {
         try {
-            parametragecriteres.get(index).setPoint(parametragecriteres.get(index).getIndice() / parametragecriteres.get(index).getDenominateur());
-            parametragecriteres.get(index).setTotal1(Math.ceil(parametragecriteres.get(index).getPoint() * parametragecriteres.get(index).getNombre()));
+            parametragecriteres.get(index).setPoint(Math.ceil(parametragecriteres.get(index).getIndice() / parametragecriteres.get(index).getDenominateur()));
+            parametragecriteres.get(index).setTotal1(parametragecriteres.get(index).getPoint() * parametragecriteres.get(index).getNombre());
         } catch (Exception e) {
             parametragecriteres.get(index).setPoint(0);
             parametragecriteres.get(index).setTotal1(0);
@@ -200,11 +201,6 @@ public class BonusRevenuDeptCtrl extends AbstractBonusRevenuDeptCtrl implements 
         try {
             if (parametragecriteres.isEmpty()) {
                 JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
-                return;
-            }
-
-            if ((totalPointSaisi) > totalPointMaxCritere) {
-                JsfUtil.addErrorMessage("Le total saisi depasse le total point max possible");
                 return;
             }
 

@@ -47,11 +47,11 @@
                                     <ui:repeat value="#{primeRQltifDeptCtrl.listParametres}" var="item">
                                         <tr>
                                             <td>#{item.idcategorie.nom}</td>
-                                            <td>#{item.indice}</td>
+                                            <td><h:outputText value="#{item.indice}"><f:convertNumber /></h:outputText></td>
                                             <td>#{item.denominateur}</td>
-                                            <td>#{item.point}</td>
+                                            <td><h:outputText value="#{item.point}"><f:convertNumber /></h:outputText></td>
                                             <td>#{item.nombre}</td>
-                                            <td>#{item.total1}</td>
+                                            <td><h:outputText value="#{item.total1}"><f:convertNumber /></h:outputText></td>
                                             <td style="text-align: center">                                        
                                                 <p:commandButton icon="ui-icon-pencil" update=":PrimeRQltifEditForm"
                                                                  class="btn btn-success btn-sm"

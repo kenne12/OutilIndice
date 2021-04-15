@@ -190,9 +190,9 @@ public class LoginController extends AbstractLoginController implements Serializ
             sousRubriqueDepenses.forEach(val -> {
                 vals2.add(val.getSousrubriquedepense());
             });
-            System.err.println("taille : " + vals2.size());            
+            System.err.println("taille : " + vals2.size());
             session.setAttribute("sous_rubrique_depense", vals2);
-            System.err.println("taille session : "+SessionMBean.getSousRubriqueDepenses().size());
+            System.err.println("taille session : " + SessionMBean.getSousRubriqueDepenses().size());
             this.getDetail();
 
             showSessionPanel = false;
@@ -268,9 +268,8 @@ public class LoginController extends AbstractLoginController implements Serializ
     }
 
     public void logout() {
-        HttpSession session = SessionMBean.getSession();
-        Utilisateur usr = SessionMBean.getUserAccount();
-        session.invalidate();
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         String sc = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         try {
             FacesContext.getCurrentInstance().getExternalContext().redirect(sc + "/login.html");

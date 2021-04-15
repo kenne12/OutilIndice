@@ -39,13 +39,22 @@ public class RapportCostingCtrl extends AbstractRapportCostingCtrl implements Se
 
             this.sommeCritere();
 
+            boolean flag = false;
             for (Criterestructure cs : criterestructures) {
                 if (cs.getCritere().isWorkflow()) {
+                    if (cs.getPoidsfinal() == 0) {
+                        flag = true;
+                        break;
+                    }
                     if (Math.abs(cs.getEcart()) > cs.getValeurInferieur() || Math.abs(cs.getEcart()) > cs.getValeurSuperieur()) {
-                        JsfUtil.addErrorMessage("Certains critères ne respectent pas les marges définies");
-                        return;
+                        flag = true;
+                        break;
                     }
                 }
+            }
+            if (flag) {
+                JsfUtil.addErrorMessage("Certains critères ne respectent pas les marges définies ou ne sont pas paramétrés");
+                return;
             }
 
             criterestructures.forEach(cs -> {

@@ -80,9 +80,9 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
                 pc.setNombre(efc.getNombre());
                 if (denominateur > 0) {
                     pc.setDenominateur((int) denominateur);
-                    pc.setPoint(pc.getIndice() / denominateur);
+                    pc.setPoint(Math.ceil(pc.getIndice() / denominateur));
                 }
-                pc.setTotal1(Math.ceil(pc.getPoint() * pc.getNombre()));
+                pc.setTotal1((pc.getPoint() * pc.getNombre()));
                 pc.setIdcategorie(efc.getCategorie());
                 pc.setHeuresupp(false);
                 pc.setHeuresupn(false);
@@ -124,8 +124,9 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
                 pc.setPoint(0d);
                 if (denominateur > 0) {
                     pc.setDenominateur((int) denominateur);
-                    pc.setPoint(pc.getIndice() / denominateur);
+                    pc.setPoint(Math.ceil(pc.getIndice() / denominateur));
                 }
+                pc.setTotal1((pc.getPoint() * pc.getNombre()));
                 pc.setIdcategorie(c);
                 pc.setHeuresupp(false);
                 pc.setHeuresupn(false);
@@ -174,8 +175,8 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
         this.totalEffectif = 0;
         for (Parametragecritere pc : parametragecriteres) {
             pc.setDenominateur((int) denominateur);
-            pc.setPoint(pc.getIndice() / denominateur);
-            pc.setTotal1(Math.ceil(pc.getPoint() * pc.getNombre()));
+            pc.setPoint(Math.ceil(pc.getIndice() / denominateur));
+            pc.setTotal1(pc.getPoint() * pc.getNombre());
             parametragecriteres.set(i, pc);
 
             this.totalPointSaisi += pc.getTotal1();
@@ -186,8 +187,8 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
 
     public void updateDataLine(String mode) {
         try {
-            parametragecritere.setPoint(parametragecritere.getIndice() / parametragecritere.getDenominateur());
-            parametragecritere.setTotal1(Math.ceil(parametragecritere.getPoint() * parametragecritere.getNombre()));
+            parametragecritere.setPoint(Math.ceil(parametragecritere.getIndice() / parametragecritere.getDenominateur()));
+            parametragecritere.setTotal1((parametragecritere.getPoint() * parametragecritere.getNombre()));
         } catch (Exception e) {
             parametragecritere.setPoint(0);
             parametragecritere.setTotal1(0);
@@ -201,12 +202,6 @@ public class PrimeRQltifDeptCtrl extends AbstractPrimeRQltifDeptCtrl implements 
                 JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
                 return;
             }
-
-            /*if ((totalPointSaisi) > totalPointMaxCritere) {
-                JsfUtil.addErrorMessage("Le total saisi depasse le total point max possible");
-                return;
-            }*/
-
             for (Parametragecritere pc : parametragecriteres) {
                 if (pc.getIdparametragecritere() == 0l) {
                     pc.setIdparametragecritere(parametragecritereFacadeLocal.nextId());

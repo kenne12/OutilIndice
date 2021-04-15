@@ -74,9 +74,9 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
                 pc.setNombre(efc.getNombre());
                 if (denominateur > 0) {
                     pc.setDenominateur((int) denominateur);
-                    pc.setPoint(pc.getIndice() / denominateur);
+                    pc.setPoint(Math.ceil(pc.getIndice() / denominateur));
                 }
-                pc.setTotal1(Math.ceil(pc.getPoint() * pc.getNombre()));
+                pc.setTotal1((pc.getPoint() * pc.getNombre()));
                 pc.setIdcategorie(efc.getCategorie());
                 pc.setHeuresupp(false);
                 pc.setHeuresupn(false);
@@ -124,7 +124,7 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
                 pc.setPoint(0d);
                 if (denominateur > 0) {
                     pc.setDenominateur((int) denominateur);
-                    pc.setPoint(pc.getIndice() / denominateur);
+                    pc.setPoint(Math.ceil(pc.getIndice() / denominateur));
                 }
                 pc.setIdcategorie(c);
                 pc.setHeuresupp(false);
@@ -175,8 +175,8 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
         this.totalEffectif = 0;
         for (Parametragecritere pc : parametragecriteres) {
             pc.setDenominateur((int) denominateur);
-            pc.setPoint(pc.getIndice() / denominateur);
-            pc.setTotal1(Math.ceil(pc.getPoint() * pc.getNombre()));
+            pc.setPoint(Math.ceil(pc.getIndice() / denominateur));
+            pc.setTotal1(pc.getPoint() * pc.getNombre());
             parametragecriteres.set(i, pc);
 
             this.totalPointSaisi += pc.getTotal1();
@@ -187,8 +187,8 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
 
     public void updateDataLine(int index) {
         try {
-            parametragecriteres.get(index).setPoint(parametragecriteres.get(index).getIndice() / parametragecriteres.get(index).getDenominateur());
-            parametragecriteres.get(index).setTotal1(Math.ceil(parametragecriteres.get(index).getPoint() * parametragecriteres.get(index).getNombre()));
+            parametragecriteres.get(index).setPoint(Math.ceil(parametragecriteres.get(index).getIndice() / parametragecriteres.get(index).getDenominateur()));
+            parametragecriteres.get(index).setTotal1((parametragecriteres.get(index).getPoint() * parametragecriteres.get(index).getNombre()));
         } catch (Exception e) {
             parametragecriteres.get(index).setPoint(0);
             parametragecriteres.get(index).setTotal1(0);
@@ -202,11 +202,6 @@ public class PrimePerfIndividuelCtrl extends AbstractPrimePerfIndividuelCtrl imp
                 JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
                 return;
             }
-
-            /*if ((totalPointSaisi) > totalPointMaxCritere) {
-                JsfUtil.addErrorMessage("Le total saisi depasse le total point max possible");
-                return;
-            }*/
 
             for (Parametragecritere pc : parametragecriteres) {
                 if (pc.getIdparametragecritere() == 0l) {

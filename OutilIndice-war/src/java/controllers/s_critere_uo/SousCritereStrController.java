@@ -197,6 +197,7 @@ public class SousCritereStrController extends AbstractSousCritereStr implements 
 
             selectedSouscriteres.removeAll(adds);
             souscriteres.removeAll(adds);
+            selectedSouscriteres.clear();
         }
         score = this.sommeCritere();
     }
@@ -217,20 +218,12 @@ public class SousCritereStrController extends AbstractSousCritereStr implements 
         RequestContext.getCurrentInstance().execute("PF('DetailEditDialog').show()");
     }
 
-    public void removeCritere(Detailsc item) {
+    public void removeCritere(int index) {
+        Detailsc item = listDetailsc.get(index);
         if (item.getIddetailsc() != 0 && item.getIddetailsc() != null) {
             detailscFacadeLocal.remove(item);
-            listDetailsc.remove(item);
-        } else {
-            int conteur = 0;
-            for (Detailsc dsc : listDetailsc) {
-                if (Objects.equals(item.getIdsouscritere().getIdsouscritere(), dsc.getIdsouscritere().getIdsouscritere())) {
-                    break;
-                }
-                conteur++;
-            }
-            listDetailsc.remove(conteur);
         }
+        listDetailsc.remove(index);
         souscriteres.add(item.getIdsouscritere());
         score = this.sommeCritere();
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
