@@ -113,7 +113,7 @@ public class PrimeController extends AbstractPrimeController implements Serializ
                 return;
             }
 
-            double pointTotal = 0;
+            this.totalPoint = 0;
             for (Note n : notes) {
                 Prime prime = new Prime(0l);
                 prime.setIdnote(n);
@@ -123,11 +123,11 @@ public class PrimeController extends AbstractPrimeController implements Serializ
                 prime.setNotepersonnelle(n.getTotalPoint());
                 prime.setMontantglobal(montantPrime);
                 prime.setPoint(n.getTotalPoint());
-                pointTotal += n.getTotalPoint();
+                this.totalPoint += n.getTotalPoint();
                 this.primes.add(prime);
             }
 
-            double indice = montantPrime / pointTotal;
+            this.indice = montantPrime / this.totalPoint;
 
             int counteur = 0;
             for (Prime p : primes) {
@@ -135,7 +135,6 @@ public class PrimeController extends AbstractPrimeController implements Serializ
                 primes.get(counteur).setMontant(p.getPoint() * indice);
                 counteur += 1;
             }
-
             notes.clear();
         }
     }
@@ -213,7 +212,7 @@ public class PrimeController extends AbstractPrimeController implements Serializ
             });
 
             this.primes.clear();
-            RequestContext.getCurrentInstance().execute("PF('EvaluationCreateDialog').hide()");
+            RequestContext.getCurrentInstance().execute("PF('PrimeCreateDialog').hide()");
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
         } catch (Exception e) {
             e.printStackTrace();

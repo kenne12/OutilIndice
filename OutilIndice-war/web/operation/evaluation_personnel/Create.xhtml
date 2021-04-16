@@ -251,25 +251,19 @@
                                 </div>
 
                                 <div class="panel-footer">
-                                    <div class="row" jsf:id="detail_prime_qnt_dept">
-                                        <div class="form-group col-md-1">        
-                                            <label>#{langue.point_max}</label>
-                                            <h:inputText disabled="true" class="form-control" value="#{evaluationPersonnelController.parametragecriterePrqn.point}" />
-                                        </div>
+                                    <div class="row form-inline" jsf:id="detail_prime_qnt_dept">
+                                        &nbsp;&nbsp;&nbsp;<label>#{langue.point_max}&nbsp;</label>
+                                        <h:inputText disabled="true" class="form-control" value="#{evaluationPersonnelController.parametragecriterePrqn.point}" />&nbsp;
 
-                                        <div class="form-group col-md-1">
-                                            <label>% Obtenu</label>
-                                            <h:inputText disabled="true" class="form-control" value="#{evaluationPersonnelController.note.poucentageRQntif}" >
-                                                <f:convertNumber pattern="0.00" />
-                                            </h:inputText>
-                                        </div>
+                                        <label>% Obtenu &nbsp;</label>
+                                        <h:inputText disabled="true" class="form-control" value="#{evaluationPersonnelController.note.poucentageRQntif}" >
+                                            <f:convertNumber pattern="0.00" />
+                                        </h:inputText>&nbsp;
 
-                                        <div class="form-group col-md-1">
-                                            <label>#{langue.score}</label>
-                                            <h:inputText disabled="true" class="form-control" value="#{evaluationPersonnelController.note.pointRqntif}" >
-                                                <f:convertNumber pattern="0.00" />
-                                            </h:inputText>
-                                        </div>
+                                        <label>#{langue.score} &nbsp;</label>
+                                        <h:inputText disabled="true" class="form-control" value="#{evaluationPersonnelController.note.pointRqntif}" >
+                                            <f:convertNumber pattern="0.00" />
+                                        </h:inputText>
                                     </div>
 
                                 </div>
@@ -402,7 +396,7 @@
                                                 <f:facet name="input">
                                                     <p:selectOneMenu value="#{item.idelementreponse}" converter="elementreponseConverter">
                                                         <f:selectItems value="#{item.iddetailsc.idsouscritere.elementreponseCollection}" var="obj" itemLabel="#{obj.nom}" itemValue="#{obj}" />
-                                                        <p:ajax update="datalist_pi,:EvaluationCreateForm:detail_pi,:EvaluationCreateForm:id_total_incitation" listener="#{evaluationPersonnelController.setResponse(index , evaluationPersonnelController.evaluationpersonnels)}" />
+                                                        <p:ajax update="datalist_pi,:EvaluationCreateForm:detail_pi,:EvaluationCreateForm:id_total_incitation" listener="#{evaluationPersonnelController.setResponse(index, evaluationPersonnelController.evaluationpersonnels)}" />
                                                     </p:selectOneMenu>
                                                 </f:facet>
                                             </p:cellEditor>
@@ -431,21 +425,15 @@
                                 </div>
 
                                 <div class="panel-footer">
-                                    <div class="row" jsf:id="detail_pi">
-                                        <div class="form-group col-md-1">
-                                            <label>#{langue.point_max}</label>
-                                            <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.parametragecritere.point}" />
-                                        </div>
+                                    <div class="row form-inline" jsf:id="detail_pi">
+                                        &nbsp;&nbsp;&nbsp;<label>#{langue.point_max} : &nbsp;</label>
+                                        <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.parametragecritere.point}" />&nbsp;
 
-                                        <div class="form-group col-md-2">
-                                            <label>#{langue.score_obtenu} (%)</label>
-                                            <h:inputText id="score_pi" class="form-control" value="#{evaluationPersonnelController.scorePi}" readonly="true" required="false" />
-                                        </div>
+                                        <label>#{langue.score_obtenu} (%) : &nbsp;</label>
+                                        <h:inputText id="score_pi" class="form-control" value="#{evaluationPersonnelController.scorePi}" readonly="true" required="false" />&nbsp;
 
-                                        <div class="form-group col-md-1">
-                                            <label>#{langue.points}</label>
-                                            <h:inputText id="point_pi" class="form-control" value="#{evaluationPersonnelController.pointPi}" readonly="true" required="false" />
-                                        </div>
+                                        <label>#{langue.points} : &nbsp;</label>
+                                        <h:inputText id="point_pi" class="form-control" value="#{evaluationPersonnelController.pointPi}" readonly="true" required="false" />
                                     </div>
                                 </div>
                             </div>
@@ -574,16 +562,12 @@
                                 </div>
 
                                 <div class="panel-footer">
-                                    <div jsf:id="detail_cni_pi" class="row">
-                                        <div class="form-group col-md-2">
-                                            <label>#{langue.pourcentage} (%)</label>
-                                            <h:inputText class="form-control" id="id_percentage_cni_pi" value="#{evaluationPersonnelController.evaluationPenalitePersonnel.score}" />
-                                        </div>
+                                    <div jsf:id="detail_cni_pi" class="row form-inline">
+                                        &nbsp;&nbsp;&nbsp;<label>#{langue.pourcentage} (%) : &nbsp;</label>
+                                        <h:inputText class="form-control" disabled="true" id="id_percentage_cni_pi" value="#{evaluationPersonnelController.evaluationPenalitePersonnel.score}" />
 
-                                        <div class="form-group col-md-2">
-                                            <label>Point Soustrait</label>
-                                            <h:inputText class="form-control" id="id_ptsoustrait_cni_pi" disabled="true" value="#{evaluationPersonnelController.note.pointPenalitePersonnel}" />
-                                        </div>
+                                        <label>&nbsp;Point Soustrait : &nbsp;</label>
+                                        <h:inputText class="form-control" id="id_ptsoustrait_cni_pi" disabled="true" value="#{evaluationPersonnelController.note.pointPenalitePersonnel}" />
                                     </div>
                                 </div>
                             </div>
@@ -591,10 +575,12 @@
 
                         <p:separator style="width: 100%;margin-left: 0%" />
 
-                        <div class="row" jsf:id="id_total_incitation">
-                            <div class="col-md-3"><span> Total Incitation Positif : #{evaluationPersonnelController.totalPIncitationPositif}</span> </div>
-                            <div class="col-md-3"><span> Total Incitation Négatif : #{evaluationPersonnelController.totalPIncitationNegatif}</span> </div>
-                            <p:commandButton update=":EvaluationCreateForm:detail_cni_pi,:EvaluationCreateForm:detail_cni_pdept,id_total_incitation" class="btn btn-primary" value="#{langue.actualiser}" onclick="#{evaluationPersonnelController.calculFinal()}" />
+                        <div class="row col-md-12 form-inline" jsf:id="id_total_incitation">
+                            <label> Total Incitation Positif : &nbsp; </label>
+                            <h:inputText class="form-control" value="#{evaluationPersonnelController.totalPIncitationPositif}" readonly="true" disabled="true" />
+                            <label> Total Incitation Négatif : &nbsp; </label>
+                            <h:inputText class="form-control" value="#{evaluationPersonnelController.totalPIncitationNegatif}" readonly="true" disabled="true" />&nbsp;
+                            <p:commandButton icon="ui-icon-refresh" update=":EvaluationCreateForm:detail_cni_pi,:EvaluationCreateForm:detail_cni_pdept,id_total_incitation" value="#{langue.actualiser}" onclick="#{evaluationPersonnelController.calculFinal()}" />
                         </div>
                         <p:separator style="width: 100%;margin-left: 0%" />
 

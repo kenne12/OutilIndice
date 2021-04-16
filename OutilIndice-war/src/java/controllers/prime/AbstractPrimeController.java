@@ -67,6 +67,8 @@ public class AbstractPrimeController {
     protected String mode = "";
     protected String message = "";
     protected double montantPrime = 0;
+    protected double totalPoint = 0;
+    protected double indice = 0;
 
     public Routine getRoutine() {
         return routine;
@@ -154,6 +156,14 @@ public class AbstractPrimeController {
 
     public List<TypeSousPeriode> getTypeSousPeriodes() {
         return typeSousPeriodes;
+    }
+
+    public double getTotalPoint() {
+        return totalPoint;
+    }
+
+    public double getIndice() {
+        return indice;
     }
 
 }

@@ -24,7 +24,7 @@
 
                         <div class="row">
 
-                            <div class="form-group col-md-5">
+                            <div class="form-group col-md-4">
                                 <label>#{langue.periodicite}</label>
                                 <h:selectOneMenu id="type_sousperiode" class="form-control" value="#{primeController.typeSousPeriode.idTypeSousperiode}"                                                 
                                                  required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
@@ -34,22 +34,27 @@
                                 </h:selectOneMenu>
                             </div>
 
-                            <div class="form-group col-md-5">
+                            <div class="form-group col-md-4">
                                 <p:outputLabel value="#{langue.sous_periode}" for="sous_periode" />
                                 <h:selectOneMenu id="sous_periode" class="form-control" value="#{primeController.sousperiode.idsousperiode}">                                                                                       
                                     <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
                                     <f:selectItems value="#{primeController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
-                                    <p:ajax update="grid_critere,datalist,:NotifZone,montant_prime,add_btn" listener="#{primeController.updateEvaluationData()}"/>
+                                    <p:ajax update="grid_critere,datalist,:NotifZone,montant_prime,add_btn,indice" listener="#{primeController.updateEvaluationData()}"/>
                                 </h:selectOneMenu>                                                
                             </div>
 
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <p:outputLabel value="#{langue.montant_prime}" for="montant_prime" />
-                                    <h:inputText class="form-control" id="montant_prime" disabled="true" value="#{primeController.montantPrime}" >
-                                        <f:convertNumber />
-                                    </h:inputText>                                               
-                                </div>
+                            <div class="form-group col-md-2">
+                                <p:outputLabel value="#{langue.montant_prime}" for="montant_prime" />
+                                <h:inputText class="form-control" id="montant_prime" disabled="true" value="#{primeController.montantPrime}" readonly="true" >
+                                    <f:convertNumber />
+                                </h:inputText>                                               
+                            </div>
+                            
+                            <div class="form-group col-md-2">
+                                <p:outputLabel value="#{langue.indice}" for="indice" />
+                                <h:inputText class="form-control" id="indice" disabled="true" value="#{primeController.indice}" readonly="true" >
+                                    <f:convertNumber />
+                                </h:inputText>                                               
                             </div>
                         </div>
 
@@ -123,7 +128,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="Action"/>
                                 </f:facet>
-                                <p:commandButton icon="ui-icon-trash">
+                                <p:commandButton disabled="true" icon="ui-icon-trash">
                                     <p:ajax update="datalist,:PrimeCreateForm:add_btn,:PrimeCreateForm:grid_critere" event="click" listener="#{primeController.removePrime(index)}" />
                                 </p:commandButton>
                             </p:column>
@@ -131,8 +136,8 @@
                             <p:columnGroup type="footer" id="footer_tab">
                                 <p:row>
                                     <p:column style="text-align:right" footerText="Totaux" />                                                                          
-                                    <p:column style="text-align:center" footerText=""/>  
-                                    <p:column style="text-align:center" footerText=" / " /> 
+                                    <p:column style="text-align:center" footerText="#{primeController.totalPoint}"/>  
+                                    <p:column style="text-align:center" footerText="#{primeController.montantPrime}" /> 
                                     <p:column colspan="2" style="text-align:center" footerText=" / " /> 
                                 </p:row>
                             </p:columnGroup>
