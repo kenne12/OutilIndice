@@ -8,6 +8,7 @@ package entities;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -36,6 +37,8 @@ public class EvaluationRPrimeQltifPersonnel implements Serializable {
     @JoinColumn(name = "idnote", referencedColumnName = "idnote")
     @ManyToOne(fetch = FetchType.LAZY)
     private Note idnote;
+    @Column(name = "point_max")
+    private double pointMax;
 
     public EvaluationRPrimeQltifPersonnel() {
     }
@@ -82,6 +85,14 @@ public class EvaluationRPrimeQltifPersonnel implements Serializable {
 
     public void setIdnote(Note idnote) {
         this.idnote = idnote;
+    }
+
+    public double getPointMax() {
+        return pointMax;
+    }
+
+    public void setPointMax(double pointMax) {
+        this.pointMax = pointMax;
     }
 
     @Override

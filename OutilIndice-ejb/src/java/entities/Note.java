@@ -72,6 +72,18 @@ public class Note implements Serializable {
     private double pointRQltifDept;
     @Column(name = "pointbonusrdept")
     private double pointBonusRDept;
+    @Column(name = "pointmaxprqltif")
+    private double pointMaxPrQltif;
+    @Column(name = "scoreprqltif")
+    private double scorePrQltif;
+    @Column(name = "pointmax_brd")
+    private double pointMaxBrd;
+    @Column(name = "scorebrd")
+    private double scoreBrd;
+    @Column(name = "pointmaxpi")
+    private double pointMaxPi;
+    @Column(name = "ratiopi")
+    private double ratioPi;
     @JoinColumn(name = "idperiode", referencedColumnName = "idperiode")
     @ManyToOne(fetch = FetchType.LAZY)
     private Periode idperiode;
@@ -237,8 +249,40 @@ public class Note implements Serializable {
         return pointBonusRDept;
     }
 
+    public double getPointMaxBrd() {
+        return pointMaxBrd;
+    }
+
+    public void setPointMaxBrd(double pointMaxBrd) {
+        this.pointMaxBrd = pointMaxBrd;
+    }
+
+    public double getScoreBrd() {
+        return scoreBrd;
+    }
+
+    public void setScoreBrd(double scoreBrd) {
+        this.scoreBrd = scoreBrd;
+    }
+
     public void setPointBonusRDept(double pointBonusRDept) {
         this.pointBonusRDept = pointBonusRDept;
+    }
+
+    public double getPointMaxPi() {
+        return pointMaxPi;
+    }
+
+    public void setPointMaxPi(double pointMaxPi) {
+        this.pointMaxPi = pointMaxPi;
+    }
+
+    public double getRatioPi() {
+        return ratioPi;
+    }
+
+    public void setRatioPi(double ratioPi) {
+        this.ratioPi = ratioPi;
     }
 
     public Periode getIdperiode() {
@@ -263,6 +307,22 @@ public class Note implements Serializable {
 
     public void setIdpersonnel(Personnel idpersonnel) {
         this.idpersonnel = idpersonnel;
+    }
+
+    public double getPointMaxPrQltif() {
+        return pointMaxPrQltif;
+    }
+
+    public void setPointMaxPrQltif(double pointMaxPrQltif) {
+        this.pointMaxPrQltif = pointMaxPrQltif;
+    }
+
+    public double getScorePrQltif() {
+        return scorePrQltif;
+    }
+
+    public void setScorePrQltif(double scorePrQltif) {
+        this.scorePrQltif = scorePrQltif;
     }
 
     @Override

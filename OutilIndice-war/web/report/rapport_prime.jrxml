@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rapport_prime" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="edb9d344-8758-499f-b687-df2a89d2a5fb">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idStructure" class="java.lang.Long"/>
+	<parameter name="idPeriode" class="java.lang.Integer"/>
+	<parameter name="idSousPeriode" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT
+     periode."idperiode" AS periode_idperiode,
+     periode."nom" AS periode_nom,
+     sousperiode."idsousperiode" AS sousperiode_idsousperiode,
+     sousperiode."nom" AS sousperiode_nom,
+     structure."idstructure" AS structure_idstructure,
+     structure."nom" AS structure_nom,
+     personnel."nom" AS personnel_nom,
+     personnel."prenom" AS personnel_prenom,
+     personnel."matricule" AS personnel_matricule,
+     prime."montant" AS prime_montant,
+     prime."indice" AS prime_indice,
+     prime."montantglobal" AS prime_montantglobal,
+     categorie."nom" AS categorie_nom,
+     responsabilite."nom" AS responsabilite_nom,
+     note."totalpoint" AS note_totalpoint
+FROM
+     "public"."periode" periode INNER JOIN "public"."note" note ON periode."idperiode" = note."idperiode"
+     INNER JOIN "public"."sousperiode" sousperiode ON note."idsousperiode" = sousperiode."idsousperiode"
+     INNER JOIN "public"."personnel" personnel ON note."idpersonnel" = personnel."idpersonnel"
+     INNER JOIN "public"."prime" prime ON note."idnote" = prime."idnote"
+     AND personnel."idpersonnel" = prime."idpersonnel"
+     AND sousperiode."idsousperiode" = prime."idsousperiode"
+     AND periode."idperiode" = prime."idperiode"
+     INNER JOIN "public"."structure" structure ON personnel."idstructure" = structure."idstructure"
+     INNER JOIN "public"."categorie" categorie ON personnel."idcategorie" = categorie."idcategorie"
+     INNER JOIN "public"."responsabilite" responsabilite ON personnel."idresponsabilite" = responsabilite."idresponsabilite"
+WHERE periode.idperiode = $P{idPeriode}
+AND sousperiode.idsousperiode = $P{idSousPeriode}
+AND structure.idstructure  = $P{idStructure};]]>
+	</queryString>
+	<field name="periode_idperiode" class="java.lang.Integer"/>
+	<field name="periode_nom" class="java.lang.String"/>
+	<field name="sousperiode_idsousperiode" class="java.lang.Integer"/>
+	<field name="sousperiode_nom" class="java.lang.String"/>
+	<field name="structure_idstructure" class="java.lang.Long"/>
+	<field name="structure_nom" class="java.lang.String"/>
+	<field name="personnel_nom" class="java.lang.String"/>
+	<field name="personnel_prenom" class="java.lang.String"/>
+	<field name="personnel_matricule" class="java.lang.String"/>
+	<field name="prime_montant" class="java.lang.Double"/>
+	<field name="prime_indice" class="java.lang.Double"/>
+	<field name="prime_montantglobal" class="java.lang.Double"/>
+	<field name="categorie_nom" class="java.lang.String"/>
+	<field name="responsabilite_nom" class="java.lang.String"/>
+	<field name="note_totalpoint" class="java.lang.Double"/>
+	<variable name="prime_montant_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{prime_montant}]]></variableExpression>
+	</variable>
+	<variable name="note_totalpoint_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{note_totalpoint}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="114" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="17" width="802" height="20" uuid="f2dfcdb0-789c-4947-98b0-f7836abc8b7e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{structure_nom}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="46" width="337" height="20" uuid="1d538954-8ed9-44e7-96ad-192de18f131b"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[RAPPORT DE PARTAGE DE PRIME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="66" width="45" height="20" uuid="d1cc3f98-44ec-48b6-b590-5f68a04fea62"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Année]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="86" width="45" height="20" uuid="7133a68e-c8df-4660-b151-9dfa85caecc2"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Période]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="45" y="66" width="292" height="20" uuid="b8b3e96e-442a-4d37-9ef5-7eb02e8cb748"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{periode_nom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="45" y="86" width="292" height="20" uuid="bdb1bfe8-b3ca-4028-9ebf-1f6f7a55e3bc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sousperiode_nom}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="203" height="28" uuid="28fee2b8-4ce6-4020-9c6f-79544ae93eca"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Personnel]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="203" y="0" width="179" height="28" uuid="80ad74eb-42a7-4b59-a45f-4cb2cf3487aa"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Catégorie]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="382" y="0" width="143" height="28" uuid="d6c78489-58ac-46df-b354-9d16da2d1ccd"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Responsabilité]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="604" y="0" width="100" height="28" uuid="45ded622-38e3-4e1c-82ca-dea68f2443ec"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Montant
+ Prime]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="525" y="0" width="79" height="28" uuid="52109449-8359-4a37-a6f7-ec44b410454b"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Total Point]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="203" height="25" uuid="8849ebb5-45db-47f0-be79-38e863a9a95a"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{personnel_nom}+" "+$F{personnel_prenom}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="203" y="0" width="179" height="25" uuid="ee5e5ae4-0988-462c-96cc-125f621abf98"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{categorie_nom}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="382" y="0" width="143" height="25" uuid="502502f4-6f83-484a-baac-ed93dd59966c"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{responsabilite_nom}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0">
+				<reportElement stretchType="RelativeToBandHeight" x="604" y="0" width="100" height="25" uuid="171395ad-9830-49da-b8bc-e88d96878929"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{prime_montant}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement stretchType="RelativeToBandHeight" x="525" y="0" width="79" height="25" uuid="030367de-6bc1-45e5-b25d-ad21f0078f04"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_totalpoint}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="525" height="21" uuid="38155651-0d76-440d-a14b-17f77ad5af53"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Totaux]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="604" y="0" width="100" height="21" uuid="ea94f213-ed44-4435-92be-15958e5749c1"/>
+				<box leftPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{prime_montant_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="525" y="0" width="79" height="21" uuid="5403ec69-a9de-44ac-9830-ee8ea345f9bf"/>
+				<box leftPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{note_totalpoint_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

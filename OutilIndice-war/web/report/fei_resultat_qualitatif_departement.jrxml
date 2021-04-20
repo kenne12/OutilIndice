@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fei_resultat_qualitatif_departement" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="774a7103-a6e1-4b08-bec1-5b7179506bda">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idPersonnel" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idPeriode" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idSousPeriode" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     evaluationrprimeqltifpersonnel."point" AS evaluationrprimeqltifpersonnel_point,
+     evaluationrprimeqltifdept."score" AS evaluationrprimeqltifdept_score,
+     evaluationrprimeqltifdept."pourcentage" AS evaluationrprimeqltifdept_pourcentage,
+     evaluationrprimeqltifdept."cible" AS evaluationrprimeqltifdept_cible,
+     critere."nom" AS critere_nom,
+     ligneprimequalitedept."valeurcible" AS ligneprimequalitedept_valeurcible,
+     ligneprimequalitedept."valeurrealisee" AS ligneprimequalitedept_valeurrealisee,
+     ligneprimequalitedept."ratio" AS ligneprimequalitedept_ratio,
+     souscritere."nom" AS souscritere_nom,
+     evaluationrprimeqltifpersonnel."point_max" AS evaluationrprimeqltifpersonnel_point_max
+FROM
+     "public"."evaluationrprimeqltifdept" evaluationrprimeqltifdept INNER JOIN "public"."evaluationrprimeqltifpersonnel" evaluationrprimeqltifpersonnel ON evaluationrprimeqltifdept."idevaluationrprimeqltifdept" = evaluationrprimeqltifpersonnel."idevaluationrprimeqltifdept"
+     INNER JOIN "public"."note" note ON evaluationrprimeqltifpersonnel."idnote" = note."idnote"
+     INNER JOIN "public"."critere" critere ON evaluationrprimeqltifdept."idcritere" = critere."idcritere"
+     INNER JOIN "public"."ligneprimequalitedept" ligneprimequalitedept ON evaluationrprimeqltifdept."idevaluationrprimeqltifdept" = ligneprimequalitedept."idevaluationrprimeqltifdept"
+     INNER JOIN "public"."souscritereservice" souscritereservice ON ligneprimequalitedept."idsouscritereservice" = souscritereservice."idsouscritereservice"
+     INNER JOIN "public"."souscritere" souscritere ON souscritereservice."idsouscritere" = souscritere."idsouscritere"
+     AND critere."idcritere" = souscritere."idcritere"
+WHERE
+     note.idpersonnel = $P{idPersonnel}
+ AND note.idperiode = $P{idPeriode}
+ AND note.idsousperiode = $P{idSousPeriode}
+AND evaluationrprimeqltifdept.idcritere = 5;]]>
+	</queryString>
+	<field name="evaluationrprimeqltifpersonnel_point" class="java.lang.Double"/>
+	<field name="evaluationrprimeqltifdept_score" class="java.lang.Integer"/>
+	<field name="evaluationrprimeqltifdept_pourcentage" class="java.lang.Double"/>
+	<field name="evaluationrprimeqltifdept_cible" class="java.lang.Integer"/>
+	<field name="critere_nom" class="java.lang.String"/>
+	<field name="ligneprimequalitedept_valeurcible" class="java.lang.Integer"/>
+	<field name="ligneprimequalitedept_valeurrealisee" class="java.lang.Integer"/>
+	<field name="ligneprimequalitedept_ratio" class="java.lang.Double"/>
+	<field name="souscritere_nom" class="java.lang.String"/>
+	<field name="evaluationrprimeqltifpersonnel_point_max" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="99" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="50" width="86" height="20" uuid="00b2bd0e-5f6c-403b-be86-5064dcd4ab25"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Score (%)]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="86" y="50" width="58" height="20" uuid="5993c581-fbed-46d3-9d6f-1fa0850f5e70"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{evaluationrprimeqltifdept_score}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="86" y="70" width="58" height="20" uuid="eed64306-45f9-4d5b-a08d-19fd77657f41"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{evaluationrprimeqltifpersonnel_point}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="30" width="86" height="20" uuid="70f889a3-7fe3-4c6a-84c5-1d7b71096c4f"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Point Max]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="86" y="30" width="58" height="20" uuid="29e5363e-2258-44b4-9aab-49033e8e0b6d"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{evaluationrprimeqltifpersonnel_point_max}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="70" width="86" height="20" uuid="b8dbfbc9-cffe-4f20-8a59-465d643d4b98"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Point Obtenus]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="428" height="20" uuid="5a1950f1-58cd-4bea-b442-f8362e15b8ec"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{critere_nom}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="32" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="243" height="32" uuid="5a6cf20d-0d0e-4bf3-b079-a3eb1b9b3410"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Indicateur qualité]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="243" y="0" width="62" height="32" uuid="b50a3bc1-ac8f-4f49-ba6c-33ef42bcc7b9"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Valeur
+cible]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="305" y="0" width="63" height="32" uuid="da63555c-545f-4d45-aceb-ad533add0347"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Valeur
+realisée]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="368" y="0" width="60" height="32" uuid="bee8fdc0-7d4b-4e2d-aa88-fa2ae0b4baa1"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Pourcen
+tage]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="0" width="243" height="27" uuid="28ab38d3-510c-464a-9b3a-0cd433599502"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{souscritere_nom}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="243" y="0" width="62" height="27" uuid="c4fc630c-c608-44e4-935b-d26ce2fd9fa8"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ligneprimequalitedept_valeurcible}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="305" y="0" width="63" height="27" uuid="768205e8-3929-414b-88a4-0a8ac61cfa00"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ligneprimequalitedept_valeurrealisee}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.0">
+				<reportElement x="368" y="0" width="60" height="27" uuid="601ce380-9693-406e-84c0-962680b53759"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ligneprimequalitedept_ratio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

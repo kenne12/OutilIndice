@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fei_resultat_qntif_departement" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d4c36ad1-ff6a-4c59-8bf6-85658ef82046">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idPersonnel" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idPeriode" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idSousPeriode" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     evaluationrqntifdept."cible" AS evaluationrqntifdept_cible,
+     evaluationrqntifdept."realisation" AS evaluationrqntifdept_realisation,
+     evaluationrqntifdept."ratio" AS evaluationrqntifdept_ratio,
+     note."pointmaxrqntif" AS note_pointmaxrqntif,
+     note."poucentagerqntif" AS note_poucentagerqntif,
+     note."pointrqntif" AS note_pointrqntif,
+     indicateur."nom" AS indicateur_nom,
+     critere."nom" AS critere_nom
+FROM
+     "public"."cible" cible INNER JOIN "public"."evaluationrqntifdept" evaluationrqntifdept ON cible."idcible" = evaluationrqntifdept."idcible"
+     INNER JOIN "public"."note" note ON evaluationrqntifdept."idnote" = note."idnote"
+     INNER JOIN "public"."indicateur" indicateur ON cible."idindicateur" = indicateur."idindicateur"
+     INNER JOIN "public"."critere" critere ON cible."idcritere" = critere."idcritere"
+WHERE
+     note.idpersonnel = $P{idPersonnel}
+ AND note.idperiode = $P{idPeriode}
+ AND note.idsousperiode = $P{idSousPeriode}]]>
+	</queryString>
+	<field name="evaluationrqntifdept_cible" class="java.lang.Double"/>
+	<field name="evaluationrqntifdept_realisation" class="java.lang.Double"/>
+	<field name="evaluationrqntifdept_ratio" class="java.lang.Double"/>
+	<field name="note_pointmaxrqntif" class="java.lang.Double"/>
+	<field name="note_poucentagerqntif" class="java.lang.Double"/>
+	<field name="note_pointrqntif" class="java.lang.Double"/>
+	<field name="indicateur_nom" class="java.lang.String"/>
+	<field name="critere_nom" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="94" splitType="Stretch">
+			<textField pattern="#,##0">
+				<reportElement x="87" y="49" width="57" height="20" uuid="53a506a3-794e-46c5-b1f4-17e807ecb4aa"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_poucentagerqntif}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="29" width="86" height="20" uuid="41b95261-f675-4bb3-bea8-0fd3d2f6ee52"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Point Max]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="87" y="29" width="57" height="20" uuid="79634168-06d0-4d16-9cfc-ba1a4287dc4b"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_pointmaxrqntif}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="49" width="86" height="20" uuid="273f8555-9069-4343-b590-0fc37a67c979"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Score (%)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="69" width="86" height="20" uuid="db8f6d21-064c-408f-b318-a22362090a26"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Point Obtenus]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="87" y="69" width="57" height="20" uuid="85014caf-bcdd-4611-ae6d-fcb10c244d15"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_pointrqntif}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="398" height="20" uuid="0d52bb03-d8e1-404e-9a15-95b3bdef7f3d"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{critere_nom}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="29" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="0" width="256" height="29" uuid="4895838a-be64-4c04-853f-87fd684fc6f7"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Indicateur]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="257" y="0" width="66" height="29" uuid="2c5a98d9-a464-4649-a241-2abd5a65431d"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Valeur
+Cible]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="323" y="0" width="66" height="29" uuid="abffc91a-c10d-4e28-b5f2-3c522c6adad7"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Valeur réalisée]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="389" y="0" width="50" height="29" uuid="4cf1db54-9385-40db-92c7-4ed4444ba874"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Pourcen
+tage]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="1" y="0" width="256" height="20" uuid="3187c860-e63d-400f-8c4a-57af24f0ba4d"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{indicateur_nom}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0">
+				<reportElement x="257" y="0" width="66" height="20" uuid="6d3cb450-300d-48d9-8533-4421c86bcba1"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{evaluationrqntifdept_cible}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.0">
+				<reportElement x="323" y="0" width="66" height="20" uuid="f7430e62-a22d-415e-9ef1-332c49c510ea"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{evaluationrqntifdept_realisation}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement x="389" y="0" width="50" height="20" uuid="681b6471-d78f-4d8f-b4ed-0a2d96f90774"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{evaluationrqntifdept_ratio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

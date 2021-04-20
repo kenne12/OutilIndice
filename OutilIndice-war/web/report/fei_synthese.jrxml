@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fei_synthese" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6fc2daaa-15ef-4fd0-9a16-bcdb2cd7881c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idPersonnel" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idPeriode" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idSousPeriode" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     note."pointpindiv" AS note_pointpindiv,
+     note."pointpenalitedepartement" AS note_pointpenalitedepartement,
+     note."pointpenalitepersonnel" AS note_pointpenalitepersonnel,
+     note."pointrqntif" AS note_pointrqntif,
+     note."incitationpositif" AS note_incitationpositif,
+     note."incitationnegatif" AS note_incitationnegatif,
+     note."totalpoint" AS note_totalpoint,
+     note."pointheuresupp" AS note_pointheuresupp,
+     note."incitationnhp" AS note_incitationnhp,
+     note."pointresponsabilite" AS note_pointresponsabilite,
+     note."pointpratiquep" AS note_pointpratiquep,
+     note."pointrqltifdept" AS note_pointrqltifdept,
+     note."pointbonusrdept" AS note_pointbonusrdept,
+     note."ratiopi" AS note_ratiopi
+FROM
+     "public"."note" note
+WHERE
+     note.idpersonnel = $P{idPersonnel}
+ AND note.idperiode = $P{idPeriode}
+ AND note.idsousperiode = $P{idSousPeriode}]]>
+	</queryString>
+	<field name="note_pointpindiv" class="java.lang.Double"/>
+	<field name="note_pointpenalitedepartement" class="java.lang.Double"/>
+	<field name="note_pointpenalitepersonnel" class="java.lang.Double"/>
+	<field name="note_pointrqntif" class="java.lang.Double"/>
+	<field name="note_incitationpositif" class="java.lang.Double"/>
+	<field name="note_incitationnegatif" class="java.lang.Double"/>
+	<field name="note_totalpoint" class="java.lang.Double"/>
+	<field name="note_pointheuresupp" class="java.lang.Double"/>
+	<field name="note_incitationnhp" class="java.lang.Double"/>
+	<field name="note_pointresponsabilite" class="java.lang.Double"/>
+	<field name="note_pointpratiquep" class="java.lang.Double"/>
+	<field name="note_pointrqltifdept" class="java.lang.Double"/>
+	<field name="note_pointbonusrdept" class="java.lang.Double"/>
+	<field name="note_ratiopi" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="295" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="12" width="329" height="20" uuid="f3b7b6c2-bacf-4734-ae85-6a0889d318af"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="16"/>
+				</textElement>
+				<text><![CDATA[Synthèse]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="49" width="263" height="20" uuid="d341508f-5da0-43e6-b1b5-863a3d781977"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[I - Incitations positives]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="85" width="205" height="20" uuid="93172056-576a-4139-9173-4284da31b526"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Bonus de responsabilité]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="205" y="85" width="58" height="20" uuid="39b85472-52bf-4467-8017-e5703f0b9fe2"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_pointresponsabilite}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="105" width="205" height="20" uuid="ccc55b48-f60d-4678-9c7f-8aa2bdb27dee"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Bonus heure supplementaire]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="205" y="105" width="58" height="20" uuid="f1549f7b-58b9-4712-9f47-1d75a2f88891"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_pointheuresupp}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="125" width="205" height="20" uuid="221263da-7c26-415e-92b3-9ddf51386971"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Bonus pour non detournement de patient]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="205" y="125" width="58" height="20" uuid="1f4b6142-711e-4494-ae26-85cff13a3924"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_pointpratiquep}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="145" width="205" height="20" uuid="e636c508-2bd0-4068-95c5-6c6b86b30d4a"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Bonus de résultat quantitatif de département]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="205" y="145" width="58" height="20" uuid="430cebc8-e03d-462f-974d-7eff3b42cb36"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_pointrqntif}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="165" width="205" height="20" uuid="78bf4080-8893-420b-a7c4-9d40d32a9577"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Bonus de résultat qualitatif de département]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="205" y="165" width="58" height="20" uuid="e9b4d716-9368-4f5b-926a-39a67c07a624"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_pointrqltifdept}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="185" width="205" height="20" uuid="654fd617-595d-4982-811d-00b9e15108c5"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Bonus de recette de département]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="205" y="185" width="58" height="20" uuid="d986d13f-94d1-434d-8a30-c1b54a0a4a52"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_pointbonusrdept}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="205" width="205" height="20" uuid="86be95bb-fbd8-4e79-8e9a-6f06a90b7a0f"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Bonus de performance individuelle]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="205" y="205" width="58" height="20" uuid="d9e11796-de7b-4709-98e6-fadb5e798d0e"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_pointpindiv}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="228" width="205" height="20" uuid="3b89861b-b6d5-4502-9a7f-f5013a9ee8b7"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[Total Incitations positives]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="205" y="228" width="58" height="20" uuid="5d2feeef-241d-4094-a19d-3218b15aa622"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_incitationpositif}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="276" y="49" width="263" height="20" uuid="ca38ea8d-3c3d-48fd-8a0c-01db756b8d05"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[II - Incitations négatives]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="87" width="167" height="20" uuid="bdb93819-3e47-457b-b11f-1ce8f7934a4a"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[CNI Heures perdues]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="443" y="87" width="96" height="20" uuid="2886f484-c3fd-4238-93fc-483b3db3a627"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_incitationnhp}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="276" y="107" width="167" height="20" uuid="2c0fa5b3-096e-4289-9b77-fe11af25806d"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[CNI Pénalité de departement]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="443" y="107" width="96" height="20" uuid="2374f9e9-8bf6-4ed2-833e-cac1e73c4221"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_pointpenalitedepartement}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="276" y="127" width="167" height="20" uuid="0e4ba38e-1dee-4757-96fd-6d6d1ae7affc"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[CNI Pénalité individuelle]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="443" y="127" width="96" height="20" uuid="3432e5b4-7ea3-41e9-a857-19dcdebc9d55"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_pointpenalitepersonnel}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="276" y="153" width="167" height="20" uuid="5697f103-6e2a-4ba2-8515-c1013c61b370"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[Total Incitations négatives]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="443" y="153" width="96" height="20" uuid="993ca452-006f-4926-b1ed-785d09167d5a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_incitationnegatif}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="124" y="270" width="103" height="20" uuid="2ecae558-88ba-465a-a372-1037dbfe2cb4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="16"/>
+				</textElement>
+				<text><![CDATA[Total Point  =]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="227" y="270" width="65" height="20" uuid="8cff6e31-cbef-42c5-8066-c33251b4aa87"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_incitationpositif}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="292" y="270" width="13" height="20" uuid="77ae240d-32ed-4f5b-b844-5bace09d793a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="16"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="305" y="270" width="65" height="20" uuid="221879ee-f2cd-437e-9f2d-4bcc27740e47"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_incitationnegatif}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="369" y="270" width="13" height="20" uuid="16baaa3d-4a42-403f-b382-4cc6291df5c8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="16"/>
+				</textElement>
+				<text><![CDATA[=]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="382" y="270" width="65" height="20" uuid="50120a05-8328-49b1-b245-285a087ece30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_totalpoint}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="253" width="552" height="1" uuid="b722b261-419b-44f5-a22c-a60f567034d8"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

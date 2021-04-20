@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fei_bonus_heures_supp" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="efd9a296-09ab-402a-b07f-c43ee625e521">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idPersonnel" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idPeriode" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idSousPeriode" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     evaluationheuresupp."coefnuit" AS evaluationheuresupp_coefnuit,
+     evaluationheuresupp."coefjour" AS evaluationheuresupp_coefjour,
+     evaluationheuresupp."nbheurejour" AS evaluationheuresupp_nbheurejour,
+     evaluationheuresupp."nbheurenuit" AS evaluationheuresupp_nbheurenuit,
+     evaluationheuresupp."pointjour" AS evaluationheuresupp_pointjour,
+     evaluationheuresupp."pointnuit" AS evaluationheuresupp_pointnuit,
+     critere."nom" AS critere_nom,
+     critere."code" AS critere_code
+FROM
+     "public"."critere" critere INNER JOIN "public"."evaluationheuresupp" evaluationheuresupp ON critere."idcritere" = evaluationheuresupp."idcritere"
+     INNER JOIN "public"."note" note ON evaluationheuresupp."idnote" = note."idnote"
+WHERE
+     note."idsousperiode" = $P{idSousPeriode}
+ AND note.idperiode = $P{idPeriode}
+ AND note.idpersonnel = $P{idPersonnel}
+ AND evaluationheuresupp.idcritere = 2]]>
+	</queryString>
+	<field name="evaluationheuresupp_coefnuit" class="java.lang.Double"/>
+	<field name="evaluationheuresupp_coefjour" class="java.lang.Double"/>
+	<field name="evaluationheuresupp_nbheurejour" class="java.lang.Double"/>
+	<field name="evaluationheuresupp_nbheurenuit" class="java.lang.Double"/>
+	<field name="evaluationheuresupp_pointjour" class="java.lang.Integer"/>
+	<field name="evaluationheuresupp_pointnuit" class="java.lang.Integer"/>
+	<field name="critere_nom" class="java.lang.String"/>
+	<field name="critere_code" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="446" height="20" uuid="4224a413-038f-49cf-9b6a-e4eb98541afe"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{critere_nom}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="549a071e-e9cb-4234-addb-e45e853f40c7"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Coef heure jour]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="100" height="20" uuid="2dc58827-4a3e-4e9d-8190-8ad9951b80b9"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Coef heure nuit]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="20" width="61" height="20" uuid="24234304-8a72-4eac-995f-0fa32b252470"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{evaluationheuresupp_coefnuit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="61" height="20" uuid="519a3004-3fb2-42fa-82c0-3d666e7fb806"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{evaluationheuresupp_coefjour}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="161" y="0" width="98" height="20" uuid="d63dec2c-736a-432b-9ccf-5ebc8031196b"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Heure jour]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="161" y="20" width="98" height="20" uuid="cea83e75-b597-44f5-929a-91f086f49e89"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Heure nuit]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="259" y="0" width="65" height="20" uuid="15644e9d-23c1-4a62-a4b3-4096a465439d"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{evaluationheuresupp_nbheurejour}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="259" y="20" width="65" height="20" uuid="1817cbb8-fffd-4a0b-9e53-f405d4253a44"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{evaluationheuresupp_nbheurenuit}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="324" y="0" width="63" height="20" uuid="3fe1dad2-1c56-458c-b273-d8fc28ba1b28"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Point]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="324" y="20" width="63" height="20" uuid="84d4a086-24e3-4019-838a-69d9b14fd222"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Point]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="387" y="0" width="59" height="20" uuid="02dd60b7-d89c-45d6-9e71-0a10deb27681"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{evaluationheuresupp_pointjour}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="387" y="20" width="59" height="20" uuid="376f99b5-bfd0-4699-a323-d5308c2f735a"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{evaluationheuresupp_pointnuit}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="40" width="387" height="20" uuid="99ecf235-3e42-444d-8bd2-ceb8dbee1be9"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="387" y="40" width="59" height="20" uuid="39701f76-f49b-4373-a59a-c29693c81b92"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{evaluationheuresupp_pointnuit}+$F{evaluationheuresupp_pointjour})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

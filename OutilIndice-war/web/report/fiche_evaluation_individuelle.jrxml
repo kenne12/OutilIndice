@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fiche_evaluation_individuelle" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8bb6f7fd-1842-4d55-b550-9d9c574099e2">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idPeriode" class="java.lang.Integer"/>
+	<parameter name="idPersonnel" class="java.lang.Long"/>
+	<parameter name="idSousPeriode" class="java.lang.Integer"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\report_outil_indice\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     personnel."idpersonnel" AS personnel_idpersonnel,
+     personnel."nom" AS personnel_nom,
+     personnel."prenom" AS personnel_prenom,
+     personnel."matricule" AS personnel_matricule,
+     service."idservice" AS service_idservice,
+     service."nom" AS service_nom,
+     structure."idstructure" AS structure_idstructure,
+     structure."nom" AS structure_nom,
+     categorie."idcategorie" AS categorie_idcategorie,
+     categorie."nom" AS categorie_nom,
+     categorie."indice" AS categorie_indice,
+     responsabilite."nom" AS responsabilite_nom,
+     periode."nom" AS periode_nom,
+     sousperiode."nom" AS sousperiode_nom,
+     sousperiode."code" AS sousperiode_code
+FROM
+     "public"."service" service INNER JOIN "public"."personnel" personnel ON service."idservice" = personnel."idservice"
+     INNER JOIN "public"."structure" structure ON personnel."idstructure" = structure."idstructure"
+     INNER JOIN "public"."categorie" categorie ON personnel."idcategorie" = categorie."idcategorie"
+     INNER JOIN "public"."responsabilite" responsabilite ON personnel."idresponsabilite" = responsabilite."idresponsabilite",
+     "public"."periode" periode,
+     "public"."sousperiode" sousperiode
+WHERE
+     personnel.idpersonnel = $P{idPersonnel}
+ AND periode.idperiode = $P{idPeriode}
+AND sousperiode.idsousperiode = $P{idSousPeriode}]]>
+	</queryString>
+	<field name="personnel_idpersonnel" class="java.lang.Long"/>
+	<field name="personnel_nom" class="java.lang.String"/>
+	<field name="personnel_prenom" class="java.lang.String"/>
+	<field name="personnel_matricule" class="java.lang.String"/>
+	<field name="service_idservice" class="java.lang.Long"/>
+	<field name="service_nom" class="java.lang.String"/>
+	<field name="structure_idstructure" class="java.lang.Long"/>
+	<field name="structure_nom" class="java.lang.String"/>
+	<field name="categorie_idcategorie" class="java.lang.Integer"/>
+	<field name="categorie_nom" class="java.lang.String"/>
+	<field name="categorie_indice" class="java.lang.Integer"/>
+	<field name="responsabilite_nom" class="java.lang.String"/>
+	<field name="periode_nom" class="java.lang.String"/>
+	<field name="sousperiode_nom" class="java.lang.String"/>
+	<field name="sousperiode_code" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="423" splitType="Stretch">
+			<staticText>
+				<reportElement x="23" y="141" width="512" height="20" uuid="42a06502-19c7-437d-af61-71051a187190"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Dashed"/>
+					<leftPen lineWidth="0.5" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					<rightPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[FICHE D'EVALUATION DU PERSONNEL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="195" width="100" height="20" uuid="3c0137bc-4612-4df4-a797-6795bf74e220"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Nom ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="215" width="100" height="20" uuid="e30b2e36-e23c-4468-9ed6-afdac872d3d5"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Prénom ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="235" width="100" height="20" uuid="ea46f5b4-7c83-45ef-b989-e2a9dd3e3908"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Matricule]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="255" width="100" height="20" uuid="362040ef-c367-4cbe-b5ee-76d75a7e7389"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Catégorie]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="275" width="100" height="20" uuid="9788f673-66b2-4e15-bd88-24b23a0423a6"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Service]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="295" width="100" height="20" uuid="22b45453-41b9-4e12-b5b0-859f2aecf5a7"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Responsabilité]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="123" y="195" width="280" height="20" uuid="18882105-740a-45ff-8ada-451788652419"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{personnel_nom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="215" width="280" height="20" uuid="d7f8b951-eec4-4a8e-a4c6-b3a02070e989"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{personnel_prenom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="235" width="100" height="20" uuid="5414c038-e39f-48a4-a304-c5b43f6741c8"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{personnel_matricule}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="255" width="280" height="20" uuid="57e799d1-ebcb-434f-a159-6ed2dc8e9c3b"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{categorie_nom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="275" width="280" height="20" uuid="5c689c4b-c64c-443a-87c6-988230c79081"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{service_nom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="295" width="280" height="20" uuid="25117444-8654-427a-b4ad-94e45d9f30ca"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{responsabilite_nom}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="103" y="351" width="101" height="20" forecolor="#3399FF" uuid="74b6ce50-68d4-4bc3-bde6-d82f5e326152"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[Période]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="103" y="371" width="101" height="20" forecolor="#3399FF" uuid="16e2d569-dd00-4551-9637-42a4484accc5"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[Sous - Période]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="204" y="351" width="100" height="20" forecolor="#3399FF" uuid="3096d770-3c44-4563-bd11-26cf8b010b9d"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{periode_nom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="204" y="371" width="100" height="20" forecolor="#3399FF" uuid="da41f881-c792-428f-8b77-4d57e66edbe9"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sousperiode_nom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="42" width="554" height="29" uuid="62f6941b-772f-4963-869c-3d3b9b6fd521"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{structure_nom}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="151" splitType="Stretch">
+			<subreport>
+				<reportElement positionType="Float" x="0" y="3" width="535" height="10" uuid="462c13ee-97f5-44de-bbe1-5263c21b9678"/>
+				<subreportParameter name="idPeriode">
+					<subreportParameterExpression><![CDATA[$P{idPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idSousPeriode">
+					<subreportParameterExpression><![CDATA[$P{idSousPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idPersonnel">
+					<subreportParameterExpression><![CDATA[$P{idPersonnel}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["fei_bonus_responsabilite.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="16" width="535" height="10" uuid="7ed918c6-2353-4908-9a0b-6dedffb79daf"/>
+				<subreportParameter name="idPersonnel">
+					<subreportParameterExpression><![CDATA[$P{idPersonnel}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idPeriode">
+					<subreportParameterExpression><![CDATA[$P{idPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idSousPeriode">
+					<subreportParameterExpression><![CDATA[$P{idSousPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["fei_bonus_heures_supp.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="28" width="535" height="10" uuid="9da556b7-1e98-4ce6-a965-ffe5c4e6a8e4"/>
+				<subreportParameter name="idPersonnel">
+					<subreportParameterExpression><![CDATA[$P{idPersonnel}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idPeriode">
+					<subreportParameterExpression><![CDATA[$P{idPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idSousPeriode">
+					<subreportParameterExpression><![CDATA[$P{idSousPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["fei_bonus_pp.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="41" width="535" height="10" uuid="2f29e07a-8c0b-4db4-a0d8-9f6c18143f83"/>
+				<subreportParameter name="idPersonnel">
+					<subreportParameterExpression><![CDATA[$P{idPersonnel}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idPeriode">
+					<subreportParameterExpression><![CDATA[$P{idPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idSousPeriode">
+					<subreportParameterExpression><![CDATA[$P{idSousPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["fei_resultat_qntif_departement.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="54" width="535" height="10" uuid="ee401310-54cf-474a-b857-a45e1a7691de"/>
+				<subreportParameter name="idPersonnel">
+					<subreportParameterExpression><![CDATA[$P{idPersonnel}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idPeriode">
+					<subreportParameterExpression><![CDATA[$P{idPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idSousPeriode">
+					<subreportParameterExpression><![CDATA[$P{idSousPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["fei_resultat_qualitatif_departement.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="1" y="67" width="535" height="9" uuid="0bad56da-ed97-4cff-bd26-d822e319c7c0"/>
+				<subreportParameter name="idPersonnel">
+					<subreportParameterExpression><![CDATA[$P{idPersonnel}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idPeriode">
+					<subreportParameterExpression><![CDATA[$P{idPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idSousPeriode">
+					<subreportParameterExpression><![CDATA[$P{idSousPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["fei_bonus_revenu_departement.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="80" width="536" height="10" uuid="e3b3ba95-178b-4761-8755-0a0fd5230b24"/>
+				<subreportParameter name="idPersonnel">
+					<subreportParameterExpression><![CDATA[$P{idPersonnel}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idPeriode">
+					<subreportParameterExpression><![CDATA[$P{idPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idSousPeriode">
+					<subreportParameterExpression><![CDATA[$P{idSousPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["fei_performance_individuelle.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="93" width="535" height="10" uuid="4aca8f53-27cc-4961-a901-a72c669ef914"/>
+				<subreportParameter name="idPersonnel">
+					<subreportParameterExpression><![CDATA[$P{idPersonnel}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idPeriode">
+					<subreportParameterExpression><![CDATA[$P{idPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idSousPeriode">
+					<subreportParameterExpression><![CDATA[$P{idSousPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["fei_cni_heure_perdues.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="106" width="535" height="10" uuid="4848f66a-19e8-496e-b11f-5015f0c3bae3"/>
+				<subreportParameter name="idPersonnel">
+					<subreportParameterExpression><![CDATA[$P{idPersonnel}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idPeriode">
+					<subreportParameterExpression><![CDATA[$P{idPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idSousPeriode">
+					<subreportParameterExpression><![CDATA[$P{idSousPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["fei_cni_penalite_departement.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="119" width="535" height="10" uuid="e7d9584f-44ed-4a2c-9d45-b6b505ec32bd"/>
+				<subreportParameter name="idPersonnel">
+					<subreportParameterExpression><![CDATA[$P{idPersonnel}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idPeriode">
+					<subreportParameterExpression><![CDATA[$P{idPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idSousPeriode">
+					<subreportParameterExpression><![CDATA[$P{idSousPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["fei_cni_penalite_personnel.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="1" y="133" width="534" height="10" uuid="8136a2b0-12e9-4fe7-a735-ba19ba44d082"/>
+				<subreportParameter name="idPersonnel">
+					<subreportParameterExpression><![CDATA[$P{idPersonnel}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idPeriode">
+					<subreportParameterExpression><![CDATA[$P{idPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idSousPeriode">
+					<subreportParameterExpression><![CDATA[$P{idSousPeriode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["fei_synthese.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

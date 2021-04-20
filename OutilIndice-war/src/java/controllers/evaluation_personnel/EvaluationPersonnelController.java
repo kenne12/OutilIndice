@@ -35,13 +35,16 @@ import entities.Sousperiode;
 import entities.TypeSousPeriode;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 import utils.MappingResultat;
+import utils.Printer;
 import utils.SessionMBean;
 import utils.Utilitaires;
 
@@ -116,11 +119,13 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
 
     public void filterData() {
         notes.clear();
+        statePrintBtn = false;
         if (sousperiode.getIdsousperiode() > 0) {
             notes = noteFacadeLocal.findByIdSousPeriode(SessionMBean.getStructure().getIdstructure(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
         }
 
         if (notes.isEmpty()) {
+            statePrintBtn = true;
             JsfUtil.addWarningMessage("Aucune donnée trouvée");
         }
     }
@@ -788,6 +793,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
 
     public void delete(Note n) {
         try {
+            ut.begin();
             evaluationpersonnelFacadeLocal.deleteData(n.getIdnote());
             lignePenalitePersonnelFacadeLocal.deleteByIdNote(n.getIdnote());
             evaluationPenalitePersonnelFacade.deleteByIdNote(n.getIdnote());
@@ -804,8 +810,8 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
             if (sousperiode.getIdsousperiode() > 0) {
                 notes = noteFacadeLocal.findByIdSousPeriode(SessionMBean.getStructure().getIdstructure(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
             }
+            ut.commit();
             JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
-
         } catch (Exception e) {
             e.printStackTrace();
             JsfUtil.addFatalErrorMessage("Exception");
@@ -981,5 +987,37 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
         criter8 = Utilitaires.findCritereInSession(8) != null;
         criter9 = Utilitaires.findCritereInSession(9) != null;
         criter10 = Utilitaires.findCritereInSession(10) != null;
+    }
+
+    public void printFiche(Note item, String option) {
+        try {
+            Map parameter = new HashMap();
+            parameter.put("idPersonnel", item.getIdpersonnel().getIdpersonnel());
+            parameter.put("idPeriode", item.getIdperiode().getIdperiode());
+            parameter.put("idSousPeriode", item.getIdsousperiode().getIdsousperiode());
+            if (option.equals("pdf")) {
+                Printer.print("/report/fiche_evaluation_individuelle.jasper", parameter);
+            } else {
+                Printer.DOCX("/report/fiche_evaluation_individuelle.jasper", parameter);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void printRapport(String option) {
+        try {
+            Map parameter = new HashMap();
+            parameter.put("idStructure", SessionMBean.getStructure().getIdstructure());
+            parameter.put("idPeriode", SessionMBean.getPeriode().getIdperiode());
+            parameter.put("idSousPeriode", sousperiode.getIdsousperiode());
+            if (option.equals("pdf")) {
+                Printer.print("/report/rapport_evaluation.jasper", parameter);
+            } else {
+                Printer.DOCX("/report/rapport_evaluation.jasper", parameter);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

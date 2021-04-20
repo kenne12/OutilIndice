@@ -3,11 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-war/src/java/controllers/prime/AbstractPrimeController.java</file>
-            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-war/web/operation/partage/Create.xhtml</file>
             <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-war/src/java/controllers/evaluation_personnel/EvaluationPersonnelController.java</file>
-            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-war/src/java/controllers/prime/PrimeController.java</file>
             <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-war/web/operation/evaluation_personnel/Create.xhtml</file>
+            <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-war/web/operation/r_bonus_revenu_dept/Create.xhtml</file>
             <file>file:/D:/batrapi%20projet%20jee/OutilIndice/OutilIndice-war/src/java/langues/langue_fr.properties</file>
         </group>
     </open-files>

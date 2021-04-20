@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fei_bonus_responsabilite" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="42d54669-e834-4df0-859a-c7447011b743">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idPeriode" class="java.lang.Integer"/>
+	<parameter name="idSousPeriode" class="java.lang.Integer"/>
+	<parameter name="idPersonnel" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[SELECT
+     evaluationresponsabilite."point" AS evaluationresponsabilite_point,
+     evaluationresponsabilite."pointmax" AS evaluationresponsabilite_pointmax,
+     critere."nom" AS critere_nom,
+     critere."code" AS critere_code,
+     evaluationresponsabilite."ratio" AS evaluationresponsabilite_ratio
+FROM
+     "public"."critere" critere INNER JOIN "public"."evaluationresponsabilite" evaluationresponsabilite ON critere."idcritere" = evaluationresponsabilite."idcritere"
+     INNER JOIN "public"."note" note ON evaluationresponsabilite."idnote" = note."idnote"
+WHERE
+     note.idpersonnel = $P{idPersonnel}
+ AND note.idperiode = $P{idPeriode}
+ AND note.idsousperiode = $P{idSousPeriode}
+ AND evaluationresponsabilite.idcritere = 1]]>
+	</queryString>
+	<field name="evaluationresponsabilite_point" class="java.lang.Double"/>
+	<field name="evaluationresponsabilite_pointmax" class="java.lang.Double"/>
+	<field name="critere_nom" class="java.lang.String"/>
+	<field name="critere_code" class="java.lang.String"/>
+	<field name="evaluationresponsabilite_ratio" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="93" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="376" height="20" uuid="17ff5061-7bd9-44a3-be3a-326915b41172"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{critere_nom}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="30" width="86" height="20" uuid="7dc80d47-083a-4655-8787-f17b077220ff"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Point Max]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="86" y="30" width="81" height="20" uuid="fb8f64e2-8c0d-4522-9efa-86b609dd7f99"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{evaluationresponsabilite_pointmax}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="50" width="86" height="20" uuid="b1d4f02d-7432-4685-abfd-fc777e071316"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Score (%)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="70" width="86" height="20" uuid="85cba638-7ded-4b0e-80c4-742c7cf31a4c"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Point Obtenus]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="86" y="70" width="81" height="20" uuid="5b4361b3-14cc-4d62-8db2-338d62f3fee5"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{evaluationresponsabilite_point}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="86" y="50" width="81" height="20" uuid="0820d799-4f5d-4694-8393-0053f34b7770"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{evaluationresponsabilite_ratio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

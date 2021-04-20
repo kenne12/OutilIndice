@@ -49,9 +49,10 @@
                                 <f:selectItems value="#{evaluationPersonnelController.sousperiodes}" var="item" itemLabel="#{item.nom}" itemValue="#{item.idsousperiode}" />
                                 <p:ajax update="EvaluationListerForm,:NotifZone" listener="#{evaluationPersonnelController.filterData()}" />
                             </h:selectOneMenu>
-
+                            
+                            <p:commandButton icon="ui-icon-print" id="print_btn_pdf" disabled="#{evaluationPersonnelController.statePrintBtn}" value="PDF" style="margin-left: 3px" ajax="false" actionListener="#{evaluationPersonnelController.printRapport('pdf')}" />
                         </div>
-                        
+
                         <br/>
 
                         <div class="table-responsive">
@@ -59,11 +60,11 @@
                             <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>                                        
-                                        <th style="width: 55%">#{langue.personnel}</th>
+                                        <th style="width: 50%">#{langue.personnel}</th>
                                         <th style="width: 10%">Incitation + </th>
                                         <th style="width: 10%">Incitation - </th>
                                         <th style="width: 10%">Point Total</th>
-                                        <th style="width: 15%">#{langue['common.action']}</th>
+                                        <th style="width: 20%">#{langue['common.action']}</th>
                                     </tr>
                                 </thead>
 
@@ -89,6 +90,8 @@
                                                                message="#{langue['dialog.confirmation_suppression']}"
                                                                icon="ui-icon-alert"/>
                                                 </p:commandButton>
+
+                                                <p:commandButton icon="ui-icon-print" value="P" style="margin-left: 3px" ajax="false" actionListener="#{evaluationPersonnelController.printFiche(item , 'pdf')}" />
                                             </td>
                                         </tr>
                                     </ui:repeat>

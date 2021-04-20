@@ -13,11 +13,14 @@ import entities.Prime;
 import entities.Sousperiode;
 import entities.TypeSousPeriode;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
+import utils.Printer;
 import utils.SessionMBean;
 
 /**
@@ -52,12 +55,14 @@ public class PrimeController extends AbstractPrimeController implements Serializ
 
     public void filterData() {
         primes.clear();
+        stateBtn = false;
         if (sousperiode.getIdsousperiode() > 0) {
             primes = primeFacadeLocal.findByIdSousPeriode(SessionMBean.getStructure().getIdstructure(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
         }
 
-        if (notes.isEmpty()) {
-            JsfUtil.addWarningMessage("Aucune");
+        if (primes.isEmpty()) {
+            stateBtn = true;
+            JsfUtil.addWarningMessage("Aucune information rétrouvée");
         }
     }
 
@@ -244,6 +249,22 @@ public class PrimeController extends AbstractPrimeController implements Serializ
             resultat += dsc.getNote();
         }
         return resultat;
+    }
+
+    public void printRapport(String option) {
+        try {
+            Map parameter = new HashMap();
+            parameter.put("idStructure", SessionMBean.getStructure().getIdstructure());
+            parameter.put("idPeriode", SessionMBean.getPeriode().getIdperiode());
+            parameter.put("idSousPeriode", sousperiode.getIdsousperiode());
+            if (option.equals("pdf")) {
+                Printer.print("/report/rapport_prime.jasper", parameter);
+            } else {
+                Printer.DOCX("/report/rapport_prime.jasper", parameter);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

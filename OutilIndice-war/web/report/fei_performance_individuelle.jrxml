@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fei_performance_individuelle" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="03c531c6-9d28-4d0a-8e6b-e55ea649872a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idPersonnel" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idPeriode" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idSousPeriode" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     evaluationpersonnel."note" AS evaluationpersonnel_note,
+     evaluationpersonnel."pointmaxindice" AS evaluationpersonnel_pointmaxindice,
+     souscritere."nom" AS souscritere_nom,
+     souscritere."code" AS souscritere_code,
+     critere."nom" AS critere_nom,
+     detailsc."point_max" AS detailsc_point_max,
+     note."pointpindiv" AS note_pointpindiv,
+     note."scorepindiv" AS note_scorepindiv,
+     souscritere."idsouscritere" AS souscritere_idsouscritere,
+     note."pointmaxpi" AS note_pointmaxpi
+FROM
+     "public"."detailsc" detailsc INNER JOIN "public"."evaluationpersonnel" evaluationpersonnel ON detailsc."iddetailsc" = evaluationpersonnel."iddetailsc"
+     INNER JOIN "public"."souscritere" souscritere ON detailsc."idsouscritere" = souscritere."idsouscritere"
+     INNER JOIN "public"."critere" critere ON souscritere."idcritere" = critere."idcritere"
+     INNER JOIN "public"."note" note ON evaluationpersonnel."idnote" = note."idnote"
+WHERE
+     note.idpersonnel = $P{idPersonnel}
+ AND note.idperiode = $P{idPeriode}
+ AND note.idsousperiode = $P{idSousPeriode}
+ORDER BY
+     souscritere.idsouscritere ASC]]>
+	</queryString>
+	<field name="evaluationpersonnel_note" class="java.lang.Double"/>
+	<field name="evaluationpersonnel_pointmaxindice" class="java.lang.Double"/>
+	<field name="souscritere_nom" class="java.lang.String"/>
+	<field name="souscritere_code" class="java.lang.String"/>
+	<field name="critere_nom" class="java.lang.String"/>
+	<field name="detailsc_point_max" class="java.lang.Double"/>
+	<field name="note_pointpindiv" class="java.lang.Double"/>
+	<field name="note_scorepindiv" class="java.lang.Double"/>
+	<field name="souscritere_idsouscritere" class="java.lang.Integer"/>
+	<field name="note_pointmaxpi" class="java.lang.Double"/>
+	<variable name="detailsc_point_max_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{detailsc_point_max}]]></variableExpression>
+	</variable>
+	<variable name="evaluationpersonnel_note_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{evaluationpersonnel_note}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="89" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="487" height="20" uuid="8a54a67d-9120-4993-b08d-795c71af56b3"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{critere_nom}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="125" y="25" width="73" height="20" uuid="e838c298-792b-48aa-b9a4-0413356c80d5"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_pointmaxpi}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="125" y="65" width="73" height="20" uuid="f8f95a18-a624-4edb-b73c-4e58216c92fd"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_pointpindiv}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="125" y="45" width="73" height="20" uuid="ba083737-c0c3-443e-9532-589590e1ba4c"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_scorepindiv}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="25" width="125" height="20" uuid="c82177f7-342b-4af6-bf79-88f14c747299"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Point Max]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="45" width="125" height="20" uuid="5ec8cf94-974d-4bda-948d-badad85df454"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Score obténu]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="65" width="125" height="20" uuid="972d9769-7334-4987-be4f-d29a135b564b"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Point obténu]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="287" height="26" uuid="bbdf7f43-c194-47af-bb89-e92728937900"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Sous - critères]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="0" width="51" height="26" uuid="682a0920-be1c-4591-bf5d-9449ae6c55ed"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Point
+Max]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="338" y="0" width="49" height="26" uuid="ced6bb7e-626a-4b05-8dc5-8cbec68ceaa2"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Note]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="0" width="287" height="25" uuid="6a8e4331-8cd3-4e6c-8194-286c26692ddd"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{souscritere_idsouscritere}+" - "+$F{souscritere_nom}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0">
+				<reportElement x="287" y="0" width="51" height="25" uuid="78fe3313-9a4d-4643-a952-66770708ae70"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detailsc_point_max}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0">
+				<reportElement x="338" y="0" width="49" height="25" uuid="c6a5ad40-1f40-4f5c-a034-a8a4b06e3eb7"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{evaluationpersonnel_note}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="287" height="20" uuid="335cb52d-4597-4024-81c4-a89a2aed0d83"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Totaux]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="287" y="0" width="51" height="20" uuid="1bfeec11-2347-4487-bd67-a6bb50a4f835"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{detailsc_point_max_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="338" y="0" width="49" height="20" uuid="146fcfb1-5bb7-41ac-abc7-b44e8ee2ceac"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{evaluationpersonnel_note_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

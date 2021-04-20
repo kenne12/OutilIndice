@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fei_cni_penalite_personnel" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c5112a40-1198-49fa-a7e9-b5d1af318798">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idPersonnel" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idPeriode" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idSousPeriode" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     evaluationpenalitepersonnel."score" AS evaluationpenalitepersonnel_score,
+     evaluationpenalitepersonnel."cible" AS evaluationpenalitepersonnel_cible,
+     note."penalitepersonnel" AS note_penalitepersonnel,
+     note."pointpenalitepersonnel" AS note_pointpenalitepersonnel,
+     lignepenalitepersonnel."valeur" AS lignepenalitepersonnel_valeur,
+     lignepenalitepersonnel."cible" AS lignepenalitepersonnel_cible,
+     penalite."nom" AS penalite_nom,
+     note."incitationpositif" AS note_incitationpositif
+FROM
+     "public"."note" note INNER JOIN "public"."evaluationpenalitepersonnel" evaluationpenalitepersonnel ON note."idnote" = evaluationpenalitepersonnel."idnote"
+     INNER JOIN "public"."lignepenalitepersonnel" lignepenalitepersonnel ON evaluationpenalitepersonnel."idevaluationpenalitepersonnel" = lignepenalitepersonnel."idevaluationpenalitepersonnel"
+     INNER JOIN "public"."penalite" penalite ON lignepenalitepersonnel."idpenalite" = penalite."idpenalite"
+WHERE
+     note.idpersonnel = $P{idPersonnel}
+ AND note.idperiode = $P{idPeriode}
+ AND note.idsousperiode = $P{idSousPeriode}]]>
+	</queryString>
+	<field name="evaluationpenalitepersonnel_score" class="java.lang.Integer"/>
+	<field name="evaluationpenalitepersonnel_cible" class="java.lang.Integer"/>
+	<field name="note_penalitepersonnel" class="java.lang.Double"/>
+	<field name="note_pointpenalitepersonnel" class="java.lang.Double"/>
+	<field name="lignepenalitepersonnel_valeur" class="java.lang.Integer"/>
+	<field name="lignepenalitepersonnel_cible" class="java.lang.Integer"/>
+	<field name="penalite_nom" class="java.lang.String"/>
+	<field name="note_incitationpositif" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="98" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="49" width="100" height="20" uuid="d0140587-f767-4484-940d-0e50fb793dac"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Incitattion positifs]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="69" width="100" height="20" uuid="b728906b-feed-4f67-9a59-072dfc4550ad"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Points soustraits]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="29" width="100" height="20" uuid="bf77f106-fec0-4239-b6ec-fb0ad1b4f1e7"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Pourcentage]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="100" y="29" width="63" height="20" uuid="27bc599f-a1a1-4ac1-b879-bb993aea426a"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{evaluationpenalitepersonnel_score}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="100" y="69" width="63" height="20" uuid="57d1965d-4ef3-4390-99f1-065955492bf6"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_pointpenalitepersonnel}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="100" y="49" width="63" height="20" uuid="154bb6b1-8754-468d-a71b-a725239d1216"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note_incitationpositif}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="287" height="22" uuid="ab0f2ba0-1e4a-4a12-90ea-c6243d983b6a"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Pénalité]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="0" width="83" height="22" uuid="9d6793f8-2e83-4ff7-b574-b90e848a92bd"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Pourcentage]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="287" height="20" uuid="58adf4fc-9969-467b-adbd-1af8e1c802bb"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{penalite_nom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="287" y="0" width="83" height="20" uuid="267918ca-68f6-4e9b-a737-d93bc5df2be0"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lignepenalitepersonnel_valeur}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -199,6 +199,7 @@ public class AbstractEvaluationPersonnel {
 
     protected String mode = "";
     protected String message = "";
+    protected boolean statePrintBtn = true;
 
     protected boolean criter1 = false;
     protected boolean criter2 = false;
@@ -490,4 +491,7 @@ public class AbstractEvaluationPersonnel {
         return stateBtn;
     }
 
+    public boolean isStatePrintBtn() {
+        return statePrintBtn;
+    }
 }

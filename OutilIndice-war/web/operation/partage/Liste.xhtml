@@ -46,9 +46,10 @@
                             <h:selectOneMenu id="sous_periode" class="form-control" value="#{primeController.sousperiode.idsousperiode}">
                                 <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
                                 <f:selectItems value="#{primeController.sousperiodes}" var="item" itemLabel="#{item.nom}" itemValue="#{item.idsousperiode}" />
-                                <p:ajax update="PrimeListerForm,:NotifZone" listener="#{primeController.filterData()}" />
+                                <p:ajax update="PrimeListerForm,:NotifZone,print_btn_pdf" listener="#{primeController.filterData()}" />
                             </h:selectOneMenu>
-
+                            
+                            <p:commandButton icon="ui-icon-print" id="print_btn_pdf" disabled="#{primeController.stateBtn}" value="PDF" style="margin-left: 3px" ajax="false" actionListener="#{primeController.printRapport('pdf')}" />
                         </div>
                         
                         <br/>

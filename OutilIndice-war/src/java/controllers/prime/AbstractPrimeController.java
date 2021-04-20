@@ -70,6 +70,8 @@ public class AbstractPrimeController {
     protected double totalPoint = 0;
     protected double indice = 0;
 
+    protected boolean stateBtn = true;
+
     public Routine getRoutine() {
         return routine;
     }
@@ -166,4 +168,7 @@ public class AbstractPrimeController {
         return indice;
     }
 
+    public boolean isStateBtn() {
+        return stateBtn;
+    }
 }
