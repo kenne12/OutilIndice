@@ -253,7 +253,7 @@
                                 <div class="panel-footer">
                                     <div class="row form-inline" jsf:id="detail_prime_qnt_dept">
                                         &nbsp;&nbsp;&nbsp;<label>#{langue.point_max}&nbsp;</label>
-                                        <h:inputText disabled="true" class="form-control" value="#{evaluationPersonnelController.parametragecriterePrqn.point}" />&nbsp;
+                                        <h:inputText disabled="true" class="form-control" value="#{evaluationPersonnelController.note.pointMaxRQntif}" />&nbsp;
 
                                         <label>% Obtenu &nbsp;</label>
                                         <h:inputText disabled="true" class="form-control" value="#{evaluationPersonnelController.note.poucentageRQntif}" >
@@ -312,7 +312,7 @@
                                     <div  class="row">
                                         <div class="form-group col-md-2">
                                             <label>#{langue.point_max}</label>
-                                            <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.parametragecritereBrd.point}" >
+                                            <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.note.pointMaxBrd}" >
                                                 <f:convertNumber />
                                             </h:inputText>
                                         </div>
@@ -414,25 +414,23 @@
                                             <p:row>
                                                 <p:column style="text-align:right" footerText="#{langue.totaux}" />
                                                 <p:column style="text-align:center" footerText="#{evaluationPersonnelController.totalPointPi}" />
-                                                <p:column style="text-align:center" footerText="#{evaluationPersonnelController.notePi}" />   
+                                                <p:column style="text-align:center" footerText="#{evaluationPersonnelController.note.notePi}" />   
                                                 <p:column colspan="2" style="text-align:center" footerText=" / " /> 
                                             </p:row>
                                         </p:columnGroup>
-
                                     </p:dataTable>
-
                                 </div>
 
                                 <div class="panel-footer">
                                     <div class="row form-inline" jsf:id="detail_pi">
                                         &nbsp;&nbsp;&nbsp;<label>#{langue.point_max} : &nbsp;</label>
-                                        <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.parametragecritere.point}" />&nbsp;
+                                        <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.note.pointMaxPi}" />&nbsp;
 
                                         <label>#{langue.score_obtenu} (%) : &nbsp;</label>
-                                        <h:inputText id="score_pi" class="form-control" value="#{evaluationPersonnelController.scorePi}" readonly="true" required="false" />&nbsp;
+                                        <h:inputText id="score_pi" class="form-control" value="#{evaluationPersonnelController.note.scorePIndiv}" readonly="true" required="false" />&nbsp;
 
                                         <label>#{langue.points} : &nbsp;</label>
-                                        <h:inputText id="point_pi" class="form-control" value="#{evaluationPersonnelController.pointPi}" readonly="true" required="false" />
+                                        <h:inputText id="point_pi" class="form-control" value="#{evaluationPersonnelController.note.pointPIndiv}" readonly="true" required="false" />
                                     </div>
                                 </div>
                             </div>
@@ -544,7 +542,7 @@
                                                 <h:outputText value="Etat"/>
                                             </f:facet>
                                             <h:selectBooleanCheckbox value="#{item.etat}">
-                                                <p:ajax update="datalist_penalite,:EvaluationCreateForm:detail_cni_pi,:EvaluationCreateForm:id_total_incitation" listener="#{evaluationPersonnelController.updateValue(item)}" />
+                                                <p:ajax update="datalist_penalite,:EvaluationCreateForm:detail_cni_pi,:EvaluationCreateForm:id_total_incitation" listener="#{evaluationPersonnelController.updateValue(index , item)}" />
                                             </h:selectBooleanCheckbox>
                                         </p:column>
 
@@ -576,11 +574,12 @@
 
                         <div class="row col-md-12 form-inline" jsf:id="id_total_incitation">
                             <label> Total Incitation Positif : &nbsp; </label>
-                            <h:inputText class="form-control" value="#{evaluationPersonnelController.totalPIncitationPositif}" readonly="true" disabled="true" />
+                            <h:inputText class="form-control" value="#{evaluationPersonnelController.note.incitationPositif}" readonly="true" disabled="true" />
                             <label> Total Incitation Négatif : &nbsp; </label>
-                            <h:inputText class="form-control" value="#{evaluationPersonnelController.totalPIncitationNegatif}" readonly="true" disabled="true" />&nbsp;
+                            <h:inputText class="form-control" value="#{evaluationPersonnelController.note.incitationNegatif}" readonly="true" disabled="true" />&nbsp;
                             <p:commandButton icon="ui-icon-refresh" update=":EvaluationCreateForm:detail_cni_pi,:EvaluationCreateForm:detail_cni_pdept,id_total_incitation" value="#{langue.actualiser}" onclick="#{evaluationPersonnelController.calculFinal()}" />
                         </div>
+                        <br/>
                         <p:separator style="width: 100%;margin-left: 0%" />
 
                         <center>

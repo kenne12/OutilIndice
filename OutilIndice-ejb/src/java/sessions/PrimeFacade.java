@@ -53,4 +53,11 @@ public class PrimeFacade extends AbstractFacade<Prime> implements PrimeFacadeLoc
         return query.getResultList();
     }
 
+    @Override
+    public void deleteByIdNote(long idNote) {
+        Query query = em.createQuery("DELETE FROM Prime p WHERE p.idnote.idnote=:idNote");
+        query.setParameter("idNote", idNote);
+        query.executeUpdate();
+    }
+
 }

@@ -34,4 +34,6 @@ public interface PrimeFacadeLocal {
 
     List<Prime> findByIdSousPeriode(long idStructure, int idPeriode, int idSousPeriode);
 
+    void deleteByIdNote(long idNote);
+
 }

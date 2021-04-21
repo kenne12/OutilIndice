@@ -82,8 +82,8 @@ public class Note implements Serializable {
     private double scoreBrd;
     @Column(name = "pointmaxpi")
     private double pointMaxPi;
-    @Column(name = "ratiopi")
-    private double ratioPi;
+    @Column(name = "notepi")
+    private double notePi;
     @JoinColumn(name = "idperiode", referencedColumnName = "idperiode")
     @ManyToOne(fetch = FetchType.LAZY)
     private Periode idperiode;
@@ -277,12 +277,12 @@ public class Note implements Serializable {
         this.pointMaxPi = pointMaxPi;
     }
 
-    public double getRatioPi() {
-        return ratioPi;
+    public double getNotePi() {
+        return notePi;
     }
 
-    public void setRatioPi(double ratioPi) {
-        this.ratioPi = ratioPi;
+    public void setNotePi(double notePi) {
+        this.notePi = notePi;
     }
 
     public Periode getIdperiode() {

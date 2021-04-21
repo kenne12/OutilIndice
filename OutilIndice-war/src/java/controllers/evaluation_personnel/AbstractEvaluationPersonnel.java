@@ -53,6 +53,7 @@ import sessions.ParametragePenaliteFacadeLocal;
 import sessions.ParametragecritereFacadeLocal;
 import sessions.PenaliteFacadeLocal;
 import sessions.PersonnelFacadeLocal;
+import sessions.PrimeFacadeLocal;
 import sessions.SousperiodeFacadeLocal;
 import sessions.StructureFacadeLocal;
 import sessions.TypeSousPeriodeFacadeLocal;
@@ -173,6 +174,9 @@ public class AbstractEvaluationPersonnel {
     protected NoteFacadeLocal noteFacadeLocal;
     protected Note note = new Note();
     protected List<Note> notes = new ArrayList<>();
+    
+    @EJB
+    protected PrimeFacadeLocal primeFacadeLocal;
 
     protected List<Critere> criteres = SessionMBean.getCriteres();
 
@@ -182,18 +186,10 @@ public class AbstractEvaluationPersonnel {
     protected Routine routine = new Routine();
 
     protected double totalPointPi;
-    protected double percentagePi;
-
-    protected double notePi = 0;
-    protected double scorePi = 0;
-    protected double pointPi = 0;
 
     protected double ratioPrqnt = 0;
     protected double ciblePrqnt = 0;
     protected double realisationPrqnt = 0;
-
-    protected double totalPIncitationPositif = 0;
-    protected double totalPIncitationNegatif = 0;
 
     protected List<MappingResultat> mappingResultats = new ArrayList<>();
 
@@ -297,10 +293,6 @@ public class AbstractEvaluationPersonnel {
 
     public Parametragecritere getParametragecritere() {
         return parametragecritere;
-    }
-
-    public double getPercentagePi() {
-        return percentagePi;
     }
 
     public double getTotalPointPi() {
@@ -453,26 +445,6 @@ public class AbstractEvaluationPersonnel {
 
     public void setSelectedPenalites(List<Penalite> selectedPenalites) {
         this.selectedPenalites = selectedPenalites;
-    }
-
-    public double getScorePi() {
-        return scorePi;
-    }
-
-    public double getPointPi() {
-        return pointPi;
-    }
-
-    public double getNotePi() {
-        return notePi;
-    }
-
-    public double getTotalPIncitationPositif() {
-        return totalPIncitationPositif;
-    }
-
-    public double getTotalPIncitationNegatif() {
-        return totalPIncitationNegatif;
     }
 
     public TypeSousPeriode getTypeSousPeriode() {
