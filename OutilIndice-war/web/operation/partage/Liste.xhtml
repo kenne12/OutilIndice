@@ -23,6 +23,13 @@
                     <div style="color: white" class="panel-heading bg-success">
                         #{langue.donnee_evaluation}
 
+                        <p:commandButton update=":PrimeListerForm,:notify1"                                         
+                                         icon="ui-icon-check"
+                                         style="float: right"
+                                         value="#{langue['common.valider']}"
+                                         disabled="#{primeController.validBtn}"
+                                         actionListener="#{primeController.validate()}"/>
+                        
                         <p:commandButton update=":PrimeCreateForm,:notify1"                                         
                                          icon="ui-icon-plus"
                                          style="float: right"
@@ -73,10 +80,7 @@
                                             <td> <h:outputLabel value="#{item.point}"><f:convertNumber pattern="0.00" />   </h:outputLabel>  </td>
                                             <td><h:outputLabel value="#{item.montant}"><f:convertNumber /> </h:outputLabel>  </td>
                                             <td>                                        
-                                                <p:commandButton icon="ui-icon-search" update=":ViewEditForm"
-                                                                 class="btn btn-success btn-sm"
-                                                                 actionListener="#{primeController.prepareView(item)}"/>
-
+                                                
                                             </td>
                                         </tr>
                                     </ui:repeat>

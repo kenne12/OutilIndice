@@ -21,6 +21,10 @@
 
                 <p:outputLabel style="color: red ; font-size: 17px" id="error_msg" value="#{evaluationPersonnelController.message}" />
 
+                <div class="row">
+                    <p:growl id="grow_msg_cr" />
+                </div>
+
                 <div class="col-md-12">
 
                     <h:panelGroup id="display">
@@ -53,7 +57,7 @@
                                                  value="#{evaluationPersonnelController.sousperiode.idsousperiode}">
                                     <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
                                     <f:selectItems value="#{evaluationPersonnelController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
-                                    <p:ajax update="display,:NotifZone" listener="#{evaluationPersonnelController.updateEvaluationData()}"/>
+                                    <p:ajax update="display,:NotifZone,:EvaluationCreateForm:grow_msg_cr" listener="#{evaluationPersonnelController.updateEvaluationData()}"/>
                                 </h:selectOneMenu>                                                
                             </div>
                         </div>

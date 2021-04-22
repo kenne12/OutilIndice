@@ -22,13 +22,20 @@
                 <div class="panel panel-success">
                     <div style="color: white" class="panel-heading">
                         #{langue.donnee_evaluation}
+                        
+                        <p:commandButton update=":EvaluationCreateForm,:notify1"                                         
+                                         icon="ui-icon-check"
+                                         style="float: right"
+                                         value="#{langue['common.valider']}"
+                                         disabled="#{evaluationPersonnelController.validBtn}"
+                                         actionListener="#{evaluationPersonnelController.validate()}"/>
 
                         <p:commandButton update=":EvaluationCreateForm,:notify1"                                         
                                          icon="ui-icon-plus"
                                          style="float: right"
                                          value="#{langue['common.ajouter']}"
                                          disabled="#{evaluationPersonnelController.stateBtn}"
-                                         actionListener="#{evaluationPersonnelController.prepareCreate()}"/> 
+                                         actionListener="#{evaluationPersonnelController.prepareCreate()}"/>                                    
                     </div>
 
                     <div class="panel-body">
@@ -60,10 +67,11 @@
                             <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>                                        
-                                        <th style="width: 50%">#{langue.personnel}</th>
+                                        <th style="width: 45%">#{langue.personnel}</th>
                                         <th style="width: 10%">Incitation + </th>
                                         <th style="width: 10%">Incitation - </th>
                                         <th style="width: 10%">Point Total</th>
+                                        <th style="width: 5%">Etat</th>
                                         <th style="width: 20%">#{langue['common.action']}</th>
                                     </tr>
                                 </thead>
@@ -75,7 +83,8 @@
                                             <td> <h:outputText value="#{item.incitationPositif}" ><f:convertNumber /> </h:outputText> </td>
                                             <td><h:outputText value="#{item.incitationNegatif}" ><f:convertNumber /> </h:outputText></td>
                                             <td><h:outputText value="#{item.totalPoint}" ><f:convertNumber /> </h:outputText></td>
-                                            <td>                                        
+                                            <td style="text-align: center"><h:selectBooleanCheckbox disabled="true" value="#{item.etat}" /></td>
+                                            <td style="text-align: center">                                        
                                                 <p:commandButton icon="ui-icon-pencil" update=":EvaluationCreateForm"
                                                                  class="btn btn-success btn-sm"
                                                                  actionListener="#{evaluationPersonnelController.prepareEdit(item)}"/>
@@ -91,7 +100,7 @@
                                                                icon="ui-icon-alert"/>
                                                 </p:commandButton>
 
-                                                <p:commandButton icon="ui-icon-print" value="P" style="margin-left: 3px" ajax="false" actionListener="#{evaluationPersonnelController.printFiche(item , 'pdf')}" />
+                                                <p:commandButton icon="ui-icon-print" style="margin-left: 3px" ajax="false" actionListener="#{evaluationPersonnelController.printFiche(item , 'pdf')}" />
                                             </td>
                                         </tr>
                                     </ui:repeat>

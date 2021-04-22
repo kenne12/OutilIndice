@@ -84,6 +84,7 @@ public class Note implements Serializable {
     private double pointMaxPi;
     @Column(name = "notepi")
     private double notePi;
+    private boolean etat;
     @JoinColumn(name = "idperiode", referencedColumnName = "idperiode")
     @ManyToOne(fetch = FetchType.LAZY)
     private Periode idperiode;
@@ -323,6 +324,14 @@ public class Note implements Serializable {
 
     public void setScorePrQltif(double scorePrQltif) {
         this.scorePrQltif = scorePrQltif;
+    }
+
+    public boolean isEtat() {
+        return etat;
+    }
+
+    public void setEtat(boolean etat) {
+        this.etat = etat;
     }
 
     @Override

@@ -163,7 +163,7 @@ public class AbstractEvaluationPersonnel {
 
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
-    protected Structure structure = SessionMBean.getStructure();
+    protected final Structure structure = SessionMBean.getStructure();
 
     @EJB
     protected TypeSousPeriodeFacadeLocal typeSousPeriodeFacadeLocal;
@@ -174,7 +174,7 @@ public class AbstractEvaluationPersonnel {
     protected NoteFacadeLocal noteFacadeLocal;
     protected Note note = new Note();
     protected List<Note> notes = new ArrayList<>();
-    
+
     @EJB
     protected PrimeFacadeLocal primeFacadeLocal;
 
@@ -209,6 +209,7 @@ public class AbstractEvaluationPersonnel {
     protected boolean criter10 = false;
 
     protected boolean stateBtn = true;
+    protected boolean validBtn = true;
 
     public Routine getRoutine() {
         return routine;
@@ -220,10 +221,6 @@ public class AbstractEvaluationPersonnel {
 
     public Structure getStructure() {
         return structure;
-    }
-
-    public void setStructure(Structure structure) {
-        this.structure = structure;
     }
 
     public List<Detailsc> getListDetailsc() {
@@ -466,4 +463,9 @@ public class AbstractEvaluationPersonnel {
     public boolean isStatePrintBtn() {
         return statePrintBtn;
     }
+
+    public boolean isValidBtn() {
+        return validBtn;
+    }
+
 }

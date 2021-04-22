@@ -7,7 +7,6 @@ package controllers.prime;
 
 import controllers.util.JsfUtil;
 import entities.Depense;
-import entities.Evaluationpersonnel;
 import entities.Note;
 import entities.Prime;
 import entities.Sousperiode;
@@ -56,41 +55,19 @@ public class PrimeController extends AbstractPrimeController implements Serializ
     public void filterData() {
         primes.clear();
         stateBtn = false;
+        validBtn = true;
         if (sousperiode.getIdsousperiode() > 0) {
             primes = primeFacadeLocal.findByIdSousPeriode(SessionMBean.getStructure().getIdstructure(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
+
+            if (primes.isEmpty()) {
+                stateBtn = true;
+                validBtn = true;
+                JsfUtil.addWarningMessage("Aucune information rétrouvée");
+            }
         }
-
-        if (primes.isEmpty()) {
-            stateBtn = true;
-            JsfUtil.addWarningMessage("Aucune information rétrouvée");
-        }
-    }
-
-    public void prepareEdit(Note n) {
-        this.sousperiode = n.getIdsousperiode();
-        mode = "Edit";
-        message = "";
-        this.updateFiltre();
-        RequestContext.getCurrentInstance().execute("PF('PrimeCreateDialog').show()");
-    }
-
-    public void prepareView(Prime p) {
-        this.prime = p;
-        evaluationpersonnels = evaluationpersonnelFacadeLocal.findByPersonnel(p.getIdpersonnel().getIdpersonnel(), p.getIdperiode().getIdperiode(), p.getIdsousperiode().getIdsousperiode());
-        RequestContext.getCurrentInstance().execute("PF('ViewEditDialog').show()");
-    }
-
-    public void closeDetail() {
-        evaluationpersonnels.clear();
-        RequestContext.getCurrentInstance().execute("PF('ViewEditDialog').hide()");
-    }
-
-    public void updateFiltre() {
-
     }
 
     public void updateEvaluationData() {
-        evaluationpersonnels.clear();
         this.primes.clear();
         this.selectedNotes.clear();
 
@@ -98,6 +75,12 @@ public class PrimeController extends AbstractPrimeController implements Serializ
             this.notes = noteFacadeLocal.findByIdSousPeriode(SessionMBean.getStructure().getIdstructure(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
             if (this.notes.isEmpty()) {
                 JsfUtil.addWarningMessage("Les personnel n'ont pas été évalués");
+                return;
+            }
+
+            if (!this.notes.get(0).isEtat()) {
+                this.notes.clear();
+                JsfUtil.addWarningMessage("Veuillez valider au préalable le rapport d'évaluation");
                 return;
             }
 
@@ -184,11 +167,6 @@ public class PrimeController extends AbstractPrimeController implements Serializ
         return result;
     }
 
-    public void prepareEditDetail(Prime item) {
-        this.prime = item;
-        RequestContext.getCurrentInstance().execute("PF('DetailEditDialog').show()");
-    }
-
     public void removePrime(int index) {
         Prime item = primes.get(index);
         if (item.getIdprime() != 0 && item.getIdprime() != null) {
@@ -225,30 +203,16 @@ public class PrimeController extends AbstractPrimeController implements Serializ
         }
     }
 
-    public void delete(Note n) {
-        try {
-            if (n != null) {
-                evaluationpersonnelFacadeLocal.deleteData(n.getIdpersonnel().getIdpersonnel(), n.getIdperiode().getIdperiode(), n.getIdsousperiode().getIdsousperiode());
-                noteFacadeLocal.remove(n);
-                JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
-            } else {
-                JsfUtil.addErrorMessage("Aucune ligne seletionnée");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            JsfUtil.addFatalErrorMessage("Exception");
-        }
+    public void validate() {
+        primes.forEach(p -> {
+            p.setEtat(true);
+            primeFacadeLocal.edit(p);
+        });
+        JsfUtil.addSuccessMessage("Opération réussie");
     }
 
-    private double sommeCritere() {
-        if (evaluationpersonnels.isEmpty()) {
-            return 0;
-        }
-        double resultat = 0;
-        for (Evaluationpersonnel dsc : evaluationpersonnels) {
-            resultat += dsc.getNote();
-        }
-        return resultat;
+    public void delete() {
+        JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }
 
     public void printRapport(String option) {

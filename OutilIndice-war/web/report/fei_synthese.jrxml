@@ -26,8 +26,7 @@
      note."pointresponsabilite" AS note_pointresponsabilite,
      note."pointpratiquep" AS note_pointpratiquep,
      note."pointrqltifdept" AS note_pointrqltifdept,
-     note."pointbonusrdept" AS note_pointbonusrdept,
-     note."ratiopi" AS note_ratiopi
+     note."pointbonusrdept" AS note_pointbonusrdept
 FROM
      "public"."note" note
 WHERE
@@ -48,7 +47,6 @@ WHERE
 	<field name="note_pointpratiquep" class="java.lang.Double"/>
 	<field name="note_pointrqltifdept" class="java.lang.Double"/>
 	<field name="note_pointbonusrdept" class="java.lang.Double"/>
-	<field name="note_ratiopi" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

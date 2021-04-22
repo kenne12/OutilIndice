@@ -18,6 +18,10 @@
 
             <h:form id="PrimeCreateForm">
 
+                <div class="row">
+                    <p:growl id="grow_msg_cr" />
+                </div>
+
                 <div class="col-md-12">
 
                     <h:panelGroup id="display">
@@ -39,7 +43,7 @@
                                 <h:selectOneMenu id="sous_periode" class="form-control" value="#{primeController.sousperiode.idsousperiode}">                                                                                       
                                     <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
                                     <f:selectItems value="#{primeController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
-                                    <p:ajax update="grid_critere,datalist,:NotifZone,montant_prime,add_btn,indice" listener="#{primeController.updateEvaluationData()}"/>
+                                    <p:ajax update="grid_critere,datalist,:NotifZone,montant_prime,add_btn,indice,:PrimeCreateForm:grow_msg_cr" listener="#{primeController.updateEvaluationData()}"/>
                                 </h:selectOneMenu>                                                
                             </div>
 
@@ -49,7 +53,7 @@
                                     <f:convertNumber />
                                 </h:inputText>                                               
                             </div>
-                            
+
                             <div class="form-group col-md-2">
                                 <p:outputLabel value="#{langue.indice}" for="indice" />
                                 <h:inputText class="form-control" id="indice" disabled="true" value="#{primeController.indice}" readonly="true" >
@@ -129,7 +133,7 @@
                                     <h:outputText value="Action"/>
                                 </f:facet>
                                 <p:commandButton disabled="true" icon="ui-icon-trash">
-                                    <p:ajax update="datalist,:PrimeCreateForm:add_btn,:PrimeCreateForm:grid_critere" event="click" listener="#{primeController.removePrime(index)}" />
+                                    <p:ajax update="datalist,:PrimeCreateForm:add_btn,:PrimeCreateForm:grid_critere" event="click" disabled="true" listener="#{primeController.removePrime(index)}" />
                                 </p:commandButton>
                             </p:column>
 

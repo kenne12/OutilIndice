@@ -36,11 +36,6 @@ public class AbstractPrimeController {
     protected List<Prime> primes = new ArrayList<>();
 
     @EJB
-    protected EvaluationpersonnelFacadeLocal evaluationpersonnelFacadeLocal;
-    protected Evaluationpersonnel evaluationpersonnel = new Evaluationpersonnel();
-    protected List<Evaluationpersonnel> evaluationpersonnels = new ArrayList<>();
-
-    @EJB
     protected SousperiodeFacadeLocal sousperiodeFacadeLocal;
     protected Sousperiode sousperiode = new Sousperiode();
     protected List<Sousperiode> sousperiodes = new ArrayList<>();
@@ -52,7 +47,7 @@ public class AbstractPrimeController {
 
     @EJB
     protected StructureFacadeLocal structureFacadeLocal;
-    protected Structure structure = SessionMBean.getStructure();
+    protected final Structure structure = SessionMBean.getStructure();
 
     @EJB
     protected NoteFacadeLocal noteFacadeLocal;
@@ -71,6 +66,7 @@ public class AbstractPrimeController {
     protected double indice = 0;
 
     protected boolean stateBtn = true;
+    protected boolean validBtn = true;
 
     public Routine getRoutine() {
         return routine;
@@ -82,10 +78,6 @@ public class AbstractPrimeController {
 
     public Structure getStructure() {
         return structure;
-    }
-
-    public void setStructure(Structure structure) {
-        this.structure = structure;
     }
 
     public String getMessage() {
@@ -102,18 +94,6 @@ public class AbstractPrimeController {
 
     public List<Sousperiode> getSousperiodes() {
         return sousperiodes;
-    }
-
-    public List<Evaluationpersonnel> getEvaluationpersonnels() {
-        return evaluationpersonnels;
-    }
-
-    public Evaluationpersonnel getEvaluationpersonnel() {
-        return evaluationpersonnel;
-    }
-
-    public void setEvaluationpersonnel(Evaluationpersonnel evaluationpersonnel) {
-        this.evaluationpersonnel = evaluationpersonnel;
     }
 
     public List<Note> getNotes() {
@@ -171,4 +151,9 @@ public class AbstractPrimeController {
     public boolean isStateBtn() {
         return stateBtn;
     }
+
+    public boolean isValidBtn() {
+        return validBtn;
+    }
+
 }
