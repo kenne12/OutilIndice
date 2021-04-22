@@ -28,7 +28,7 @@
                         <div class="row">
                             <div class="form-group col-md-4">
                                 <p:outputLabel value="#{langue.personnel}" for="personnel" />
-                                <h:selectOneMenu class="form-control" id="personnel"                                        
+                                <h:selectOneMenu class="form-control" id="personnel" disabled="#{evaluationPersonnelController.mode.equals('Edit')}"                                        
                                                  value="#{evaluationPersonnelController.personnel.idpersonnel}">
                                     <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
                                     <f:selectItems value="#{evaluationPersonnelController.personnels}" var="p" itemLabel="#{p.nom} #{p.prenom}" itemValue="#{p.idpersonnel}" />
@@ -38,7 +38,8 @@
 
                             <div class="form-group col-md-4">
                                 <label>#{langue.periodicite}</label>
-                                <h:selectOneMenu id="type_sousperiode" class="form-control" value="#{evaluationPersonnelController.typeSousPeriode.idTypeSousperiode}"                                                 
+                                <h:selectOneMenu class="form-control" id="type_sousperiode" disabled="#{evaluationPersonnelController.mode.equals('Edit')}"
+                                                 value="#{evaluationPersonnelController.typeSousPeriode.idTypeSousperiode}"                                                 
                                                  required="true" requiredMessage="#{langue['common.valeur_obligatoire']}">
                                     <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
                                     <f:selectItems value="#{evaluationPersonnelController.typeSousPeriodes}" var="tsp" itemLabel="#{tsp.nom}" itemValue="#{tsp.idTypeSousperiode}" />
@@ -48,7 +49,7 @@
 
                             <div class="form-group col-md-4">
                                 <p:outputLabel value="#{langue.periode}" for="sous_periode" />
-                                <h:selectOneMenu class="form-control" id="sous_periode"                                        
+                                <h:selectOneMenu class="form-control" id="sous_periode" disabled="#{evaluationPersonnelController.mode.equals('Edit')}"                                       
                                                  value="#{evaluationPersonnelController.sousperiode.idsousperiode}">
                                     <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
                                     <f:selectItems value="#{evaluationPersonnelController.sousperiodes}" var="sp" itemLabel="#{sp.nom}" itemValue="#{sp.idsousperiode}" />
@@ -279,7 +280,7 @@
                                     <div class="row">
                                         <div class="form-group col-md-2">
                                             <label>#{langue.point_max}</label>
-                                            <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.parametragecriterePrq.point}" >
+                                            <h:inputText class="form-control" disabled="true" value="#{evaluationPersonnelController.note.pointMaxPrQltif}" >
                                                 <f:convertNumber />
                                             </h:inputText>
                                         </div>
@@ -551,7 +552,7 @@
                                                 <h:outputText value="#{langue['common.action']}"/>
                                             </f:facet>
                                             <p:commandButton icon="ui-icon-trash">
-                                                <p:ajax update="datalist_penalite,:EvaluationCreateForm:detail_cni_pi,:EvaluationCreateForm:id_total_incitation" event="click" listener="#{evaluationPersonnelController.removeLignePenalite(item)}" />
+                                                <p:ajax update="datalist_penalite,:EvaluationCreateForm:detail_cni_pi,:EvaluationCreateForm:id_total_incitation" event="click" listener="#{evaluationPersonnelController.removeLignePenalite(index)}" />
                                             </p:commandButton>
                                         </p:column>
 

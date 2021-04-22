@@ -146,7 +146,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
         }
     }
 
-    public void prepareEdit(Note n) {
+    private void prepareEditData(Note n) {
         mode = "Edit";
         note = n;
         personnel = n.getIdpersonnel();
@@ -157,41 +157,47 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
 
         if (criter1) {
             evaluationresponsabilite = evaluationresponsabiliteFacadeLocal.findByIdPersonnel(n.getIdperiode().getIdperiode(), n.getIdsousperiode().getIdsousperiode(), n.getIdpersonnel().getIdpersonnel(), 1);
+            critereresponsabilite = critereresponsabiliteFacadeLocal.findByIdResponsabilite(SessionMBean.getStructure().getIdstructure(), personnel.getIdresponsabilite().getIdresponsabilite(), 1);
         }
 
         if (criter2) {
             evaluationheuresupp = evaluationheuresuppFacadeLocal.findByIdPersonnel(n.getIdperiode().getIdperiode(), n.getIdsousperiode().getIdsousperiode(), n.getIdpersonnel().getIdpersonnel(), 2);
+            parametragecritereHsp = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 2, personnel.getIdcategorie().getIdcategorie());
         }
 
         if (criter3) {
             evaluationbonuspp = evaluationbonusppFacadeLocal.findByIdPersonnel(n.getIdperiode().getIdperiode(), n.getIdsousperiode().getIdsousperiode(), n.getIdpersonnel().getIdpersonnel(), 3);
+            parametragecritereBpp = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 3, personnel.getIdcategorie().getIdcategorie());
         }
 
         if (criter4) {
             evaluationrqntifdepts = evaluationrqntifdeptFacadeLocal.findByIdPersonnel(n.getIdpersonnel().getIdpersonnel(), n.getIdperiode().getIdperiode(), n.getIdsousperiode().getIdsousperiode(), 4);
             sommeDetailEvRqnDept(evaluationrqntifdepts);
+            parametragecriterePrqn = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 4, personnel.getIdcategorie().getIdcategorie());
         }
 
         if (criter5) {
             evaluationRPrimeQltifDept = evaluationRPrimeQltifDeptFacadeLocal.findByIdService(n.getIdpersonnel().getStructure().getIdstructure(), n.getIdpersonnel().getIdservice().getIdservice(), n.getIdperiode().getIdperiode(), n.getIdsousperiode().getIdsousperiode(), 5);
             evaluationRPrimeQltifPersonnel = evaluationRPrimeQltifPersonnelFacadeLocal.findByIdPersonnel(n.getIdpersonnel().getIdpersonnel(), n.getIdperiode().getIdperiode(), n.getIdsousperiode().getIdsousperiode());
-            parametragecriterePrq.setPoint(ratioPrqnt);
-            parametragecriterePrq.setPoint(evaluationRPrimeQltifDept.getCible());
+            parametragecriterePrq = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 5, personnel.getIdcategorie().getIdcategorie());
         }
 
         if (criter6) {
             cibleBrd = cibleFacadeLocal.findByIdSousPeriodeOneLine(n.getIdpersonnel().getStructure().getIdstructure(), n.getIdpersonnel().getIdservice().getIdservice(), n.getIdperiode().getIdperiode(), n.getIdsousperiode().getIdsousperiode(), 6);
             evaluationBonusRDeptPersonnel = evaluationBonusRDeptPersonnelFacadeLocal.findByIdPersonnel(n.getIdpersonnel().getIdpersonnel(), n.getIdperiode().getIdperiode(), n.getIdsousperiode().getIdsousperiode());
+            parametragecritereBrd = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 6, personnel.getIdcategorie().getIdcategorie());
         }
 
         if (criter7) {
             evaluationpersonnels = evaluationpersonnelFacadeLocal.findByPersonnel(n.getIdpersonnel().getIdpersonnel(), n.getIdperiode().getIdperiode(), n.getIdsousperiode().getIdsousperiode());
             List<Detailsc> listDetail = detailscFacadeLocal.findByIdStructureIdCritere(structure.getIdstructure(), 7);
             totalPointPi = sommeTotalSc(listDetail);
+            parametragecritere = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 7, personnel.getIdcategorie().getIdcategorie());
         }
 
         if (criter8) {
             evaluationheuresuppN = evaluationheuresuppFacadeLocal.findByIdPersonnel(n.getIdperiode().getIdperiode(), n.getIdsousperiode().getIdsousperiode(), n.getIdpersonnel().getIdpersonnel(), 8);
+            parametragecritereHsn = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 8, personnel.getIdcategorie().getIdcategorie());
         }
 
         if (criter9) {
@@ -204,8 +210,10 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                 lignePenalitePersonnels = lignePenalitePersonnelFacadeLocal.findByIdEvaluation(evaluationPenalitePersonnel.getIdevaluationpenalitepersonnel());
             }
         }
+    }
 
-        //updateEvaluationData();
+    public void prepareEdit(Note n) {
+        this.prepareEditData(n);
         RequestContext.getCurrentInstance().execute("PF('EvaluationCreateDialog').show()");
     }
 
@@ -263,240 +271,240 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
             if (sousperiode.getIdsousperiode() > 0) {
                 personnel = personnelFacadeLocal.find(personnel.getIdpersonnel());
 
-                note = noteFacadeLocal.findByIdPersonnel(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
-                if (note == null) {
+                Note noteTemp = noteFacadeLocal.findByIdPersonnel(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
+                if (noteTemp == null) {
                     this.initNote();
-                }
-                // idCritere = 7
-                if (criter7) {
-                    parametragecritere = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 7, personnel.getIdcategorie().getIdcategorie());
-                    if (parametragecritere != null) {
-                        List<Detailsc> listDetail = detailscFacadeLocal.findByIdStructureIdCritere(structure.getIdstructure(), 7);
-                        totalPointPi = sommeTotalSc(listDetail);
-                        if (!listDetail.isEmpty()) {
-                            note.setPointMaxPi(parametragecritere.getPoint());
-                            this.listDetailsc.clear();
-                            this.listDetailsc.addAll(listDetail);
 
-                            List<Evaluationpersonnel> list = evaluationpersonnelFacadeLocal.findByPersonnel(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
-                            List<Detailsc> adds = new ArrayList<>();
-                            if (list.isEmpty()) {
-                                for (Detailsc d : listDetail) {
-                                    Evaluationpersonnel ev = new Evaluationpersonnel();
-                                    ev.setIdelementreponse(new Elementreponse());
-                                    d.getIdsouscritere().setElementreponseCollection(elementReponseFacadeLocal.findByIdSousCritere(d.getIdsouscritere().getIdsouscritere()));
+                    // idCritere = 7
+                    if (criter7) {
+                        parametragecritere = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 7, personnel.getIdcategorie().getIdcategorie());
+                        if (parametragecritere != null) {
+                            List<Detailsc> listDetail = detailscFacadeLocal.findByIdStructureIdCritere(structure.getIdstructure(), 7);
+                            totalPointPi = sommeTotalSc(listDetail);
+                            if (!listDetail.isEmpty()) {
+                                note.setPointMaxPi(parametragecritere.getPoint());
+                                this.listDetailsc.clear();
+                                this.listDetailsc.addAll(listDetail);
 
-                                    if (!d.getIdsouscritere().getElementreponseCollection().isEmpty()) {
-                                        List<Elementreponse> ers = (List) d.getIdsouscritere().getElementreponseCollection();
-                                        ev.setIdelementreponse(ers.get(0));
-                                        ev.setNote(0d);
+                                List<Evaluationpersonnel> list = evaluationpersonnelFacadeLocal.findByPersonnel(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
+                                List<Detailsc> adds = new ArrayList<>();
+                                if (list.isEmpty()) {
+                                    for (Detailsc d : listDetail) {
+                                        Evaluationpersonnel ev = new Evaluationpersonnel();
+                                        ev.setIdelementreponse(new Elementreponse());
+                                        d.getIdsouscritere().setElementreponseCollection(elementReponseFacadeLocal.findByIdSousCritere(d.getIdsouscritere().getIdsouscritere()));
+
+                                        if (!d.getIdsouscritere().getElementreponseCollection().isEmpty()) {
+                                            List<Elementreponse> ers = (List) d.getIdsouscritere().getElementreponseCollection();
+                                            ev.setIdelementreponse(ers.get(0));
+                                            ev.setNote(0d);
+                                        }
+
+                                        ev.setIdevaluationpersonnel(0l);
+                                        ev.setIddetailsc(d);
+                                        ev.setObservation("---");
+                                        evaluationpersonnels.add(ev);
+                                        adds.add(d);
                                     }
-
-                                    ev.setIdevaluationpersonnel(0l);
-                                    ev.setIddetailsc(d);
-                                    ev.setObservation("---");
-                                    evaluationpersonnels.add(ev);
-                                    adds.add(d);
+                                    this.listDetailsc.removeAll(adds);
+                                } else {
+                                    for (Evaluationpersonnel evp : list) {
+                                        evaluationpersonnels.add(evp);
+                                        adds.add(evp.getIddetailsc());
+                                    }
+                                    listDetailsc.removeAll(adds);
                                 }
-                                this.listDetailsc.removeAll(adds);
+                            }
+                        } else {
+                            parametragecritere = new Parametragecritere(-1l);
+                        }
+                    }
+
+                    // idCritere = 1
+                    if (criter1) {
+                        critereresponsabilite = critereresponsabiliteFacadeLocal.findByIdResponsabilite(SessionMBean.getStructure().getIdstructure(), personnel.getIdresponsabilite().getIdresponsabilite(), 1);
+                        if (critereresponsabilite != null) {
+                            evaluationresponsabilite = evaluationresponsabiliteFacadeLocal.findByIdPersonnel(SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), personnel.getIdpersonnel(), 1);
+                            if (evaluationresponsabilite == null) {
+                                evaluationresponsabilite = new Evaluationresponsabilite(0l);
+                                evaluationresponsabilite.setIdcritere(critereresponsabilite.getIdcritere());
+                                evaluationresponsabilite.setPointMax(critereresponsabilite.getPoint());
+                            }
+                        } else {
+                            critereresponsabilite.setIdcritereresponsabilite(-1l);
+                        }
+                    }
+
+                    // idCritere = 2
+                    if (criter2) {
+                        parametragecritereHsp = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 2, personnel.getIdcategorie().getIdcategorie());
+                        if (parametragecritereHsp != null) {
+                            evaluationheuresupp = evaluationheuresuppFacadeLocal.findByIdPersonnel(SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), personnel.getIdpersonnel(), 2);
+                            if (evaluationheuresupp == null) {
+                                evaluationheuresupp = new Evaluationheuresupp(0l);
+                                evaluationheuresupp.setIdcritere(parametragecritereHsp.getIdcritere());
+                                evaluationheuresupp.setCoefnuit(parametragecritereHsp.getValeurnuit());
+                                evaluationheuresupp.setCoefjour(parametragecritereHsp.getValeurjournee());
+                            }
+                        } else {
+                            parametragecritereHsp = new Parametragecritere(-1l);
+                        }
+                    }
+
+                    // idCritère = 3
+                    if (criter3) {
+                        parametragecritereBpp = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 3, personnel.getIdcategorie().getIdcategorie());
+                        if (parametragecritereBpp != null) {
+                            evaluationbonuspp = evaluationbonusppFacadeLocal.findByIdPersonnel(SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), personnel.getIdpersonnel(), 3);
+                            if (evaluationbonuspp == null) {
+                                evaluationbonuspp = new Evaluationbonuspp(0l);
+                                evaluationbonuspp.setIdcritere(parametragecritereBpp.getIdcritere());
+                                evaluationbonuspp.setPointMax(parametragecritereBpp.getPoint());
+                            }
+                        } else {
+                            parametragecritereBpp.setIdparametragecritere(-1l);
+                        }
+                    }
+
+                    // idCritere 4
+                    if (criter4) {
+                        parametragecriterePrqn = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 4, personnel.getIdcategorie().getIdcategorie());
+                        if (parametragecriterePrqn != null) {
+                            cibleRqntifs = cibleFacadeLocal.findByIdSousPeriode(structure.getIdstructure(), personnel.getIdservice().getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 4);
+                            if (!cibleRqntifs.isEmpty()) {
+                                evaluationrqntifdepts = evaluationrqntifdeptFacadeLocal.findByIdPersonnel(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 4);
+                                if (evaluationrqntifdepts.isEmpty()) {
+                                    note.setPointMaxRQntif(parametragecriterePrqn.getPoint());
+                                    for (Cible c : cibleRqntifs) {
+                                        Evaluationrqntifdept ev = new Evaluationrqntifdept(0l);
+                                        ev.setCible(c.getValeurcible());
+                                        ev.setRealisation(0);
+                                        ev.setRatio(0);
+                                        ev.setIdcible(c);
+                                        ev.setIdpersonnel(personnel);
+                                        evaluationrqntifdepts.add(ev);
+                                    }
+                                }
+                                sommeDetailEvRqnDept(evaluationrqntifdepts);
+                            }
+                        } else {
+                            parametragecriterePrqn = new Parametragecritere(-1l);
+                        }
+                    }
+
+                    // idCritere = 5
+                    if (criter5) {
+                        parametragecriterePrq = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 5, personnel.getIdcategorie().getIdcategorie());
+                        if (parametragecriterePrq != null) {
+                            evaluationRPrimeQltifDept = evaluationRPrimeQltifDeptFacadeLocal.findByIdService(structure.getIdstructure(), personnel.getIdservice().getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 5);
+                            if (evaluationRPrimeQltifDept != null) {
+                                evaluationRPrimeQltifPersonnel = evaluationRPrimeQltifPersonnelFacadeLocal.findByIdPersonnel(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
+                                if (evaluationRPrimeQltifPersonnel == null) {
+                                    evaluationRPrimeQltifPersonnel = new EvaluationRPrimeQltifPersonnel(0l);
+                                    evaluationRPrimeQltifPersonnel.setIdevaluationrprimeqltifdept(evaluationRPrimeQltifDept);
+                                    evaluationRPrimeQltifPersonnel.setIdpersonnel(personnel);
+                                    evaluationRPrimeQltifPersonnel.setPoint(Math.ceil((parametragecriterePrq.getPoint() * evaluationRPrimeQltifDept.getPourcentage()) / 100));
+                                    evaluationRPrimeQltifPersonnel.setPointMax(parametragecriterePrq.getPoint());
+                                    note.setPointMaxPrQltif(parametragecriterePrq.getPoint());
+                                    note.setScorePrQltif(evaluationRPrimeQltifDept.getPourcentage());
+                                }
+                                mappingResultats.get(4).setPoint(evaluationRPrimeQltifPersonnel.getPoint());
                             } else {
-                                for (Evaluationpersonnel evp : list) {
-                                    evaluationpersonnels.add(evp);
-                                    adds.add(evp.getIddetailsc());
+                                evaluationRPrimeQltifDept = new EvaluationRPrimeQltifDept(-1l);
+                            }
+                        } else {
+                            parametragecriterePrq = new Parametragecritere(-1l);
+                        }
+                    }
+
+                    // idCritere = 6
+                    if (criter6) {
+                        parametragecritereBrd = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 6, personnel.getIdcategorie().getIdcategorie());
+                        if (parametragecritereBrd != null) {
+                            note.setPointMaxBrd(parametragecritereBrd.getPoint());
+                            cibleBrd = cibleFacadeLocal.findByIdSousPeriodeOneLine(structure.getIdstructure(), personnel.getIdservice().getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 6);
+                            if (cibleBrd != null) {
+                                evaluationBonusRDeptPersonnel = evaluationBonusRDeptPersonnelFacadeLocal.findByIdPersonnel(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
+                                if (evaluationBonusRDeptPersonnel == null) {
+                                    evaluationBonusRDeptPersonnel = new EvaluationBonusRDeptPersonnel(0l);
+                                    evaluationBonusRDeptPersonnel.setIdcible(cibleBrd);
+                                    evaluationBonusRDeptPersonnel.setIdnote(note);
+                                    evaluationBonusRDeptPersonnel.setPoint(Math.ceil((parametragecritereBrd.getPoint() * cibleBrd.getRatio()) / 100));
+                                    evaluationBonusRDeptPersonnel.setPointMax(parametragecritereBrd.getPoint());
+                                    note.setScoreBrd(cibleBrd.getRatio());
                                 }
-                                listDetailsc.removeAll(adds);
+                                mappingResultats.get(5).setPoint(evaluationBonusRDeptPersonnel.getPoint());
+                            } else {
+                                cibleBrd = new Cible(-1l);
                             }
-                        }
-                    } else {
-                        parametragecritere = new Parametragecritere(-1l);
-                    }
-                }
-
-                // idCritere = 1
-                if (criter1) {
-                    critereresponsabilite = critereresponsabiliteFacadeLocal.findByIdResponsabilite(SessionMBean.getStructure().getIdstructure(), personnel.getIdresponsabilite().getIdresponsabilite(), 1);
-                    if (critereresponsabilite != null) {
-                        evaluationresponsabilite = evaluationresponsabiliteFacadeLocal.findByIdPersonnel(SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), personnel.getIdpersonnel(), 1);
-                        if (evaluationresponsabilite == null) {
-                            evaluationresponsabilite = new Evaluationresponsabilite(0l);
-                            evaluationresponsabilite.setIdcritere(critereresponsabilite.getIdcritere());
-                            evaluationresponsabilite.setPointMax(critereresponsabilite.getPoint());
-                        }
-                    } else {
-                        critereresponsabilite.setIdcritereresponsabilite(-1l);
-                    }
-                }
-
-                // idCritere = 2
-                if (criter2) {
-                    parametragecritereHsp = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 2, personnel.getIdcategorie().getIdcategorie());
-                    if (parametragecritereHsp != null) {
-                        evaluationheuresupp = evaluationheuresuppFacadeLocal.findByIdPersonnel(SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), personnel.getIdpersonnel(), 2);
-                        if (evaluationheuresupp == null) {
-                            evaluationheuresupp = new Evaluationheuresupp(0l);
-                            evaluationheuresupp.setIdcritere(parametragecritereHsp.getIdcritere());
-                            evaluationheuresupp.setCoefnuit(parametragecritereHsp.getValeurnuit());
-                            evaluationheuresupp.setCoefjour(parametragecritereHsp.getValeurjournee());
-                        }
-                    } else {
-                        parametragecritereHsp = new Parametragecritere(-1l);
-                    }
-                }
-
-                // idCritère = 3
-                if (criter3) {
-                    parametragecritereBpp = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 3, personnel.getIdcategorie().getIdcategorie());
-                    if (parametragecritereBpp != null) {
-                        evaluationbonuspp = evaluationbonusppFacadeLocal.findByIdPersonnel(SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), personnel.getIdpersonnel(), 3);
-                        if (evaluationbonuspp == null) {
-                            evaluationbonuspp = new Evaluationbonuspp(0l);
-                            evaluationbonuspp.setIdcritere(parametragecritereBpp.getIdcritere());
-                            evaluationbonuspp.setPointMax(parametragecritereBpp.getPoint());
-                        }
-                    } else {
-                        parametragecritereBpp.setIdparametragecritere(-1l);
-                    }
-                }
-
-                // idCritere 4
-                if (criter4) {
-                    parametragecriterePrqn = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 4, personnel.getIdcategorie().getIdcategorie());
-                    if (parametragecriterePrqn != null) {
-                        cibleRqntifs = cibleFacadeLocal.findByIdSousPeriode(structure.getIdstructure(), personnel.getIdservice().getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 4);
-                        if (!cibleRqntifs.isEmpty()) {
-                            evaluationrqntifdepts = evaluationrqntifdeptFacadeLocal.findByIdPersonnel(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 4);
-                            if (evaluationrqntifdepts.isEmpty()) {
-                                note.setPointMaxRQntif(parametragecriterePrqn.getPoint());
-                                for (Cible c : cibleRqntifs) {
-                                    Evaluationrqntifdept ev = new Evaluationrqntifdept(0l);
-                                    ev.setCible(c.getValeurcible());
-                                    ev.setRealisation(0);
-                                    ev.setRatio(0);
-                                    ev.setIdcible(c);
-                                    ev.setIdpersonnel(personnel);
-                                    evaluationrqntifdepts.add(ev);
-                                }
-                            }
-                            sommeDetailEvRqnDept(evaluationrqntifdepts);
-                        }
-                    } else {
-                        parametragecriterePrqn = new Parametragecritere(-1l);
-                    }
-                }
-
-                // idCritere = 5
-                if (criter5) {
-                    parametragecriterePrq = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 5, personnel.getIdcategorie().getIdcategorie());
-                    if (parametragecriterePrq != null) {
-                        evaluationRPrimeQltifDept = evaluationRPrimeQltifDeptFacadeLocal.findByIdService(structure.getIdstructure(), personnel.getIdservice().getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 5);
-                        if (evaluationRPrimeQltifDept != null) {
-                            evaluationRPrimeQltifPersonnel = evaluationRPrimeQltifPersonnelFacadeLocal.findByIdPersonnel(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
-                            if (evaluationRPrimeQltifPersonnel == null) {
-                                evaluationRPrimeQltifPersonnel = new EvaluationRPrimeQltifPersonnel(0l);
-                                evaluationRPrimeQltifPersonnel.setIdevaluationrprimeqltifdept(evaluationRPrimeQltifDept);
-                                evaluationRPrimeQltifPersonnel.setIdpersonnel(personnel);
-                                evaluationRPrimeQltifPersonnel.setPoint(Math.ceil((parametragecriterePrq.getPoint() * evaluationRPrimeQltifDept.getPourcentage()) / 100));
-                                evaluationRPrimeQltifPersonnel.setPointMax(parametragecriterePrq.getPoint());
-                                note.setPointMaxPrQltif(parametragecriterePrq.getPoint());
-                                note.setScorePrQltif(evaluationRPrimeQltifDept.getPourcentage());
-                            }
-                            mappingResultats.get(4).setPoint(evaluationRPrimeQltifPersonnel.getPoint());
                         } else {
-                            evaluationRPrimeQltifDept = new EvaluationRPrimeQltifDept(-1l);
+                            parametragecritereBrd = new Parametragecritere(-1l);
                         }
-                    } else {
-                        parametragecriterePrq = new Parametragecritere(-1l);
                     }
-                }
 
-                // idCritere = 6
-                if (criter6) {
-                    parametragecritereBrd = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 6, personnel.getIdcategorie().getIdcategorie());
-                    if (parametragecritereBrd != null) {
-                        note.setPointMaxBrd(parametragecritereBrd.getPoint());
-                        cibleBrd = cibleFacadeLocal.findByIdSousPeriodeOneLine(structure.getIdstructure(), personnel.getIdservice().getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), 6);
-                        if (cibleBrd != null) {
-                            evaluationBonusRDeptPersonnel = evaluationBonusRDeptPersonnelFacadeLocal.findByIdPersonnel(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
-                            if (evaluationBonusRDeptPersonnel == null) {
-                                evaluationBonusRDeptPersonnel = new EvaluationBonusRDeptPersonnel(0l);
-                                evaluationBonusRDeptPersonnel.setIdcible(cibleBrd);
-                                evaluationBonusRDeptPersonnel.setIdnote(note);
-                                evaluationBonusRDeptPersonnel.setPoint(Math.ceil((parametragecritereBrd.getPoint() * cibleBrd.getRatio()) / 100));
-                                evaluationBonusRDeptPersonnel.setPointMax(parametragecritereBrd.getPoint());
-                                note.setScoreBrd(cibleBrd.getRatio());
+                    // idCritere = 8
+                    if (criter8) {
+                        parametragecritereHsn = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 8, personnel.getIdcategorie().getIdcategorie());
+                        if (parametragecritereHsn != null) {
+                            evaluationheuresuppN = evaluationheuresuppFacadeLocal.findByIdPersonnel(SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), personnel.getIdpersonnel(), 8);
+                            if (evaluationheuresuppN == null) {
+                                evaluationheuresuppN = new Evaluationheuresupp(0l);
+                                evaluationheuresuppN.setIdcritere(parametragecritereHsn.getIdcritere());
+                                evaluationheuresuppN.setCoefnuit(parametragecritereHsn.getValeurnuit());
+                                evaluationheuresuppN.setCoefjour(parametragecritereHsn.getValeurjournee());
+                            } else {
+                                mappingResultats.get(7).setPoint(evaluationheuresuppN.getPointnuit() + evaluationheuresuppN.getPointjour());
                             }
-                            mappingResultats.get(5).setPoint(evaluationBonusRDeptPersonnel.getPoint());
                         } else {
-                            cibleBrd = new Cible(-1l);
+                            parametragecritereHsn = new Parametragecritere(-1l);
+                            mappingResultats.get(7).setPoint(0);
                         }
-                    } else {
-                        parametragecritereBrd = new Parametragecritere(-1l);
                     }
-                }
 
-                // idCritere = 8
-                if (criter8) {
-                    parametragecritereHsn = parametragecritereFacadeLocal.findByIdStructureIdCategorie(SessionMBean.getStructure().getIdstructure(), 8, personnel.getIdcategorie().getIdcategorie());
-                    if (parametragecritereHsn != null) {
-                        evaluationheuresuppN = evaluationheuresuppFacadeLocal.findByIdPersonnel(SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode(), personnel.getIdpersonnel(), 8);
-                        if (evaluationheuresuppN == null) {
-                            evaluationheuresuppN = new Evaluationheuresupp(0l);
-                            evaluationheuresuppN.setIdcritere(parametragecritereHsn.getIdcritere());
-                            evaluationheuresuppN.setCoefnuit(parametragecritereHsn.getValeurnuit());
-                            evaluationheuresuppN.setCoefjour(parametragecritereHsn.getValeurjournee());
+                    // idCritere = 9
+                    if (criter9) {
+                        evaluationPenaliteDept = evaluationPenaliteDeptFacadeLocal.findByIdService(structure.getIdstructure(), personnel.getIdservice().getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
+                        if (evaluationPenaliteDept != null) {
+                            note.setPenaliteDepartement(evaluationPenaliteDept.getValeur());
+                            note.setPointPenaliteDepartement(Math.ceil((note.getIncitationPositif() * evaluationPenaliteDept.getValeur()) / 100));
+                            mappingResultats.get(8).setPoint(note.getPointPenaliteDepartement());
                         } else {
-                            mappingResultats.get(7).setPoint(evaluationheuresuppN.getPointnuit() + evaluationheuresuppN.getPointjour());
+                            evaluationPenaliteDept = new EvaluationPenaliteDept();
+                            mappingResultats.get(8).setPoint(0);
                         }
-                    } else {
-                        parametragecritereHsn = new Parametragecritere(-1l);
-                        mappingResultats.get(7).setPoint(0);
                     }
-                }
 
-                // idCritere = 9
-                if (criter9) {
-                    evaluationPenaliteDept = evaluationPenaliteDeptFacadeLocal.findByIdService(structure.getIdstructure(), personnel.getIdservice().getIdservice(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
-                    if (evaluationPenaliteDept != null) {
-                        note.setPenaliteDepartement(evaluationPenaliteDept.getValeur());
-                        note.setPointPenaliteDepartement(Math.ceil((note.getIncitationPositif() * evaluationPenaliteDept.getValeur()) / 100));
-                        mappingResultats.get(8).setPoint(note.getPointPenaliteDepartement());
-                    } else {
-                        evaluationPenaliteDept = new EvaluationPenaliteDept();
-                        mappingResultats.get(8).setPoint(0);
-                    }
-                }
+                    // idCritere = 10
+                    if (criter10) {
+                        evaluationPenalitePersonnel = evaluationPenalitePersonnelFacade.findIdPersonnelIdPeriode(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
+                        if (evaluationPenalitePersonnel != null) {
+                            lignePenalitePersonnels = lignePenalitePersonnelFacadeLocal.findByIdEvaluation(evaluationPenalitePersonnel.getIdevaluationpenalitepersonnel());
+                        } else {
+                            evaluationPenalitePersonnel = new EvaluationPenalitePersonnel(0l);
+                            evaluationPenalitePersonnel.setCible(0);
 
-                // idCritere = 10
-                if (criter10) {
-                    evaluationPenalitePersonnel = evaluationPenalitePersonnelFacade.findIdPersonnelIdPeriode(personnel.getIdpersonnel(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
-                    if (evaluationPenalitePersonnel != null) {
-                        lignePenalitePersonnels = lignePenalitePersonnelFacadeLocal.findByIdEvaluation(evaluationPenalitePersonnel.getIdevaluationpenalitepersonnel());
-                    } else {
-                        evaluationPenalitePersonnel = new EvaluationPenalitePersonnel(0l);
-                        evaluationPenalitePersonnel.setCible(0);
+                            List<ParametragePenalite> parametragePenalites = parametragePenaliteFacadeLocal.findByIdStructureIdCritere(structure.getIdstructure(), 10);
+                            penalites = this.extractPenaliteInParam(parametragePenalites);
 
-                        List<ParametragePenalite> parametragePenalites = parametragePenaliteFacadeLocal.findByIdStructureIdCritere(structure.getIdstructure(), 10);
-                        penalites = this.extractPenaliteInParam(parametragePenalites);
-
-                        int sommeCible = 0;
-                        for (Penalite p : penalites) {
-                            LignePenalitePersonnel lpp = new LignePenalitePersonnel();
-                            lpp.setIdlignepenalitepersonnel(0l);
-                            lpp.setIdPenalite(p);
-                            lpp.setCible(p.getPourcentage());
-                            sommeCible += p.getPourcentage();
-                            lpp.setEtat(false);
-                            lignePenalitePersonnels.add(lpp);
+                            int sommeCible = 0;
+                            for (Penalite p : penalites) {
+                                LignePenalitePersonnel lpp = new LignePenalitePersonnel();
+                                lpp.setIdlignepenalitepersonnel(0l);
+                                lpp.setIdPenalite(p);
+                                lpp.setCible(p.getPourcentage());
+                                sommeCible += p.getPourcentage();
+                                lpp.setEtat(false);
+                                lignePenalitePersonnels.add(lpp);
+                            }
+                            evaluationPenalitePersonnel.setCible(sommeCible);
                         }
-                        evaluationPenalitePersonnel.setCible(sommeCible);
+                        if (note.getIdnote().equals(0l)) {
+                            mappingResultats.get(9).setPoint(Math.ceil((note.getIncitationPositif() * evaluationPenalitePersonnel.getScore()) / 100));
+                        }
                     }
-                    if (note.getIdnote().equals(0l)) {
-                        mappingResultats.get(9).setPoint(Math.ceil((note.getIncitationPositif() * evaluationPenalitePersonnel.getScore()) / 100));
-                    }
-                }
-
-                if (note.getIdnote() == 0) {
                     this.getTotalIncitation();
+                } else {
+                    this.prepareEditData(noteTemp);
                 }
             }
         }
@@ -539,23 +547,13 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
         return result;
     }
 
-    public void removeLignePenalite(LignePenalitePersonnel l) {
+    public void removeLignePenalite(int index) {
+        LignePenalitePersonnel l = lignePenalitePersonnels.get(index);
         if (l.getIdlignepenalitepersonnel() != 0l) {
-            lignePenalitePersonnels.remove(l);
             lignePenalitePersonnelFacadeLocal.remove(l);
-            //listEvaluationPenaliteDepts = evaluationPenaliteDeptFacadeLocal.findByIdStructure(SessionMBean.getStructure().getIdstructure(), SessionMBean.getPeriode().getIdperiode(), sousperiode.getIdsousperiode());
-            penalites.add(l.getIdPenalite());
-        } else {
-            int conteur = 0;
-            for (LignePenalitePersonnel lpp : lignePenalitePersonnels) {
-                if (lpp.getIdPenalite().getIdpenalite().equals(l.getIdPenalite().getIdpenalite())) {
-                    break;
-                }
-                conteur++;
-            }
-            lignePenalitePersonnels.remove(conteur);
-            penalites.add(l.getIdPenalite());
         }
+        lignePenalitePersonnels.remove(index);
+        penalites.add(l.getIdPenalite());
         this.setDetailPenalitePersonnel();
         JsfUtil.addSuccessMessage(routine.localizeMessage("notification.operation_reussie"));
     }
@@ -705,14 +703,14 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
 
             // idCritere = 1
             if (criter1) {
-                if (critereresponsabilite.getIdcritereresponsabilite() != -1l) {
+                if ((critereresponsabilite != null && !critereresponsabilite.getIdcritereresponsabilite().equals(-1l))) {
                     if (evaluationresponsabilite.getIdevaluationresponsabilite() == 0l) {
                         evaluationresponsabilite.setIdevaluationresponsabilite(evaluationresponsabiliteFacadeLocal.nextId());
                         evaluationresponsabilite.setIdnote(note);
                         evaluationresponsabilite.setPoint(note.getPointResponsabilite());
                         evaluationresponsabilite.setIdcritere(new Critere(1));
                         evaluationresponsabiliteFacadeLocal.create(evaluationresponsabilite);
-                    } else if (evaluationresponsabilite.getIdevaluationresponsabilite() != -1l) {
+                    } else if (!Objects.equals(evaluationresponsabilite.getIdevaluationresponsabilite(), -1l)) {
                         evaluationresponsabiliteFacadeLocal.edit(evaluationresponsabilite);
                     }
                 }
@@ -720,7 +718,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
 
             // idCritere = 2
             if (criter2) {
-                if (!parametragecritereHsp.getIdparametragecritere().equals(-1l)) {
+                if ((parametragecritereHsp != null && !parametragecritereHsp.getIdparametragecritere().equals(-1l))) {
                     if (evaluationheuresupp.getIdevaluationheuresupp().equals(0l)) {
                         evaluationheuresupp.setIdcritere(new Critere(2));
                         evaluationheuresupp.setIdevaluationheuresupp(evaluationheuresuppFacadeLocal.nextId());
@@ -734,12 +732,12 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
 
             // idCritere = 3
             if (criter3) {
-                if (!parametragecritereBpp.getIdparametragecritere().equals(-1l)) {
+                if ((parametragecritereBpp != null && !parametragecritereBpp.getIdparametragecritere().equals(-1l))) {
                     if (evaluationbonuspp.getIdevaluationbonuspp().equals(0l)) {
                         evaluationbonuspp.setIdevaluationbonuspp(evaluationbonusppFacadeLocal.nextId());
                         evaluationbonuspp.setIdnote(note);
                         evaluationbonusppFacadeLocal.create(evaluationbonuspp);
-                    } else if (evaluationbonuspp.getIdevaluationbonuspp().equals(0l)) {
+                    } else if (!evaluationbonuspp.getIdevaluationbonuspp().equals(-1l)) {
                         evaluationbonusppFacadeLocal.edit(evaluationbonuspp);
                     }
                 }
@@ -747,7 +745,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
 
             // idCritere = 4
             if (criter4) {
-                if (!parametragecriterePrqn.getIdparametragecritere().equals(-1l)) {
+                if ((parametragecriterePrqn != null && !parametragecriterePrqn.getIdparametragecritere().equals(-1l))) {
                     if (!evaluationrqntifdepts.isEmpty()) {
                         for (Evaluationrqntifdept ligne : evaluationrqntifdepts) {
                             if (ligne.getIdevaluationrqntifdept().equals(0l)) {
@@ -765,14 +763,14 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
 
             // idCritere = 5
             if (criter5) {
-                if (!parametragecriterePrq.getIdparametragecritere().equals(-1l)) {
-                    if (!evaluationRPrimeQltifDept.getIdevaluationrprimeqltifdept().equals(-1l)) {
+                if ((parametragecriterePrq != null && !parametragecriterePrq.getIdparametragecritere().equals(-1l))) {
+                    if ((evaluationRPrimeQltifDept != null && !evaluationRPrimeQltifDept.getIdevaluationrprimeqltifdept().equals(-1l))) {
                         if (evaluationRPrimeQltifPersonnel.getIdevaluationrprimeqltifpersonnel().equals(0l)) {
                             evaluationRPrimeQltifPersonnel.setIdevaluationrprimeqltifpersonnel(evaluationRPrimeQltifPersonnelFacadeLocal.nextId());
                             evaluationRPrimeQltifPersonnel.setIdnote(note);
                             evaluationRPrimeQltifPersonnel.setIdpersonnel(personnel);
                             evaluationRPrimeQltifPersonnelFacadeLocal.create(evaluationRPrimeQltifPersonnel);
-                        } else {
+                        } else if (!Objects.equals(evaluationRPrimeQltifPersonnel.getIdevaluationrprimeqltifpersonnel(), -1l)) {
                             evaluationRPrimeQltifPersonnelFacadeLocal.edit(evaluationRPrimeQltifPersonnel);
                         }
                     }
@@ -781,14 +779,14 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
 
             // idCritere = 6
             if (criter6) {
-                if (!parametragecritereBrd.getIdparametragecritere().equals(-1l)) {
+                if ((parametragecritereBrd != null && !parametragecritereBrd.getIdparametragecritere().equals(-1l))) {
                     if (!cibleBrd.getIdcible().equals(-1l)) {
                         if (evaluationBonusRDeptPersonnel.getIdevaluationbonusrdeptpersonnel().equals(0l)) {
                             evaluationBonusRDeptPersonnel.setIdevaluationbonusrdeptpersonnel(evaluationBonusRDeptPersonnelFacadeLocal.nextId());
                             evaluationBonusRDeptPersonnel.setIdpersonnel(personnel);
                             evaluationBonusRDeptPersonnelFacadeLocal.create(evaluationBonusRDeptPersonnel);
-                        } else {
-                            evaluationBonusRDeptPersonnelFacadeLocal.create(evaluationBonusRDeptPersonnel);
+                        } else if (!Objects.equals(evaluationBonusRDeptPersonnel.getIdevaluationbonusrdeptpersonnel(), -1l)) {
+                            evaluationBonusRDeptPersonnelFacadeLocal.edit(evaluationBonusRDeptPersonnel);
                         }
                     }
                 }
@@ -796,12 +794,12 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
 
             // idCritère = 8
             if (criter8) {
-                if (!parametragecritereHsn.getIdparametragecritere().equals(-1l)) {
+                if ((parametragecritereHsn != null && !parametragecritereHsn.getIdparametragecritere().equals(-1l))) {
                     if (evaluationheuresuppN.getIdevaluationheuresupp().equals(0l)) {
                         evaluationheuresuppN.setIdevaluationheuresupp(evaluationheuresuppFacadeLocal.nextId());
                         evaluationheuresuppN.setIdnote(note);
                         evaluationheuresuppFacadeLocal.create(evaluationheuresuppN);
-                    } else {
+                    } else if (!Objects.equals(evaluationheuresuppN.getIdevaluationheuresupp(), -1l)) {
                         evaluationheuresuppFacadeLocal.edit(evaluationheuresuppN);
                     }
                 }
@@ -814,6 +812,8 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                     evaluationPenalitePersonnel.setIdevaluationpenalitepersonnel(evaluationPenalitePersonnelFacade.nextId());
                     evaluationPenalitePersonnel.setIdnote(note);
                     evaluationPenalitePersonnelFacade.create(evaluationPenalitePersonnel);
+                } else if (!Objects.equals(evaluationPenalitePersonnel, -1l)) {
+                    evaluationPenalitePersonnelFacade.edit(evaluationPenalitePersonnel);
                 }
 
                 for (LignePenalitePersonnel ligne : lignePenalitePersonnels) {
