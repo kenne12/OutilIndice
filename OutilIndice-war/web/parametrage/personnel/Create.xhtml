@@ -13,7 +13,7 @@
                   widgetVar="PersonnelCreateDialog" 
                   modal="true" resizable="false" appendTo="@(body)" 
                   header="#{langue['personnel.formulaire_creation']}"
-                  closeOnEscape="true" >
+                  closeOnEscape="true">
 
             <h:form id="PersonnelCreateForm">
 
@@ -49,7 +49,7 @@
                         <p:outputLabel value="#{langue['common.prenom']}" for="prenom" />
                         <h:inputText style="width: 500px" class="form-control" id="prenom" value="#{personnelController.personnel.prenom}" required="true" requiredMessage="#{langue['common.valeur_requise']}" />
                     </div>
-                    
+
                     <div class="form-group">
                         <p:outputLabel value="#{langue.responsabilite}" for="responsabilite" />
                         <h:selectOneMenu class="form-control" id="responsabilite" value="#{personnelController.personnel.idresponsabilite.idresponsabilite}">
@@ -57,18 +57,21 @@
                             <f:selectItems value="#{personnelController.responsabilites}" var="r" itemLabel="#{r.nom}" itemValue="#{r.idresponsabilite}" />
                         </h:selectOneMenu>                                                
                     </div>
+                    
+                    <div class="form-group">
+                        <p:outputLabel value="#{langue.plafond_prime}" for="plafond" />
+                        <h:inputText style="width:150px" class="form-control" id="plafond" value="#{personnelController.personnel.plafond}" required="true" requiredMessage="#{langue['common.valeur_requise']}" />
+                    </div>
 
                     <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <div class="form-check">                                
-                                    <input id="etat" type="checkbox" class="form-check-input" jsf:value="#{personnelController.personnel.etat}" />
-                                    <label for="etat" class="form-check-label">#{langue['common.etat']}</label>
-                                </div>
+                        <div class="form-group col-md-4">
+                            <div class="form-check">                                
+                                <input id="etat" type="checkbox" class="form-check-input" jsf:value="#{personnelController.personnel.etat}" />
+                                <label for="etat" class="form-check-label">#{langue['common.etat']}</label>
                             </div>
                         </div>
                     </div>
-                    
+
                     <p:separator/>
 
                     <center>
@@ -84,11 +87,8 @@
                     </center>
 
                 </h:panelGroup>
-
             </h:form>
-
         </p:dialog>
-
     </ui:composition>
 
 </html>

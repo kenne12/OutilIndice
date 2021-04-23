@@ -36,7 +36,7 @@ WHERE
      note.idpersonnel = $P{idPersonnel}
  AND note.idperiode = $P{idPeriode}
  AND note.idsousperiode = $P{idSousPeriode}
-AND evaluationrprimeqltifdept.idcritere = 5;]]>
+ AND evaluationrprimeqltifdept.idcritere = 5]]>
 	</queryString>
 	<field name="evaluationrprimeqltifpersonnel_point" class="java.lang.Double"/>
 	<field name="evaluationrprimeqltifdept_score" class="java.lang.Integer"/>
@@ -48,11 +48,20 @@ AND evaluationrprimeqltifdept.idcritere = 5;]]>
 	<field name="ligneprimequalitedept_ratio" class="java.lang.Double"/>
 	<field name="souscritere_nom" class="java.lang.String"/>
 	<field name="evaluationrprimeqltifpersonnel_point_max" class="java.lang.Double"/>
+	<variable name="ligneprimequalitedept_valeurcible_1" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{ligneprimequalitedept_valeurcible}]]></variableExpression>
+	</variable>
+	<variable name="ligneprimequalitedept_valeurrealisee_1" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{ligneprimequalitedept_valeurrealisee}]]></variableExpression>
+	</variable>
+	<variable name="ligneprimequalitedept_ratio_1" class="java.lang.Double" calculation="Average">
+		<variableExpression><![CDATA[$F{ligneprimequalitedept_ratio}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="99" splitType="Stretch">
+		<band height="94" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="50" width="86" height="20" uuid="00b2bd0e-5f6c-403b-be86-5064dcd4ab25"/>
 				<box leftPadding="2">
@@ -77,7 +86,7 @@ AND evaluationrprimeqltifdept.idcritere = 5;]]>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{evaluationrprimeqltifdept_score}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{evaluationrprimeqltifdept_pourcentage}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="86" y="70" width="58" height="20" uuid="eed64306-45f9-4d5b-a08d-19fd77657f41"/>
@@ -271,6 +280,59 @@ tage]]></text>
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="42" splitType="Stretch"/>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="243" height="24" uuid="fe07c4b9-e18e-4547-9482-8b9885dbe969"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Totaux]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="243" y="0" width="62" height="24" uuid="9d6712f3-1d70-4503-94a9-a5e013547adc"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{ligneprimequalitedept_valeurcible_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="305" y="0" width="63" height="24" uuid="f57a799b-6d20-4055-a6de-aa23d428057e"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{ligneprimequalitedept_valeurrealisee_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="368" y="0" width="60" height="24" uuid="0ec298f3-da6a-406a-9a99-0038a2df6e54"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{ligneprimequalitedept_ratio_1}]]></textFieldExpression>
+			</textField>
+		</band>
 	</summary>
 </jasperReport>

@@ -37,7 +37,8 @@ public class Prime implements Serializable {
     private boolean etat;
     private String observation;
     private double notepersonnelle;
-    private double noteservice;
+    private double relicat;
+    private double plafond;
     @JoinColumn(name = "idnote", referencedColumnName = "idnote")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Note idnote;
@@ -106,6 +107,14 @@ public class Prime implements Serializable {
         this.etat = etat;
     }
 
+    public double getPlafond() {
+        return plafond;
+    }
+
+    public void setPlafond(double plafond) {
+        this.plafond = plafond;
+    }
+
     public Note getIdnote() {
         return idnote;
     }
@@ -154,12 +163,12 @@ public class Prime implements Serializable {
         this.notepersonnelle = notepersonnelle;
     }
 
-    public double getNoteservice() {
-        return noteservice;
+    public double getRelicat() {
+        return relicat;
     }
 
-    public void setNoteservice(double noteservice) {
-        this.noteservice = noteservice;
+    public void setRelicat(double relicat) {
+        this.relicat = relicat;
     }
 
 }

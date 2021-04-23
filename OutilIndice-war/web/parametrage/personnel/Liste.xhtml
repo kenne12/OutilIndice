@@ -15,15 +15,14 @@
 
         <div class="row">
             <div class="col-md-12">
-                
+
                 <div class="panel panel-success">
                     <div style="color: white" class="panel-heading bg-success">
                         #{langue['personnel.list']}
                         <p:commandButton update=":PersonnelCreateForm,:notify1"
-                             icon="ui-icon-plus"
-                             style="float: right"
-                             value="#{langue['common.ajouter']}"
-                             actionListener="#{personnelController.prepareCreate()}"/>  
+                                         icon="ui-icon-plus" style="float: right"                             
+                                         value="#{langue['common.ajouter']}"
+                                         actionListener="#{personnelController.prepareCreate()}"/>  
                     </div>
 
                     <div class="panel-body">
@@ -33,11 +32,12 @@
                             <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th style="width: 5%">#{langue['common.matricule']}</th>
+                                        <th style="width: 5%;text-align: center">#{langue['common.matricule']}</th>
                                         <th style="width: 20%">#{langue['common.nom']} #{langue['common.prenom']}</th>
-                                        <th style="width: 25%">#{langue.service}</th>
+                                        <th style="width: 19%">#{langue.service}</th>
                                         <th style="width: 15%">#{langue.categorie}</th>
                                         <th style="width: 20%">#{langue.responsabilite}</th>
+                                        <th style="width: 6%">#{langue.plafond_prime}</th>
                                         <th style="width: 5%">#{langue['common.etat']}</th>                                        
                                         <th style="width: 10%">#{langue['common.actions']}</th>
                                     </tr>
@@ -46,13 +46,19 @@
                                 <tbody>
                                     <ui:repeat value="#{personnelController.personnels}" var="item">
                                         <tr>
-                                            <td>#{item.matricule}</td>
+                                            <td style="text-align: center">#{item.matricule}</td>
                                             <td>#{item.nom} #{item.prenom}</td>
                                             <td>#{item.idservice.nom}</td>
                                             <td>#{item.idcategorie.nom}</td>
                                             <td>#{item.idresponsabilite.nom}</td>
+                                            <td style="text-align: center"><h:outputText value="#{item.plafond}"><f:convertNumber /></h:outputText></td>
                                             <td style="text-align: center"><h:selectBooleanCheckbox value="#{item.etat}" disabled="true" /></td>                                                                                
-                                            <td style="text-align: center">                                        
+                                            <td style="text-align: center">
+
+                                                <p:commandButton icon="ui-icon-pencil" update=":PersonnelCreateForm,:notify1"
+                                                                 class="btn btn-success btn-sm"
+                                                                 actionListener="#{personnelController.prepareEdit(item)}"/>
+
                                                 <p:commandButton class="btn btn-danger btn-sm" icon="ui-icon-trash" 
                                                                  actionListener="#{personnelController.delete(item)}"
                                                                  update="PersonnelListerForm:datalist,PersonnelListerForm:growl,:notify1">
@@ -60,10 +66,6 @@
                                                                message="#{langue['notification.confirm_delete_message']} ?"
                                                                icon="ui-icon-alert"/>
                                                 </p:commandButton>
-
-                                                <p:commandButton icon="ui-icon-pencil" update=":PersonnelCreateForm,:notify1"
-                                                                 class="btn btn-success btn-sm"
-                                                                 actionListener="#{personnelController.prepareEdit(item)}"/>
 
                                             </td>
                                         </tr>

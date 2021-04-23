@@ -72,11 +72,8 @@
                         <p:separator />
 
                         <p:commandButton                            
-                            value="#{langue['common.ajouter']}"
-                            id="add_btn"
-                            disabled="#{primeController.notes.size()==0}"
-                            actionListener="#{primeController.addNoteToTable()}"
-                            update="datalist,add_btn,grid_critere" icon="ui-icon-plus" />
+                            value="#{langue['common.ajouter']}" id="add_btn" disabled="#{primeController.notes.size()==0}"                                                       
+                            actionListener="#{primeController.addNoteToTable()}" update="datalist,add_btn,grid_critere" icon="ui-icon-plus" />
 
                         <p:separator />
 
@@ -90,18 +87,27 @@
                                      rowIndexVar="index"
                                      emptyMessage="#{langue['common.tableau_vide']}">
 
-                            <p:column class="hardBreak" style="width: 34%;" >
+                            <p:column class="hardBreak" style="width: 35%;" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.personnel}"/>
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{item.idpersonnel.nom} #{item.idpersonnel.prenom}"/> 
                             </p:column>
 
-                            <p:column class="hardBreak" style="width: 8%;text-align: center" >
+                            <p:column class="hardBreak" style="width: 10%;text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="#{langue.points}"/>
                                 </f:facet>
                                 <h:outputText class="hardBreak" value="#{item.point}">
+                                    <f:convertNumber pattern="0.00" />
+                                </h:outputText> 
+                            </p:column>
+                            
+                            <p:column class="hardBreak" style="width: 10%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.plafond}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.plafond}">
                                     <f:convertNumber pattern="0.00" />
                                 </h:outputText> 
                             </p:column>
@@ -114,8 +120,17 @@
                                     <f:convertNumber pattern="0.00" />
                                 </h:outputText> 
                             </p:column>
+                            
+                            <p:column class="hardBreak" style="width: 10%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.relicat}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.relicat}">
+                                    <f:convertNumber pattern="0.00" />
+                                </h:outputText> 
+                            </p:column>
 
-                            <p:column style="width: 20%; text-align:left" headerText="#{langue['common.observaiton']}">
+                            <p:column style="width: 15%; text-align:left" headerText="#{langue['common.observaiton']}">
                                 <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText class="hardBreak" value="#{item.observation}" />
@@ -140,9 +155,10 @@
                             <p:columnGroup type="footer" id="footer_tab">
                                 <p:row>
                                     <p:column style="text-align:right" footerText="Totaux" />                                                                          
-                                    <p:column style="text-align:center" footerText="#{primeController.totalPoint}"/>  
-                                    <p:column style="text-align:center" footerText="#{primeController.montantPrime}" /> 
-                                    <p:column colspan="2" style="text-align:center" footerText=" / " /> 
+                                    <p:column style="text-align:center" footerText="#{primeController.totalPoint}"/>
+                                    <p:column style="text-align:center" footerText=" / "/>
+                                    <p:column style="text-align:center" footerText="#{primeController.montantPrime}" />
+                                    <p:column colspan="3" style="text-align:center" footerText=" / " /> 
                                 </p:row>
                             </p:columnGroup>
 

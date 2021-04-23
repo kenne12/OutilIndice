@@ -22,7 +22,9 @@
      prime."montantglobal" AS prime_montantglobal,
      categorie."nom" AS categorie_nom,
      responsabilite."nom" AS responsabilite_nom,
-     note."totalpoint" AS note_totalpoint
+     note."totalpoint" AS note_totalpoint,
+     prime."relicat" AS prime_relicat,
+     prime."plafond" AS prime_plafond
 FROM
      "public"."periode" periode INNER JOIN "public"."note" note ON periode."idperiode" = note."idperiode"
      INNER JOIN "public"."sousperiode" sousperiode ON note."idsousperiode" = sousperiode."idsousperiode"
@@ -34,9 +36,10 @@ FROM
      INNER JOIN "public"."structure" structure ON personnel."idstructure" = structure."idstructure"
      INNER JOIN "public"."categorie" categorie ON personnel."idcategorie" = categorie."idcategorie"
      INNER JOIN "public"."responsabilite" responsabilite ON personnel."idresponsabilite" = responsabilite."idresponsabilite"
-WHERE periode.idperiode = $P{idPeriode}
-AND sousperiode.idsousperiode = $P{idSousPeriode}
-AND structure.idstructure  = $P{idStructure};]]>
+WHERE
+     periode.idperiode = $P{idPeriode}
+ AND sousperiode.idsousperiode = $P{idSousPeriode}
+ AND structure.idstructure = $P{idStructure}]]>
 	</queryString>
 	<field name="periode_idperiode" class="java.lang.Integer"/>
 	<field name="periode_nom" class="java.lang.String"/>
@@ -53,11 +56,19 @@ AND structure.idstructure  = $P{idStructure};]]>
 	<field name="categorie_nom" class="java.lang.String"/>
 	<field name="responsabilite_nom" class="java.lang.String"/>
 	<field name="note_totalpoint" class="java.lang.Double"/>
+	<field name="prime_relicat" class="java.lang.Double"/>
+	<field name="prime_plafond" class="java.lang.Double"/>
 	<variable name="prime_montant_1" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{prime_montant}]]></variableExpression>
 	</variable>
 	<variable name="note_totalpoint_1" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{note_totalpoint}]]></variableExpression>
+	</variable>
+	<variable name="prime_plafond_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{prime_plafond}]]></variableExpression>
+	</variable>
+	<variable name="prime_relicat_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{prime_relicat}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -156,7 +167,7 @@ AND structure.idstructure  = $P{idStructure};]]>
 				<text><![CDATA[Responsabilité]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="604" y="0" width="100" height="28" uuid="45ded622-38e3-4e1c-82ca-dea68f2443ec"/>
+				<reportElement x="654" y="0" width="70" height="28" uuid="45ded622-38e3-4e1c-82ca-dea68f2443ec"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -170,7 +181,7 @@ AND structure.idstructure  = $P{idStructure};]]>
  Prime]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="525" y="0" width="79" height="28" uuid="52109449-8359-4a37-a6f7-ec44b410454b"/>
+				<reportElement x="525" y="0" width="59" height="28" uuid="52109449-8359-4a37-a6f7-ec44b410454b"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -181,6 +192,32 @@ AND structure.idstructure  = $P{idStructure};]]>
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<text><![CDATA[Total Point]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="584" y="0" width="70" height="28" uuid="e7182bc0-3f5f-4f64-8676-df060298b2ea"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Plafond]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="724" y="0" width="70" height="28" uuid="24519657-0e88-4e0c-9e16-3f1edfa44de6"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Gap]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -226,7 +263,7 @@ AND structure.idstructure  = $P{idStructure};]]>
 				<textFieldExpression><![CDATA[$F{responsabilite_nom}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0">
-				<reportElement stretchType="RelativeToBandHeight" x="604" y="0" width="100" height="25" uuid="171395ad-9830-49da-b8bc-e88d96878929"/>
+				<reportElement stretchType="RelativeToBandHeight" x="654" y="0" width="70" height="25" uuid="171395ad-9830-49da-b8bc-e88d96878929"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -239,7 +276,7 @@ AND structure.idstructure  = $P{idStructure};]]>
 				<textFieldExpression><![CDATA[$F{prime_montant}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00">
-				<reportElement stretchType="RelativeToBandHeight" x="525" y="0" width="79" height="25" uuid="030367de-6bc1-45e5-b25d-ad21f0078f04"/>
+				<reportElement stretchType="RelativeToBandHeight" x="525" y="0" width="59" height="25" uuid="030367de-6bc1-45e5-b25d-ad21f0078f04"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -250,6 +287,32 @@ AND structure.idstructure  = $P{idStructure};]]>
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{note_totalpoint}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="584" y="0" width="70" height="25" uuid="aba95618-b5dd-4396-81a3-29aaffd84e4d"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{prime_plafond}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="724" y="0" width="70" height="25" uuid="fc00b84a-7968-4bad-b433-3a231aad12d0"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{prime_relicat}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -275,7 +338,7 @@ AND structure.idstructure  = $P{idStructure};]]>
 				<text><![CDATA[Totaux]]></text>
 			</staticText>
 			<textField pattern="#,##0">
-				<reportElement x="604" y="0" width="100" height="21" uuid="ea94f213-ed44-4435-92be-15958e5749c1"/>
+				<reportElement x="654" y="0" width="70" height="21" uuid="ea94f213-ed44-4435-92be-15958e5749c1"/>
 				<box leftPadding="0" rightPadding="2">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -288,7 +351,7 @@ AND structure.idstructure  = $P{idStructure};]]>
 				<textFieldExpression><![CDATA[$V{prime_montant_1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="525" y="0" width="79" height="21" uuid="5403ec69-a9de-44ac-9830-ee8ea345f9bf"/>
+				<reportElement x="525" y="0" width="59" height="21" uuid="5403ec69-a9de-44ac-9830-ee8ea345f9bf"/>
 				<box leftPadding="0" rightPadding="2">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -299,6 +362,32 @@ AND structure.idstructure  = $P{idStructure};]]>
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{note_totalpoint_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="584" y="0" width="70" height="21" uuid="f4b1235e-60b1-4626-ae20-2b1d74fbf675"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{prime_plafond_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="724" y="0" width="70" height="21" uuid="19e77764-d6d7-4152-8c19-f3b62c5ad06b"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{prime_relicat_1}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

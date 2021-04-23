@@ -51,6 +51,7 @@ public class Personnel implements Serializable {
     @Size(max = 254)
     private String matricule;
     private Boolean etat;
+    private double plafond;
     @JoinColumn(name = "idcategorie", referencedColumnName = "idcategorie")
     @ManyToOne(fetch = FetchType.LAZY)
     private Categorie idcategorie;
@@ -117,6 +118,14 @@ public class Personnel implements Serializable {
 
     public void setEtat(Boolean etat) {
         this.etat = etat;
+    }
+
+    public double getPlafond() {
+        return plafond;
+    }
+
+    public void setPlafond(double plafond) {
+        this.plafond = plafond;
     }
 
     public Responsabilite getIdresponsabilite() {

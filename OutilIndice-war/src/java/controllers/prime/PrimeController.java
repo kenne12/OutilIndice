@@ -102,7 +102,7 @@ public class PrimeController extends AbstractPrimeController implements Serializ
             }
 
             this.totalPoint = 0;
-            for (Note n : notes) {
+            notes.forEach(n -> {
                 Prime prime = new Prime(0l);
                 prime.setIdnote(n);
                 prime.setIdperiode(SessionMBean.getPeriode());
@@ -111,16 +111,25 @@ public class PrimeController extends AbstractPrimeController implements Serializ
                 prime.setNotepersonnelle(n.getTotalPoint());
                 prime.setMontantglobal(montantPrime);
                 prime.setPoint(n.getTotalPoint());
+                prime.setPlafond(n.getIdpersonnel().getPlafond());
                 this.totalPoint += n.getTotalPoint();
                 this.primes.add(prime);
-            }
+            });
 
+            /*notes.stream().map(n -> new Prime()).forEach(p -> {
+             primes.add(p);
+             });*/
             this.indice = montantPrime / this.totalPoint;
 
             int counteur = 0;
             for (Prime p : primes) {
                 primes.get(counteur).setIndice(indice);
-                primes.get(counteur).setMontant(p.getPoint() * indice);
+                if (p.getPlafond() > (p.getPoint() * indice)) {
+                    primes.get(counteur).setMontant(p.getPlafond());
+                    primes.get(counteur).setRelicat(p.getPlafond() - (p.getPoint() * indice));
+                } else {
+                    primes.get(counteur).setMontant(p.getPoint() * indice);
+                }
                 counteur += 1;
             }
             notes.clear();
