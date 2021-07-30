@@ -163,7 +163,12 @@ public class RealisationBonusRDeptCtrl extends AbstractRealisationBonusRDeptCtrl
                 totalCible += c.getValeurcible();
                 try {
                     totalRealisation += c.getValeurrealisee();
-                    list.get(counter).setRatio((c.getValeurrealisee() / c.getValeurcible()) * 100);
+                    if (c.getValeurcible() == 0) {
+                        list.get(counter).setRatio(0);
+                        list.get(counter).setValeurrealisee(0);
+                    } else {
+                        list.get(counter).setRatio((c.getValeurrealisee() / c.getValeurcible()) * 100);
+                    }
                 } catch (Exception e) {
                     list.get(counter).setRatio(0);
                 }

@@ -52,7 +52,7 @@
                                 <f:convertNumber pattern="0.00" />
                             </h:outputText>&nbsp;
 
-                            <p:commandButton value="Actualiser" icon="ui-icon-refresh" update="detail" actionListener="#{primeResponsabiliteCtrl.refreshCosting()}" />
+                            <p:commandButton value="#{langue.actualiser}" icon="ui-icon-refresh" update="detail" actionListener="#{primeResponsabiliteCtrl.refreshCosting()}" />
                         </div>
 
                         <p:dataTable id="datalist" value="#{primeResponsabiliteCtrl.critereresponsabilites}" var="item"                             

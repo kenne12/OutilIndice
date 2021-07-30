@@ -336,6 +336,7 @@ public class EvaluationPersonnelController extends AbstractEvaluationPersonnel i
                                 evaluationresponsabilite.setPointMax(critereresponsabilite.getPoint());
                             }
                         } else {
+                            critereresponsabilite = new Critereresponsabilite(-1l);
                             critereresponsabilite.setIdcritereresponsabilite(-1l);
                         }
                     }

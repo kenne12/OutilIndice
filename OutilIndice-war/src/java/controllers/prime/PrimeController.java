@@ -116,17 +116,14 @@ public class PrimeController extends AbstractPrimeController implements Serializ
                 this.primes.add(prime);
             });
 
-            /*notes.stream().map(n -> new Prime()).forEach(p -> {
-             primes.add(p);
-             });*/
             this.indice = montantPrime / this.totalPoint;
 
             int counteur = 0;
             for (Prime p : primes) {
                 primes.get(counteur).setIndice(indice);
-                if (p.getPlafond() > (p.getPoint() * indice)) {
+                if ((p.getPoint() * indice) > p.getPlafond()) {
                     primes.get(counteur).setMontant(p.getPlafond());
-                    primes.get(counteur).setRelicat(p.getPlafond() - (p.getPoint() * indice));
+                    primes.get(counteur).setRelicat((p.getPoint() * indice) - p.getPlafond());
                 } else {
                     primes.get(counteur).setMontant(p.getPoint() * indice);
                 }

@@ -36,4 +36,6 @@ public interface EffectifResponsabiliteFacadeLocal {
 
     void deleteByIdStructure(long idStructure);
 
+    EffectifResponsabilite findByIdStructureAndIdResponsabilite(long idStructure, int idResponsabilite);
+
 }

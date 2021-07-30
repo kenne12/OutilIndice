@@ -60,4 +60,15 @@ public class EffectifResponsabiliteFacade extends AbstractFacade<EffectifRespons
         query.executeUpdate();
     }
 
+    @Override
+    public EffectifResponsabilite findByIdStructureAndIdResponsabilite(long idStructure, int idResponsabilite) {
+        Query query = em.createQuery("SELECT e FROM EffectifResponsabilite e WHERE e.structure.idstructure=:idStructure AND e.responsabilite.idresponsabilite=:idResp");
+        query.setParameter("idStructure", idStructure).setParameter("idResp", idResponsabilite);
+        try {
+            return (EffectifResponsabilite) query.getResultList().get(0);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }

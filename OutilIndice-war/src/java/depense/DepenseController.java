@@ -5,6 +5,7 @@ import entities.Recette;
 import entities.Sousperiode;
 import entities.Sousrubriquedepense;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -68,9 +69,11 @@ public class DepenseController extends AbstractDepenseController implements Seri
     public void updateSousPeriode(String option) {
         sousperiodes.clear();
         sousperiode = new Sousperiode(0);
+        montant = 0;
 
         if (option.equals("2")) {
             sousrubriquedepenses.clear();
+            selectedSousrubriquedepenses.clear();
             recettes.clear();
             depenses.clear();
         }
@@ -87,19 +90,42 @@ public class DepenseController extends AbstractDepenseController implements Seri
         montant = 0;
         if (sousperiode.getIdsousperiode() != null) {
             List<Recette> listRecettes = recetteFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
-            this.montant = this.sommeRecette(listRecettes);
             if (!listRecettes.isEmpty()) {
+                System.err.println("recette saisiesaisie");
+                this.montant = this.sommeRecette(listRecettes);
                 sousrubriquedepenses = SessionMBean.getSousRubriqueDepenses();
+
+                if (sousrubriquedepenses.isEmpty()) {
+                    System.err.println("sousrubrique dep empty");
+                }
+
                 depenses = depenseFacadeLocal.findByIdstructureIdperiodeIdSp(structure.getIdstructure(), periode.getIdperiode(), sousperiode.getIdsousperiode());
                 if (!depenses.isEmpty()) {
                     this.sommeData(depenses);
+                    System.err.println("depenses saisies");
 
                     for (Depense d : depenses) {
                         selectedSousrubriquedepenses.add(d.getIdsousrubriquedepense());
                     }
                     sousrubriquedepenses.removeAll(selectedSousrubriquedepenses);
+                } else {
+                    Sousrubriquedepense prime = new Sousrubriquedepense();
+                    List<Sousrubriquedepense> listAll = sousrubriquedepenses;
+                    List<Sousrubriquedepense> listAll2 = new ArrayList<>();
+                    for (Sousrubriquedepense srd : listAll) {
+                        if (srd.getSpecial()) {
+                            prime = srd;
+                        } else {
+                            listAll2.add(srd);
+                        }
+                    }
+                    listAll2.add(prime);
+                    sousrubriquedepenses.clear();
+                    sousrubriquedepenses.addAll(listAll2);
+                    selectedSousrubriquedepenses.addAll(sousrubriquedepenses);
                 }
-                return;
+            } else {
+                JsfUtil.addWarningMessage("Recettes non saisies");
             }
         }
     }

@@ -10,6 +10,7 @@ import entities.Critereresponsabilite;
 import entities.EffectifResponsabilite;
 import entities.Responsabilite;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -59,14 +60,15 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl imp
     }
 
     public void updateFiltre() {
+        effectifResponsabilites = effectifResponsabiliteFacadeLocal.findByIdStructure(structure.getIdstructure());
+        if (effectifResponsabilites == null || effectifResponsabilites.isEmpty()) {
+            JsfUtil.addWarningMessage("Veuillez définir les effectifs par responsabilité pour cette structure");
+            return;
+        }
+
         critereresponsabilites.clear();
-        List<Critereresponsabilite> list = critereresponsabiliteFacadeLocal.findByIdStructure(structure.getIdstructure());
-        if (list.isEmpty()) {
-            effectifResponsabilites = effectifResponsabiliteFacadeLocal.findByIdStructure(structure.getIdstructure());
-            if (effectifResponsabilites.isEmpty()) {
-                JsfUtil.addWarningMessage("Veuillez définir les effectifs par responsabilité pour cette structure");
-                return;
-            }
+        List<Critereresponsabilite> list = critereresponsabiliteFacadeLocal.findByIdStructure(structure.getIdstructure());        
+        if ((list == null || list.isEmpty())) {
             for (EffectifResponsabilite efr : effectifResponsabilites) {
                 Critereresponsabilite cr = new Critereresponsabilite();
                 cr.setIdcritereresponsabilite(0l);
@@ -81,9 +83,26 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl imp
             }
         } else {
             critereresponsabilites.addAll(list);
+            responsabilites.clear();
+            responsabilites.addAll(this.getListResponsabiliteNotCosted(effectifResponsabilites, list));
         }
         sommeDetail(critereresponsabilites);
         RequestContext.getCurrentInstance().execute("PF('ResponsabiliteCreateDialog').show()");
+    }
+
+    private List<Responsabilite> getListResponsabiliteNotCosted(List<EffectifResponsabilite> ers, List<Critereresponsabilite> cs) {
+        List<Responsabilite> listResult = new ArrayList<>();
+        List<Responsabilite> listCoasted = new ArrayList<>();
+        cs.forEach(c -> {
+            listCoasted.add(c.getIdresponsabilite());
+        });
+
+        ers.forEach(c -> {
+            if (!listCoasted.contains(c.getResponsabilite())) {
+                listResult.add(c.getResponsabilite());
+            }
+        });
+        return listResult;
     }
 
     public void addResponsabilityToTable() {
@@ -96,6 +115,12 @@ public class PrimeResponsabiliteCtrl extends AbstractPrimeResponsabiliteCtrl imp
                     cr.setPoint(0d);
                     cr.setIdresponsabilite(r);
                     cr.setResponsabilite(true);
+                    cr.setNombre(0);
+                    EffectifResponsabilite ef = effectifResponsabiliteFacadeLocal.findByIdStructureAndIdResponsabilite(structure.getIdstructure(), r.getIdresponsabilite());
+                    if (ef != null) {
+                        cr.setNombre(ef.getNombre());
+                    }
+
                     critereresponsabilites.add(cr);
                 }
             }

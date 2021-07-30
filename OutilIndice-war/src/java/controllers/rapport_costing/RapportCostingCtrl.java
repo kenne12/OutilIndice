@@ -46,7 +46,7 @@ public class RapportCostingCtrl extends AbstractRapportCostingCtrl implements Se
                         flag = true;
                         break;
                     }
-                    if (Math.abs(cs.getEcart()) > cs.getValeurInferieur() || Math.abs(cs.getEcart()) > cs.getValeurSuperieur()) {
+                    if ((Math.abs(cs.getEcart()) > cs.getValeurInferieur()) || (Math.abs(cs.getEcart()) > cs.getValeurSuperieur())) {
                         flag = true;
                         break;
                     }
